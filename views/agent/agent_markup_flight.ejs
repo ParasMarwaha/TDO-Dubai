@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>TDO DXB | Welcome to Agent Dashboard</title>
+    <%- include('../partials/header2') %>
+    <style>
+        .paginate_button.previous {
+            /*font-size: 12px !important;*/
+            width: 85px !important;
+        }
+
+        .custom-excel-btn {
+            background-color: #e75555 !important; /* Green */
+            color: white !important;
+        }
+
+        .custom-csv-btn {
+            background-color: #ef5353 !important; /* Light Blue */
+            color: white !important;
+        }
+
+        .custom-pdf-btn {
+            background-color: #ef5353 !important; /* Red */
+            color: white !important;
+        }
+    </style>
+    <!-- DataTables Buttons CSS -->
+
+
+</head>
+<body onload="Get_markup()">
+<div id="preloader">
+    <div class="loader">
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--text"></div>
+    </div>
+</div>
+<div id="main-wrapper">
+    <%- include('../partials/navbar2') %>
+    <%- include('../partials/sidebar2') %>
+    <div class="content-body default-height">
+        <!-- row -->
+        <div class="container-fluid">
+            <div class="row page-titles">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item active me-2"><a href="javascript:void(0)">Manage Markup</a></li>
+                </ol>
+            </div>
+            <div class="row">
+                <div class="col-12 d-flex justify-content-end">
+                    <a href="/add-agent_markup_flight">
+                        <button type="button" class="btn btn-outline-primary w-10"><i class="fa-solid fa-plus me-2"></i>Add
+                            Markup
+                        </button>
+                    </a>
+                </div>
+                <!--            <div class="container">-->
+                <div class="table-responsive mt-5">
+                    <div class="card">
+                        <!--                            <card class="card-head">-->
+                        <!--                                <h3 class="ms-4 mt-2">Manage Markup</h3>-->
+                        <!--                            </card>-->
+                        <div class="card-body">
+
+                            <table id="agent_flight_markup_Table" class="display table-light mt-2"
+                                   style="min-width: 845px">
+                                <thead class="text-bg-primary">
+                                <tr>
+                                    <th style="color:#fff;">#</th>
+                                    <th style="color:#fff;">Plan Type</th>
+                                    <th style="color:#fff;">Product Type</th>
+                                    <th style="color:#fff;">Trip Type</th>
+                                    <th style="color:#fff;">Markup Type</th>
+                                    <th style="color:#fff;">Amount</th>
+                                    <th style="color:#fff;">Airline</th>
+                                    <th style="color:#fff;">Update</th>
+                                    <th style="color:#fff;">Delete</th>
+                                </tr>
+                                </thead>
+                                <tbody id="agent_flight_markup"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" id="update-agent-markup"
+             aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Update Agent Markup</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal">
+                        </button>
+                    </div>
+                    <div class="modal-body" onload="agent_data_markup()">
+                        <div class="basic-form">
+                            <form class="form-valide-with-icon needs-validation" novalidate id="updateMarkup">
+                                <div class="row">
+                                    <div class="col-sm-6 mt-2">
+                                        <label class="text-label form-label" for="plan_type">Plan
+                                            Type</label>
+                                        <input type="text" name="plan_type" id="plan_type" disabled
+                                               class="form-control">
+
+                                    </div>
+                                    <div class="col-sm-6 mt-2" style="display: none" id="fare_type_div">
+                                        <label class="text-label form-label" for="fare_type">Product
+                                            Type</label>
+                                        <input type="text" name="fare_type" id="fare_type" disabled
+                                               class="form-control">
+
+                                    </div>
+
+                                    <div class="col-sm-6 mt-2">
+                                        <label class="text-label form-label" for="trip_type">Trip
+                                            Type</label>
+                                        <input type="text" name="trip_type" id="trip_type" disabled
+                                               class="form-control">
+
+                                    </div>
+                                    <div class="col-sm-6 mt-2">
+                                        <label class="text-label form-label" for="markup_type">Markup
+                                            Type</label>
+
+                                        <input type="text" name="markup_type" id="markup_type" class="form-control"
+                                               disabled>
+
+                                    </div>
+
+
+                                    <div class="col-sm-6 mt-2">
+                                        <label class="text-label form-label" for="deposit_value">
+                                            Markup Amount</label>
+
+                                        <input type="text" id="deposit_value" class="form-control" data- maxlength="4"
+                                               minlength="1"
+                                               name="deposit_value" placeholder="Enter Amount" required>
+                                    </div>
+                                    <div class="col-sm-6 mt-2" style="display: none" id="airline_div">
+                                        <label class="text-label form-label" for="airline">
+                                            Airline</label>
+                                        <input type="text" name="airline" id="airline" class="form-control" disabled>
+
+                                    </div>
+                                    <div class="hidden">
+                                        <input type="hidden" id="markup_id" name="markup_id">
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-outline-primary mt-5" id="update_markup_amount"
+                                        onclick="update_agent_amount()">Update
+                                </button>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+</div>
+<!--</div>-->
+
+
+<%- include('../partials/footer2') %>
+</body>
+<script>
+    $(document).ready(function () {
+        $('#deposit_value').on('input', function () {
+            // Allow only integers and floats (digits and one optional decimal point)
+            this.value = this.value.replace(/[^0-9.]/g, '');
+            // Ensure only one decimal point is allowed
+            if ((this.value.match(/\./g) || []).length > 1) {
+                this.value = this.value.slice(0, -1);
+            }
+        });
+    });
+
+    async function delete_agent_markup(id) {
+        let markup_id = id
+        try {
+            Swal.fire({
+                title: "Are you sure?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    const id = markup_id
+                    // console.log(id)
+                    let url = `/delete-agent-markup/${id}`;
+                    console.log(url)
+                    let response = await fetch(url, {
+                        method: "Delete",
+
+                    });
+                    response = await response.json()
+                    // console.log(response)
+                    if (response.error) {
+                        Swal.fire({
+                            title: "OOPS!",
+                            text: response.message,
+                            icon: "error"
+                        });
+                    } else if (response.warning) {
+                        Swal.fire({
+                            title: "OOPS!",
+                            text: response.message,
+                            icon: "warning"
+                        });
+
+                    } else {
+                        Get_markup()
+                        Swal.fire({
+                            title: "Deleted!",
+                            text: response.message,
+                            icon: "success"
+                        });
+                    }
+
+                }
+            });
+        } catch (e) {
+            Swal.fire({
+                title: "OOPS!",
+                text: e.message,
+                icon: "question"
+            });
+        }
+
+    }
+
+    async function update_agent_amount() {
+        try {
+
+            if ($("#updateMarkup").valid()) {
+                let form = document.getElementById('updateMarkup')
+                let formData = new FormData(form)
+                let url = "/update-agent-markup";
+                let response = await fetch(url, {
+                    method: "PUT",
+                    body: formData  // Convert to JSON string
+                });
+                let result = await response.json();
+                console.log(result)
+                if (result.error) {
+                    Swal.fire({
+                        title: "OOPS!",
+                        text: result.message,
+                        icon: "question"
+                    });
+
+                } else {
+
+                    Swal.fire({
+                        title: "Success",
+                        text: result.message,
+                        icon: "success"
+                    });
+                    Get_markup()
+                    var modalElement = document.getElementById('update-agent-markup');
+                    var modal = bootstrap.Modal.getInstance(modalElement);
+                    modal.hide();
+
+                }
+            }
+        } catch (e) {
+            Swal.fire({
+                title: "OOPS!",
+                text: e.message,
+                icon: "question"
+            });
+        }
+
+
+    }
+
+    async function agent_data_markup(data) {
+        // Hide all optional fields by default
+        document.getElementById("fare_type_div").style.display = 'none';
+        document.getElementById("airline_div").style.display = 'none';
+
+        // Now, check if the current plan is "Flight" and show the relevant fields
+        if (data.plan === "Flight") {
+            document.getElementById("fare_type_div").style.display = 'block';
+            document.getElementById("airline_div").style.display = 'block';
+            document.getElementById("airline").value = data.airline;
+            document.getElementById("fare_type").value = data.fare;
+        }
+
+        // Populate the rest of the form fields with the data
+        document.getElementById("markup_id").value = data.id;
+        document.getElementById("plan_type").value = data.plan;
+        document.getElementById("trip_type").value = data.trip;
+        document.getElementById("markup_type").value = data.markup;
+        document.getElementById("deposit_value").value = data.amount;
+    }
+
+    async function Get_markup() {
+        try {
+            let url = "/Get_markup_details";
+            let response = await fetch(url);
+            response = await response.json();
+
+            if (response.error) {
+                Swal.fire({
+                    title: "OOPS!",
+                    text: response.message,
+                    icon: "error"
+                });
+            } else if (response.warning) {
+                Swal.fire({
+                    title: "OOPS!",
+                    text: response.message,
+                    icon: "warning"
+                });
+            } else {
+                let body = []; // Define body array here
+                console.log(response.data);
+
+                // Destroy any existing DataTable instance before reinitializing
+                if ($.fn.DataTable.isDataTable('#agent_flight_markup_Table')) {
+                    $('#agent_flight_markup_Table').DataTable().destroy();
+                }
+                let html = ``;
+
+                // Loop through the data and replace id with count number
+                for (let i = 0; i < response.data.length; i++) {
+                    let x = response.data[i];
+                    html += `<tr>
+                    <td style="color: black">${i + 1}</td> <!-- Count number, starts from 1 -->
+                    <td style="color: black">${x.plan}</td>
+                    <td style="color: black">${x.fare}</td>
+                    <td style="color: black">${x.trip}</td>
+                    <td style="color: black">${x.markup}</td>
+                    <td style="color: black">${x.amount}</td>
+                    <td style="color: black">${x.airline}</td>
+                    <td class="text-center">
+                        <a data-bs-toggle="modal" data-bs-target=".bd-example-modal-lg" onclick='agent_data_markup(${JSON.stringify(x)})'>
+                            <i class="fa-regular fa-pen-to-square w-10 me-2" style="color: #c02323"></i></a>
+                    </td>
+                    <td class="text-center">
+                        <a onclick="delete_agent_markup(${x.id})"><i class="flaticon-381-trash-1 w-10 me-2" style="color: #c02323"></i></a>
+                    </td>
+                </tr>`;
+
+                    // Populate the body array with the necessary data
+                    body.push([
+                        i + 1,
+                        x.plan,
+                        x.fare,
+                        x.trip,
+                        x.markup,
+                        x.amount,
+                        x.airline,
+                        // Add additional fields if needed
+                    ]);
+                }
+
+                // Set the table HTML
+                document.getElementById("agent_flight_markup").innerHTML = html;
+
+                const logoBase64 = await convertImageToBase64('assets/img/TDO_logo1.png');
+
+                // Initialize DataTable with Excel export button
+                $('#agent_flight_markup_Table').DataTable({
+                    dom: '<"top"fB>rt<"bottom"ip><"clear">',
+                    buttons: [
+                        {
+                            extend: 'excelHtml5',
+                            text: 'Export to Excel',
+                            className: 'custom-excel-btn' // Custom green button
+                        },
+                        {
+                            extend: 'pdfHtml5',
+                            text: 'Export to PDF',
+                            title: '',
+                            className: 'custom-excel-btn',
+                            orientation: 'portrait',
+                            pageSize: 'A4',
+                            exportOptions: {
+                                modifier: { page: 'all' }
+                            },
+                            customize: function (doc) {
+                                // Insert logo and title
+                                doc.content = [];
+                                doc.images = { logo: logoBase64 };
+
+                                doc.content.unshift({
+                                    table: {
+                                        widths: ['*'],
+                                        body: [
+                                            [
+                                                { image: 'logo', width: 120, alignment: 'left', margin: [0, 0, 0, 5] } // Logo
+                                            ],
+                                            [
+                                                {
+                                                    text: 'Agent Markup',
+                                                    style: 'header',
+                                                    alignment: 'center',
+                                                    color: '#c02323',
+                                                    margin: [0, 5, 0, 5]
+                                                }
+                                            ]
+                                        ]
+                                    },
+                                    layout: { padding: 0, hLineWidth: () => 0, vLineWidth: () => 0 },
+                                    margin: [0, 0, 0, 10]
+                                });
+
+                                // Define the table content
+                                doc.content.push({
+                                    style: 'tableExample',
+                                    table: {
+                                        headerRows: 1,
+                                        widths: ['10%', '20%', '20%', '20%', '15%', '15%', '15%', '10%'], // Adjust widths based on your columns
+                                        body: [
+                                            // Table headers
+                                            [
+                                                { text: '#', style: 'tableHeader' },
+                                                { text: 'Plan Type', style: 'tableHeader' },
+                                                { text: 'Product Type', style: 'tableHeader' },
+                                                { text: 'Trip Type', style: 'tableHeader' },
+                                                { text: 'Markup Type', style: 'tableHeader' },
+                                                { text: 'Amount', style: 'tableHeader' },
+                                                { text: 'Airline', style: 'tableHeader' },
+                                                // Additional headers if needed
+                                            ],
+                                            ...body // Push all data rows to the body
+                                        ]
+                                    },
+                                    layout: {
+                                        // vLineWidth: (i) => (i === 0 ? 2 : 1),
+                                        hLineWidth: (i) => (i === 0 ? 2 : 1),
+                                        vLineWidth: () => 0,
+                                        // vLineColor: (i) => '#c02323',
+                                        hLineColor: (i) => '#c02323',
+                                        paddingLeft: () => 8,
+                                        paddingRight: () => 8,
+                                        paddingTop: () => 8,
+                                        paddingBottom: () => 8
+                                    }
+                                });
+
+                                // Define styles for the document
+                                doc.styles = {
+                                    header: {
+                                        fontSize: 22,
+                                        bold: true,
+                                        margin: [0, 5, 0, 10],
+                                        color: 'black'
+                                    },
+
+                                    tableHeader: {
+                                        fillColor: 'white',
+                                        color: '#c02323',
+                                        fontSize: 12,
+                                        bold: true,
+                                        alignment: 'left'
+                                    }
+                                };
+                            }
+                        }
+                    ],
+                });
+            }
+        } catch (e) {
+            Swal.fire({
+                title: "OOPS!",
+                text: e.message,
+                icon: "question"
+            });
+        }
+    }
+
+
+    async function convertImageToBase64(url) {
+        return new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.onload = () => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result);
+                reader.readAsDataURL(xhr.response);
+            };
+            xhr.onerror = reject;
+            xhr.open('GET', url);
+            xhr.responseType = 'blob';
+            xhr.send();
+        });
+    }
+
+
+</script>
+
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+
+<!-- DataTables Buttons JS -->
+<script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
+
+<!-- JSZip for Excel Export -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+
+<!-- Buttons for HTML5 export -->
+<script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+</html>

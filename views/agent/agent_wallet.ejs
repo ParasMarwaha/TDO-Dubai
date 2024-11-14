@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>TDO DXB | Welcome to Agent Dashboard</title>
+    <%- include('../partials/header2') %>
+    <style>
+        input[type="radio"]:checked + label {
+            color: #c02323; /* Red color for selected radio button label */
+            font-weight: bold; /* Optional: Make the selected option bold */
+        }
+        /*.image-cover {*/
+        /*    background: url('img.png') no-repeat center center; !* Center the image *!*/
+        /*    background-size: cover; !* Cover the entire element *!*/
+        /*    height: 100vh; !* Use viewport height for full screen *!*/
+        /*    width: 100vw; !* Use viewport width for full screen *!*/
+        /*    overflow: hidden;*/
+        /*    background-repeat: no-repeat;*/
+        /*    background-size: cover;*/
+        /*    background-position: bottom; background-position-y: bottom"*/
+        /*}*/
+
+    </style>
+</head>
+<!--Payment Gateway-->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<div id="main-wrapper" class="image-cover">
+
+    <%- include('../partials/navbar2') %>
+    <%- include('../partials/sidebar2') %>
+    <div class="content-body default-height ">
+        <div class="container-fluid">
+            <!-- row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card-header d-flex justify-content-center">
+                        <h3 class="card-title fs-2 fw-bold">
+                            <i class="fa-solid fa-wallet me-3" style="width: 10px; color: black"></i> Wallet Top Up
+                        </h3>
+                    </div>
+                    <div class="basic-form mt-2">
+                        <form id="agent_wallet" class="form-valide-with-icon needs-validation" novalidate>
+                            <div class="row mb-4 ms-4 me-4">
+                                <div class="col-12 col-md-8 col-lg-12 mx-auto">
+                                    <div class="mb-4">
+                                        <label for="amount" class="fs-4" style="color:black;">
+                                            Enter Topup Amount <span style="color:#c02323;">*</span>
+                                        </label>
+                                        <input type="number" id="amount" name="amount" class="form-control"
+                                               placeholder="Enter the Amount" required>
+                                    </div>
+                                    <div class="mb-4 mt-4">
+                                        <label for="payment_option" class="fs-3 fw-bold" style="color:black;">
+                                            <i class="fa fa-credit-card" style="font-size:24px;color: #c02323"></i>
+                                            Choose Payment Option
+                                        </label>
+                                        <div class="d-flex flex-wrap mt-3">
+                                            <div class="form-check me-3 mb-2">
+                                                <input type="radio" id="credit" name="payment_option" value="credit"
+                                                       class="form-check-input" onchange="checkCondition(this)">
+                                                <label for="credit" class="form-check-label fs-5" style="color:black;">Credit
+                                                    Card</label>
+                                            </div>
+                                            <div class="form-check me-3 mb-2">
+                                                <input type="radio" id="debit" name="payment_option" value="debit"
+                                                       class="form-check-input" onchange="checkCondition(this)">
+                                                <label for="debit" class="form-check-label fs-5" style="color:black;">Debit
+                                                    Card</label>
+                                            </div>
+                                            <div class="form-check me-3 mb-2">
+                                                <input type="radio" id="net_banking" name="payment_option"
+                                                       value="net banking" class="form-check-input"
+                                                       onchange="checkCondition(this)">
+                                                <label for="net_banking" class="form-check-label fs-5"
+                                                       style="color:black;">Net Banking</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="payment_summary" class="fs-3 fw-bold" style="color:black;">
+                                            <i class="fa fa-credit-card" style="font-size:24px;color: #c02323"></i>
+                                            Payment Summary
+                                        </label>
+                                        <div class="row mt-3">
+                                            <div class="col-12 col-md-4 mb-2">
+                                                <h4 style="color:black;" id="pfee"><i class="fas fa-percent"></i>
+                                                    Processing Fees: 0</h4>
+                                            </div>
+                                            <div class="col-12 col-md-4 mb-2">
+                                                <h4 style="color:black;" id="tfee"><i class="fa-solid fa-receipt"></i>
+                                                    Total Amount: 0</h4>
+                                            </div>
+                                            <div class="col-12 col-md-4 text-center">
+                                                <button type="button" class="btn btn-primary" id="rzp-button1"
+                                                        onclick="pay_now()">
+                                                    <i class="fa fa-credit-card me-2"
+                                                       style="font-size:14px;color: #ffffff"></i> Pay now
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <%- include('../partials/footer2') %>
+</div>
+
+<script>
+    let gatewayCharges = [];
+    var payType = "";
+
+    document.getElementById('amount').addEventListener('input', function () {
+        // Clear the selected payment option if the amount is changed
+        let selectedOption = document.querySelector('input[name="payment_option"]:checked');
+        if (selectedOption) {
+            selectedOption.checked = false;  // Uncheck the selected option
+            resetSummary();  // Reset the payment summary when amount changes
+        }
+    });
+
+    function checkCondition(radio) {
+        let amount = parseFloat(document.getElementById("amount").value);
+        if (isNaN(amount)) {
+            alert("Please enter a valid amount before selecting a payment option.");
+            radio.checked = false;  // Uncheck the radio button if no valid amount is entered
+            return;
+        }
+        calcAmount(radio.value);
+    }
+
+    function calcAmount(paymentMethod) {
+        let amount = parseFloat(document.getElementById("amount").value);
+        if (!isNaN(amount)) {
+            if (gatewayCharges.length > 0) {
+                applyGatewayCharges(paymentMethod, amount);
+            } else {
+                fetchGatewayCharges().then(() => {
+                    applyGatewayCharges(paymentMethod, amount);
+                });
+            }
+        } else {
+            alert("Please enter a valid amount.");
+        }
+    }
+
+    function applyGatewayCharges(paymentMethod, amount) {
+        for (let i = 0; i < gatewayCharges.data.length; i++) {
+            const record = gatewayCharges.data[i];
+
+            if (record.paymentType === paymentMethod.toLowerCase()) {
+                let processingFee;
+                if (record.type === "percentage") {
+                    processingFee = amount * (record.amount / 100);
+                    if (paymentMethod.toLowerCase() === "credit" || paymentMethod.toLowerCase() === "debit") payType = "card";
+                    else if (paymentMethod.toLowerCase() === "net banking") payType = "netbanking";
+                } else {
+                    processingFee = record.amount;
+                }
+
+                const totalAmount = amount + processingFee;
+                document.getElementById("pfee").innerHTML = `Processing Fees: ${processingFee.toFixed(2)}`;
+                document.getElementById("tfee").innerHTML = `Total Amount: ${totalAmount.toFixed(2)}`;
+                return {processingFee, totalAmount};
+            }
+        }
+
+        alert("No matching payment method found.");
+        return null;
+    }
+
+    function resetSummary() {
+        document.getElementById("pfee").innerHTML = "Processing Fees: 0";
+        document.getElementById("tfee").innerHTML = "Total Amount: 0";
+    }
+
+    async function fetchGatewayCharges() {
+        try {
+            let url = "/fetchGatewayCharges";
+            let response = await fetch(url, {
+                method: 'POST'
+            });
+            let data = await response.json();
+
+            if (data.error) {
+                alert("Error fetching gateway charges: " + data.message);
+            } else {
+                gatewayCharges = data;
+                return data;
+            }
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
+
+    async function pay_now() {
+        if ($("#agent_wallet").valid()) {
+            let form = document.getElementById('agent_wallet');
+            let selectedOption = document.querySelector('input[name="payment_option"]:checked');
+            if (!selectedOption) {
+                alert("Please select a payment option.");
+                return;
+            } else {
+                try {
+                    let formData = new FormData(form)
+                    const processingFee = parseFloat(document.getElementById("pfee").innerText.split(': ')[1]);
+                    const totalAmount = parseFloat(document.getElementById("tfee").innerText.split(': ')[1]);
+
+                    formData.append("processing_fee", processingFee);
+                    formData.append("total_amount", totalAmount);
+                    formData.append("payType", payType);
+                    sessionStorage.setItem("formData",formData)
+
+
+                    let formDataObject = {};
+                    formData.forEach((value, key) => {
+                        formDataObject[key] = value;
+                    });
+
+                    sessionStorage.setItem("formData", JSON.stringify(formDataObject));
+
+                    let rzp1;
+                    const response = await fetch('/topup-options', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch Razorpay configuration');
+                    }
+                    const options = await response.json();
+                    rzp1 = initializeRazorpay(options, formData);
+
+                    if (rzp1) {
+                        rzp1.open();
+                    }
+                } catch (e) {
+                    console.log(e.message)
+                }
+            }
+        }
+    }
+
+    function initializeRazorpay(options) {
+        const rzp = new Razorpay(options);
+        console.log(rzp)
+        rzp.on('payment.failed', function (response) {
+            alert(response.error.description);
+        });
+
+        return rzp;
+    }
+</script>
+<script>
+    document.querySelectorAll('input[name="payment_option"]').forEach(function (radio) {
+        radio.addEventListener('change', function () {
+            var amount = document.getElementById('amount').value;
+            if (!amount) {
+                alert('Please enter the amount.');
+                this.checked = false;
+            } else {
+                checkCondition(this);
+            }
+        });
+    });
+</script>
+</html>

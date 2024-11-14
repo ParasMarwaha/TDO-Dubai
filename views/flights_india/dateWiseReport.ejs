@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>TDO :: Flight Date wise report</title>
+    <%- include('../partialPages/headerfiles') %>
+</head>
+<body onload="getSuccessRows()">
+
+<div id="main-wrapper">
+    <%- include('../partialPages/topHeader') %>
+    <div class="header">
+        <div class="header-content">
+            <nav class="navbar navbar-expand">
+                <div class="collapse navbar-collapse justify-content-between">
+                    <div class="header-left">
+                        <div class="dashboard_bar">
+                            Single Day Wise Report
+                        </div>
+                    </div>
+                    <div class="header-right d-flex align-items-center">
+                        <div id="agEmailId" class="fs-6 fw-bold" style="word-break: break-all;text-align: right;width:40vw"></div>
+                        <%- include('../partialPages/userSettings') %>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <%- include('../partialPages/agentSidebar') %>
+    <!--**********************************
+        Content body start
+    ***********************************-->
+    <div class="content-body" style="margin-bottom: 80px;">
+        <div class="container">
+            <div class="row mb-2">
+                <div class="col-lg-8 offset-lg-2 col-sm-8 offset-sm-2 col-12">
+                    <div class="input-group">
+                        <label for="date" class="form-label pt-3 fw-bold pe-2">Select Date:</label>
+                        <input type="text" id="date" class="form-control"/>
+                        <button type="button" onclick="getSuccessRows();fetchFailInsurances();fetchPendingInsurances();" class="btn btn-primary">SEARCH</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="tab-pane fade show active" id="DefaultTab1" role="tabpanel" aria-labelledby="home-tab1">
+                    <div class="card-body pt-1">
+                        <!-- Nav tabs -->
+                        <div class="custom-tab-1">
+
+                            <div class="tab-content">
+                                <div class="tab-pane fade show active" id="success" role="tabpanel">
+                                    <div id="result">
+                                        <i class="spinner-grow spinner-border"></i>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%- include('../partialPages/footer') %>
+</div>
+<div class="modal fade" id="modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog bg-white modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">View Booking Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body table-responsive" id="bResult" >
+                <i class="spinner-grow"></i>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<%- include('../partialPages/scripts') %>
+<script src="/vendor/chart.js/Chart.bundle.min.js"></script>
+<script src="/vendor/apexchart/apexchart.js"></script>
+
+<!-- Dashboard 1 -->
+<script src="/js/dashboard/dashboard-1.js"></script>
+<script src="/vendor/swiper/js/swiper-bundle.min.js"></script>
+
+<script>
+
+    $('#date').daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        minYear: 2024,
+        maxYear: parseInt(moment().format('DD-MM-YYYY'), 0),
+        minDate: '2024-01-01',
+        maxDate: moment(),
+        locale: {
+            format: 'YYYY-MM-DD'
+        }
+    });
+
+    let getSuccessRows = () => {
+        var currentDate = new Date();
+        // Get the current date and time
+        var currentYear = currentDate.getFullYear();
+        var currentMonth = currentDate.getMonth() + 1; // Months are zero-based, so add 1
+        var currentDay = currentDate.getDate();
+        var currentHour = currentDate.getHours();
+        var currentMinute = currentDate.getMinutes();
+        var currentSecond = currentDate.getSeconds();
+        let am_pm = '';
+        if (currentHour > 12)
+            am_pm = "PM"
+        else
+            am_pm = "AM"
+        let bookDT = `${currentYear + "-" + currentMonth + "-" + currentDay + "," + currentHour + " -" + currentMinute + " -" + currentSecond}`;
+        let dt = document.getElementById("date").value;
+        fetch(`/getFlightDateWise/${dt}`)
+            .then(res => {
+                return res.json();
+            })
+            .then(val => {
+                console.log(val.recordset);
+                let output = val.recordset;
+                let {
+                    BookingStatus,
+                    GDSPNR,
+                    TotalAmount,
+                    apiBookingId,
+                    bookedOn,
+                    bookingId,
+                    paxType,
+                    supplier,
+                    totalAdult,
+                    totalChild,
+                    totalInfant,
+                    totalAmount,
+                    totalBaseFare,
+                    totalNoOfPax,
+                    totalTax
+                } = val.recordset;
+                console.log(val.recordset)
+                let result = `<table class="hover" id="ttable">
+<thead>
+<tr class="text-center">
+<th>View</th>
+<th>Print</th>
+<th>Booking Id</th>
+<th>Total No. of Pax</th>
+<th>Booking Status</th>
+<th>Total Base Fare</th>
+<th>Total Tax</th>
+<th>Total Amt.</th>
+<th>Booked On</th>
+
+</tr>
+</thead><tbody>`;
+                var paType = "",gen = ""
+                for (let i = 0; i < output.length; i++) {
+// Input datetime string
+                    var inputDatetime = output[i].bookedOn
+
+// Create a Date object from the input string
+                    var date = new Date(inputDatetime);
+
+// Extract date components
+                    var day = date.getDate();
+                    var month = date.toLocaleString('default', { month: 'short' });
+                    var year = date.getFullYear();
+                    var hours = date.getHours();
+                    var minutes = date.getMinutes();
+                    var seconds = date.getSeconds();
+
+// Format the date string
+                    var formattedDate = `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+
+
+                    result += `<tr class='text-center'>
+   <td>
+  <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+          onclick="showDetails('${output[i].supplier}',
+                              ${output[i].bookingId},
+                              ${output[i].TotalAmount},
+                              '${output[i].paymentType}',
+                              '${output[i].transactionID}',
+                              '${output[i].paymentStatus}',
+                              '${output[i].remarks ? output[i].remarks.replace(/'/g, "\\'") : ''}',
+                              '${output[i].returnRemarks ? output[i].returnRemarks.replace(/'/g, "\\'") : ''}')"
+          data-bs-target="#modal">
+    <i class='fa fa-eye'></i>
+  </button>
+</td>
+<td><a href="/agent/view-ticket-details/${output[i].bookingId}"> <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#downloadModal"><i class='fa fa-print'></i></button></a></td>
+<td>${output[i].bookingId}</td>
+<td>${output[i].totalPax}</td>
+<td style="color: green">${output[i].BookingStatus}</td>
+<td>&#x20b9; ${output[i].totalBaseFare}</td>
+<td>&#x20b9; ${output[i].totalTax}</td>
+<td>&#x20b9; ${output[i].TotalAmount}</td>
+<td> ${formattedDate}</td>
+</tr>`
+                    //     <td><a href="/agent/view-ticket-details/${output[i].bookingId}"> <button type="button" class="btn btn-success" ><i class='fa fa-print'></i></button> </a></td>
+                }
+
+                result += `</tbody></table>`;
+                document.getElementById("result").innerHTML = result
+
+                $('#ttable').DataTable( {
+                    dom: 'Bfrtip',
+                    buttons: [
+                        {
+                            extend: 'csv',
+                            text: 'Export To CSV',
+                            className: "btn btn-success"
+                        }
+                        ,
+                        {
+                            extend: 'excel',
+                            text: 'Export To Excel',
+                            className: "btn btn-success"
+                        },
+                        {
+                            extend: 'pdfHtml5',
+                            text: 'Export to PDF',
+                            filename: function(){
+
+                                return "test"
+                            },
+                            orientation: 'landscape',
+                            pageSize: 'LEGAL',
+                            className: 'btn btn-success',
+                            titleAttr: 'PDF'
+                        }
+                    ],
+                    order: [[2, 'desc']] // Default sort order set to descending on the first column
+                } );
+            })
+
+    }
+
+    let showDetails = (supplier,bookId,fare,type,tid,status,remarks, returnRemarks)=>{
+        outputDetails = '';
+        var fd =new FormData();
+        fd.append("bookId",bookId)
+        fd.append("fare",fare)
+        fetch("/fetchBookingDetails/",{
+            method:"post",body:fd
+        }).then(res=>res.json()).then(val=>{
+            outputDetails = val.recordset
+            let {BookingStatus,EmailID,FareType,GDSPNR,MobileNo,Stops,TotalAmount,TraceId,
+                apiBookingId,bookingDetailId,destination,bookingId,
+                salutation,firstName,lastName,gender,nationality,origin,paxType,ticketId} = outputDetails;
+            let result=`
+
+  <div class="container mt-2 mb-2">
+    <div class="row align-items-center transaction-details">`;
+            if(status === 'Success')
+            {
+                result+=`      <div class="col-3 text-center">
+        <p><i class="icon1 fas fa-receipt"></i> Transaction ID: <span class="type">${tid}</span></p>
+      </div>
+      <div class="col-6 text-center">
+        <p><i class="icon1 fas fa-check-circle"></i> Payment Status: <span class="status">${status}</span></p>
+      </div>
+      <div class="col-3 text-center">
+        <p><i class="icon1 fas fa-credit-card"></i> Payment Type: <span class="type">${type}</span></p>
+      </div>`
+            }
+            else
+            {
+                result +=`      <div class="col-3 text-center">
+        <p><i class="icon1 fas fa-receipt"></i> Transaction ID: <span class="type1">${tid}</span></p>
+      </div>
+      <div class="col-6 text-center">
+        <p><i class="icon1 fas fa-check-circle"></i> Payment Status: <span class="status1">${status}</span></p>
+      </div>
+      <div class="3-center">
+        <p><i class="icon1 fas fa-credit-card"></i> Payment Type: <span class="type1">${type}</span></p>
+      </div>`;
+            }
+            result+=`</div>
+  </div>
+ <div class="container mt-3 mb-3">
+    <div class="row align-items-center transaction-details">
+      <div class="col-3 text-center">
+        <p><i class="icon1 fas fa-plane"></i> Trip Type: <span class="status">${outputDetails[0].TripType}</span></p>
+      </div>
+  <div class="col-6 text-center">
+        <p><i class="icon1 fas fa-plane"></i> Trace Id: <span class="status">${outputDetails[0].TraceId}</span></p>
+      </div>
+  <div class="col-3 text-center">
+        <p><i class="icon1 fas fa-plane"></i> Total Amount: <span class="status">${fare}</span></p>
+      </div>
+    </div>
+  </div>
+<table class='table'><thead>
+<tr class='text-center'>
+<th>Sr. No.</th>
+<th>Name</th>
+<th>Pax Type</th>
+<th>Booking Status</th>
+<th>GDS PNR</th>
+<th>Origin</th>
+<th>Destination</th>
+<th>Stops</th>
+<th>Fare Type</th>
+<th>Ticket ID</th>
+<th>Api Booking ID</th>
+<th>Total Amount</th>
+</tr>
+</thead><tbody>`
+            let gen="",paType=""
+            for(let i=0;i<outputDetails.length;i++){
+                if (outputDetails[i].gender === 1)
+                    gen = 'Male'
+                else
+                    gen = 'Female'
+
+                if (outputDetails[i].paxType === 1 || outputDetails[i].paxType === "ADULT" || outputDetails[i].paxType === "1")
+                    paType = "Adult"
+                else if (outputDetails[i].paxType === 2 || outputDetails[i].paxType === "CHILD" || outputDetails[i].paxType === "2")
+                    paType = "Child"
+                else
+                    paType = "Infant"
+                result+=`<tr class='text-center'>
+<td>${i+1}</td>
+<td>${outputDetails[i].salutation+" "+outputDetails[i].firstName+" "+outputDetails[i].lastName}</td>
+<td>${paType}</td>`;
+                if(outputDetails[i].BookingStatus==='Ticketed')
+                    result+=`<td><span class="badge" style="background-color:green ; color: white !important;">${outputDetails[i].BookingStatus}</span></td>`
+                else  if(outputDetails[i].BookingStatus==='cancel request')
+                    result+=`<td><span class="badge" style="background-color:yellow ; color: black !important;">${outputDetails[i].BookingStatus}</span></td>`
+                else
+                    result+=`<td><span class="badge" style="background-color:red ; color: white !important;">${outputDetails[i].BookingStatus}</span></td>`
+
+                result+=`
+<td>${outputDetails[i].GDSPNR}</td>
+<td>${outputDetails[i].origin}</td>
+<td>${outputDetails[i].destination}</td>
+<td>${outputDetails[i].Stops}</td>
+<td>${outputDetails[i].FareType}</td>
+<td>${outputDetails[i].ticketId}</td>
+<td>${outputDetails[i].apiBookingId}</td>
+<td>${outputDetails[i].TotalAmount}</td>
+</tr>`
+                apiBId = outputDetails[i].apiBookingId;
+                bId = outputDetails[i].bookingId;
+                orig = outputDetails[i].origin;
+                desti = outputDetails[i].destination
+                apiSour = outputDetails[i].apiSource
+            }
+
+
+            result+=`</tbody></table>
+<div class="container-fluid mt-3 mb-3">
+    <div class="row align-items-center transaction-details">
+     `;
+
+            if(returnRemarks !== "")
+            {
+
+                if(returnRemarks === "Ticket Successfully")
+                {
+                    result+=`
+ <div class="col-6 text-center">
+        <p><i class="icon1 fas fa-plane"></i> Return Remarks: <span class="status">${returnRemarks}</span></p>
+      </div>`;
+                }
+                else
+                {
+                    result+=`
+ <div class="col-6 text-center">
+        <p><i class="icon1 fas fa-plane"></i> Return Remarks: <span class="status1">${returnRemarks}</span></p>
+      </div>`;
+                }
+
+                if(remarks === "Ticket Successfully")
+                {
+                    result+=`
+  <div class="col-6 text-center">
+        <p><i class="icon1 fas fa-plane"></i> Departure Remarks: <span class="status">${remarks}</span></p>
+      </div>`;
+                }
+                else
+                {
+                    result+=`
+ <div class="col-6 text-center">
+        <p><i class="icon1 fas fa-plane"></i> Departure Remarks: <span class="status1">${remarks}</span></p>
+      </div>`;
+                }
+
+            }
+            else
+            {
+                if(remarks === "Ticket Successfully")
+                {
+                    result+=`
+  <div class="col-12 text-center">
+        <p><i class="icon1 fas fa-plane"></i> Departure Remarks: <span class="status">${remarks}</span></p>
+      </div>`;
+                }
+                else
+                {
+                    result+=`
+ <div class="col-12 text-center">
+        <p><i class="icon1 fas fa-plane"></i> Departure Remarks: <span class="status1">${remarks}</span></p>
+      </div>`;
+                }
+            }
+            result+=`</div>
+  </div>
+`
+            document.getElementById("bResult").innerHTML = result
+
+
+        })
+    }
+</script>
+</body>
+</html>

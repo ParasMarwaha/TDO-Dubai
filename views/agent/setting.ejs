@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>TDO DXB | Welcome to Agent Dashboard</title>
+    <%- include('../partials/header2') %>
+</head>
+<body>
+<div id="preloader">
+    <div class="loader">
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--text"></div>
+    </div>
+</div>
+<div id="main-wrapper">
+    <%- include('../partials/navbar2') %>
+    <%- include('../partials/sidebar2') %>
+    <div class=" content-body default-height">
+        <!-- row -->
+        <div class="container-fluid">
+            <div class="row page-titles">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item active"><a href="javascript:void(0)">Setting</a></li>
+                </ol>
+            </div>
+            <div class="row">
+                <div class="col-xl-4">
+                    <div class="card mt-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Agent Markup <i class="fa-solid fa-money-check-dollar"></i></h5>
+                        </div>
+                        <a href="/agent_markup_flight">
+                            <div class="card-footer border-0 pt-2 mb-1 mt-1" style="background: #c02323">
+                                <p class="card-text d-inline mt-2" style="color:white;">Manage Markups</p>
+                                <button type="button" class="btn btn-outline-primary float-end">
+                                    <a href="/agent_markup_flight" class="card-link" style="color:white;">
+                                        <i class="fa-solid fa-arrow-right fa-lg"></i>
+                                    </a>
+                                </button>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+<%- include('../partials/footer2') %>
+</body>
+</html>

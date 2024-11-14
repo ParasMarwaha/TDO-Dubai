@@ -1,0 +1,278 @@
+<style>
+    .help-button {
+        border: 1px solid #c90101;
+        position: fixed;
+        bottom: 0px; /* Adjust spacing from bottom */
+        background-color: #c90101;
+        color: #fff;
+        padding: 15px 20px; /* Larger button */
+        border-radius: 8px; /* Rounded corners */
+        font-size: 18px; /* Larger font size */
+        display: flex; /* Align text and icon */
+        align-items: center; /* Center icon and text vertically */
+        gap: 10px; /* Space between text and icon */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow for depth */
+        z-index: 1000; /* Ensure button is on top */
+        cursor: pointer; /* Pointer cursor on hover */
+    }
+
+
+    .help-button svg {
+        width: 24px; /* Adjust size of the icon */
+        height: 24px; /* Ensure aspect ratio is preserved */
+        fill: #fff; /* Icon color */
+    }
+
+    .help-section {
+        border: 1px solid #c90101;
+        position: fixed;
+        bottom: 60px; /* Position above the help button */
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        padding-left: 8px;
+        width: 300px; /* Fixed width for the help section */
+        z-index: 1000; /* Ensure section is on top */
+    }
+
+    .help-section p {
+        margin: 0px 0; /* Spacing between paragraphs */
+        font-size: 14px;
+    }
+
+    .help-section a {
+        color: #c90101; /* Link color */
+        /*text-decoration: none; !* Remove underline *!*/
+    }
+
+    .help-section a:hover {
+        text-decoration: underline; /* Underline on hover */
+    }
+
+    .close-button {
+        position: absolute;
+        top: -3px;
+        right: 1px;
+        cursor: pointer; /* Pointer cursor on hover */
+        font-size: 20px;
+        color: #fff;
+    }
+
+    .close-button svg {
+        width: 20px; /* Adjust size of the close icon */
+        height: 20px; /* Ensure aspect ratio is preserved */
+        fill: #c90101; /* Icon color */
+    }
+
+    @media (max-width: 768px) {
+        .help-section {
+            width: 250px;
+            top: 40px;
+            left: 10px;
+        }
+
+        .help-button {
+            padding: 8px 12px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .help-section {
+            width: 200px;
+            top: 30px;
+            left: 5px;
+        }
+
+        .help-button {
+            padding: 6px 10px;
+            font-size: 14px;
+        }
+    }
+</style>
+<div class="deznav" style="position: fixed;">
+    <div class="deznav-scroll">
+        <ul class="metismenu" id="menu">
+            <!--            Dashboard-->
+
+
+            <% if (userType === "Co-Admin" || userType === "Travel agent" || userType ==="Sub Admin" || userType ==="Limited User") { %>
+                <li>
+                    <a href="/agent-dashboard" aria-expanded="false">
+                        <i class="flaticon-025-dashboard"></i>
+                        <span class="nav-text">Dashboard</span>
+                    </a>
+                </li>
+            <% } %>
+
+            <% if (userType === "Co-Admin" || userType === "Travel agent" || userType ==="Sub Admin" || userType ==="Limited User") { %>
+                <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                        <!--                    <i class="fa fa-plane"></i>-->
+
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                             class="bi bi-airplane-fill" viewBox="0 0 16 16">
+                            <path d="M6.428 1.151C6.708.591 7.213 0 8 0s1.292.592 1.572 1.151C9.861 1.73 10 2.431 10 3v3.691l5.17 2.585a1.5 1.5 0 0 1 .83 1.342V12a.5.5 0 0 1-.582.493l-5.507-.918-.375 2.253 1.318 1.318A.5.5 0 0 1 10.5 16h-5a.5.5 0 0 1-.354-.854l1.319-1.318-.376-2.253-5.507.918A.5.5 0 0 1 0 12v-1.382a1.5 1.5 0 0 1 .83-1.342L6 6.691V3c0-.568.14-1.271.428-1.849"/>
+                        </svg>
+                        <span class="nav-text ps-3">Flights</span>
+                    </a>
+                    <ul>
+                        <li><a href="/flights">Book Flights</a></li>
+                        <li><a href="/flights/viewHoldBookings">View Hold Bookings</a></li>
+                        <li><a href="#">View Released Bookings</a></li>
+                        <li><a href="/flights/viewTicketedBookings">View Ticketed Bookings</a></li>
+                        <li><a href="#">View Failed Bookings</a></li>
+                    </ul>
+                </li>
+            <% } %>
+
+            <% if (userType === "Co-Admin" || userType === "Travel agent" || userType ==="Sub Admin" || userType ==="Limited User") { %>
+                <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                        <i class="flaticon-018-clock"></i>
+                        <span class="nav-text">Fixed Departures</span>
+                    </a>
+                    <ul>
+                        <li><a href="#">Book Flight</a></li>
+                        <li><a href="#">Ticketed Bookings</a></li>
+                        <li><a href="#">Search Bookings</a></li>
+                    </ul>
+                </li>
+            <% } %>
+
+            <% if (userType === "Co-Admin" || userType === "Travel agent" || userType ==="Sub Admin" || userType ==="Limited User") { %>
+                <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                        <!--                    <i class="fa-solid fa-hotel"></i>-->
+
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                             class="bi bi-building-check" viewBox="0 0 16 16">
+                            <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m1.679-4.493-1.335 2.226a.75.75 0 0 1-1.174.144l-.774-.773a.5.5 0 0 1 .708-.708l.547.548 1.17-1.951a.5.5 0 1 1 .858.514"/>
+                            <path d="M2 1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6.5a.5.5 0 0 1-1 0V1H3v14h3v-2.5a.5.5 0 0 1 .5-.5H8v4H3a1 1 0 0 1-1-1z"/>
+                            <path d="M4.5 2a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm-6 3a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm-6 3a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5z"/>
+                        </svg>
+                        <span class="nav-text ps-3">Hotel</span>
+                    </a>
+                    <ul>
+                        <li class="has-arrow ai-icon"><a href="#">Book Hotel</a></li>
+                        <li class="has-arrow ai-icon"><a href="#">View Success Bookings</a></li>
+                    </ul>
+                </li>
+            <% } %>
+
+            <% if (userType === "Travel agent") { %>
+                <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                        <i class="flaticon-025-dashboard"></i>
+                        <span class="nav-text">Logs</span>
+                    </a>
+                    <ul>
+                        <li><a href="/activityLog">Activity Logs</a></li>
+                        <li><a href="/check-logs">Login / Logout Logs</a></li>
+                        <li><a href="/show_flight_search_log">Search Flight Logs</a></li>
+                        <li><a href="/subUser_log">Sub_User Logs</a></li>
+                    </ul>
+                </li>
+            <% } %>
+
+            <% if (userType === "Co-Admin" || userType === "Travel agent" || userType ==="Sub Admin") { %>
+                <li>
+                    <a aria-expanded="false" class="has-arrow ai-icon" href="javascript:void(0)" onclick="toggleMenu(this)">
+                        <i class="fa-solid fa-credit-card" style="font-size: 20px;"></i>
+                        <span class="nav-text">Wallet</span>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="/agentWallet">Wallet Top UP</a></li>
+                        <li><a href="/add_walletMID">Deposit Request</a></li>
+                        <li><a href="/walletSummary">View Transactions</a></li>
+                    </ul>
+                </li>
+            <% } %>
+
+            <% if (userType === "Co-Admin" || userType === "Travel agent") { %>
+                <li>
+                    <a href="/setting" aria-expanded="false">
+                        <!--                    <i class="flaticon-025-dashboard"></i>-->
+                        <!--                    <i class="fa-solid fa-gear"></i>-->
+                        <!--                    <i class="flaticon-381-settings-5"></i>-->
+                        <!--                    <i class="bi bi-gear"></i>-->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                             class="bi bi-gear" viewBox="0 0 16 16">
+                            <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492M5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0"/>
+                            <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115z"/>
+                        </svg>
+                        <span class="nav-text">Control Panel</span>
+                    </a>
+                </li>
+            <% } %>
+
+        </ul>
+        <div id="helpButtonPart">
+            <button class="help-button ms-0 mb-0" id="helpButton" onclick="toggleHelpSection()">
+                <span>Need any Assistance?</span>
+                <svg class="svg-inline--fa fa-circle-plus" aria-hidden="true" focusable="false" data-prefix="fas"
+                     data-icon="circle-plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                    <path fill="currentColor"
+                          d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM232 344V280H168c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V168c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H280v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z"></path>
+                </svg>
+            </button>
+        </div>
+
+        <div class="help-section mb-0 ms-0" id="helpSection" style="display: none;background: #c90101;color: white">
+    <span class="close-button" onclick="toggleHelpSection()">
+        <svg class="svg-inline--fa fa-circle-xmark" aria-hidden="true" focusable="false" data-prefix="fas"
+             data-icon="circle-xmark" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+            <path fill="currentColor"
+                  d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z"></path>
+        </svg>
+    </span>
+            <div class="ps-2">
+                <div id="sales_support" style="display: none">
+                    <h3 style="color: white;font-weight: bold" class="pt-3">Sales Support :</h3>
+                    <p>Name: <span id="sname" style="color:white;text-decoration: none"></span></p>
+                    <p>Email: <a href="#" id="semail" style="color:white;"></a></p>
+                    <p>Mobile Number: <a href="#" id="smobile" style="color:white;"></a></p>
+                </div>
+                <div>
+                    <h3 style="color: white;font-weight: bold" class="mt-2 mb-2">Customer Support :</h3>
+                    <p>Email: <a href="mailto: support@traveldealsonline.ae"
+                                 style="color:white;"> support@traveldealsonline.ae</a>
+                    </p>
+                    <p class="pb-3">Pilot Number: <a href="tel:01246957400" style="color:white;">01246957400</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+
+    async function toggleHelpSection() {
+        let url = "/get-assistance-data"
+        let response = await fetch(url, {
+            method: "POST",
+            headers: {"Content-Type": "application/json"}  // Convert to JSON string
+        });
+        response = await response.json()
+        console.log(response)
+        let x = response.data[0]
+        document.getElementById("sales_support").style.display = 'block'
+        let name = x.first_name + " " + x.last_name
+        document.getElementById("sname").innerText = name
+        document.getElementById("semail").innerText = x.email
+        document.getElementById("smobile").innerText = x.mobile
+        document.getElementById("semail").href = `mailto:${x.email}`;
+        document.getElementById("smobile").href = `tel:${x.mobile}`;
+        // }
+
+        var helpSection = document.getElementById('helpSection');
+        var helpButton = document.getElementById('helpButtonPart');
+        if (helpSection.style.display === 'none' || helpSection.style.display === '') {
+            helpButton.style.display = 'none';
+            helpSection.style.display = 'block';
+            helpSection.style.bottom = 0;
+
+            // helpButton.style.display = 'hidden';
+        } else {
+            helpSection.style.display = 'none';
+            helpButton.style.display = 'block';
+
+        }
+    }
+</script>

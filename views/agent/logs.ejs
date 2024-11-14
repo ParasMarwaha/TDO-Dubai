@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>TDO DXB | Welcome to Agent Dashboard</title>
+    <%- include('../partials/header2') %>
+
+    <style>
+        .paginate_button.previous  {
+            /*font-size: 12px !important;*/
+            width: 85px !important;
+        }
+    </style>
+</head>
+<body onload="GetLogData()">
+<div id="preloader">
+    <div class="loader">
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--text"></div>
+    </div>
+</div>
+<div id="main-wrapper">
+    <%- include('../partials/navbar2') %>
+    <%- include('../partials/sidebar2') %>
+    <div class=" content-body default-height">
+        <!-- row -->
+        <div class="container-fluid">
+            <div class="col-12">
+                <div class="card">
+                    <card class="card-header">
+                        <h3>Login / Logout Logs</h3>
+                    </card>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="logsTable" class="display table-light" style="min-width: 845px">
+                                <thead class="text-bg-primary">
+                                <tr >
+                                    <th style="color:#fff;">Name</th>
+                                    <th style="color:#fff;">Email</th>
+                                    <th style="color:#fff;">Status</th>
+                                    <th style="color:#fff;">Remarks</th>
+                                    <th style="color:#fff;">Time</th>
+                                    <th style="color:#fff;">IP</th>
+                                </tr>
+                                </thead>
+                                <tbody id="logData"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <%- include('../partials/footer2') %>
+</div>
+
+<script>
+    async function GetLogData() {
+        let url = "/getLogData"
+        let response = await fetch(url)
+        response = await response.json()
+
+        if (response.error) {
+            Swal.fire({
+                title: "OOPS!",
+                text: response.message,
+                icon: "error"
+            });
+        } else if (response.warning) {
+            Swal.fire({
+                title: "OOPS!",
+                text: response.message,
+                icon: "warning"
+            });
+
+        } else {
+            console.log(response.data)
+            let html = ``
+            for (let i = 0; i < response.data.length; i++) {
+                let x = response.data[i]
+                html += `<tr>
+<td style="color: black">${x.name}</td>
+<td style="color: black">${x.email}</td>
+<td style="color: black">${x.status}</td>
+<td style="color: black">${x.remarks}</td>
+<td style="color: black">${x.time}</td>
+<td style="color: black">${x.client_ip}</td>
+</tr>`
+            }
+            document.getElementById("logData").innerHTML = html;
+            new DataTable('#logsTable');
+        }
+
+    }
+</script>
+</body>
+</html>

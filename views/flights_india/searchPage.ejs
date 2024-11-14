@@ -1,0 +1,448 @@
+<html lang="en">
+<head>
+    <script src="https://static.iween.co.in/iife.min.js"></script>
+    <meta charset="utf-8">
+    <link rel="icon" href="/favicon.ico">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="#000000">
+    <meta name="description" content="Flightworth.com, best b2b travel portal">
+    <link rel="apple-touch-icon" href="/logo192.png">
+    <link rel="manifest" href="/manifest.json">
+    <title>FlightWorth</title>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+
+    <link href="/flightWorthCSS/css/myStyle.css" rel="stylesheet">
+    <style data-emotion="css" data-s=""></style>
+</head>
+<body class="" style="">
+<noscript>You need to enable JavaScript to run this app.</noscript>
+<div id="root">
+    <main dir="ltr">
+        <nav class="app-header py-0 navbar navbar-expand-lg navbar-light">
+            <div class="spacing-8 py-2 row">
+                <div class="d-flex align-items-center mt-0 col-lg-4 col-md-4 col-sm-6 col-6">
+                    <div><a class="" href="/"><img src="/images/logos/app_logo.png" alt="flightworth" width="120px"
+                                                   class="logo-width"></a></div>
+                </div>
+                <div class="d-flex justify-content-sm-between justify-content-end align-items-center gap-2 mt-0 col-lg-8 col-md-8 col-sm-8 col-6">
+                    <div class="flex-1 d-sm-flex d-none"></div>
+                    <div class="d-flex flex-column align-items-sm-end align-items-start">
+                        <div class="fs-14 fw-600 hide-in-mobile">Helpline Number 24*7: <a href="tel:+"
+                                                                                          style="text-decoration: none;">7240333000</a>
+                        </div>
+                        <div class="d-flex gap-3 flex-1">
+                            <div class="fs-14 nav-item dropdown"><a aria-expanded="false" role="button"
+                                                                    class="dropdown-toggle nav-link" tabindex="0"
+                                                                    href="#"><span class="fs-12">English</span></a>
+                            </div>
+                            <div class="d-flex gap-3">
+                                <div class="mobile-menu">
+                                    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24"
+                                         height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill="none" d="M0 0h24v24H0z"></path>
+                                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path>
+                                    </svg>
+                                </div>
+                                <div class="fs-14 d-mobile-none nav-item dropdown"><a aria-expanded="false"
+                                                                                      role="button"
+                                                                                      class="dropdown-toggle nav-link"
+                                                                                      tabindex="0" href="#">
+                                        <div class="d-flex flex-column align-items-end"><span class=" fs-12">Available Balance</span><span
+                                                    class="fw-600" style="margin-top: -3px;">0.25</span></div>
+                                    </a></div>
+                                <div class="fs-14 d-mobile-none dropdown-right nav-item dropdown"><a
+                                            aria-expanded="false" role="button" class="dropdown-toggle nav-link"
+                                            tabindex="0" href="#">
+                                        <div class="d-flex flex-column align-items-end"><span class="fs-12">Agent code : FW76315</span><span
+                                                    class="fw-600"
+                                                    style="margin-top: -3px;">TDO HOLIDAYS PRIVATE LTD </span></div>
+                                    </a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="w-100 primary-background-color app-header_navigation d-mobile-none" style="min-height: 70px;">
+                <div class="max-width">
+                    <div class="app-header_navigation_container d-flex">
+                        <div class="active-btn nav-item dropdown"><a aria-expanded="false" role="button"
+                                                                     class="dropdown-toggle nav-link" tabindex="0"
+                                                                     href="#">Flight</a></div>
+                        <div class="nav-item dropdown"><a aria-expanded="false" role="button"
+                                                          class="dropdown-toggle nav-link" tabindex="0"
+                                                          href="#">Hotel</a></div>
+                        <div class="nav-item cursor-pointer ">Insurance</div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <div class="app-main-content">
+            <div class="flight-landing-page py-4 d-flex justify-content-center align-items-center">
+                <div class="flight-landing-page_container">
+                    <div class="flight-landing-page_search">
+                        <div class="flight-landing-page_search_header">Search Flights</div>
+
+                        <form id="SearchForm">
+                            <div class="flight-landing-page_search_container">
+                                <div class="flight-landing-page_search_radio-container d-flex gap-3">
+                                    <input type="radio" class="cursor-pointer" id="OneWay" checked name="journeytype"
+                                           value="OneWay">
+                                    <label for="OneWay">One Way</label>
+
+                                    <input type="radio" class="cursor-pointer" id="RoundTrip" name="journeytype"
+                                           value="RoundTrip">
+                                    <label for="RoundTrip">Round Trip</label>
+                                </div>
+                                <div class="flight-landng-page_search_request row">
+                                    <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                                        <div class="spacing-8 row">
+                                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                                <div class="spacing-1 mb-sm-0 mb-2 row">
+                                                    <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                                        <div class="app-landing-datepicker"
+                                                             style="background-color: rgb(255, 255, 255);"><label for=""
+                                                                                                                  class="landing-datepicker-label pb-3">Source
+                                                                </label>
+                                                            <select  name="departfrom" id="my-select" class="form-control" style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;">
+                                                            </select>
+                                                        </div>
+                                                        <small class="validation-error"></small></div>
+                                                    <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                                        <div class="app-landing-datepicker"
+                                                             style="background-color: rgb(255, 255, 255);"><label for=""
+                                                                                                                  class="landing-datepicker-label pb-3">Destination
+                                                                </label>
+                                                            <select  name="goingto" id="my-select1" class="form-control">
+                                                            </select>
+                                                        </div>
+                                                        <small class="validation-error"></small></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                                <div class="spacing-1 mb-sm-0 mb-2 row">
+                                                    <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                                        <div class="app-landing-datepicker"
+                                                             style="background-color: rgb(255, 255, 255);"><label for=""
+                                                                                                                  class="landing-datepicker-label pb-3 ">Depart
+                                                                Date</label>
+                                                            <input type="date" name="departdate" class="form-control">
+                                                        </div>
+                                                        <small class="validation-error"></small></div>
+                                                    <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                                        <div class="app-landing-datepicker"
+                                                             style="background-color: rgb(255, 255, 255);"><label for=""
+                                                                                                                  class="landing-datepicker-label pb-3">Return
+                                                                Date</label>
+                                                            <input type="date" name="returndate" class="form-control">
+                                                        </div>
+                                                        <small class="validation-error"></small></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-sm-12 col-12" id="classPassengers">
+                                        <div class="travellers-class d-flex justify-content-between align-items-center cursor-pointer">
+                                            <div class="d-flex flex-column"><span
+                                                        class="fs-12">Traveller(s), Class</span><span
+                                                        class="travellers-class_text" id="selected_Traveller_class">1A,0C,0I,Economy</span>
+                                            </div>
+                                            <svg stroke="currentColor" fill="currentColor" stroke-width="0"
+                                                 viewBox="0 0 24 24" height="1em" width="1em"
+                                                 xmlns="http://www.w3.org/2000/svg">
+                                                <path fill="none" d="M0 0h24v24H0V0z"></path>
+                                                <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                                    <div class="d-flex flex-column overflow-auto">
+                                        <div class="searchtype-container d-flex w-100 flex-1">
+                                            <input type="radio" class="cursor-pointer" id="regular" checked
+                                                   name="searchtype" value="regular">
+                                            <label for="regular" class="pt-2">Regular</label>
+
+                                            <input type="radio" class="cursor-pointer" id="student" name="searchtype"
+                                                   value="student">
+                                            <label for="student" class="pt-2">Student Fare</label>
+
+                                            <input type="radio" class="cursor-pointer" id="seniorcitizen"
+                                                   name="searchtype" value="seniorcitizen">
+                                            <label for="seniorcitizen" class="pt-2">Senior Citizen</label>
+
+                                            <input type="checkbox" class="cursor-pointer" id="nonstopsearch"
+                                                   name="nonstopsearch" value="nonstop">
+                                            <label for="nonstopsearch" class="pt-2">Non Stop Flights</label>
+                                            <input type="checkbox" class="cursor-pointer" id="nearbyAirports"
+                                                   name="nearbyAirports" value="nearbyAirports">
+                                            <label for="nearbyAirports" class="pt-2">Nearby Airports</label>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                                    <div class="d-flex flex-column justify-content-center gap-1 mt-2">
+                                        <button type="button" onclick="SearchFlight()"
+                                                class="app-btn app-btn-primary app-btn-medium "
+                                                style="padding: 0.5rem; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px; font-weight: 600;">
+                                            Search Flights
+                                        </button>
+                                        <a class="fs-12 text-center fw-600 app-link-primary" id="Airline Filter">Airline
+                                            Filter</a>
+                                    </div>
+                                    <select class="form-control" id="SelectAirline" name="SelectAirline" style="display: none">
+                                        <option>edghvg</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <footer class="app-footer">
+            <div class="app-footer_container py-sm-4 py-3">
+                <div class="row spacing-8">
+                    <div class="col-md-3 col-sm-6 col-12">
+                        <div class="d-flex flex-column">
+                            <div class="primary-color fs-3 fw-600 d-flex gap-3 align-items-center"><img
+                                        src="/images/others/footer_image.svg" width="60px"><span>FlightWorth</span>
+                            </div>
+                            <div class="fw-300">© Copyrights Fligtworth 2023</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-4 col-5">
+                        <div class="d-flex flex-column cursor-pointer gap-1"><p
+                                    class="fs-13 mb-1 fw-500 hide-in-mobile">More Links</p>
+                            <span>Terms &amp; Conditions</span><span>Privacy Policy</span><span>Disclaimer</span></div>
+                    </div>
+                    <div class="col-md-3 col-sm-4 col-4">
+                        <div class="d-flex flex-column cursor-pointer fw-300 gap-1 align-items-sm-start align-items-center ">
+                            <p class="fs-13 mb-1 fw-500 hide-in-mobile">Company</p>
+                            <span>Home</span><span>About us</span><span>Contact us</span></div>
+                    </div>
+                    <div class="col-md-3 col-sm-4 col-3 ">
+                        <div class="d-flex flex-column cursor-pointer gap-1 align-items-sm-start align-items-end"><p
+                                    class="fs-13 mb-1 fw-500 hide-in-mobile">Product</p>
+                            <span>Flight</span><span>Hotel</span><span>Insurance</span></div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </main>
+</div>
+<div class="travellers-class_overlay" id="travellerOverlay"
+     style="display:none;margin:240px;position: absolute; padding: 1rem; border-radius: 8px; max-width: 320px; background-color: rgb(195, 235, 172); z-index: 9999; inset: 0px auto auto 0px; transform: translate3d(815px, 239px, 0px);"
+     data-popper-reference-hidden="false" data-popper-escaped="false" data-popper-placement="bottom">
+    <div class="d-flex flex-column">
+        <span class="fs-12 fw-600">Adults (12y+)</span>
+        <div class="my-1">
+            <ul class="num-pax_list d-flex" id="adults">
+                <li class="selected num-pax_list_item">1</li>
+                <li class="num-pax_list_item">2</li>
+                <li class="num-pax_list_item">3</li>
+                <li class="num-pax_list_item">4</li>
+                <li class="num-pax_list_item">5</li>
+                <li class="num-pax_list_item">6</li>
+                <li class="num-pax_list_item">7</li>
+                <li class="num-pax_list_item">8</li>
+                <li class="num-pax_list_item">9</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="d-flex flex-column">
+        <span class="fs-12 fw-600">Children (2y-12y)</span>
+        <div class="my-1">
+            <ul class="num-pax_list d-flex" id="children">
+                <li class="selected num-pax_list_item">0</li>
+                <li class="num-pax_list_item">1</li>
+                <li class="num-pax_list_item">2</li>
+                <li class="num-pax_list_item">3</li>
+                <li class="num-pax_list_item">4</li>
+                <li class="num-pax_list_item">5</li>
+                <li class="num-pax_list_item">6</li>
+                <li class="num-pax_list_item">7</li>
+                <li class="num-pax_list_item">8</li>
+                <li class="num-pax_list_item">9</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="d-flex flex-column">
+        <span class="fs-12 fw-600">Infants (&lt;2y)</span>
+        <div class="my-1">
+            <ul class="num-pax_list d-flex" id="infants">
+                <li class="selected num-pax_list_item">0</li>
+                <li class="num-pax_list_item">1</li>
+                <li class="num-pax_list_item">2</li>
+                <li class="num-pax_list_item">3</li>
+                <li class="num-pax_list_item">4</li>
+                <li class="num-pax_list_item">5</li>
+                <li class="num-pax_list_item">6</li>
+                <li class="num-pax_list_item">7</li>
+                <li class="num-pax_list_item">8</li>
+                <li class="num-pax_list_item">9</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="mb-2"><select name="prefclass" id="prefclass" class="fs-14 fs-600 w-100 py-1"
+                              style="border-radius: 3px;">
+            <option value="Y">Economy</option>
+            <option value="W">Premium Economy</option>
+            <option value="C">Business</option>
+            <option value="F">First Class</option>
+        </select></div>
+    <div class="text-center">
+        <button type="button" id="DoneButton" class="app-btn app-btn-secondary app-btn-medium px-4"
+                style="padding: 0.5rem; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px; font-weight: 600;">
+            Done
+        </button>
+    </div>
+</div>
+
+<script src="/assets/vendor/jquery/dist/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.21.0/jquery.validate.min.js"
+        integrity="sha512-KFHXdr2oObHKI9w4Hv1XPKc898mE4kgYx58oqsc/JqqdLMDI4YjOLzom+EMlW8HFUd0QfjfAvxSL6sEq/a42fQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- jQuery and Select2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#my-select').select2({
+            placeholder: "Select an option",
+            allowClear: true
+        });
+    });
+
+    $(document).ready(function() {
+        $('#my-select1').select2({
+            placeholder: "Select an option",
+            allowClear: true
+        });
+    });
+</script>
+
+
+<script>
+
+
+
+    document.getElementById("Airline Filter").addEventListener("click", function () {
+        var overlay = document.getElementById("SelectAirline");
+        // Toggle the visibility of the overlay
+        overlay.style.display = (overlay.style.display === "none" || overlay.style.display === "") ? "block" : "none";
+    });
+    document.getElementById("DoneButton").addEventListener("click", function () {
+        var overlay = document.getElementById("travellerOverlay");
+        // Toggle the visibility of the overlay
+        overlay.style.display = (overlay.style.display === "none" || overlay.style.display === "") ? "block" : "none";
+    });
+    <!--    show/hide passenger count box-->
+    document.getElementById("classPassengers").addEventListener("click", function () {
+        var overlay = document.getElementById("travellerOverlay");
+        // Toggle the visibility of the overlay
+        overlay.style.display = (overlay.style.display === "none" || overlay.style.display === "") ? "block" : "none";
+    });
+
+    // Function to handle click events for each list
+    function setupPaxList(id, category) {
+        const listItems = document.querySelectorAll(`#${id} .num-pax_list_item`);
+
+        listItems.forEach(item => {
+            item.addEventListener('click', function () {
+                // Remove 'selected' class from all items in this list
+                listItems.forEach(i => i.classList.remove('selected'));
+
+                // Add 'selected' class to the clicked item
+                this.classList.add('selected');
+
+                // Update output (optional)
+                updateOutput();
+            });
+        });
+    }
+let adults
+    let children
+    let infants
+    let prefClass
+    // Update the output div with the selected values
+    function updateOutput() {
+        adults = document.querySelector('#adults .selected').innerText;
+        children = document.querySelector('#children .selected').innerText;
+        infants = document.querySelector('#infants .selected').innerText;
+        prefClass = document.querySelector('#prefclass').selectedOptions[0].text;
+        document.getElementById('selected_Traveller_class').innerText = `${adults}A,${children}C,${infants}I,${prefClass}`
+    }
+
+    // Add event listener for the class select dropdown
+    document.getElementById('prefclass').addEventListener('change', function () {
+        updateOutput();
+    });
+
+    // Setup each pax list
+    setupPaxList('adults', 'Adults');
+    setupPaxList('children', 'Children');
+    setupPaxList('infants', 'Infants');
+
+    // Initial update
+    updateOutput();
+
+    async function SearchFlight() {
+        if ($("#SearchForm").valid()) {
+            var ele = document.getElementById("SearchForm").elements;
+            var fd = new FormData();
+            var checkboxValues = {};
+            let adultcount=adults
+            let childcount=children
+            let infantcount=infants
+            let prefclass=prefClass
+            for (let i = 0; i < ele.length; i++) {
+                if (ele[i].type !== "button") {
+
+                    // Handle radio buttons
+                    if (ele[i].type === "radio" && ele[i].checked === true) {
+                        fd.append(ele[i].name, ele[i].value);
+                    }
+
+                    // Handle checkboxes
+                    if (ele[i].type === "checkbox" && ele[i].checked === true) {
+                        // If multiple checkboxes share the same name, collect their values
+                        if (checkboxValues[ele[i].name]) {
+                            checkboxValues[ele[i].name].push(ele[i].value);
+                        } else {
+                            checkboxValues[ele[i].name] = [ele[i].value];
+                        }
+                    }
+
+                    // Handle other input types (text, select, etc.)
+                    if (ele[i].type !== "radio" && ele[i].type !== "checkbox") {
+                        fd.append(ele[i].name, ele[i].value);
+                    }
+                }
+            }
+
+            for (let name in checkboxValues) {
+                fd.append(name, checkboxValues[name].join(','));
+            }
+            fd.append("adultcount",adultcount)
+            fd.append("childcount",childcount)
+            fd.append("infantcount",infantcount)
+            fd.append("prefclass",prefclass)
+            let url = "/check";
+            let response = await fetch(url, {
+                method: "POST",
+                body: fd  // Convert to JSON string
+            });
+
+        }
+
+    }
+</script>
+</body>
+</html>

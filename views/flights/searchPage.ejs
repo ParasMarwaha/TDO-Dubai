@@ -1,0 +1,883 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>TDO DXB | Flights </title>
+    <%- include('../partials/header2') %>
+    <link rel="icon" type="image/x-icon" href="/assets2/flights/img/favicon.png">
+
+
+    <link href="/assets2/flights/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets2/flights/css/animation.css" rel="stylesheet">
+    <link href="/assets2/flights/css/dropzone.min.css" rel="stylesheet">
+    <link href="/assets2/flights/css/flatpickr.min.css" rel="stylesheet">
+    <link href="/assets2/flights/css/flickity.min.css" rel="stylesheet">
+    <link href="/assets2/flights/css/lightbox.min.css" rel="stylesheet">
+    <link href="/assets2/flights/css/magnifypopup.css" rel="stylesheet">
+    <link href="/assets2/flights/css/select2.min.css" rel="stylesheet">
+    <link href="/assets2/flights/css/rangeSlider.min.css" rel="stylesheet">
+    <link href="/assets2/flights/css/prism.css" rel="stylesheet">
+
+
+    <link href="/assets2/flights/css/bootstrap-icons.css" rel="stylesheet">
+    <link href="/assets2/flights/css/fontawesome.css" rel="stylesheet">
+
+
+    <link href="/assets2/flights/css/style.css" rel="stylesheet">
+    <style>
+        .image-cover {
+            /*background: url('/assets2/banner33.png') no-repeat center center; !* Center the image *!*/
+            background: url('/assets2/img_2.png') no-repeat center center; /* Center the image */
+            /*background: url('assets2/bg_pic2.jpeg') no-repeat center center; !* Center the image *!*/
+            background-size: cover; /* Cover the entire element */
+            height: 80vh; /* Use viewport height for full screen */
+            width: 100vw; /* Use viewport width for full screen */
+            position: relative; /* Set position for any child elements */
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .visible {
+            display: block;
+        }
+
+    </style>
+
+</head>
+<body>
+<div id="preloader">
+    <div class="loader">
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--text"></div>
+    </div>
+</div>
+<div id="main-wrapper">
+    <%- include('../partials/topNavbar') %>
+    <div class="image-cover hero-header bg-white">
+        <!-- Add your content here -->
+        <div class="container">
+            <div class="row justify-content-center align-items-center">
+                <!--  Top right text-->
+                <div class="col-xl-9 col-lg-10 col-md-12 col-sm-12 mt-5">
+                    <div class="position-relative text-center mb-5 mt-5">
+                        <h1>Starts Your Trip with <span class="position-relative z-4">TDO DXB<span
+                                        class="position-absolute top-50 start-50 translate-middle d-none d-md-block mt-4">
+                    <svg width="185px" height="23px" viewBox="0 0 445.5 23">
+                      <path class="fill-white opacity-7"
+                            d="M409.9,2.6c-9.7-0.6-19.5-1-29.2-1.5c-3.2-0.2-6.4-0.2-9.7-0.3c-7-0.2-14-0.4-20.9-0.5 c-3.9-0.1-7.8-0.2-11.7-0.3c-1.1,0-2.3,0-3.4,0c-2.5,0-5.1,0-7.6,0c-11.5,0-23,0-34.5,0c-2.7,0-5.5,0.1-8.2,0.1 c-6.8,0.1-13.6,0.2-20.3,0.3c-7.7,0.1-15.3,0.1-23,0.3c-12.4,0.3-24.8,0.6-37.1,0.9c-7.2,0.2-14.3,0.3-21.5,0.6 c-12.3,0.5-24.7,1-37,1.5c-6.7,0.3-13.5,0.5-20.2,0.9C112.7,5.3,99.9,6,87.1,6.7C80.3,7.1,73.5,7.4,66.7,8 C54,9.1,41.3,10.1,28.5,11.2c-2.7,0.2-5.5,0.5-8.2,0.7c-5.5,0.5-11,1.2-16.4,1.8c-0.3,0-0.7,0.1-1,0.1c-0.7,0.2-1.2,0.5-1.7,1 C0.4,15.6,0,16.6,0,17.6c0,1,0.4,2,1.1,2.7c0.7,0.7,1.8,1.2,2.7,1.1c6.6-0.7,13.2-1.5,19.8-2.1c6.1-0.5,12.3-1,18.4-1.6 c6.7-0.6,13.4-1.1,20.1-1.7c2.7-0.2,5.4-0.5,8.1-0.7c10.4-0.6,20.9-1.1,31.3-1.7c6.5-0.4,13-0.7,19.5-1.1c2.7-0.1,5.4-0.3,8.1-0.4 c10.3-0.4,20.7-0.8,31-1.2c6.3-0.2,12.5-0.5,18.8-0.7c2.1-0.1,4.2-0.2,6.3-0.2c11.2-0.3,22.3-0.5,33.5-0.8 c6.2-0.1,12.5-0.3,18.7-0.4c2.2-0.1,4.4-0.1,6.7-0.1c11.5-0.1,23-0.2,34.6-0.4c7.2-0.1,14.4-0.1,21.6-0.1c12.2,0,24.5,0.1,36.7,0.1 c2.4,0,4.8,0.1,7.2,0.2c6.8,0.2,13.5,0.4,20.3,0.6c5.1,0.2,10.1,0.3,15.2,0.4c3.6,0.1,7.2,0.4,10.8,0.6c10.6,0.6,21.1,1.2,31.7,1.8 c2.7,0.2,5.4,0.4,8,0.6c2.9,0.2,5.8,0.4,8.6,0.7c0.4,0.1,0.9,0.2,1.3,0.3c1.1,0.2,2.2,0.2,3.2-0.4c0.9-0.5,1.6-1.5,1.9-2.5 c0.6-2.2-0.7-4.5-2.9-5.2c-1.9-0.5-3.9-0.7-5.9-0.9c-1.4-0.1-2.7-0.3-4.1-0.4c-2.6-0.3-5.2-0.4-7.9-0.6 C419.7,3.1,414.8,2.9,409.9,2.6z">
+                      </path>
+                    </svg>
+                  </span></span></h1>
+                        <p class="fs-5 fw-light">Get Flights at cheaper rates.</p>
+                    </div>
+                </div>
+
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 shadow mt-3">
+                    <div class="search-wrap bg-white rounded-3 p-3">
+                        <!-- form inside top line(adults count, checkbox)   -->
+                        <div class="search-upper">
+                            <div class="d-flex align-items-center justify-content-between flex-wrap">
+                                <div class="flx-end d-flex align-items-center flex-wrap">
+                                    <!--  adults, children and guest box on left side -->
+                                    <div class="px-sm-2 pb-3 pt-0 ps-0 mob-full">
+                                        <div class="booking-form__input guests-input">
+                                            <i class="fa-solid fa-user-clock text-muted me-2"></i>
+                                            <button name="guests-btn" id="guests-input-btn">1 Guest</button>
+                                            <div class="guests-input__options" id="guests-input-options">
+                                                <div>
+                                                    <span class="guests-input__ctrl minus" id="adults-subs-btn"><i
+                                                                class="fa-solid fa-minus"></i></span>
+                                                    <span class="guests-input__value"><span
+                                                                id="guests-count-adults">1</span>Adults</span>
+                                                    <span class="guests-input__ctrl plus" id="adults-add-btn"><i
+                                                                class="fa-solid fa-plus"></i></span>
+                                                </div>
+                                                <div>
+                                                    <span class="guests-input__ctrl minus" id="children-subs-btn"><i
+                                                                class="fa-solid fa-minus"></i></span>
+                                                    <span class="guests-input__value"><span
+                                                                id="guests-count-children">0</span>Children</span>
+                                                    <span class="guests-input__ctrl plus" id="children-add-btn"><i
+                                                                class="fa-solid fa-plus"></i></span>
+                                                </div>
+                                                <div>
+                                                    <span class="guests-input__ctrl minus" id="room-subs-btn"><i
+                                                                class="fa-solid fa-minus"></i></span>
+                                                    <span class="guests-input__value"><span
+                                                                id="guests-count-room">0</span>infant</span>
+                                                    <span class="guests-input__ctrl plus" id="room-add-btn"><i
+                                                                class="fa-solid fa-plus"></i></span>
+                                                </div>
+                                                <button class="btn btn-primary" id="doneBtn">Done</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- hidden div-->
+                                    <div class="px-sm-2 pb-3 pt-0 ps-0 mob-full"></div>
+                                </div>
+                                <!--  check box on right side -->
+                                <div class="flx-start mb-sm-0 mb-2">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="trip" id="oneway"
+                                               value="oneway" checked>
+                                        <label class="form-check-label" for="oneway">One Way</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="trip" id="return"
+                                               value="return">
+                                        <label class="form-check-label" for="return">Return</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--  one way form -->
+                        <form id="myForm1">
+                            <div class="row gx-lg-2 g-3" id="oneWayForm">
+                                <div class="col-xl-6 col-lg-6 col-md-12">
+                                    <div class="row gy-3 gx-lg-2 gx-3">
+                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 position-relative">
+                                            <div class="form-group hdd-arrow mb-0">
+                                                <label for="source"></label><select class="leaving form-control fw-bold"
+                                                                                    id="source" name="from" required
+                                                                                    data-msg="Field is Required">
+                                                </select>
+                                            </div>
+                                            <div class="btn-flip-icon mt-md-0">
+                                                <button type="button" class="p-0 m-0 text-primary"
+                                                        onclick="switchValues()"><i class="fa-solid fa-right-left"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                                            <div class="form-groupp hdd-arrow mb-0">
+                                                <label for="destination"></label><select
+                                                        class="goingto form-control fw-bold" id="destination" name="to"
+                                                        required
+                                                        data-msg="Field is Required"
+                                                        data-error-class="u-has-error"
+                                                        data-success-class="u-has-success">
+
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-4 col-md-12">
+                                    <div class="row gy-3 gx-lg-2 gx-3">
+                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                                            <div class="form-group mb-0">
+                                                <label>
+                                                    <input class="form-control fw-bold choosedate" name="travelDate"
+                                                           type="text" placeholder="Departure.."
+                                                           readonly="readonly" required
+                                                           data-msg="Field is Required"
+                                                           data-error-class="u-has-error"
+                                                           data-success-class="u-has-success">
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                                            <div class="form-group mb-0">
+                                                <select name="fare_type" id="fare_type" class="form-control">
+
+                                                    <option value="2">Economy</option>
+                                                    <option value="6">First Class</option>
+                                                    <option value="3">Premium Economy</option>
+                                                    <option value="4">Business</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-2 col-lg-2 col-md-12">
+                                    <div class="form-group mb-0">
+                                        <button type="button" class="btn btn-primary full-width fw-medium"
+                                                onclick="test()"><i
+                                                    class="fa-solid fa-magnifying-glass me-2"></i>Search
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </form>
+
+                        <!--  return way form-->
+                        <form id="myForm2">
+                            <div class="row gx-lg-2 g-3" id="returnForm">
+                                <div class="col-xl-6 col-lg-6 col-md-12">
+                                    <div class="row gy-3 gx-lg-2 gx-3">
+                                        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 position-relative">
+                                            <div class="form-group hdd-arrow mb-0">
+                                                <label for="source1"></label><select
+                                                        class="leaving form-control fw-bold" id="source1" name="from"
+                                                        required
+                                                        data-msg="Field is Required"
+                                                        data-error-class="u-has-error"
+                                                        data-success-class="u-has-success">
+
+                                                </select>
+                                            </div>
+                                            <div class="btn-flip-icon mt-md-0">
+                                                <button type="button" class="p-0 m-0 text-primary"
+                                                        onclick="switchValues()"><i class="fa-solid fa-right-left"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4">
+                                            <div class="form-groupp hdd-arrow mb-0">
+                                                <label for="destination1"></label><select
+                                                        class="goingto form-control fw-bold" id="destination1" name="to"
+                                                        required
+                                                        data-msg="Field is Required"
+                                                        data-error-class="u-has-error"
+                                                        data-success-class="u-has-success">
+
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4">
+                                            <div class="form-group mb-0">
+                                                <select name="fare_type" id="fare_type" class="form-control">
+                                                    <option value="2">Economy</option>
+                                                    <option value="6">First Class</option>
+                                                    <option value="3">Premium Economy</option>
+                                                    <option value="4">Business</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-4 col-md-12">
+                                    <div class="row gy-3 gx-lg-2 gx-3">
+                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                                            <div class="form-group mb-0">
+                                                <label>
+                                                    <input class="form-control fw-bold choosedate" id="travelDate"
+                                                           name="travelDate" type="text" placeholder="Departure.."
+                                                           readonly="readonly" required
+                                                           data-msg="Field is Required"
+                                                           data-error-class="u-has-error"
+                                                           data-success-class="u-has-success">
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                                            <div class="form-group mb-0">
+                                                <label>
+                                                    <input class="form-control fw-bold choosedate" id="travelReturnDate"
+                                                           name="travelReturnDate" type="text" placeholder="Return.."
+                                                           readonly="readonly" required
+                                                           data-msg="Field is Required"
+                                                           data-error-class="u-has-error"
+                                                           data-success-class="u-has-success">
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-xl-2 col-lg-2 col-md-12">
+                                    <div class="form-group mb-0">
+                                        <button type="button" class="btn btn-primary full-width fw-medium"
+                                                onclick="test1()"><i
+                                                    class="fa-solid fa-magnifying-glass me-2"></i>Search
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <section class="border-bottom">
+        <div class="container">
+            <div class="row align-items-center justify-content-between g-4">
+
+                <div class="col-xl-3 col-lg-3 col-md-6 col-sm-5">
+                    <div class="featuresBox-wrap">
+                        <div class="featuresBox-icons mb-3">
+                            <i class="fa-solid fa-sack-dollar fs-1 text-primary"></i>
+                        </div>
+                        <div class="featuresBox-captions">
+                            <h4 class="fw-bold fs-5 lh-base mb-0">Easy Booking</h4>
+                            <p class="m-0 text-left">Booking your flights has never been easier! With our streamlined process, you
+                                can quickly search for flights and choose the best options that fit
+                                your schedule and budget.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-lg-3 col-md-6 col-sm-5">
+                    <div class="featuresBox-wrap">
+                        <div class="featuresBox-icons mb-3">
+                            <i class="fa-solid fa-umbrella-beach fs-1 text-primary"></i>
+                        </div>
+                        <div class="featuresBox-captions">
+                            <h4 class="fw-bold fs-5 lh-base mb-0">Best Destinations</h4>
+                            <p class="m-0 text-left">Discover the world’s best destinations with us! Whether you're dreaming of
+                                sun-soaked beaches, vibrant cities, or tranquil mountain getaways, we’ve got you
+                                covered.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-lg-3 col-md-6 col-sm-5">
+                    <div class="featuresBox-wrap">
+                        <div class="featuresBox-icons mb-3">
+                            <i class="fa-solid fa-person-walking-luggage fs-1 text-primary"></i>
+                        </div>
+                        <div class="featuresBox-captions">
+                            <h4 class="fw-bold fs-5 lh-base mb-0">Travel Guides</h4>
+                            <p class="m-0 text-left"> Make the most of your trip with our comprehensive travel guides! Whether you
+                                're visiting for the first time or returning to a favorite spot
+                                to your destination.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-lg-3 col-md-6 col-sm-5">
+                    <div class="featuresBox-wrap">
+                        <div class="featuresBox-icons mb-3">
+                            <i class="fa-solid fa-headset fs-1 text-primary"></i>
+                        </div>
+                        <div class="featuresBox-captions">
+                            <h4 class="fw-bold fs-5 lh-base mb-0">Friendly Support</h4>
+                            <p class="m-0 text-left">Our dedicated support team is here to ensure your travel experience is as
+                                smooth as possible. Our friendly agents are available around the clock
+                                to provide personalized help.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <%- include('../partials/footer2') %>
+
+</div>
+</body>
+<script>
+    let data = '';
+    let dataPlatform = '';
+
+    $(document).ready(function () {
+
+        $('#source').select2({
+            ajax: {
+                transport: function (params, success, failure) {
+                    fetch('/flights/allCities', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            q: params.data.term // search term
+                        })
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            success({
+                                results: data.data.map(airport => ({
+                                    id: airport.AirportCode, // airport code as id
+                                    text: `${airport.AirportName} (${airport.AirportCode}) - ${airport.CityName}` // display format with CityName
+                                }))
+                            });
+                        })
+                        .catch(error => {
+                            failure(error);
+                        });
+                },
+                delay: 250
+            },
+            placeholder: 'Search for an airport',
+            minimumInputLength: 1
+        });
+
+        $('#source1').select2({
+            ajax: {
+                transport: function (params, success, failure) {
+                    fetch('/flights/allCities', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            q: params.data.term // search term
+                        })
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            success({
+                                results: data.data.map(airport => ({
+                                    id: airport.AirportCode, // airport code as id
+                                    text: `${airport.AirportName} (${airport.AirportCode}) - ${airport.CityName}` // display format with CityName
+                                }))
+                            });
+                        })
+                        .catch(error => {
+                            failure(error);
+                        });
+                },
+                delay: 250
+            },
+            placeholder: 'Search for an airport',
+            minimumInputLength: 1
+        });
+
+        $('#destination').select2({
+            ajax: {
+                transport: function (params, success, failure) {
+                    fetch('/flights/allCities', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            q: params.data.term // search term
+                        })
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            success({
+                                results: data.data.map(airport => ({
+                                    id: airport.AirportCode, // airport code as id
+                                    text: `${airport.AirportName} (${airport.AirportCode}) - ${airport.CityName}` // display format with CityName
+                                }))
+                            });
+                        })
+                        .catch(error => {
+                            failure(error);
+                        });
+                },
+                delay: 250
+            },
+            placeholder: 'Search for an airport',
+            minimumInputLength: 1
+        });
+
+        $('#destination1').select2({
+            ajax: {
+                transport: function (params, success, failure) {
+                    fetch('/flights/allCities', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            q: params.data.term // search term
+                        })
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            success({
+                                results: data.data.map(airport => ({
+                                    id: airport.AirportCode, // airport code as id
+                                    text: `${airport.AirportName} (${airport.AirportCode}) - ${airport.CityName}` // display format with CityName
+                                }))
+                            });
+                        })
+                        .catch(error => {
+                            failure(error);
+                        });
+                },
+                delay: 250
+            },
+            placeholder: 'Search for an airport',
+            minimumInputLength: 1
+        });
+    });
+
+    async function test() {
+        let formdata = new FormData();
+
+        var elements = document.getElementById("myForm1").elements;
+
+        // Get adult count
+        var adultCount = parseInt(document.getElementById('guests-count-adults').textContent);
+
+        console.log(adultCount);
+
+        // Get child count
+        var childCount = parseInt(document.getElementById('guests-count-children').textContent);
+
+        console.log(childCount);
+
+        var infantCount = parseInt(document.getElementById('guests-count-room').textContent);
+
+        console.log(infantCount);
+
+        let ResultFareType = 'Regular Fare';
+
+        sessionStorage.setItem("adults", adultCount);
+        sessionStorage.setItem("child", childCount);
+        sessionStorage.setItem("infant", infantCount);
+
+        formdata.append("adults", adultCount);
+        formdata.append("child", childCount);
+        formdata.append("infants", infantCount);
+        formdata.append("ResultFareType", ResultFareType);
+        formdata.append("data", JSON.stringify(data.recordset));
+        formdata.append("platform", JSON.stringify(dataPlatform));
+
+        for (let k = 0; k < elements.length; k++) {
+            if (elements[k].type !== 'button') {
+                formdata.append(elements[k].name, elements[k].value);
+                console.log(`${elements[k].name}, ${elements[k].value}`);
+            }
+        }
+
+        sessionStorage.setItem("fd", JSON.stringify(Array.from(formdata.entries()))); // Store the FormData object directly in sessionStorage
+
+        // Use await with a resolved promise to make sure the script waits for form data to be ready
+        await Promise.resolve();
+
+        // Redirect after form data is stored (if needed)
+        if ($('#myForm1').valid()) {
+
+            let adult;
+            let child;
+            let infant;
+            let travelDate;
+            let from = '';
+            let to = '';
+            let fare_type = '';
+            let ResultFareType = '';
+
+            var storedFormData = sessionStorage.getItem("fd");
+            var formDataArray = JSON.parse(storedFormData);
+            let length = formDataArray.length;
+            // Accessing "data" property by iterating over the array
+            for (let i = 0; i < length; i++) {
+                if (formDataArray[i][0] === "from") {
+                    from =formDataArray[i][1];
+
+                    break; // Stop iteration once "data" property is found
+                }
+            }
+
+            for (let i = 0; i < length; i++) {
+                if (formDataArray[i][0] === "fare_type") {
+                    fare_type =formDataArray[i][1];
+
+                    break; // Stop iteration once "data" property is found
+                }
+            }
+
+            for (let i = 0; i < length; i++) {
+                if (formDataArray[i][0] === "ResultFareType") {
+                    ResultFareType =formDataArray[i][1];
+
+                    break; // Stop iteration once "data" property is found
+                }
+            }
+
+
+            //
+            for (let i = 0; i < length; i++) {
+                if (formDataArray[i][0] === "to") {
+                    to = formDataArray[i][1];
+
+                    break; // Stop iteration once "data" property is found
+                }
+            }
+
+            for (let i = 0; i < length; i++) {
+                if (formDataArray[i][0] === "adults") {
+                    adult = JSON.parse(formDataArray[i][1]);
+
+                    break; // Stop iteration once "data" property is found
+                }
+            }
+
+            for (let i = 0; i < length; i++) {
+                if (formDataArray[i][0] === "child") {
+                    child = JSON.parse(formDataArray[i][1]);
+
+                    break; // Stop iteration once "data" property is found
+                }
+            }
+
+            for (let i = 0; i < length; i++) {
+                if (formDataArray[i][0] === "travelDate") {
+                    travelDate = formDataArray[i][1];
+                    //  document.getElementById("ddate").innerHTML = `<i class="fas fa-plane-departure"></i> Date: ${travelDate}`
+                    break; // Stop iteration once "data" property is found
+                }
+            }
+
+            for (let i = 0; i < length; i++) {
+                if (formDataArray[i][0] === "infants") {
+                    infant = JSON.parse(formDataArray[i][1]);
+
+                    break; // Stop iteration once "data" property is found
+                }
+            }
+            console.log(from,to,adult,child,infant,travelDate,fare_type);
+            let url ="/flights/addFlightSearchData"
+            let response=await fetch(url,{
+                method:"Post",
+                headers:{"Content-type":"application/json"},
+                body:JSON.stringify({from:from,to:to,adult:adult,child:child,infant:infant,travel_date:travelDate,return_date : '',fare_type:fare_type})
+            })
+            response=await response.json()
+            console.log(response)
+
+            window.location.href = "/flights/flightResults";
+        }
+    }
+
+    async function test1() {
+        let formdata = new FormData();
+
+        // Get form elements
+        const elements = document.getElementById("myForm2").elements;
+
+        // Get values of adults, children, and infants
+        const adultCount = parseInt(document.getElementById('guests-count-adults').textContent);
+        const childCount = parseInt(document.getElementById('guests-count-children').textContent);
+        const infantCount = parseInt(document.getElementById('guests-count-room').textContent);
+
+        console.log('Adults:', adultCount);
+        console.log('Children:', childCount);
+        console.log('Infants:', infantCount);
+
+        const from = document.getElementById('source1').value;
+        const to = document.getElementById('destination1').value;
+        const travelDate = document.getElementById('travelDate').value;
+        const returnDate = document.getElementById('travelReturnDate').value;
+        const fareType = document.getElementById('fare_type').value;
+        const ResultFareType = 'Regular Fare';
+
+        // Store data in sessionStorage if needed
+        sessionStorage.setItem("adults", adultCount);
+        sessionStorage.setItem("child", childCount);
+        sessionStorage.setItem("infant", infantCount);
+        sessionStorage.setItem("travelReturnDate", returnDate);
+
+        // Append data to formData object
+        formdata.append("from", from);
+        formdata.append("to", to);
+        formdata.append("travelDate", travelDate);
+        formdata.append("travelReturnDate", returnDate);
+        formdata.append("fare_type", fareType);
+        formdata.append("adults", adultCount);
+        formdata.append("child", childCount);
+        formdata.append("infants", infantCount);
+        formdata.append("ResultFareType", ResultFareType);
+
+        // Log form data for debugging
+        for (let [key, value] of formdata.entries()) {
+            console.log(`${key}: ${value}`);
+        }
+
+        // Use await with a resolved promise to make sure the script waits for form data to be ready
+        await Promise.resolve();
+
+        // Prepare the data to send in JSON format
+        const requestBody = {
+            from: from,
+            to: to,
+            travel_date: travelDate,
+            return_date: returnDate,
+            fare_type: fareType,
+            adult: adultCount,
+            child: childCount,
+            infant: infantCount,
+        };
+
+        sessionStorage.setItem("fd", JSON.stringify(Array.from(formdata.entries()))); // Store the FormData object directly in sessionStorage
+        //console.log(requestBody)
+        try {
+            // Send POST request to the addFlightSearchData API
+            const url = "/flights/addFlightSearchData";
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(requestBody)
+            });
+
+            const responseData = await response.json();
+            console.log('API Response:', responseData);
+
+            // Redirect after form data is stored (if needed)
+            if ($('#myForm2').valid()) {
+                window.location.href = "/flights/roundFlightResults";
+            }
+        } catch (error) {
+            console.error('Error sending data to addFlightSearchData API:', error);
+        }
+    }
+
+    async function populateDatalist() {
+        try {
+            const response = await fetch("/dubaiFlightRoute/allCities");
+            const data = await response.json();
+
+            const datalist = document.getElementById('source');
+            const datalist1 = document.getElementById('destination');
+            const datalist11 = document.getElementById('source1');
+            const datalist22 = document.getElementById('destination1');
+
+            // Build options HTML string
+            let optionsHTML = '<option value="">Select</option>';
+            for (const optionText of data.recordset) {
+                optionsHTML += `<option value='${optionText.AirportCode}'>${optionText.CityName}(${optionText.AirportCode})</option>`;
+            }
+
+            // Update datalists
+            datalist.innerHTML = optionsHTML;
+            datalist1.innerHTML = optionsHTML;
+            datalist11.innerHTML = optionsHTML;
+            datalist22.innerHTML = optionsHTML;
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+
+    async function fetchMarkups() {
+        try {
+            let fd = new FormData();
+            fd.append("agentEmail", localStorage.getItem("agentEmail"))
+            const response = await fetch("/dubaiFlightRoute/markups", {
+                method: 'POST',
+                body: fd
+            });
+            data = await response.json();
+
+            console.log(data.recordset);
+
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+
+    async function fetchPlatform() {
+        try {
+            const response = await fetch("/dubaiFlightRoute/flightPlatform", {
+                method: 'POST'
+            });
+            dataPlatform = await response.json();
+
+            console.log(dataPlatform.recordset);
+
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+
+    function switchValues() {
+        var sourceSelect = $('#source');
+        var destinationSelect = $('#destination');
+
+        // Get the selected text content
+        var sourceText = sourceSelect.select2('data')[0].text;
+        var destinationText = destinationSelect.select2('data')[0].text;
+
+        // Swap values
+        var tempValue = sourceSelect.val();
+        sourceSelect.val(destinationSelect.val()).trigger('change');
+        destinationSelect.val(tempValue).trigger('change');
+
+        // Update displayed text
+        sourceSelect.select2('data', {id: sourceSelect.val(), text: destinationText});
+        destinationSelect.select2('data', {id: destinationSelect.val(), text: sourceText});
+    }
+
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function (event) {
+        function showReturnForm() {
+            document.getElementById('oneWayForm').classList.add('hidden');
+            document.getElementById('returnForm').classList.remove('hidden');
+        }
+
+        function showOneWayForm() {
+            document.getElementById('returnForm').classList.add('hidden');
+            document.getElementById('oneWayForm').classList.remove('hidden');
+        }
+
+        // Add event listeners to radio buttons
+        document.getElementById('return').addEventListener('change', showReturnForm);
+        document.getElementById('oneway').addEventListener('change', showOneWayForm);
+
+        // Call one of the functions to show the initial form based on the default selected radio button
+        if (document.getElementById('return').checked) {
+            showReturnForm();
+        } else {
+            showOneWayForm();
+        }
+    });
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var departureDateInput = document.getElementById("travelDate");
+        var returnDateInput = document.getElementById("travelReturnDate");
+
+        // Initialize departure date picker
+
+        // Initialize departure date picker
+        var departureDateInstance = flatpickr(departureDateInput, {
+            enableTime: false,
+            dateFormat: "Y-m-d",
+            minDate: "today",
+            onChange: function (selectedDates, dateStr, instance) {
+                var departureDate = selectedDates[0];
+                var returnDate = returnDateInstance.selectedDates[0];
+                if (returnDate < departureDate) {
+                    returnDateInstance.setDate(departureDate);
+                }
+                returnDateInstance.set("minDate", departureDate); // Update minDate of return date picker
+            }
+        });
+
+        // Initialize return date picker
+        var returnDateInstance = flatpickr(returnDateInput, {
+            enableTime: false,
+            dateFormat: "Y-m-d",
+            minDate: "today"
+        });
+    });
+
+</script>
+
+</html>

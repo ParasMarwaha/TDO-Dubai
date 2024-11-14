@@ -1,0 +1,1842 @@
+<html lang="en">
+<head>
+    <script src="https://static.iween.co.in/iife.min.js"></script>
+    <meta charset="utf-8">
+    <link rel="icon" href="/favicon.ico">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="#000000">
+    <meta name="description" content="Flightworth.com, best b2b travel portal">
+    <link rel="apple-touch-icon" href="/logo192.png">
+    <link rel="manifest" href="/manifest.json">
+    <title>FlightWorth</title>
+    <link href="/flightWorthCSS/css/myStyle.css" rel="stylesheet">
+    <style data-emotion="css" data-s=""></style>
+</head>
+<body class="" style="">
+<noscript>You need to enable JavaScript to run this app.</noscript>
+<div id="root">
+    <main dir="ltr">
+        <nav class="app-header py-0 navbar navbar-expand-lg navbar-light">
+            <div class="spacing-8 py-2 row">
+                <div class="d-flex align-items-center mt-0 col-lg-4 col-md-4 col-sm-6 col-6">
+                    <div><a class="" href="/"><img src="/images/logos/app_logo.png" alt="flightworth" width="120px"
+                                                   class="logo-width"></a></div>
+                </div>
+                <div class="d-flex justify-content-sm-between justify-content-end align-items-center gap-2 mt-0 col-lg-8 col-md-8 col-sm-8 col-6">
+                    <div class="flex-1 d-sm-flex d-none"></div>
+                    <div class="d-flex flex-column align-items-sm-end align-items-start">
+                        <div class="fs-14 fw-600 hide-in-mobile">Helpline Number 24*7: <a href="tel:+"
+                                                                                          style="text-decoration: none;">7240333000</a>
+                        </div>
+                        <div class="d-flex gap-3 flex-1">
+                            <div class="fs-14 nav-item dropdown"><a aria-expanded="false" role="button"
+                                                                    class="dropdown-toggle nav-link" tabindex="0"
+                                                                    href="#"><span class="fs-12">English</span></a>
+                            </div>
+                            <div class="d-flex gap-3">
+                                <div class="mobile-menu">
+                                    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24"
+                                         height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill="none" d="M0 0h24v24H0z"></path>
+                                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path>
+                                    </svg>
+                                </div>
+                                <div class="fs-14 d-mobile-none nav-item dropdown"><a aria-expanded="false"
+                                                                                      role="button"
+                                                                                      class="dropdown-toggle nav-link"
+                                                                                      tabindex="0" href="#">
+                                        <div class="d-flex flex-column align-items-end"><span class=" fs-12">Available Balance</span><span
+                                                    class="fw-600" style="margin-top: -3px;">73934.25</span></div>
+                                    </a></div>
+                                <div class="fs-14 d-mobile-none dropdown-right nav-item dropdown"><a
+                                            aria-expanded="false" role="button" class="dropdown-toggle nav-link"
+                                            tabindex="0" href="#">
+                                        <div class="d-flex flex-column align-items-end"><span class="fs-12">Agent code : FW76315</span><span
+                                                    class="fw-600"
+                                                    style="margin-top: -3px;">TDO HOLIDAYS PRIVATE LTD </span>
+                                        </div>
+                                    </a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="w-100 primary-background-color app-header_navigation d-mobile-none" style="min-height: 70px;">
+                <div class="max-width">
+                    <div class="app-header_navigation_container d-flex">
+                        <div class="active-btn nav-item dropdown"><a aria-expanded="false" role="button"
+                                                                     class="dropdown-toggle nav-link" tabindex="0"
+                                                                     href="#">Flight</a>
+                            <div aria-labelledby="" data-bs-popper="static" class="dropdown-menu"><a
+                                        data-rr-ui-dropdown-item="" class="dropdown-item" role="button" tabindex="0"
+                                        href="#">Flight Search</a><a data-rr-ui-dropdown-item="" class="dropdown-item"
+                                                                     role="button" tabindex="0" href="#">Flight
+                                    Bookings</a><a
+                                        data-rr-ui-dropdown-item="" class="dropdown-item" role="button" tabindex="0"
+                                        href="#">Flight Cancellations</a><a data-rr-ui-dropdown-item=""
+                                                                            class="dropdown-item" role="button"
+                                                                            tabindex="0"
+                                                                            href="#">Hold Queues</a><a
+                                        data-rr-ui-dropdown-item="" class="dropdown-item" role="button" tabindex="0"
+                                        href="#">Group Booking</a><a data-rr-ui-dropdown-item="" class="dropdown-item"
+                                                                     role="button" tabindex="0" href="#">Passenger
+                                    Calender</a></div>
+                        </div>
+                        <div class="nav-item dropdown"><a aria-expanded="false" role="button"
+                                                          class="dropdown-toggle nav-link" tabindex="0"
+                                                          href="#">Hotel</a></div>
+                        <div class="nav-item cursor-pointer ">Insurance</div>
+                        <button type="button" id="ModifySearchButton">Modify Search</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <div class="app-main-content">
+            <div class="scroll-to-top-button" style="display: none;">
+                <button>
+                    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em"
+                         width="1em" xmlns="http://www.w3.org/2000/svg">
+                        <path fill="none" d="M0 0h24v24H0V0z"></path>
+                        <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6 1.41 1.41z"></path>
+                    </svg>
+                </button>
+            </div>
+            <section class="flight-one-way-search-results-page ">
+                <div class="countdown-timer-container visually-hidden">
+                    <div class="countdown-timer">
+                        <div class="text-center">
+                            <div class="countdown-timer__timer">
+                                <div><span class="me-1">12</span><span>:</span><span class="ms-1">24</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modify-search-container" style="display: none" id="ModifySearchContainer">
+                    <div class="modify-search-page primary-background-color">
+                        <div class="modify-search-page_container">
+                            <form id="ModifyForm">
+                            <div class="modify-search-page_search">
+                                <div class="modify-search-page_search_container p-1">
+                                    <div class="searchtype-container d-flex align-items-center mb-1">
+                                        <label
+                                                class=" d-flex  fw-500 align-items-center fs-12 cursor-pointer radio-label-checked"
+                                                for="OneWay" style="color: rgb(30, 30, 30);"><input
+                                                    class="cursor-pointer "
+                                                    id="OneWay" type="radio"
+                                                    name="journeytype"
+                                                    value="OneWay"
+                                                    checked=""
+                                                    style="appearance: none; border-width: 2px; border-style: solid; min-width: 16px; min-height: 16px; border-radius: 50%; border-color: rgb(113, 191, 68); background-color: rgb(113, 191, 68); margin-right: 7px; box-shadow: rgb(255, 255, 255) 0px 0px 0px 2px inset;">One
+                                            Way</label><label
+                                                class=" d-flex  fw-500 align-items-center fs-12 cursor-pointer "
+                                                for="RoundTrip" style="color: rgb(91, 91, 91);"><input
+                                                    class="cursor-pointer " id="RoundTrip" type="radio"
+                                                    name="journeytype"
+                                                    value="RoundTrip"
+                                                    style="appearance: none; border-width: 2px; border-style: solid; min-width: 16px; min-height: 16px; border-radius: 50%; border-color: rgb(91, 91, 91); background-color: rgb(255, 255, 255); margin-right: 7px; box-shadow: none;">Round
+                                            Trip</label>
+<!--                                        <label-->
+<!--                                                class=" d-flex  fw-500 align-items-center fs-12 cursor-pointer "-->
+<!--                                                for="MultiCity" style="color: rgb(91, 91, 91);"><input-->
+<!--                                                    class="cursor-pointer " id="MultiCity" type="radio"-->
+<!--                                                    name="journeytype"-->
+<!--                                                    value="MultiCity"-->
+<!--                                                    style="appearance: none; border-width: 2px; border-style: solid; min-width: 16px; min-height: 16px; border-radius: 50%; border-color: rgb(91, 91, 91); background-color: rgb(255, 255, 255); margin-right: 7px; box-shadow: none;">Multi-->
+<!--                                            city</label>-->
+                                    </div>
+                                    <div class="modify-search-page_search_request spacing-0 row">
+                                        <div class="col-lg-8 col-md-8 col-sm-12 col-12">
+                                            <div class="spacing-0 row">
+                                                <div class="position-relative border-right col-lg-3 col-md-3 col-sm-6 col-6">
+                                                    <div class="position-relative w-100"><label for="asyncSelect"
+                                                                                                class="position-absolute async-select-label fs-12 ">From</label>
+                                                        <div class="app-select css-b62m3t-container">
+                                                            <select class="form-control" name="departfrom" style="height: 60px">
+                                                                <option>Delhi</option>
+                                                                <option>Delhi</option>
+                                                                <option>Delhi</option>
+                                                                <option>Delhi</option>
+                                                            </select>
+
+                                                            <!--                                                            <span-->
+                                                            <!--                                                                    id="react-select-4-live-region"-->
+                                                            <!--                                                                    class="css-7pg0cj-a11yText"></span><span-->
+                                                            <!--                                                                    aria-live="polite" aria-atomic="false"-->
+                                                            <!--                                                                    aria-relevant="additions text" role="log"-->
+                                                            <!--                                                                    class="css-7pg0cj-a11yText"></span>-->
+                                                            <!--                                                            <div class=" css-135lu2s-control">-->
+                                                            <!--                                                                <div class=" css-a90ozy">-->
+                                                            <!--                                                                    <div class=" css-1dimb5e-singleValue">-->
+                                                            <!--                                                                        <div class="d-flex flex-column mt-2"><span-->
+                                                            <!--                                                                                    style="font-size: 16px; font-weight: 600; color: rgb(20, 31, 59);">Ahmedabad</span>-->
+                                                            <!--                                                                        </div>-->
+                                                            <!--                                                                    </div>-->
+                                                            <!--                                                                    <div class=" css-1nuwajy" data-value=""><input-->
+                                                            <!--                                                                                class="" autocapitalize="none"-->
+                                                            <!--                                                                                autocomplete="off" autocorrect="off"-->
+                                                            <!--                                                                                id="react-select-4-input" spellcheck="false"-->
+                                                            <!--                                                                                tabindex="0" type="text"-->
+                                                            <!--                                                                                aria-autocomplete="list"-->
+                                                            <!--                                                                                aria-expanded="false" aria-haspopup="true"-->
+                                                            <!--                                                                                role="combobox" aria-activedescendant=""-->
+                                                            <!--                                                                                value=""-->
+                                                            <!--                                                                                style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;">-->
+                                                            <!--                                                                    </div>-->
+                                                            <!--                                                                </div>-->
+                                                            <!--                                                                <div class=" css-1o21wj0">-->
+                                                            <!--                                                                    <div class=" css-1xc3v61-indicatorContainer"-->
+                                                            <!--                                                                         aria-hidden="true">-->
+                                                            <!--                                                                        <svg height="20" width="20" viewBox="0 0 20 20"-->
+                                                            <!--                                                                             aria-hidden="true" focusable="false"-->
+                                                            <!--                                                                             class="css-8mmkcg">-->
+                                                            <!--                                                                            <path d="M14.348 14.849c-0.469 0.469-1.229 0.469-1.697 0l-2.651-3.030-2.651 3.029c-0.469 0.469-1.229 0.469-1.697 0-0.469-0.469-0.469-1.229 0-1.697l2.758-3.15-2.759-3.152c-0.469-0.469-0.469-1.228 0-1.697s1.228-0.469 1.697 0l2.652 3.031 2.651-3.031c0.469-0.469 1.228-0.469 1.697 0s0.469 1.229 0 1.697l-2.758 3.152 2.758 3.15c0.469 0.469 0.469 1.229 0 1.698z"></path>-->
+                                                            <!--                                                                        </svg>-->
+                                                            <!--                                                                    </div>-->
+                                                            <!--                                                                    <span class=" css-1u9des2-indicatorSeparator"></span>-->
+                                                            <!--                                                                    <div class=" css-1xc3v61-indicatorContainer"-->
+                                                            <!--                                                                         aria-hidden="true">-->
+                                                            <!--                                                                        <svg height="20" width="20" viewBox="0 0 20 20"-->
+                                                            <!--                                                                             aria-hidden="true" focusable="false"-->
+                                                            <!--                                                                             class="css-8mmkcg">-->
+                                                            <!--                                                                            <path d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"></path>-->
+                                                            <!--                                                                        </svg>-->
+                                                            <!--                                                                    </div>-->
+                                                            <!--                                                                </div>-->
+                                                            <!--                                                            </div>-->
+                                                        </div>
+                                                    </div>
+                                                    <small class="validation-error"></small>
+                                                    <div class="d-flex justify-content-center origin-swap">
+                                                        <button>
+                                                            <svg stroke="currentColor" fill="currentColor"
+                                                                 stroke-width="0" viewBox="0 0 24 24" height="1em"
+                                                                 width="1em" xmlns="http://www.w3.org/2000/svg"
+                                                                 style="color: rgb(20, 31, 59); margin-bottom: 3px;">
+                                                                <path fill="none" d="M0 0h24v24H0V0z"></path>
+                                                                <path d="M6.99 11L3 15l3.99 4v-3H14v-2H6.99v-3zM21 9l-3.99-4v3H10v2h7.01v3L21 9z"></path>
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div class="border-right col-lg-3 col-md-3 col-sm-6 col-6">
+                                                    <div class="position-relative w-100"><label for="asyncSelect"
+                                                                                                class="position-absolute async-select-label fs-12 ">To</label>
+                                                        <div class="app-select css-b62m3t-container">
+                                                            <select class="form-control" name="goingto" style="height: 60px">
+                                                                <option>Delhi</option>
+                                                                <option>Delhi</option>
+                                                                <option>Delhi</option>
+                                                                <option>Delhi</option>
+                                                            </select>
+                                                            <!--                                                            <span-->
+                                                            <!--                                                                    id="react-select-5-live-region"-->
+                                                            <!--                                                                    class="css-7pg0cj-a11yText"></span><span-->
+                                                            <!--                                                                    aria-live="polite" aria-atomic="false"-->
+                                                            <!--                                                                    aria-relevant="additions text" role="log"-->
+                                                            <!--                                                                    class="css-7pg0cj-a11yText"></span>-->
+                                                            <!--                                                            <div class=" css-135lu2s-control">-->
+                                                            <!--                                                                <div class=" css-a90ozy">-->
+                                                            <!--                                                                    <div class=" css-1dimb5e-singleValue">-->
+                                                            <!--                                                                        <div class="d-flex flex-column mt-2"><span-->
+                                                            <!--                                                                                    style="font-size: 16px; font-weight: 600; color: rgb(20, 31, 59);">Bengaluru</span>-->
+                                                            <!--                                                                        </div>-->
+                                                            <!--                                                                    </div>-->
+                                                            <!--                                                                    <div class=" css-1nuwajy" data-value=""><input-->
+                                                            <!--                                                                                class="" autocapitalize="none"-->
+                                                            <!--                                                                                autocomplete="off" autocorrect="off"-->
+                                                            <!--                                                                                id="react-select-5-input" spellcheck="false"-->
+                                                            <!--                                                                                tabindex="0" type="text"-->
+                                                            <!--                                                                                aria-autocomplete="list"-->
+                                                            <!--                                                                                aria-expanded="false" aria-haspopup="true"-->
+                                                            <!--                                                                                role="combobox" aria-activedescendant=""-->
+                                                            <!--                                                                                value=""-->
+                                                            <!--                                                                                style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;">-->
+                                                            <!--                                                                    </div>-->
+                                                            <!--                                                                </div>-->
+                                                            <!--                                                                <div class=" css-1o21wj0">-->
+                                                            <!--                                                                    <div class=" css-1xc3v61-indicatorContainer"-->
+                                                            <!--                                                                         aria-hidden="true">-->
+                                                            <!--                                                                        <svg height="20" width="20" viewBox="0 0 20 20"-->
+                                                            <!--                                                                             aria-hidden="true" focusable="false"-->
+                                                            <!--                                                                             class="css-8mmkcg">-->
+                                                            <!--                                                                            <path d="M14.348 14.849c-0.469 0.469-1.229 0.469-1.697 0l-2.651-3.030-2.651 3.029c-0.469 0.469-1.229 0.469-1.697 0-0.469-0.469-0.469-1.229 0-1.697l2.758-3.15-2.759-3.152c-0.469-0.469-0.469-1.228 0-1.697s1.228-0.469 1.697 0l2.652 3.031 2.651-3.031c0.469-0.469 1.228-0.469 1.697 0s0.469 1.229 0 1.697l-2.758 3.152 2.758 3.15c0.469 0.469 0.469 1.229 0 1.698z"></path>-->
+                                                            <!--                                                                        </svg>-->
+                                                            <!--                                                                    </div>-->
+                                                            <!--                                                                    <span class=" css-1u9des2-indicatorSeparator"></span>-->
+                                                            <!--                                                                    <div class=" css-1xc3v61-indicatorContainer"-->
+                                                            <!--                                                                         aria-hidden="true">-->
+                                                            <!--                                                                        <svg height="20" width="20" viewBox="0 0 20 20"-->
+                                                            <!--                                                                             aria-hidden="true" focusable="false"-->
+                                                            <!--                                                                             class="css-8mmkcg">-->
+                                                            <!--                                                                            <path d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"></path>-->
+                                                            <!--                                                                        </svg>-->
+                                                            <!--                                                                    </div>-->
+                                                            <!--                                                                </div>-->
+                                                            <!--                                                            </div>-->
+                                                        </div>
+                                                    </div>
+                                                    <small class="validation-error"></small></div>
+                                                <div class="border-right col-lg-3 col-md-3 col-sm-6 col-6">
+                                                    <div class="app-modify-datepicker"
+                                                         style="background-color: rgb(255, 255, 255);"><label for=""
+                                                                                                              class="landing-datepicker-label ">Departure
+                                                            Date</label>
+                                                        <input type="date" name="departuredate" class="form-control">
+                                                        <!--                                                        <div class="react-datepicker-wrapper">-->
+                                                        <!--                                                            <div class="react-datepicker__input-container"><input-->
+                                                        <!--                                                                        type="text" placeholder="" class=""-->
+                                                        <!--                                                                        value="13 Sep 24"></div>-->
+                                                        <!--                                                        </div>-->
+                                                    </div>
+                                                    <small class="validation-error"></small></div>
+                                                <div class="border-right col-lg-3 col-md-3 col-sm-6 col-6">
+                                                    <div class="app-modify-datepicker"
+                                                         style="background-color: rgb(255, 255, 255);"><label for=""
+                                                                                                              class="landing-datepicker-label ">Return
+                                                            Date</label>
+                                                        <input type="date" name="returndate" class="form-control">
+                                                        <!--                                                        <div class="react-datepicker-wrapper">-->
+                                                        <!--                                                            <div class="react-datepicker__input-container"><input-->
+                                                        <!--                                                                        type="text" placeholder="" class="" value=""></div>-->
+                                                        <!--                                                        </div>-->
+                                                    </div>
+                                                    <small class="validation-error"></small></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2 col-md-2 col-sm-4 col-12" id="classPassengers">
+                                            <div class="travellers-class d-flex justify-content-between align-items-center border-right">
+                                                <div class="d-flex flex-column">
+                                                    <span class="fs-12">Class & Passengers</span>
+                                                    <span class="travellers-class_text" id="selected_Traveller_class">1A,0C,0I,Economy</span>
+                                                </div>
+                                                <svg stroke="currentColor" fill="currentColor" stroke-width="0"
+                                                     viewBox="0 0 24 24" height="1em" width="1em"
+                                                     xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill="none" d="M0 0h24v24H0V0z"></path>
+                                                    <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"></path>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <!--                                        <div class="col-lg-2 col-md-2 col-sm-4 col-12">-->
+                                        <!--                                            <div class="travellers-class d-flex justify-content-between align-items-center border-right">-->
+                                        <!--                                                <div class="d-flex flex-column"><span class="fs-12">Class &amp; Passengers</span><span-->
+                                        <!--                                                            class="travellers-class_text">1A,Economy</span></div>-->
+                                        <!--                                                <svg stroke="currentColor" fill="currentColor" stroke-width="0"-->
+                                        <!--                                                     viewBox="0 0 24 24" height="1em" width="1em"-->
+                                        <!--                                                     xmlns="http://www.w3.org/2000/svg">-->
+                                        <!--                                                    <path fill="none" d="M0 0h24v24H0V0z"></path>-->
+                                        <!--                                                    <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"></path>-->
+                                        <!--                                                </svg>-->
+                                        <!--                                            </div>-->
+                                        <!--                                        </div>-->
+                                        <div class="d-flex col-lg-2 col-md-2 col-sm-4 col-12">
+                                            <div class="d-flex flex-column justify-content-center gap-1 flex-1">
+                                                <button type="button" onclick="ModifySearch()"
+                                                        class="app-btn app-btn-secondary app-btn-medium flex-1"
+                                                        style="padding: 0.5rem; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px; font-weight: 600;width:200px">
+                                                    Modify
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 col-md-3 col-sm-12 col-12"></div>
+                                    </div>
+                                    <div class="spacing-0 mt-1 row">
+                                        <div class="d-flex flex-column  col-lg-10 col-md-10 col-sm-12 col-12">
+                                            <div class="overflow-auto">
+                                                <div class="searchtype-container d-flex"><label
+                                                            class=" d-flex  fw-500 align-items-center fs-12 cursor-pointer radio-label-checked"
+                                                            for="normal" style="color: rgb(30, 30, 30);"><input
+                                                                class="cursor-pointer " id="regular" type="radio"
+                                                                name="searchtype" value="regular" checked=""
+                                                                style="appearance: none; border-width: 2px; border-style: solid; min-width: 16px; min-height: 16px; border-radius: 50%; border-color: rgb(113, 191, 68); background-color: rgb(113, 191, 68); margin-right: 7px; box-shadow: rgb(255, 255, 255) 0px 0px 0px 2px inset;">Regular</label><label
+                                                            class=" d-flex  fw-500 align-items-center fs-12 cursor-pointer "
+                                                            for="student" style="color: rgb(91, 91, 91);"><input
+                                                                class="cursor-pointer " id="student" type="radio"
+                                                                name="searchtype" value="student"
+                                                                style="appearance: none; border-width: 2px; border-style: solid; min-width: 16px; min-height: 16px; border-radius: 50%; border-color: rgb(91, 91, 91); background-color: rgb(255, 255, 255); margin-right: 7px; box-shadow: none;">Student
+                                                        Fare</label><label
+                                                            class=" d-flex  fw-500 align-items-center fs-12 cursor-pointer "
+                                                            for="seniorcitizen" style="color: rgb(91, 91, 91);"><input
+                                                                class="cursor-pointer " id="seniorcitizen" type="radio"
+                                                                name="searchtype" value="seniorcitizen"
+                                                                style="appearance: none; border-width: 2px; border-style: solid; min-width: 16px; min-height: 16px; border-radius: 50%; border-color: rgb(91, 91, 91); background-color: rgb(255, 255, 255); margin-right: 7px; box-shadow: none;">Senior
+                                                        citizen</label><label
+                                                            class=" d-flex  fw-500 align-items-center fs-12 cursor-pointer app-check-box"
+                                                            style="color: rgb(91, 91, 91);"><input id="nonstopsearch"
+                                                                                                   type="checkbox"
+                                                                                                   name="nonstopsearch"
+                                                                                                   value="nonstop"
+                                                                                                   style="margin-right: 7px; appearance: none; width: 15px; height: 15px; border-radius: 3px; border: 1px solid rgb(91, 91, 91);">Non
+                                                        stop Flights</label><label
+                                                            class=" d-flex  fw-500 align-items-center fs-12 cursor-pointer app-check-box"
+                                                            style="color: rgb(91, 91, 91);"><input id="nearbyAirports"
+                                                                                                   type="checkbox"
+                                                                                                   name="nearbyAirports"
+                                                                                                   value="nearbyAirports"
+                                                                                                   style="margin-right: 7px; appearance: none; width: 15px; height: 15px; border-radius: 3px; border: 1px solid rgb(91, 91, 91);">Nearby
+                                                        airports</label></div>
+                                            </div>
+                                        </div>
+<!--                                        <div class="hide-xs col-lg-2 col-md-2">-->
+<!--                                            <div class="d-flex justify-content-center"><a-->
+<!--                                                        class="fs-12 text-center fw-600 hide-in-mobile app-link-secondary">Advanced-->
+<!--                                                    Search</a></div>-->
+<!--                                        </div>-->
+                                    </div>
+                                </div>
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <section class="flight-app-container px-sm-3 p-1 pb-3">
+                    <div class="spacing-16 row">
+                        <div class=" display-md-none p-0 col-lg-3">
+                            <div class="py-2 d-flex flex-column"><span style="font-weight: 600; font-size: 16px;">Filters</span>
+                            </div>
+                            <section class="one-way-flight-filters pt-3">
+                                <div class="one-way-flight-filters_section">
+                                    <div class="position-relative app-text-input"><label
+                                                class="position-absolute text-input-label ">Filter by Flight
+                                            Number</label><input name="" placeholder="" class=" " type="text" value=""
+                                                                 style="height: 42px; border: 0.0625rem solid rgb(221, 221, 221); padding: 12px; border-radius: 6px; width: 100%;">
+                                    </div>
+                                </div>
+                                <div class="one-way-flight-filters_section">
+                                    <div class="one-way-flight-filters_section_header d-flex justify-content-between align-items-center">
+                                        Price Range :
+                                        <div class="fw-500 d-flex gap-2 align-items-center"><a
+                                                    class="fs-12 app-link-purple">Clear</a><a
+                                                    class=" app-link-secondary">
+                                                <svg stroke="currentColor" fill="currentColor" stroke-width="0"
+                                                     viewBox="0 0 24 24" height="1em" width="1em"
+                                                     xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill="none" d="M0 0h24v24H0V0z"></path>
+                                                    <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"></path>
+                                                </svg>
+                                            </a></div>
+                                    </div>
+                                    <div><span class="fs-12">INR 13708.00-INR 17383.00</span></div>
+                                    <div class="my-3">
+                                        <div class="slider" id="slider" style="position: relative;">
+                                            <div class="track track-0"
+                                                 style="position: absolute; left: 0px; right: 244px;"></div>
+                                            <div class="track track-1"
+                                                 style="position: absolute; left: 0px; right: 0px;"></div>
+                                            <div class="track track-2"
+                                                 style="position: absolute; left: 244px; right: 0px;"></div>
+                                            <div class="thumb thumb-0" id="thumb0" tabindex="0" role="slider"
+                                                 aria-orientation="horizontal" aria-valuenow="13708"
+                                                 aria-valuemin="13708" aria-valuemax="17383" aria-disabled="false"
+                                                 style="position: absolute; touch-action: none; z-index: 1; left: 0px;"></div>
+                                            <div class="thumb thumb-1 " id="thumb1" tabindex="0" role="slider"
+                                                 aria-orientation="horizontal" aria-valuenow="17383"
+                                                 aria-valuemin="13708" aria-valuemax="17383" aria-disabled="false"
+                                                 style="position: absolute; touch-action: none; z-index: 1; left: 244px;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="one-way-flight-filters_section">
+                                    <div class="one-way-flight-filters_section_header d-flex justify-content-between align-items-center ">
+                                        Fare policy &amp; No. of stop
+                                        <div class="d-flex gap-2 align-items-center fw-500"><a
+                                                    class="fs-12 app-link-purple">Clear</a><a
+                                                    class=" app-link-secondary">
+                                                <svg stroke="currentColor" fill="currentColor" stroke-width="0"
+                                                     viewBox="0 0 24 24" height="1em" width="1em"
+                                                     xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill="none" d="M0 0h24v24H0V0z"></path>
+                                                    <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"></path>
+                                                </svg>
+                                            </a></div>
+                                    </div>
+                                    <div class="one-way-flight-filters_section_content d-flex flex-column gap-2"><label
+                                                class=" d-flex  fw-500 align-items-center fs-12 cursor-pointer app-check-box"
+                                                style="color: rgb(91, 91, 91);"><input id="0" type="checkbox"
+                                                                                       name="stops"
+                                                                                       style="margin-right: 7px; appearance: none; width: 15px; height: 15px; border-radius: 3px; border: 1px solid rgb(91, 91, 91);">Non
+                                            Stop</label><label
+                                                class=" d-flex  fw-500 align-items-center fs-12 cursor-pointer app-check-box"
+                                                style="color: rgb(91, 91, 91);"><input id="1" type="checkbox"
+                                                                                       name="stops"
+                                                                                       style="margin-right: 7px; appearance: none; width: 15px; height: 15px; border-radius: 3px; border: 1px solid rgb(91, 91, 91);">1
+                                            Stop</label><label
+                                                class=" d-flex  fw-500 align-items-center fs-12 cursor-pointer app-check-box"
+                                                style="color: rgb(91, 91, 91);"><input id="Y" type="checkbox"
+                                                                                       name="refundStatus"
+                                                                                       style="margin-right: 7px; appearance: none; width: 15px; height: 15px; border-radius: 3px; border: 1px solid rgb(91, 91, 91);">Refundable</label><label
+                                                class=" d-flex  fw-500 align-items-center fs-12 cursor-pointer app-check-box"
+                                                style="color: rgb(91, 91, 91);"><input id="isSameDayArraival"
+                                                                                       type="checkbox"
+                                                                                       name="isSameDayArraival"
+                                                                                       style="margin-right: 7px; appearance: none; width: 15px; height: 15px; border-radius: 3px; border: 1px solid rgb(91, 91, 91);">Same
+                                            day arrival</label><label
+                                                class=" d-flex  fw-500 align-items-center fs-12 cursor-pointer app-check-box"
+                                                style="color: rgb(91, 91, 91);"><input id="amPmFormat" type="checkbox"
+                                                                                       name="amPmFormat"
+                                                                                       style="margin-right: 7px; appearance: none; width: 15px; height: 15px; border-radius: 3px; border: 1px solid rgb(91, 91, 91);">AM/PM
+                                            Format</label></div>
+                                </div>
+                                <div class="one-way-flight-filters_section">
+                                    <div class="one-way-flight-filters_section_header d-flex justify-content-between align-items-center">
+                                        Fare Types
+                                        <div class="d-flex gap-2 align-items-center fw-500"><a
+                                                    class="fs-12 app-link-purple">Clear</a><a
+                                                    class=" app-link-secondary">
+                                                <svg stroke="currentColor" fill="currentColor" stroke-width="0"
+                                                     viewBox="0 0 24 24" height="1em" width="1em"
+                                                     xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill="none" d="M0 0h24v24H0V0z"></path>
+                                                    <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"></path>
+                                                </svg>
+                                            </a></div>
+                                    </div>
+                                    <div class="one-way-flight-filters_section_content d-flex flex-column gap-2"><label
+                                                class=" d-flex  fw-500 align-items-center fs-12 cursor-pointer app-check-box"
+                                                style="color: rgb(91, 91, 91);"><input id="Flexi" type="checkbox"
+                                                                                       name="fareType"
+                                                                                       style="margin-right: 7px; appearance: none; width: 15px; height: 15px; border-radius: 3px; border: 1px solid rgb(91, 91, 91);">Flexi</label><label
+                                                class=" d-flex  fw-500 align-items-center fs-12 cursor-pointer app-check-box"
+                                                style="color: rgb(91, 91, 91);"><input id="Saver" type="checkbox"
+                                                                                       name="fareType"
+                                                                                       style="margin-right: 7px; appearance: none; width: 15px; height: 15px; border-radius: 3px; border: 1px solid rgb(91, 91, 91);">Saver</label><label
+                                                class=" d-flex  fw-500 align-items-center fs-12 cursor-pointer app-check-box"
+                                                style="color: rgb(91, 91, 91);"><input id="SME.CrpCon" type="checkbox"
+                                                                                       name="fareType"
+                                                                                       style="margin-right: 7px; appearance: none; width: 15px; height: 15px; border-radius: 3px; border: 1px solid rgb(91, 91, 91);">SME.CrpCon</label><label
+                                                class=" d-flex  fw-500 align-items-center fs-12 cursor-pointer app-check-box"
+                                                style="color: rgb(91, 91, 91);"><input id="Super6E" type="checkbox"
+                                                                                       name="fareType"
+                                                                                       style="margin-right: 7px; appearance: none; width: 15px; height: 15px; border-radius: 3px; border: 1px solid rgb(91, 91, 91);">Super6E</label>
+                                    </div>
+                                </div>
+                                <div class="one-way-flight-filters_section">
+                                    <div class="one-way-flight-filters_section_header mb-2 d-flex justify-content-between align-items-center">
+                                        Departure Time
+                                        <div class="d-flex gap-2 align-items-center  fw-500"><a
+                                                    class="fs-12 app-link-purple">Clear</a><a
+                                                    class=" app-link-secondary">
+                                                <svg stroke="currentColor" fill="currentColor" stroke-width="0"
+                                                     viewBox="0 0 24 24" height="1em" width="1em"
+                                                     xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill="none" d="M0 0h24v24H0V0z"></path>
+                                                    <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"></path>
+                                                </svg>
+                                            </a></div>
+                                    </div>
+                                    <div class="one-way-flight-filters_section_content">
+                                        <div class="d-flex justify-content-between">
+                                            <div class="app-chip m-1 text-center flex-1 "><span
+                                                        style="font-weight: 500; font-size: 12px;"><div
+                                                            class="d-flex gap-1 align-items-center justify-content-center"><img
+                                                                src="/images/others/sunrise.svg"
+                                                                alt=""><span>00 -06</span></div></span></div>
+                                            <div class="app-chip m-1 text-center flex-1 "><span
+                                                        style="font-weight: 500; font-size: 12px;"><div
+                                                            class="d-flex gap-1 align-items-center justify-content-center"><img
+                                                                src="/images/others/afternoon_sun.svg"
+                                                                alt=""><span>06 -12</span></div></span></div>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <div class="app-chip m-1 text-center flex-1 "><span
+                                                        style="font-weight: 500; font-size: 12px;"><div
+                                                            class="d-flex gap-1 align-items-center justify-content-center"><img
+                                                                src="/images/others/evening_time.svg"
+                                                                alt=""><span>12-18</span></div></span></div>
+                                            <div class="app-chip m-1 text-center flex-1 "><span
+                                                        style="font-weight: 500; font-size: 12px;"><div
+                                                            class="d-flex gap-1 align-items-center justify-content-center"><img
+                                                                src="/images/others/night_time.svg"
+                                                                alt=""><span>18-00</span></div></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="one-way-flight-filters_section">
+                                    <div class="one-way-flight-filters_section_header mb-2 d-flex justify-content-between align-items-center">
+                                        Arraival Time
+                                        <div class="d-flex gap-2 align-items-center  fw-500"><a
+                                                    class="fs-12 app-link-purple">Clear</a><a
+                                                    class=" app-link-secondary">
+                                                <svg stroke="currentColor" fill="currentColor" stroke-width="0"
+                                                     viewBox="0 0 24 24" height="1em" width="1em"
+                                                     xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill="none" d="M0 0h24v24H0V0z"></path>
+                                                    <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"></path>
+                                                </svg>
+                                            </a></div>
+                                    </div>
+                                    <div class="one-way-flight-filters_section_content">
+                                        <div class="d-flex justify-content-between">
+                                            <div class="app-chip m-1 text-center flex-1 "><span
+                                                        style="font-weight: 500; font-size: 12px;"><div
+                                                            class="d-flex gap-1 align-items-center justify-content-center"><img
+                                                                src="/images/others/sunrise.svg"
+                                                                alt=""><span>00 -06</span></div></span></div>
+                                            <div class="app-chip m-1 text-center flex-1 "><span
+                                                        style="font-weight: 500; font-size: 12px;"><div
+                                                            class="d-flex gap-1 align-items-center justify-content-center"><img
+                                                                src="/images/others/afternoon_sun.svg"
+                                                                alt=""><span>06 -12</span></div></span></div>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <div class="app-chip m-1 text-center flex-1 "><span
+                                                        style="font-weight: 500; font-size: 12px;"><div
+                                                            class="d-flex gap-1 align-items-center justify-content-center"><img
+                                                                src="/images/others/evening_time.svg"
+                                                                alt=""><span>12-18</span></div></span></div>
+                                            <div class="app-chip m-1 text-center flex-1 "><span
+                                                        style="font-weight: 500; font-size: 12px;"><div
+                                                            class="d-flex gap-1 align-items-center justify-content-center"><img
+                                                                src="/images/others/night_time.svg"
+                                                                alt=""><span>18-00</span></div></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="one-way-flight-filters_section">
+                                    <div class="one-way-flight-filters_section_header d-flex justify-content-between align-items-center">
+                                        Search By Airlines
+                                        <div class="d-flex gap-2 align-items-center fw-500"><a
+                                                    class="fs-12 app-link-purple">Clear</a><a
+                                                    class=" app-link-secondary">
+                                                <svg stroke="currentColor" fill="currentColor" stroke-width="0"
+                                                     viewBox="0 0 24 24" height="1em" width="1em"
+                                                     xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill="none" d="M0 0h24v24H0V0z"></path>
+                                                    <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"></path>
+                                                </svg>
+                                            </a></div>
+                                    </div>
+                                    <div class="one-way-flight-filters_section_content d-flex flex-column gap-2"><label
+                                                class=" d-flex  fw-500 align-items-center fs-12 cursor-pointer app-check-box"
+                                                style="color: rgb(91, 91, 91);"><input id="Indigo" type="checkbox"
+                                                                                       name="carrier"
+                                                                                       style="margin-right: 7px; appearance: none; width: 15px; height: 15px; border-radius: 3px; border: 1px solid rgb(91, 91, 91);">Indigo</label>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                        <div class="col-lg-9">
+                            <div class="row">
+                                <div class="d-flex align-items-center col-lg-7 col-md-7 col-sm-12 col-12">
+                                    <div class="fs-14 d-flex gap-3 align-content-center pt-2">
+                                        <div class="sort-heading d-flex justify-content-center align-items-center">
+                                            Sort
+                                        </div>
+                                        <div class="d-flex justify-content-center align-items-center"><a
+                                                    class="ps-1 sort-option app-link-grey">Airline</a></div>
+                                        <div class="d-flex justify-content-center align-items-center"><a
+                                                    class="ps-1 sort-option app-link-grey">Departure</a></div>
+                                        <div class="d-flex justify-content-center align-items-center"><a
+                                                    class="ps-1 sort-option app-link-grey">Duration</a></div>
+                                        <div class="d-flex justify-content-center align-items-center"><a
+                                                    class="ps-1 sort-option app-link-grey">Arrival</a></div>
+                                        <div class="d-flex justify-content-center align-items-center">
+                                            <svg stroke="currentColor" fill="currentColor" stroke-width="0"
+                                                 viewBox="0 0 24 24" height="1em" width="1em"
+                                                 xmlns="http://www.w3.org/2000/svg">
+                                                <path fill="none" d="M0 0h24v24H0z"></path>
+                                                <path d="M19 15l-1.41-1.41L13 18.17V2h-2v16.17l-4.59-4.59L5 15l7 7 7-7z"></path>
+                                            </svg>
+                                            <a class="ps-1 sort-option app-link-primary">Price</a></div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-5 col-md-5 col-sm-12 col-12">
+                                    <div class="d-flex justify-content-end">
+                                        <div class="d-flex justify-content-between gap-1 align-items-center">
+                                            <div class="mt-2 fs-14">
+                                                <div class="app-text-input position-relative"><label
+                                                            class="position-absolute z-1 text-input-label ">Currency</label>
+                                                    <div class="app-select css-b62m3t-container"><span
+                                                                id="react-select-6-live-region"
+                                                                class="css-7pg0cj-a11yText"></span><span
+                                                                aria-live="polite"
+                                                                aria-atomic="false"
+                                                                aria-relevant="additions text"
+                                                                role="log"
+                                                                class="css-7pg0cj-a11yText"></span>
+                                                        <div class=" css-1rp2i8r-control">
+                                                            <div class=" css-13mzt3w">
+                                                                <div class=" css-1dimb5e-singleValue">Indian Rupees
+                                                                </div>
+                                                                <div class=" css-19bb58m" data-value=""><input class=""
+                                                                                                               autocapitalize="none"
+                                                                                                               autocomplete="off"
+                                                                                                               autocorrect="off"
+                                                                                                               id="react-select-6-input"
+                                                                                                               spellcheck="false"
+                                                                                                               tabindex="0"
+                                                                                                               type="text"
+                                                                                                               aria-autocomplete="list"
+                                                                                                               aria-expanded="false"
+                                                                                                               aria-haspopup="true"
+                                                                                                               role="combobox"
+                                                                                                               aria-activedescendant=""
+                                                                                                               value=""
+                                                                                                               style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;">
+                                                                </div>
+                                                            </div>
+                                                            <div class=" css-1wy0on6"><span
+                                                                        class=" css-1u9des2-indicatorSeparator"></span>
+                                                                <div class=" css-1xc3v61-indicatorContainer"
+                                                                     aria-hidden="true">
+                                                                    <svg height="20" width="20" viewBox="0 0 20 20"
+                                                                         aria-hidden="true" focusable="false"
+                                                                         class="css-8mmkcg">
+                                                                        <path d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"></path>
+                                                                    </svg>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button type="button" class="app-btn-transparent fs-12"
+                                                    style="padding: 0.5rem; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px; font-weight: 600;">
+                                                <svg stroke="currentColor" fill="currentColor" stroke-width="0"
+                                                     viewBox="0 0 24 24" height="1em" width="1em"
+                                                     xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill="none" d="M0 0h24v24H0z"></path>
+                                                    <path d="M19.05 4.91A9.816 9.816 0 0012.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01zm-7.01 15.24c-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.264 8.264 0 01-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24 2.2 0 4.27.86 5.82 2.42a8.183 8.183 0 012.41 5.83c.02 4.54-3.68 8.23-8.22 8.23zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.78.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43s.17-.25.25-.41c.08-.17.04-.31-.02-.43s-.56-1.34-.76-1.84c-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.22.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18s-.22-.16-.47-.28z"></path>
+                                                </svg>
+                                            </button>
+                                            <button type="button" class="app-btn-transparent fs-12"
+                                                    style="padding: 0.5rem; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px; font-weight: 600;">
+                                                <svg stroke="currentColor" fill="currentColor" stroke-width="0"
+                                                     viewBox="0 0 24 24" height="1em" width="1em"
+                                                     xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill="none" d="M0 0h24v24H0V0z"></path>
+                                                    <path d="M22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6zm-2 0l-8 4.99L4 6h16zm0 12H4V8l8 5 8-5v10z"></path>
+                                                </svg>
+                                            </button>
+                                            <button type="button" class="app-btn-transparent fs-12"
+                                                    style="padding: 0.5rem; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px; font-weight: 600;">
+                                                <svg stroke="currentColor" fill="currentColor" stroke-width="0"
+                                                     viewBox="0 0 512 512" height="1em" width="1em"
+                                                     xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M256 105c-101.8 0-188.4 62.4-224 151 35.6 88.6 122.2 151 224 151s188.4-62.4 224-151c-35.6-88.6-122.2-151-224-151zm0 251.7c-56 0-101.8-45.3-101.8-100.7S200 155.3 256 155.3 357.8 200.6 357.8 256 312 356.7 256 356.7zm0-161.1c-33.6 0-61.1 27.2-61.1 60.4s27.5 60.4 61.1 60.4 61.1-27.2 61.1-60.4-27.5-60.4-61.1-60.4z"></path>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between px-2 mt-2">
+                                <button type="button" class="app-btn app-btn-outlined app-btn-medium "
+                                        style="padding: 0.5rem; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px; font-weight: 600;">
+                                    <div class="d-flex gap-2">
+                                        <div class="d-flex align-items-center">
+                                            <svg stroke="currentColor" fill="currentColor" stroke-width="0"
+                                                 viewBox="0 0 24 24" height="1em" width="1em"
+                                                 xmlns="http://www.w3.org/2000/svg">
+                                                <path fill="none" d="M0 0h24v24H0z"></path>
+                                                <path d="M9 19l1.41-1.41L5.83 13H22v-2H5.83l4.59-4.59L9 5l-7 7 7 7z"></path>
+                                            </svg>
+                                        </div>
+                                        <span class="fs-12">12 Sep</span></div>
+                                </button>
+                                <button type="button" class="app-btn app-btn-outlined app-btn-medium "
+                                        style="padding: 0.5rem; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px; font-weight: 600;">
+                                    <div class="d-flex gap-2"><span class="fs-12">14 Sep</span>
+                                        <div class="d-flex align-items-center">
+                                            <svg stroke="currentColor" fill="currentColor" stroke-width="0"
+                                                 viewBox="0 0 24 24" height="1em" width="1em"
+                                                 xmlns="http://www.w3.org/2000/svg">
+                                                <path fill="none" d="M0 0h24v24H0z"></path>
+                                                <path d="M15 5l-1.41 1.41L18.17 11H2v2h16.17l-4.59 4.59L15 19l7-7-7-7z"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </button>
+                            </div>
+                            <div class="p-3 d-flex my-2 one-way-new-result-card ">
+                                <div class="d-flex flight-info ">
+                                    <div class="spacing-0 flex-1 flight-info_flight-details row">
+                                        <div class="col-lg-3 col-md-3 col-sm-3 col-3">
+                                            <div class="flight-info_flight-details">
+                                                <div class="d-flex">
+                                                    <div class="d-flex me-2 flight-image"><img class="vertical-bottom"
+                                                                                               alt="Flight"
+                                                                                               src="https://static.iween.co.in/airlinelogos/6E.jpg">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex flex-column flight-name"><span class="flight-company">Indigo</span><span
+                                                        class="flight-company-secondary text-capitalize"
+                                                        title="Saver">Saver</span><span class="fs-10 flight-number">6E-383, 6E-887</span><a
+                                                        class="fs-14 fw-600 mt-3 app-link-black" onclick="modifyPage()">Flight
+                                                    Details</a></div>
+                                        </div>
+                                        <div class="col-lg-9 col-md-9 col-sm-9 col-9">
+                                            <div class="row">
+                                                <div class="d-flex justify-content-start col-lg-5 col-md-5 col-sm-5 col-4">
+                                                    <div class="d-flex flex-column"><span
+                                                                class="title fw-600">23:25</span><span class="fs-12">13 Sep, 2024</span><span
+                                                                class="fs-10">Ahmedabad-1</span></div>
+                                                </div>
+                                                <div class="d-flex justify-content-center px-0 col-lg-2 col-md-2 col-sm-2 col-4">
+                                                    <div class="d-flex flex-column text-center"><span
+                                                                class="fs-12 fw-500">7h 5m</span>
+                                                        <div class="d-flex flex-column">
+                                                            <div class="cursor-pointer"><p class="multi-stop-seperator">
+                                                                    <span class="layover-pointer"></span></p><span
+                                                                        class="fs-8 d-inline-block"
+                                                                        style="margin-top: 7px;">1 stop at HYD</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex justify-content-end col-lg-5 col-md-5 col-sm-5 col-4">
+                                                    <div class="d-flex flex-column text-end"><span class="title fw-600">06:30<span
+                                                                    class="extra-days">+1</span></span><span
+                                                                class="fs-12">14 Sep, 2024</span><span
+                                                                class="fs-10">Bangalore-1</span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class=" d-flex fare-info">
+                                    <div class="flex-1 spacing-0 row">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                            <div class="d-flex flex-column fare-info_details">
+                                                <div class="fare-component position-relative">
+                                                    <div class="spacing-0 row">
+                                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6"
+                                                             style="padding-left: 5px; padding-block: 10px;"><label
+                                                                    class=" d-flex  fw-500 align-items-center fs-12 cursor-pointer radio-label-checked"
+                                                                    for="APIUSER_deeplink_ATI_1726242881954-0.7978106066820502-0@@saas_flightworth"
+                                                                    style="color: rgb(30, 30, 30);"><input
+                                                                        class="cursor-pointer me-1"
+                                                                        id="APIUSER_deeplink_ATI_1726242881954-0.7978106066820502-0@@saas_flightworth"
+                                                                        type="radio"
+                                                                        name="APIUSER_deeplink_ATI_1726242881954-0.7978106066820502-0@@saas_flightworth"
+                                                                        checked=""
+                                                                        style="appearance: none; border-width: 2px; border-style: solid; min-width: 16px; min-height: 16px; border-radius: 50%; border-color: rgb(113, 191, 68); background-color: rgb(113, 191, 68); margin-right: 7px; box-shadow: rgb(255, 255, 255) 0px 0px 0px 2px inset;">
+                                                                <div class="d-flex flex-column"><span
+                                                                            class="fs-12 text-capitalize dark-grey-color fw-600 text-break">Saver</span>
+                                                                    <div class="fs-10 amenities-info"><span
+                                                                                class="seats-left"><svg
+                                                                                    stroke="currentColor"
+                                                                                    fill="currentColor"
+                                                                                    stroke-width="0"
+                                                                                    viewBox="0 0 24 24"
+                                                                                    height="1em" width="1em"
+                                                                                    xmlns="http://www.w3.org/2000/svg"><path
+                                                                                        fill="none"
+                                                                                        d="M0 0h24v24H0V0z"></path><path
+                                                                                        d="M5 12V3H3v9c0 2.76 2.24 5 5 5h6v-2H8c-1.66 0-3-1.34-3-3zm15.5 6H19v-7c0-1.1-.9-2-2-2h-5V3H6v8c0 1.65 1.35 3 3 3h7v7h4.5c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5z"></path></svg><span
+                                                                                    class="seats-left_text">3</span></span><span
+                                                                                class=" fs-10 refundable-info fw-600 green-color">RF</span><span
+                                                                                class="cabin-baggage"><svg
+                                                                                    stroke="currentColor"
+                                                                                    fill="currentColor"
+                                                                                    stroke-width="0"
+                                                                                    viewBox="0 0 512 512"
+                                                                                    height="1em"
+                                                                                    width="1em"
+                                                                                    xmlns="http://www.w3.org/2000/svg"><path
+                                                                                        d="M454.65 169.4A31.82 31.82 0 00432 160h-64v-16a112 112 0 00-224 0v16H80a32 32 0 00-32 32v216c0 39 33 72 72 72h272a72.22 72.22 0 0050.48-20.55 69.48 69.48 0 0021.52-50.2V192a31.75 31.75 0 00-9.35-22.6zM176 144a80 80 0 01160 0v16H176z"></path></svg><span
+                                                                                    class="seats-left_text">15KG</span></span>
+                                                                    </div>
+                                                                </div>
+                                                            </label></div>
+                                                        <div data-watermark="FW76315FW76315 FW76315FW76315 FW76315FW76315"
+                                                             class="p-2 d-flex justify-content-center align-items-end one-way-watermarked col-lg-6 col-md-6 col-sm-6 col-6">
+                                                            <div class=" position-relative d-flex flex-column"><span
+                                                                        class="fs-16 fw-600">INR 13708.00</span><span
+                                                                        class="fs-12 fw-500" style="display: none;">INR 13389.93</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="fare-component position-relative">
+                                                    <div class="spacing-0 row">
+                                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6"
+                                                             style="padding-left: 5px; padding-block: 10px;"><label
+                                                                    class=" d-flex  fw-500 align-items-center fs-12 cursor-pointer "
+                                                                    for="APIUSER_deeplink_ATI_1726242881954-0.8977161840106258-1@@saas_flightworth"
+                                                                    style="color: rgb(91, 91, 91);"><input
+                                                                        class="cursor-pointer me-1"
+                                                                        id="APIUSER_deeplink_ATI_1726242881954-0.8977161840106258-1@@saas_flightworth"
+                                                                        type="radio"
+                                                                        name="APIUSER_deeplink_ATI_1726242881954-0.7978106066820502-0@@saas_flightworth"
+                                                                        style="appearance: none; border-width: 2px; border-style: solid; min-width: 16px; min-height: 16px; border-radius: 50%; border-color: rgb(91, 91, 91); background-color: rgb(255, 255, 255); margin-right: 7px; box-shadow: none;">
+                                                                <div class="d-flex flex-column"><span
+                                                                            class="fs-12 text-capitalize dark-grey-color fw-600 text-break">Saver</span>
+                                                                    <div class="fs-10 amenities-info"><span
+                                                                                class="seats-left"><svg
+                                                                                    stroke="currentColor"
+                                                                                    fill="currentColor"
+                                                                                    stroke-width="0"
+                                                                                    viewBox="0 0 24 24"
+                                                                                    height="1em" width="1em"
+                                                                                    xmlns="http://www.w3.org/2000/svg"><path
+                                                                                        fill="none"
+                                                                                        d="M0 0h24v24H0V0z"></path><path
+                                                                                        d="M5 12V3H3v9c0 2.76 2.24 5 5 5h6v-2H8c-1.66 0-3-1.34-3-3zm15.5 6H19v-7c0-1.1-.9-2-2-2h-5V3H6v8c0 1.65 1.35 3 3 3h7v7h4.5c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5z"></path></svg><span
+                                                                                    class="seats-left_text">3</span></span><span
+                                                                                class=" fs-10 refundable-info fw-600 green-color">RF</span><span
+                                                                                class="cabin-baggage"><svg
+                                                                                    stroke="currentColor"
+                                                                                    fill="currentColor"
+                                                                                    stroke-width="0"
+                                                                                    viewBox="0 0 512 512"
+                                                                                    height="1em"
+                                                                                    width="1em"
+                                                                                    xmlns="http://www.w3.org/2000/svg"><path
+                                                                                        d="M454.65 169.4A31.82 31.82 0 00432 160h-64v-16a112 112 0 00-224 0v16H80a32 32 0 00-32 32v216c0 39 33 72 72 72h272a72.22 72.22 0 0050.48-20.55 69.48 69.48 0 0021.52-50.2V192a31.75 31.75 0 00-9.35-22.6zM176 144a80 80 0 01160 0v16H176z"></path></svg><span
+                                                                                    class="seats-left_text">15KG</span></span>
+                                                                    </div>
+                                                                </div>
+                                                            </label></div>
+                                                        <div data-watermark="FW76315FW76315 FW76315FW76315 FW76315FW76315"
+                                                             class="p-2 d-flex justify-content-center align-items-end one-way-watermarked col-lg-6 col-md-6 col-sm-6 col-6">
+                                                            <div class=" position-relative d-flex flex-column"><span
+                                                                        class="fs-16 fw-600">INR 13708.00</span><span
+                                                                        class="fs-12 fw-500" style="display: none;">INR 13389.93</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="px-0 mt-1 col-lg-12 col-md-12 col-sm-12 col-12">
+                                            <div class="d-flex justify-content-end pe-1">
+                                                <div class="d-flex justify-content-between flex-1 gap-1">
+                                                    <div class="d-flex align-items-center flex-1 justify-content-center">
+                                                        <a class="fs-12 fw-500 flex-1 app-link-grey">
+                                                            <div class="d-flex align-items-center justify-content-center">
+                                                                <span>+4 More fares</span>
+                                                                <svg stroke="currentColor" fill="currentColor"
+                                                                     stroke-width="0" viewBox="0 0 24 24" height="1em"
+                                                                     width="1em" xmlns="http://www.w3.org/2000/svg">
+                                                                    <path fill="none" d="M0 0h24v24H0z"></path>
+                                                                    <path d="M7 10l5 5 5-5z"></path>
+                                                                </svg>
+                                                            </div>
+                                                        </a></div>
+                                                    <button type="button"
+                                                            class="app-btn app-btn-primary app-btn-medium px-3"
+                                                            style="padding: 0.5rem; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px; font-weight: 600;">
+                                                        Book
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-3 d-flex my-2 one-way-new-result-card ">
+                                <div class="d-flex flight-info ">
+                                    <div class="spacing-0 flex-1 flight-info_flight-details row">
+                                        <div class="col-lg-3 col-md-3 col-sm-3 col-3">
+                                            <div class="flight-info_flight-details">
+                                                <div class="d-flex">
+                                                    <div class="d-flex me-2 flight-image"><img class="vertical-bottom"
+                                                                                               alt="Flight"
+                                                                                               src="https://static.iween.co.in/airlinelogos/6E.jpg">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex flex-column flight-name"><span class="flight-company">Indigo</span><span
+                                                        class="flight-company-secondary text-capitalize"
+                                                        title="Saver">Saver</span><span class="fs-10 flight-number">6E-383, 6E-413</span><a
+                                                        class="fs-14 fw-600 mt-3 app-link-black">Flight Details</a>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-9 col-md-9 col-sm-9 col-9">
+                                            <div class="row">
+                                                <div class="d-flex justify-content-start col-lg-5 col-md-5 col-sm-5 col-4">
+                                                    <div class="d-flex flex-column"><span
+                                                                class="title fw-600">23:25</span><span class="fs-12">13 Sep, 2024</span><span
+                                                                class="fs-10">Ahmedabad-1</span></div>
+                                                </div>
+                                                <div class="d-flex justify-content-center px-0 col-lg-2 col-md-2 col-sm-2 col-4">
+                                                    <div class="d-flex flex-column text-center"><span
+                                                                class="fs-12 fw-500">8h 25m</span>
+                                                        <div class="d-flex flex-column">
+                                                            <div class="cursor-pointer"><p class="multi-stop-seperator">
+                                                                    <span class="layover-pointer"></span></p><span
+                                                                        class="fs-8 d-inline-block"
+                                                                        style="margin-top: 7px;">1 stop at HYD</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex justify-content-end col-lg-5 col-md-5 col-sm-5 col-4">
+                                                    <div class="d-flex flex-column text-end"><span class="title fw-600">07:50<span
+                                                                    class="extra-days">+1</span></span><span
+                                                                class="fs-12">14 Sep, 2024</span><span
+                                                                class="fs-10">Bangalore-1</span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class=" d-flex fare-info">
+                                    <div class="flex-1 spacing-0 row">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                            <div class="d-flex flex-column fare-info_details">
+                                                <div class="fare-component position-relative">
+                                                    <div class="spacing-0 row">
+                                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6"
+                                                             style="padding-left: 5px; padding-block: 10px;"><label
+                                                                    class=" d-flex  fw-500 align-items-center fs-12 cursor-pointer radio-label-checked"
+                                                                    for="APIUSER_deeplink_ATI_1726242881955-0.04718239553958137-5@@saas_flightworth"
+                                                                    style="color: rgb(30, 30, 30);"><input
+                                                                        class="cursor-pointer me-1"
+                                                                        id="APIUSER_deeplink_ATI_1726242881955-0.04718239553958137-5@@saas_flightworth"
+                                                                        type="radio"
+                                                                        name="APIUSER_deeplink_ATI_1726242881955-0.04718239553958137-5@@saas_flightworth"
+                                                                        checked=""
+                                                                        style="appearance: none; border-width: 2px; border-style: solid; min-width: 16px; min-height: 16px; border-radius: 50%; border-color: rgb(113, 191, 68); background-color: rgb(113, 191, 68); margin-right: 7px; box-shadow: rgb(255, 255, 255) 0px 0px 0px 2px inset;">
+                                                                <div class="d-flex flex-column"><span
+                                                                            class="fs-12 text-capitalize dark-grey-color fw-600 text-break">Saver</span>
+                                                                    <div class="fs-10 amenities-info"><span
+                                                                                class="seats-left"><svg
+                                                                                    stroke="currentColor"
+                                                                                    fill="currentColor"
+                                                                                    stroke-width="0"
+                                                                                    viewBox="0 0 24 24"
+                                                                                    height="1em" width="1em"
+                                                                                    xmlns="http://www.w3.org/2000/svg"><path
+                                                                                        fill="none"
+                                                                                        d="M0 0h24v24H0V0z"></path><path
+                                                                                        d="M5 12V3H3v9c0 2.76 2.24 5 5 5h6v-2H8c-1.66 0-3-1.34-3-3zm15.5 6H19v-7c0-1.1-.9-2-2-2h-5V3H6v8c0 1.65 1.35 3 3 3h7v7h4.5c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5z"></path></svg><span
+                                                                                    class="seats-left_text">3</span></span><span
+                                                                                class=" fs-10 refundable-info fw-600 green-color">RF</span><span
+                                                                                class="cabin-baggage"><svg
+                                                                                    stroke="currentColor"
+                                                                                    fill="currentColor"
+                                                                                    stroke-width="0"
+                                                                                    viewBox="0 0 512 512"
+                                                                                    height="1em"
+                                                                                    width="1em"
+                                                                                    xmlns="http://www.w3.org/2000/svg"><path
+                                                                                        d="M454.65 169.4A31.82 31.82 0 00432 160h-64v-16a112 112 0 00-224 0v16H80a32 32 0 00-32 32v216c0 39 33 72 72 72h272a72.22 72.22 0 0050.48-20.55 69.48 69.48 0 0021.52-50.2V192a31.75 31.75 0 00-9.35-22.6zM176 144a80 80 0 01160 0v16H176z"></path></svg><span
+                                                                                    class="seats-left_text">15KG</span></span>
+                                                                    </div>
+                                                                </div>
+                                                            </label></div>
+                                                        <div data-watermark="FW76315FW76315 FW76315FW76315 FW76315FW76315"
+                                                             class="p-2 d-flex justify-content-center align-items-end one-way-watermarked col-lg-6 col-md-6 col-sm-6 col-6">
+                                                            <div class=" position-relative d-flex flex-column"><span
+                                                                        class="fs-16 fw-600">INR 14653.00</span><span
+                                                                        class="fs-12 fw-500" style="display: none;">INR 14311.41</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="fare-component position-relative">
+                                                    <div class="spacing-0 row">
+                                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6"
+                                                             style="padding-left: 5px; padding-block: 10px;"><label
+                                                                    class=" d-flex  fw-500 align-items-center fs-12 cursor-pointer "
+                                                                    for="APIUSER_deeplink_ATI_1726242881955-0.8374521156863938-6@@saas_flightworth"
+                                                                    style="color: rgb(91, 91, 91);"><input
+                                                                        class="cursor-pointer me-1"
+                                                                        id="APIUSER_deeplink_ATI_1726242881955-0.8374521156863938-6@@saas_flightworth"
+                                                                        type="radio"
+                                                                        name="APIUSER_deeplink_ATI_1726242881955-0.04718239553958137-5@@saas_flightworth"
+                                                                        style="appearance: none; border-width: 2px; border-style: solid; min-width: 16px; min-height: 16px; border-radius: 50%; border-color: rgb(91, 91, 91); background-color: rgb(255, 255, 255); margin-right: 7px; box-shadow: none;">
+                                                                <div class="d-flex flex-column"><span
+                                                                            class="fs-12 text-capitalize dark-grey-color fw-600 text-break">Saver</span>
+                                                                    <div class="fs-10 amenities-info"><span
+                                                                                class="seats-left"><svg
+                                                                                    stroke="currentColor"
+                                                                                    fill="currentColor"
+                                                                                    stroke-width="0"
+                                                                                    viewBox="0 0 24 24"
+                                                                                    height="1em" width="1em"
+                                                                                    xmlns="http://www.w3.org/2000/svg"><path
+                                                                                        fill="none"
+                                                                                        d="M0 0h24v24H0V0z"></path><path
+                                                                                        d="M5 12V3H3v9c0 2.76 2.24 5 5 5h6v-2H8c-1.66 0-3-1.34-3-3zm15.5 6H19v-7c0-1.1-.9-2-2-2h-5V3H6v8c0 1.65 1.35 3 3 3h7v7h4.5c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5z"></path></svg><span
+                                                                                    class="seats-left_text">3</span></span><span
+                                                                                class=" fs-10 refundable-info fw-600 green-color">RF</span><span
+                                                                                class="cabin-baggage"><svg
+                                                                                    stroke="currentColor"
+                                                                                    fill="currentColor"
+                                                                                    stroke-width="0"
+                                                                                    viewBox="0 0 512 512"
+                                                                                    height="1em"
+                                                                                    width="1em"
+                                                                                    xmlns="http://www.w3.org/2000/svg"><path
+                                                                                        d="M454.65 169.4A31.82 31.82 0 00432 160h-64v-16a112 112 0 00-224 0v16H80a32 32 0 00-32 32v216c0 39 33 72 72 72h272a72.22 72.22 0 0050.48-20.55 69.48 69.48 0 0021.52-50.2V192a31.75 31.75 0 00-9.35-22.6zM176 144a80 80 0 01160 0v16H176z"></path></svg><span
+                                                                                    class="seats-left_text">15KG</span></span>
+                                                                    </div>
+                                                                </div>
+                                                            </label></div>
+                                                        <div data-watermark="FW76315FW76315 FW76315FW76315 FW76315FW76315"
+                                                             class="p-2 d-flex justify-content-center align-items-end one-way-watermarked col-lg-6 col-md-6 col-sm-6 col-6">
+                                                            <div class=" position-relative d-flex flex-column"><span
+                                                                        class="fs-16 fw-600">INR 14653.00</span><span
+                                                                        class="fs-12 fw-500" style="display: none;">INR 14311.41</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="" id="MoreFare" style="display: none">
+                                                    <div class="fare-component position-relative">
+                                                        <div class="spacing-0 row">
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-6"
+                                                                 style="padding-left: 5px; padding-block: 10px;"><label
+                                                                        class=" d-flex  fw-500 align-items-center fs-12 cursor-pointer "
+                                                                        for="APIUSER_deeplink_ATI_1726242881956-0.9673468689537991-7@@saas_flightworth"
+                                                                        style="color: rgb(91, 91, 91);"><input
+                                                                            class="cursor-pointer me-1"
+                                                                            id="APIUSER_deeplink_ATI_1726242881956-0.9673468689537991-7@@saas_flightworth"
+                                                                            type="radio"
+                                                                            name="APIUSER_deeplink_ATI_1726242881955-0.04718239553958137-5@@saas_flightworth"
+                                                                            style="appearance: none; border-width: 2px; border-style: solid; min-width: 16px; min-height: 16px; border-radius: 50%; border-color: rgb(91, 91, 91); background-color: rgb(255, 255, 255); margin-right: 7px; box-shadow: none;">
+                                                                    <div class="d-flex flex-column"><span
+                                                                                class="fs-12 text-capitalize dark-grey-color fw-600 text-break">SME.CrpCon</span>
+                                                                        <div class="fs-10 amenities-info"><span
+                                                                                    class="seats-left"><svg
+                                                                                        stroke="currentColor"
+                                                                                        fill="currentColor"
+                                                                                        stroke-width="0"
+                                                                                        viewBox="0 0 24 24"
+                                                                                        height="1em" width="1em"
+                                                                                        xmlns="http://www.w3.org/2000/svg"><path
+                                                                                            fill="none"
+                                                                                            d="M0 0h24v24H0V0z"></path><path
+                                                                                            d="M5 12V3H3v9c0 2.76 2.24 5 5 5h6v-2H8c-1.66 0-3-1.34-3-3zm15.5 6H19v-7c0-1.1-.9-2-2-2h-5V3H6v8c0 1.65 1.35 3 3 3h7v7h4.5c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5z"></path></svg><span
+                                                                                        class="seats-left_text">3</span></span><span
+                                                                                    class=" fs-10 refundable-info fw-600 green-color">RF</span><span
+                                                                                    class="cabin-baggage"><svg
+                                                                                        stroke="currentColor"
+                                                                                        fill="currentColor"
+                                                                                        stroke-width="0"
+                                                                                        viewBox="0 0 512 512"
+                                                                                        height="1em" width="1em"
+                                                                                        xmlns="http://www.w3.org/2000/svg"><path
+                                                                                            d="M454.65 169.4A31.82 31.82 0 00432 160h-64v-16a112 112 0 00-224 0v16H80a32 32 0 00-32 32v216c0 39 33 72 72 72h272a72.22 72.22 0 0050.48-20.55 69.48 69.48 0 0021.52-50.2V192a31.75 31.75 0 00-9.35-22.6zM176 144a80 80 0 01160 0v16H176z"></path></svg><span
+                                                                                        class="seats-left_text">15KG</span></span>
+                                                                        </div>
+                                                                    </div>
+                                                                </label></div>
+                                                            <div data-watermark="FW76315FW76315 FW76315FW76315 FW76315FW76315"
+                                                                 class="p-2 d-flex justify-content-center align-items-end one-way-watermarked col-lg-6 col-md-6 col-sm-6 col-6">
+                                                                <div class=" position-relative d-flex flex-column"><span
+                                                                            class="fs-16 fw-600">INR 15378.00</span><span
+                                                                            class="fs-12 fw-500" style="display: none;">INR 15018.39</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="fare-component position-relative">
+                                                        <div class="spacing-0 row">
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-6"
+                                                                 style="padding-left: 5px; padding-block: 10px;"><label
+                                                                        class=" d-flex  fw-500 align-items-center fs-12 cursor-pointer "
+                                                                        for="APIUSER_deeplink_ATI_1726242881956-0.031477658189612456-8@@saas_flightworth"
+                                                                        style="color: rgb(91, 91, 91);"><input
+                                                                            class="cursor-pointer me-1"
+                                                                            id="APIUSER_deeplink_ATI_1726242881956-0.031477658189612456-8@@saas_flightworth"
+                                                                            type="radio"
+                                                                            name="APIUSER_deeplink_ATI_1726242881955-0.04718239553958137-5@@saas_flightworth"
+                                                                            style="appearance: none; border-width: 2px; border-style: solid; min-width: 16px; min-height: 16px; border-radius: 50%; border-color: rgb(91, 91, 91); background-color: rgb(255, 255, 255); margin-right: 7px; box-shadow: none;">
+                                                                    <div class="d-flex flex-column"><span
+                                                                                class="fs-12 text-capitalize dark-grey-color fw-600 text-break">Flexi</span>
+                                                                        <div class="fs-10 amenities-info"><span
+                                                                                    class="seats-left"><svg
+                                                                                        stroke="currentColor"
+                                                                                        fill="currentColor"
+                                                                                        stroke-width="0"
+                                                                                        viewBox="0 0 24 24"
+                                                                                        height="1em" width="1em"
+                                                                                        xmlns="http://www.w3.org/2000/svg"><path
+                                                                                            fill="none"
+                                                                                            d="M0 0h24v24H0V0z"></path><path
+                                                                                            d="M5 12V3H3v9c0 2.76 2.24 5 5 5h6v-2H8c-1.66 0-3-1.34-3-3zm15.5 6H19v-7c0-1.1-.9-2-2-2h-5V3H6v8c0 1.65 1.35 3 3 3h7v7h4.5c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5z"></path></svg><span
+                                                                                        class="seats-left_text">3</span></span><span
+                                                                                    class=" fs-10 refundable-info fw-600 green-color">RF</span><span
+                                                                                    class="cabin-baggage"><svg
+                                                                                        stroke="currentColor"
+                                                                                        fill="currentColor"
+                                                                                        stroke-width="0"
+                                                                                        viewBox="0 0 512 512"
+                                                                                        height="1em" width="1em"
+                                                                                        xmlns="http://www.w3.org/2000/svg"><path
+                                                                                            d="M454.65 169.4A31.82 31.82 0 00432 160h-64v-16a112 112 0 00-224 0v16H80a32 32 0 00-32 32v216c0 39 33 72 72 72h272a72.22 72.22 0 0050.48-20.55 69.48 69.48 0 0021.52-50.2V192a31.75 31.75 0 00-9.35-22.6zM176 144a80 80 0 01160 0v16H176z"></path></svg><span
+                                                                                        class="seats-left_text">15KG</span></span>
+                                                                        </div>
+                                                                    </div>
+                                                                </label></div>
+                                                            <div data-watermark="FW76315FW76315 FW76315FW76315 FW76315FW76315"
+                                                                 class="p-2 d-flex justify-content-center align-items-end one-way-watermarked col-lg-6 col-md-6 col-sm-6 col-6">
+                                                                <div class=" position-relative d-flex flex-column"><span
+                                                                            class="fs-16 fw-600">INR 15483.00</span><span
+                                                                            class="fs-12 fw-500" style="display: none;">INR 15120.78</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="fare-component position-relative">
+                                                        <div class="spacing-0 row">
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-6"
+                                                                 style="padding-left: 5px; padding-block: 10px;"><label
+                                                                        class=" d-flex  fw-500 align-items-center fs-12 cursor-pointer "
+                                                                        for="APIUSER_deeplink_ATI_1726242881956-0.5687680223027395-9@@saas_flightworth"
+                                                                        style="color: rgb(91, 91, 91);"><input
+                                                                            class="cursor-pointer me-1"
+                                                                            id="APIUSER_deeplink_ATI_1726242881956-0.5687680223027395-9@@saas_flightworth"
+                                                                            type="radio"
+                                                                            name="APIUSER_deeplink_ATI_1726242881955-0.04718239553958137-5@@saas_flightworth"
+                                                                            style="appearance: none; border-width: 2px; border-style: solid; min-width: 16px; min-height: 16px; border-radius: 50%; border-color: rgb(91, 91, 91); background-color: rgb(255, 255, 255); margin-right: 7px; box-shadow: none;">
+                                                                    <div class="d-flex flex-column"><span
+                                                                                class="fs-12 text-capitalize dark-grey-color fw-600 text-break">Flexi</span>
+                                                                        <div class="fs-10 amenities-info"><span
+                                                                                    class="seats-left"><svg
+                                                                                        stroke="currentColor"
+                                                                                        fill="currentColor"
+                                                                                        stroke-width="0"
+                                                                                        viewBox="0 0 24 24"
+                                                                                        height="1em" width="1em"
+                                                                                        xmlns="http://www.w3.org/2000/svg"><path
+                                                                                            fill="none"
+                                                                                            d="M0 0h24v24H0V0z"></path><path
+                                                                                            d="M5 12V3H3v9c0 2.76 2.24 5 5 5h6v-2H8c-1.66 0-3-1.34-3-3zm15.5 6H19v-7c0-1.1-.9-2-2-2h-5V3H6v8c0 1.65 1.35 3 3 3h7v7h4.5c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5z"></path></svg><span
+                                                                                        class="seats-left_text">3</span></span><span
+                                                                                    class=" fs-10 refundable-info fw-600 green-color">RF</span><span
+                                                                                    class="cabin-baggage"><svg
+                                                                                        stroke="currentColor"
+                                                                                        fill="currentColor"
+                                                                                        stroke-width="0"
+                                                                                        viewBox="0 0 512 512"
+                                                                                        height="1em" width="1em"
+                                                                                        xmlns="http://www.w3.org/2000/svg"><path
+                                                                                            d="M454.65 169.4A31.82 31.82 0 00432 160h-64v-16a112 112 0 00-224 0v16H80a32 32 0 00-32 32v216c0 39 33 72 72 72h272a72.22 72.22 0 0050.48-20.55 69.48 69.48 0 0021.52-50.2V192a31.75 31.75 0 00-9.35-22.6zM176 144a80 80 0 01160 0v16H176z"></path></svg><span
+                                                                                        class="seats-left_text">15KG</span></span>
+                                                                        </div>
+                                                                    </div>
+                                                                </label></div>
+                                                            <div data-watermark="FW76315FW76315 FW76315FW76315 FW76315FW76315"
+                                                                 class="p-2 d-flex justify-content-center align-items-end one-way-watermarked col-lg-6 col-md-6 col-sm-6 col-6">
+                                                                <div class=" position-relative d-flex flex-column"><span
+                                                                            class="fs-16 fw-600">INR 15483.00</span><span
+                                                                            class="fs-12 fw-500" style="display: none;">INR 15120.78</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="fare-component position-relative">
+                                                        <div class="spacing-0 row">
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-6"
+                                                                 style="padding-left: 5px; padding-block: 10px;"><label
+                                                                        class=" d-flex  fw-500 align-items-center fs-12 cursor-pointer "
+                                                                        for="APIUSER_deeplink_ATI_1726242881957-0.5071958345845278-11@@saas_flightworth"
+                                                                        style="color: rgb(91, 91, 91);"><input
+                                                                            class="cursor-pointer me-1"
+                                                                            id="APIUSER_deeplink_ATI_1726242881957-0.5071958345845278-11@@saas_flightworth"
+                                                                            type="radio"
+                                                                            name="APIUSER_deeplink_ATI_1726242881955-0.04718239553958137-5@@saas_flightworth"
+                                                                            style="appearance: none; border-width: 2px; border-style: solid; min-width: 16px; min-height: 16px; border-radius: 50%; border-color: rgb(91, 91, 91); background-color: rgb(255, 255, 255); margin-right: 7px; box-shadow: none;">
+                                                                    <div class="d-flex flex-column"><span
+                                                                                class="fs-12 text-capitalize dark-grey-color fw-600 text-break">Super6E</span>
+                                                                        <div class="fs-10 amenities-info"><span
+                                                                                    class="seats-left"><svg
+                                                                                        stroke="currentColor"
+                                                                                        fill="currentColor"
+                                                                                        stroke-width="0"
+                                                                                        viewBox="0 0 24 24"
+                                                                                        height="1em" width="1em"
+                                                                                        xmlns="http://www.w3.org/2000/svg"><path
+                                                                                            fill="none"
+                                                                                            d="M0 0h24v24H0V0z"></path><path
+                                                                                            d="M5 12V3H3v9c0 2.76 2.24 5 5 5h6v-2H8c-1.66 0-3-1.34-3-3zm15.5 6H19v-7c0-1.1-.9-2-2-2h-5V3H6v8c0 1.65 1.35 3 3 3h7v7h4.5c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5z"></path></svg><span
+                                                                                        class="seats-left_text">3</span></span><span
+                                                                                    class=" fs-10 refundable-info fw-600 green-color">RF</span><span
+                                                                                    class="cabin-baggage"><svg
+                                                                                        stroke="currentColor"
+                                                                                        fill="currentColor"
+                                                                                        stroke-width="0"
+                                                                                        viewBox="0 0 512 512"
+                                                                                        height="1em" width="1em"
+                                                                                        xmlns="http://www.w3.org/2000/svg"><path
+                                                                                            d="M454.65 169.4A31.82 31.82 0 00432 160h-64v-16a112 112 0 00-224 0v16H80a32 32 0 00-32 32v216c0 39 33 72 72 72h272a72.22 72.22 0 0050.48-20.55 69.48 69.48 0 0021.52-50.2V192a31.75 31.75 0 00-9.35-22.6zM176 144a80 80 0 01160 0v16H176z"></path></svg><span
+                                                                                        class="seats-left_text">20KG</span></span>
+                                                                        </div>
+                                                                    </div>
+                                                                </label></div>
+                                                            <div data-watermark="FW76315FW76315 FW76315FW76315 FW76315FW76315"
+                                                                 class="p-2 d-flex justify-content-center align-items-end one-way-watermarked col-lg-6 col-md-6 col-sm-6 col-6">
+                                                                <div class=" position-relative d-flex flex-column"><span
+                                                                            class="fs-16 fw-600">INR 17383.00</span><span
+                                                                            class="fs-12 fw-500" style="display: none;">INR 16973.49</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="px-0 mt-1 col-lg-12 col-md-12 col-sm-12 col-12">
+                                            <div class="d-flex justify-content-end pe-1">
+                                                <div class="d-flex justify-content-between flex-1 gap-1">
+                                                    <div class="d-flex align-items-center flex-1 justify-content-center">
+                                                        <a class="fs-12 fw-500 flex-1 app-link-grey">
+                                                            <div class="d-flex align-items-center justify-content-center" id="ShowFare">
+                                                                <span id="ShowHide">Show</span>
+                                                                <svg id="toggleIcon" stroke="currentColor" fill="currentColor"
+                                                                     stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em"
+                                                                     xmlns="http://www.w3.org/2000/svg">
+                                                                    <path id="togglePath" fill="none" d="M0 0h24v24H0z"></path>
+                                                                    <path id="arrowPath" d="M7 10l5 5 5-5z"></path> <!-- This is the down arrow -->
+                                                                </svg>
+                                                            </div>
+                                                        </a></div>
+                                                    <button type="button"
+                                                            class="app-btn app-btn-primary app-btn-medium px-3"
+                                                            style="padding: 0.5rem; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px; font-weight: 600;">
+                                                        Book
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="add-space-container my-2"><img src="/images/addspace.png" alt=""></div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+        </div>
+        <footer class="app-footer">
+            <div class="app-footer_container py-sm-4 py-3">
+                <div class="row spacing-8">
+                    <div class="col-md-3 col-sm-6 col-12">
+                        <div class="d-flex flex-column">
+                            <div class="primary-color fs-3 fw-600 d-flex gap-3 align-items-center"><img
+                                        src="/images/others/footer_image.svg" width="60px"><span>FlightWorth</span>
+                            </div>
+                            <div class="fw-300">© Copyrights Fligtworth 2023</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-4 col-5">
+                        <div class="d-flex flex-column cursor-pointer gap-1"><p
+                                    class="fs-13 mb-1 fw-500 hide-in-mobile">More Links</p>
+                            <span>Terms &amp; Conditions</span><span>Privacy Policy</span><span>Disclaimer</span></div>
+                    </div>
+                    <div class="col-md-3 col-sm-4 col-4">
+                        <div class="d-flex flex-column cursor-pointer fw-300 gap-1 align-items-sm-start align-items-center ">
+                            <p class="fs-13 mb-1 fw-500 hide-in-mobile">Company</p>
+                            <span>Home</span><span>About us</span><span>Contact us</span></div>
+                    </div>
+                    <div class="col-md-3 col-sm-4 col-3 ">
+                        <div class="d-flex flex-column cursor-pointer gap-1 align-items-sm-start align-items-end"><p
+                                    class="fs-13 mb-1 fw-500 hide-in-mobile">Product</p>
+                            <span>Flight</span><span>Hotel</span><span>Insurance</span></div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </main>
+</div>
+<div class="travellers-class_overlay" id="travellerOverlay"
+     style="display:none;margin:60px;position: absolute; padding: 1rem; border-radius: 8px; max-width: 320px; background-color: rgb(195, 235, 172); z-index: 9999; inset: 0px auto auto 0px; transform: translate3d(815px, 239px, 0px);"
+     data-popper-reference-hidden="false" data-popper-escaped="false" data-popper-placement="bottom">
+    <div class="d-flex flex-column"><span class="fs-12 fw-600"> Adults(12y+)</span>
+        <div class="my-1">
+            <ul class="num-pax_list d-flex" id="adults">
+                <li class="selected num-pax_list_item">1</li>
+                <li class=" num-pax_list_item">2</li>
+                <li class=" num-pax_list_item">3</li>
+                <li class=" num-pax_list_item">4</li>
+                <li class=" num-pax_list_item">5</li>
+                <li class=" num-pax_list_item">6</li>
+                <li class=" num-pax_list_item">7</li>
+                <li class=" num-pax_list_item">8</li>
+                <li class=" num-pax_list_item">9</li>
+            </ul>
+        </div>
+    </div>
+    <div class="d-flex flex-column"><span class="fs-12 fw-600">Children(2y-12y)</span>
+        <div class="my-1">
+            <ul class="num-pax_list d-flex" id="children">
+                <li class="selected num-pax_list_item">0</li>
+                <li class=" num-pax_list_item">1</li>
+                <li class=" num-pax_list_item">2</li>
+                <li class=" num-pax_list_item">3</li>
+                <li class=" num-pax_list_item">4</li>
+                <li class=" num-pax_list_item">5</li>
+                <li class=" num-pax_list_item">6</li>
+                <li class=" num-pax_list_item">7</li>
+                <li class=" num-pax_list_item">8</li>
+                <li class=" num-pax_list_item">9</li>
+            </ul>
+        </div>
+    </div>
+    <div class="d-flex flex-column"><span class="fs-12 fw-600">Infanfs(&lt;2y)</span>
+        <div class="my-1">
+            <ul class="num-pax_list d-flex" id="infants">
+                <li class="selected num-pax_list_item">0</li>
+                <li class=" num-pax_list_item">1</li>
+                <li class=" num-pax_list_item">2</li>
+                <li class=" num-pax_list_item">3</li>
+                <li class=" num-pax_list_item">4</li>
+                <li class=" num-pax_list_item">5</li>
+                <li class=" num-pax_list_item">6</li>
+                <li class=" num-pax_list_item">7</li>
+                <li class=" num-pax_list_item">8</li>
+                <li class=" num-pax_list_item">9</li>
+            </ul>
+        </div>
+    </div>
+    <div class="mb-2"><select name="prefclass" id="prefclass" class="fs-14 fs-600 w-100 py-1"
+                              style="border-radius: 3px;">
+            <option value="Y">Economy</option>
+            <option value="W">Premium Economy</option>
+            <option value="C">Business</option>
+            <option value="F">First Class</option>
+        </select></div>
+    <div class="text-center">
+        <button type="button" id="DoneButton" class="app-btn app-btn-secondary app-btn-medium px-4"
+                style="padding: 0.5rem; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px; font-weight: 600;">
+            Done
+        </button>
+    </div>
+</div>
+
+
+
+<div role="dialog" aria-modal="true" class="fade app-sidebar  modal show" tabindex="-1"
+     style="display: block; " id="div2"></div>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.21.0/jquery.validate.min.js"
+        integrity="sha512-KFHXdr2oObHKI9w4Hv1XPKc898mE4kgYx58oqsc/JqqdLMDI4YjOLzom+EMlW8HFUd0QfjfAvxSL6sEq/a42fQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    document.getElementById("ModifySearchButton").addEventListener("click", function () {
+        var overlay = document.getElementById("ModifySearchContainer");
+        // Toggle the visibility of the overlay
+        overlay.style.display = (overlay.style.display === "none" || overlay.style.display === "") ? "block" : "none";
+    });
+
+<!--    select passenger count-->
+    document.getElementById("classPassengers").addEventListener("click", function () {
+        var overlay = document.getElementById("travellerOverlay");
+        // Toggle the visibility of the overlay
+        overlay.style.display = (overlay.style.display === "none" || overlay.style.display === "") ? "block" : "none";
+    });
+// document.getElementById("ShowFare").addEventListener("click", function () {
+//     var overlay = document.getElementById("MoreFare");
+//     // Toggle the visibility of the overlay
+//     overlay.style.display = (overlay.style.display === "none" || overlay.style.display === "") ? "block" : "none";
+// });
+document.getElementById("ShowFare").addEventListener("click", function () {
+    var MoreFare = document.getElementById("MoreFare");
+    var ShowHide = document.getElementById("ShowHide");
+    var arrowPath = document.getElementById("arrowPath");
+
+    // Paths for the up and down arrows
+    var downArrow ="M7 10l5 5 5-5z" ;  // Down arrow
+    var upArrow ="M7 14l5-5 5 5z" ;    // Up arrow
+
+    // Toggle the visibility of the overlay and the SVG icon
+    if (MoreFare.style.display === "none" || MoreFare.style.display === "") {
+        MoreFare.style.display = "block";       // Show the fare details
+        ShowHide.textContent = "Hide";     // Change text to 'Hide'
+        arrowPath.setAttribute("d", upArrow);  // Change to up arrow
+    } else {
+        MoreFare.style.display = "none";        // Hide the fare details
+        ShowHide.textContent = "Show";     // Change text to 'Show'
+        arrowPath.setAttribute("d", downArrow); // Change to down arrow
+    }
+});
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const slider = document.getElementById('slider');
+    const thumb0 = document.getElementById('thumb0');
+    const thumb1 = document.getElementById('thumb1');
+    const thumbWidth = thumb0.offsetWidth; // Assuming both thumbs have the same width
+    const sliderWidth = slider.offsetWidth - thumbWidth; // Adjust for thumb width
+    let isDragging = null;
+
+    const moveThumb = (e) => {
+        if (!isDragging) return;
+
+        const thumb = isDragging;
+        let newLeft = e.clientX - slider.getBoundingClientRect().left;
+
+        // Constrain thumb0's movement (it can't go beyond thumb1's position)
+        if (thumb === thumb0) {
+            const thumb1Position = parseInt(thumb1.style.left, 10) || sliderWidth;
+            if (newLeft < 0) newLeft = 0;
+            if (newLeft > thumb1Position - thumbWidth) newLeft = thumb1Position - thumbWidth;
+        }
+
+        // Constrain thumb1's movement (it can't go behind thumb0's position)
+        if (thumb === thumb1) {
+            const thumb0Position = parseInt(thumb0.style.left, 10) || 0;
+            if (newLeft > sliderWidth) newLeft = sliderWidth;
+            if (newLeft < thumb0Position + thumbWidth) newLeft = thumb0Position + thumbWidth;
+        }
+
+        // Update the thumb's position
+        thumb.style.left = `${newLeft}px`;
+    };
+
+    const stopDragging = () => {
+        isDragging = null;
+        document.removeEventListener('mousemove', moveThumb);
+        document.removeEventListener('mouseup', stopDragging);
+    };
+
+    const startDragging = (e, thumb) => {
+        isDragging = thumb;
+        document.addEventListener('mousemove', moveThumb);
+        document.addEventListener('mouseup', stopDragging);
+    };
+
+    // Attach mouse down event to each thumb
+    thumb0.addEventListener('mousedown', (e) => startDragging(e, thumb0));
+    thumb1.addEventListener('mousedown', (e) => startDragging(e, thumb1));
+});
+
+// document.addEventListener('DOMContentLoaded', function() {
+//     const slider = document.getElementById('slider');
+//     const thumb0 = document.getElementById('thumb0');
+//     const thumb1 = document.getElementById('thumb1');
+//
+//     const thumbWidth = thumb0.offsetWidth; // Assuming both thumbs have the same width
+//     const sliderWidth = slider.offsetWidth - thumbWidth; // Adjust for thumb width
+//     let isDragging = null;
+//
+//     const moveThumb = (e) => {
+//         if (!isDragging) return;
+//
+//         const thumb = isDragging;
+//         let newLeft = e.clientX - slider.getBoundingClientRect().left;
+//
+//         // Constrain thumb movement within slider width
+//         if (newLeft < 0) newLeft = 0;
+//         if (newLeft > sliderWidth) newLeft = sliderWidth;
+//
+//         // Update the thumb's position
+//         thumb.style.left = `${newLeft}px`;
+//     };
+//
+//     const stopDragging = () => {
+//         isDragging = null;
+//         document.removeEventListener('mousemove', moveThumb);
+//         document.removeEventListener('mouseup', stopDragging);
+//     };
+//
+//     const startDragging = (e, thumb) => {
+//         isDragging = thumb;
+//         document.addEventListener('mousemove', moveThumb);
+//         document.addEventListener('mouseup', stopDragging);
+//     };
+//
+//     // Attach mouse down event to each thumb
+//     thumb0.addEventListener('mousedown', (e) => startDragging(e, thumb0));
+//     thumb1.addEventListener('mousedown', (e) => startDragging(e, thumb1));
+// });
+
+
+
+    function modifyPage() {
+        // Define dynamic content using template literals (backticks)
+        let content = `
+    <div class="fade modal-backdrop show" id="div1"></div>
+    `;
+
+        // Create a wrapper div to hold the content
+        let wrapper = document.createElement("div");
+
+        // Set the innerHTML of the wrapper to the dynamic content
+        wrapper.innerHTML = content;
+
+        // Insert the wrapper before the body content
+        document.body.parentNode.insertBefore(wrapper, document.body);
+
+        document.getElementById("div2").innerHTML = ` <div class="modal-dialog slide-from-right-animation modal-fullscreen" id="ans">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="app-sidebar__title modal-title h4">Flight Details</div>
+                <button type="button" class="btn-close" aria-label="Close"  onclick="removeDiv()"></button>
+            </div>
+            <div class="flight-details-sidebar modal-body">
+                <div class="flight-details_tabs">
+                    <div class="flight-details_tabs_container">
+                        <button class="selected-tab-btn" id="FlightInformationButton" onclick="FlightInformation()">Flight Information</button>
+                        <button class="tab-btn" id="FareBreakupButton" onclick="FareBreakup()">Fare Breakup</button>
+                        <button class="tab-btn" id="BaggageButton" onclick="Baggage()">Baggage</button>
+                        <button class="tab-btn" id="FareRulesButton" onclick="FareRules()">Fare Rules</button>
+                    </div>
+                </div>
+<div id="FlightInformation">
+                <div class="selected-flight-details__trip-details mt-2 ">
+                    <div class="d-flex gap-2 trip-content align-items-center"><span class="sector-span">Ahmedabad(AMD) -&gt; Bengaluru(BLR)</span><span
+                            class="date-span">One Way  13 Sep, 2024</span></div>
+                </div>
+                <div class="p-0 p-lg-3">
+                    <section class="selected-flight-details">
+                        <div class="selected-flight-details__flight-leg my-2">
+                            <div>
+                                <div class="selected-flight-details__flight-leg_details d-flex gap-3">
+                                    <div><img class="vertical-bottom" alt="Flight"
+                                              src="https://static.iween.co.in/airlinelogos/AI.jpg"></div>
+                                    <div class="d-flex flex-column text-uppercase fs-12 justify-content-center">
+                                        <div class="d-flex gap-2"><span class="primary-color">Air India</span><span>AI-494</span><span>BOOKING CLASS: H</span>
+                                        </div>
+                                        <div>normal</div>
+                                        <div class="d-flex gap-2"><span>economy</span><span>32N</span></div>
+                                    </div>
+                                </div>
+                                <div class="selected-flight-details__flight-leg_departure my-3">
+                                    <div class="d-flex align-items-center"><img
+                                            src="/images/others/flight-details-line.svg" alt="" style="height: 50px;">
+                                    </div>
+                                    <div class="d-flex flex-column"><span class="dark-grey-color fs-14 fw-600">23:00 (13 Sep) - Ahmedabad - T1</span><span
+                                            class="fs-10 mb-2">Ahmedabad Airport Ahmedabad-India</span><span
+                                            class="fs-12 grey-color mb-2">Travel Time: 1h 30m</span><span
+                                            class="dark-grey-color fs-14 fw-600">00:30 (14 Sep) - Delhi - T3</span><span
+                                            class="fs-10">Indira Gandhi International Airport Delhi-India</span></div>
+                                </div>
+                                <div class="selected-flight-details__flight-leg_amenities"><span>Check In: 15Kg</span>
+                                </div>
+                            </div>
+                            <div class="selected-flight-details__flight-leg_layover py-1 my-2">
+                                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24"
+                                     height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill="none" d="M0 0h24v24H0z"></path>
+                                    <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"></path>
+                                    <path d="M12.5 7H11v6l5.25 3.15.75-1.23-4.5-2.67z"></path>
+                                </svg>
+                                <span class="selected-flight-details__flight-leg_layover__location ms-1">5h 40m layover in Delhi</span>
+                            </div>
+                        </div>
+                        <div class="selected-flight-details__flight-leg my-2">
+                            <div>
+                                <div class="selected-flight-details__flight-leg_details d-flex gap-3">
+                                    <div><img class="vertical-bottom" alt="Flight"
+                                              src="https://static.iween.co.in/airlinelogos/AI.jpg"></div>
+                                    <div class="d-flex flex-column text-uppercase fs-12 justify-content-center">
+                                        <div class="d-flex gap-2"><span class="primary-color">Air India</span><span>AI-803</span><span>BOOKING CLASS: H</span>
+                                        </div>
+                                        <div>normal</div>
+                                        <div class="d-flex gap-2"><span>economy</span><span>32N</span></div>
+                                    </div>
+                                </div>
+                                <div class="selected-flight-details__flight-leg_departure my-3">
+                                    <div class="d-flex align-items-center"><img
+                                            src="/images/others/flight-details-line.svg" alt="" style="height: 50px;">
+                                    </div>
+                                    <div class="d-flex flex-column"><span class="dark-grey-color fs-14 fw-600">06:10 (14 Sep) - Delhi - T3</span><span
+                                            class="fs-10 mb-2">Indira Gandhi International Airport Delhi-India</span><span
+                                            class="fs-12 grey-color mb-2">Travel Time: 2h 45m</span><span
+                                            class="dark-grey-color fs-14 fw-600">08:55 (14 Sep) - Bangalore - T2</span><span
+                                            class="fs-10">Bengaluru International Airport Bangalore-India</span></div>
+                                </div>
+                                <div class="selected-flight-details__flight-leg_amenities"><span>Check In: 15Kg</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+</div>
+<div id="FareBreakup" style="display: none">
+<div class="mt-3">
+FareBreakup
+</div>
+</div>
+<div id="Baggage" style="display: none">
+<div class="mt-3">
+Baggage
+</div>
+</div>
+<div id="FareRules" style="display: none">
+<div class="mt-3">
+Fare Rules
+</div>
+</div>
+            </div>
+        </div>
+    </div>`
+        // Add a class to the body
+        document.body.classList.add("modal-open");
+
+        // Add inline styles to body
+        document.body.style.color = "overflow: hidden";
+        document.body.style.fontSize = "padding-right: 17px";
+    }
+
+    function removeDiv() {
+        // Find the dynamically added div
+        let dynamicDiv = document.getElementById("div1");
+        let dynamicDiv1 = document.getElementById("ans");
+
+        // Check if the div exists, then remove it
+        if (dynamicDiv) {
+            dynamicDiv.remove();
+        }
+        if (dynamicDiv1) {
+            dynamicDiv1.remove();
+        }
+    }
+
+ function FlightInformation()
+ {
+        document.getElementById("FlightInformation").style.display="block"
+        document.getElementById("FareBreakup").style.display="none"
+        document.getElementById("Baggage").style.display="none"
+        document.getElementById("FareRules").style.display="none"
+
+     document.getElementById("FlightInformationButton").className="selected-tab-btn"
+     document.getElementById("FareBreakupButton").className="tab-btn"
+     document.getElementById("BaggageButton").className="tab-btn"
+     document.getElementById("FareRulesButton").className="tab-btn"
+
+ }
+function FareBreakup()
+{
+    document.getElementById("FlightInformation").style.display="none"
+    document.getElementById("FareBreakup").style.display="block"
+    document.getElementById("Baggage").style.display="none"
+    document.getElementById("FareRules").style.display="none"
+
+    document.getElementById("FlightInformationButton").className="tab-btn"
+    document.getElementById("FareBreakupButton").className="selected-tab-btn"
+    document.getElementById("BaggageButton").className="tab-btn"
+    document.getElementById("FareRulesButton").className="tab-btn"
+}
+function Baggage()
+{
+    document.getElementById("FlightInformation").style.display="none"
+    document.getElementById("FareBreakup").style.display="none"
+    document.getElementById("Baggage").style.display="block"
+    document.getElementById("FareRules").style.display="none"
+
+    document.getElementById("FlightInformationButton").className="tab-btn"
+    document.getElementById("FareBreakupButton").className="tab-btn"
+    document.getElementById("BaggageButton").className="selected-tab-btn"
+    document.getElementById("FareRulesButton").className="tab-btn"
+}
+function FareRules()
+{
+    document.getElementById("FlightInformation").style.display="none"
+    document.getElementById("FareBreakup").style.display="none"
+    document.getElementById("Baggage").style.display="none"
+    document.getElementById("FareRules").style.display="block"
+
+    document.getElementById("FlightInformationButton").className="tab-btn"
+    document.getElementById("FareBreakupButton").className="tab-btn"
+    document.getElementById("BaggageButton").className="tab-btn"
+    document.getElementById("FareRulesButton").className="selected-tab-btn"
+}
+
+
+
+    function setupPaxList(id, category) {
+        const listItems = document.querySelectorAll(`#${id} .num-pax_list_item`);
+
+        listItems.forEach(item => {
+            item.addEventListener('click', function () {
+                // Remove 'selected' class from all items in this list
+                listItems.forEach(i => i.classList.remove('selected'));
+
+                // Add 'selected' class to the clicked item
+                this.classList.add('selected');
+
+                // Update output (optional)
+                updateOutput();
+            });
+        });
+    }
+    let adults
+    let children
+    let infants
+    let prefClass
+    // Update the output div with the selected values
+    function updateOutput() {
+        adults = document.querySelector('#adults .selected').innerText;
+        children = document.querySelector('#children .selected').innerText;
+        infants = document.querySelector('#infants .selected').innerText;
+        prefClass = document.querySelector('#prefclass').selectedOptions[0].text;
+        document.getElementById('selected_Traveller_class').innerText = `${adults}A,${children}C,${infants}I,${prefClass}`
+    }
+
+    // Add event listener for the class select dropdown
+    document.getElementById('prefclass').addEventListener('change', function () {
+        updateOutput();
+    });
+
+    // Setup each pax list
+    setupPaxList('adults', 'Adults');
+    setupPaxList('children', 'Children');
+    setupPaxList('infants', 'Infants');
+
+    // Initial update
+    updateOutput();
+
+    document.getElementById("DoneButton").addEventListener("click", function () {
+        var overlay = document.getElementById("travellerOverlay");
+        // Toggle the visibility of the overlay
+        overlay.style.display = (overlay.style.display === "none" || overlay.style.display === "") ? "block" : "none";
+    });
+
+
+    async function ModifySearch() {
+        if ($("#ModifyForm").valid()) {
+            var ele = document.getElementById("ModifyForm").elements;
+            var fd = new FormData();
+            var checkboxValues = {};
+            let adultcount=adults
+            let childcount=children
+            let infantcount=infants
+            let prefclass=prefClass
+            for (let i = 0; i < ele.length; i++) {
+                if (ele[i].type !== "button") {
+
+                    // Handle radio buttons
+                    if (ele[i].type === "radio" && ele[i].checked === true) {
+                        fd.append(ele[i].name, ele[i].value);
+                    }
+
+                    // Handle checkboxes
+                    if (ele[i].type === "checkbox" && ele[i].checked === true) {
+                        // If multiple checkboxes share the same name, collect their values
+                        if (checkboxValues[ele[i].name]) {
+                            checkboxValues[ele[i].name].push(ele[i].value);
+                        } else {
+                            checkboxValues[ele[i].name] = [ele[i].value];
+                        }
+                    }
+
+                    // Handle other input types (text, select, etc.)
+                    if (ele[i].type !== "radio" && ele[i].type !== "checkbox") {
+                        fd.append(ele[i].name, ele[i].value);
+                    }
+                }
+            }
+
+            for (let name in checkboxValues) {
+                fd.append(name, checkboxValues[name].join(','));
+            }
+            fd.append("adultcount",adultcount)
+            fd.append("childcount",childcount)
+            fd.append("infantcount",infantcount)
+            fd.append("prefclass",prefclass)
+            let url = "/check";
+            let response = await fetch(url, {
+                method: "POST",
+                body: fd  // Convert to JSON string
+            });
+
+        }
+
+    }
+</script>
+
+</body>
+</html>

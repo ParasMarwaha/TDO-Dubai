@@ -1,0 +1,3664 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>TDO DXB | Welcome to Agent Dashboard</title>
+  
+    <%- include('../partials/header2') %>
+    <!-- CSS Implementing Plugins -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/css/ion.rangeSlider.min.css"/>
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-material-ui@5.0.16/material-ui.min.css"
+          rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+
+    <link rel="stylesheet" href="/assets2/flights/flightSearch/css/theme.css">
+
+    <style>
+        .travel-card {
+            position: relative;
+            border-radius: 50px;
+            overflow: hidden;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .travel-card:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background-color: #d02824;
+        }
+        .travel-card:after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background-color: #d02824;
+        }
+        .plane-icon {
+            font-size: 40px;
+            color: #d02824;
+        }
+
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            color: #333;
+            background-color: #f9f9f9;
+        }
+
+        .card {
+            border-radius: 15px;
+            transition: transform 0.3s;
+        }
+        .card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        .fare-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .fare-radio {
+            margin-right: 10px;
+        }
+        .fare-label {
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        .circle {
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 20px;
+            margin-right: 5px;
+        }
+        .btn-link {
+            font-weight: bold;
+        }
+        .btn-outline-primary {
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .btn-outline-primary:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
+        .shadow-soft {
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .border-radius-2 {
+            border-radius: 0.25rem;
+        }
+        .border-width-2 {
+            border-width: 2px;
+        }
+        .flaticon-aeroplane {
+            font-size: 2rem;
+        }
+
+        .trav_engine {
+            position: relative;
+            width: 230px;
+        }
+
+        .trav_toggle {
+            width: 210px;
+            box-sizing: border-box;
+            line-height: 32px;
+            font-size: 0;
+            position: absolute;
+            top: 0;
+        }
+
+        .trav_form {
+            border: 1px solid #ddd;
+            width: 220px;
+            box-sizing: border-box;
+            float: left;
+            position: absolute;
+            background-color: #ebf0f7;
+            z-index: 999;
+        }
+
+        .trav_item {
+            border-bottom: 1px solid #eaeaea;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 10px;
+            float: left;
+        }
+
+
+
+        .trav_inner1 {
+            width: 40%;
+            float: left;
+            font-size: 15px;
+            line-height: 17px;
+            color: #333333;
+            box-sizing: border-box;
+        }
+
+        .trav_inner1 span {
+            font-size: 11px;
+            display: block;
+            color: #888888;
+        }
+
+        .trav_inner2 {
+            width: 60%;
+            float: left;
+            font-size: 13px;
+            line-height: 30px;
+            color: #666;
+            box-sizing: border-box;
+            display: flex;
+        }
+
+        .minus, .plus {
+            border: 1px solid #ddd;
+            width: 36px;
+            text-decoration: none;
+            font-size: 18px;
+            height: 34px;
+            text-align: center;
+            box-sizing: border-box;
+            float: left;
+            background: #ddd;
+            background: rgb(255, 255, 255);
+            background: -moz-linear-gradient(top, rgba(255, 255, 255, 1) 0%, rgba(242, 242, 242, 1) 48%, rgba(255, 255, 255, 1) 100%);
+            background: -webkit-linear-gradient(top, rgba(255, 255, 255, 1) 0%, rgba(242, 242, 242, 1) 48%, rgba(255, 255, 255, 1) 100%);
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(242, 242, 242, 1) 48%, rgba(255, 255, 255, 1) 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#ffffff', GradientType=0);
+        }
+
+        .minus {
+            border-radius: 50% 0 0 50%;
+        }
+
+        .plus {
+            border-radius: 0 50% 50% 0;
+        }
+
+        .txt_trav {
+            outline: none;
+            border: 1px solid #ddd;
+            height: 34px;
+            width: 36px;
+            float: left;
+            text-align: center;
+            line-height: 34px;
+            box-sizing: border-box;
+            border-left: 0;
+            border-right: 0;
+            font-size: 16px;
+            color: #444;
+        }
+
+        .txt_Traveler {
+            border: 1px solid #ddd;
+            width: 220px;
+            box-sizing: border-box;
+            padding: 10px;
+            outline: none;
+        }
+
+        .trav_done {
+            padding: 6px;
+            display: block;
+            border-radius: 2px;
+            background: transparent;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            color: #444;
+            width: 70px;
+            margin: 0 auto;
+            text-align: center;
+            cursor: default;
+        }
+
+        .trav_toggle.open {
+            background: url(https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/down4-512.png) no-repeat right 8px;
+            background-size: 20px;
+        }
+
+        .trav_toggle.close {
+            background: url(https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/up4-512.png) no-repeat right 8px;
+            background-size: 20px;
+        }
+
+        /*
+Animated skeleton screen using CSS.
+
+Create shapes using gradients that simulate solids.
+
+Use `:empty` pseduo-class to show skeleton screen background only while container has no content (ex: for the "loading" state). When content is added to the container element, the pseudo-class selector won't match anymore and the skeleton screen will be removed automatically; no need to toggle a separate class on the container.
+
+See: https://developer.mozilla.org/en-US/docs/Web/CSS/:empty
+
+Animating one layer of the background which is a tilted linear gradient with white in the middle to achieve shine effect.
+*/
+        * {
+            padding: 0;
+            margin: 0;
+            font-family: "IBM Plex Sans", sans-serif;
+        }
+        .srow {
+            width: 100%;
+            margin: 50px 0;
+        }
+        .scontainer {
+            width: 100%;
+            max-width: 100%;
+            margin: auto;
+        }
+
+        .scards {
+            background: #fff;
+            height: auto;
+            width: auto;
+            overflow: hidden;
+            box-shadow: 5px 8px 15px -10px rgba(0, 0, 0, 0.25);
+        }
+        .scard_image {
+            width: 100%;
+            height: 100%;
+        }
+        .scard_image.sloading {
+            width: 100%;
+            height: 180px;
+        }
+        .scard_title {
+            padding: 8px;
+            font-size: 22px;
+            font-weight: 700;
+        }
+        .scard_title.sloading {
+            width: 50%;
+            height: 1rem;
+            margin: 1rem;
+            border-radius: 3px;
+            position: relative;
+        }
+        .scard_description {
+            padding: 8px;
+            font-size: 16px;
+        }
+        .scard_description.sloading {
+            height: 3rem;
+            margin: 1rem;
+            border-radius: 3px;
+        }
+        .sloading {
+            position: relative;
+            background: #cccccc;
+        }
+        .sloading:after {
+            content: "";
+            display: block;
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            transform: translateX(-100px);
+            background: linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(255, 255, 255, 0.2),
+                    transparent
+            );
+            animation: loading 0.8s infinite;
+        }
+        @keyframes loading {
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        .circle {
+            width: 25px;
+            height: 25px;
+            border: 2px solid black; /* Outline style */
+            border-radius: 50%; /* Makes it a circle */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+        }
+
+
+        .plane-loader {
+            position: relative;
+            width: 250px;
+            height: 250px;
+            background-color: #00AFDD;
+            margin: 20px auto;
+            border-radius: 125px;
+            overflow: hidden;
+            z-index:1;
+        }
+
+        .plane {
+            position: absolute;
+            top: 60px;
+            left: 60px;
+            height: 130px;
+            width: 130px;
+            animation: levitate 4s alternate ease-in-out infinite;
+            transition: transform 150ms ease;
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+        }
+
+        .cloud {
+            position: absolute;
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            background-color: transparent;
+        }
+
+        .cloud1 {
+            top: -30px;
+            left: 30px;
+            height: 39px;
+            width: 42px;
+            animation: cloud1 7s linear infinite;
+        }
+
+        .cloud2 {
+            top: -260px;
+            left: 150px;
+            height: 82px;
+            width: 96px;
+            animation: cloud2 5s linear infinite;
+            opacity: .5;
+        }
+
+        .cloud3 {
+            height: 82px;
+            width: 96px;
+            animation: cloud3 15s linear infinite 10s;
+            top: -80px;
+            left: 130px;
+        }
+
+        .cloud4 {
+            top: -30px;
+            left: 180px;
+            height: 39px;
+            width: 42px;
+            animation: cloud4 20s linear infinite;
+        }
+
+        .steam {
+            position: absolute;
+            top: 80px;
+            left: 73px;
+        }
+
+        .error {
+            color: red;
+        }
+
+        .steam div {
+            opacity: 0;
+            position: absolute;
+            height: 120px;
+            width: 10px;
+            background: #FFFFFF;
+            border-radius: 5px;
+            animation: steam .4s ease-in-out infinite;
+        }
+
+        .steam .c2 {
+            animation-delay: 50ms;
+        }
+        .steam .c3 {
+            animation-delay: 150ms;
+        }
+        .steam .c4 {
+            animation-delay: 200ms;
+        }
+        .steam .c5 {
+            animation-delay: 250ms;
+        }
+        .steam .c6 {
+            animation-delay: 300ms;
+        }
+        .steam .c7 {
+            animation-delay: 350ms;
+        }
+        .steam .c8 {
+            animation-delay: 400ms;
+        }
+        .steam .c9 {
+            animation-delay: 450ms;
+        }
+        .steam .c10 {
+            animation-delay: 500ms;
+        }
+
+        .steam2 {
+            top: 75px;
+            left: 91px;
+        }
+
+        .steam3 {
+            top: 75px;
+            left: 146px;
+        }
+
+        .steam4 {
+            left: 166px;
+        }
+
+        @keyframes levitate {
+            0%{ transform: translate(0, 0) scale(1); }
+            25%{ transform: translate(-1px, 1px) scale(1.003); }
+            50%{ transform: translate(0, 1px)  scale(1); }
+            75%{ transform: translate(-1px, 0)  scale(1); }
+            100%{ transform: translate(0, -1px)  scale(0.997); }
+        }
+
+        @keyframes cloud1 {
+            0%{ transform: translate(0, 0) scale(1); }
+            98%{ transform: translate(0, 290px) scale(1); }
+            99%{ transform: translate(-100px, 290px) scale(1); }
+            100%{ transform: translate(-100px, 0)  scale(1); }
+        }
+
+        @keyframes cloud2 {
+            0%{ transform: translate(0, 0) scale(4); }
+            70%{ transform: translate(0, 0) scale(4); }
+            98%{ transform: translate(0, 1000px) scale(4);}
+            99%{ transform: translate(200px, 1000px) scale(1); }
+            100%{ transform: translate(200px, 0)  scale(1); }
+        }
+
+        @keyframes cloud4 {
+            0%{ transform: translate(0, 0) scale(0.3) rotate(150deg); }
+            98%{ transform: translate(0, 290px) scale(0.3) rotate(150deg); }
+            99%{ transform: translate(200px, 290px) scale(1); }
+            100%{ transform: translate(200px, 0)  scale(1); }
+        }
+
+        @keyframes cloud3 {
+            0%{ transform: translate(0, 0) scale(1) rotate(180deg); }
+            98%{ transform: translate(0, 330px) scale(1) rotate(180deg); }
+            99%{ transform: translate(200px, 330px) scale(1); }
+            100%{ transform: translate(200px, 0)  scale(1); }
+        }
+
+        @keyframes steam {
+            0%{
+                transform: translate(0, 0) scale(0);
+                opacity: 0;
+            }
+            100%{
+                transform: translate(0, 280px)  scale(1,3);
+                opacity: 1;
+            }
+        }
+
+        .plane {
+            background-image: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22138%22%20height%3D%22130%22%20viewBox%3D%220%200%20138%20130%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M18.359375%2053.6070313C20.5734375%2053.6070313%2022.3664062%2055.403125%2022.3664062%2057.6164063L22.3664062%2062.9601563C22.3664062%2065.175%2020.5734375%2066.96875%2018.359375%2066.96875%2016.146875%2066.96875%2014.3515625%2065.175%2014.3515625%2062.9601563L14.3515625%2057.6164063C14.3515625%2055.403125%2016.146875%2053.6070313%2018.359375%2053.6070313M39.8648438%2044.196875C42.0789063%2044.196875%2043.875%2045.9921875%2043.875%2048.2054687L43.875%2053.5492187C43.875%2055.7640625%2042.0789063%2057.5585937%2039.8648438%2057.5585937%2037.6507813%2057.5585937%2035.85625%2055.7640625%2035.85625%2053.5492187L35.85625%2048.2054687C35.85625%2045.9921875%2037.6507813%2044.196875%2039.8648438%2044.196875%22%2F%3E%3Cpolyline%20fill%3D%22%23FFA600%22%20points%3D%2264.623%20108.155%2046.487%20119.975%2048.025%20127.793%2068.184%20121.874%2064.623%20108.155%22%2F%3E%3Cpolyline%20fill%3D%22%23FFA600%22%20points%3D%2273.452%20108.155%2091.591%20119.975%2090.051%20127.793%2069.894%20121.874%2073.452%20108.155%22%2F%3E%3Cpolyline%20fill%3D%22%23F4F4F4%22%20points%3D%22.25%2077.402%2064.288%2072.034%2064.288%2039.112%20.25%2070.188%20.25%2077.402%22%2F%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M119.640625%2053.6070313C117.425781%2053.6070313%20115.632031%2055.403125%20115.632031%2057.6164063L115.632031%2062.9601563C115.632031%2065.175%20117.425781%2066.96875%20119.640625%2066.96875%20121.853125%2066.96875%20123.65%2065.175%20123.65%2062.9601563L123.65%2057.6164063C123.65%2055.403125%20121.853125%2053.6070313%20119.640625%2053.6070313M98.1351563%2044.196875C95.9210938%2044.196875%2094.1257813%2045.9921875%2094.1257813%2048.2054687L94.1257813%2053.5492187C94.1257813%2055.7640625%2095.9210938%2057.5585937%2098.1351563%2057.5585937%20100.349219%2057.5585937%20102.142188%2055.7640625%20102.142188%2053.5492187L102.142188%2048.2054687C102.142188%2045.9921875%20100.349219%2044.196875%2098.1351563%2044.196875%22%2F%3E%3Cpolyline%20fill%3D%22%23F4F4F4%22%20points%3D%22137.749%2077.402%2073.712%2072.034%2073.712%2039.112%20137.749%2070.188%20137.749%2077.402%22%2F%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M72.1414063%2C2.090625%20C71.34375%2C1.03046875%2070.1992188%2C0.42734375%2069.003125%2C0.43984375%20C67.8070313%2C0.45390625%2066.6726563%2C1.0796875%2065.8914063%2C2.15859375%20L65.8882813%2C2.1640625%20C60.40625%2C9.75%2057.4132813%2C19.3789062%2057.4132813%2C29.3828125%20L57.4132813%2C61.08125%20C57.4132813%2C67.9523437%2058.0390625%2C82.8390625%2059.2617188%2C90.259375%20C61.3546875%2C102.939062%2063.5164063%2C115.017969%2067.040625%2C127.711719%20C67.3460938%2C128.816406%2068.140625%2C129.550781%2069.03125%2C129.560937%20C69.925%2C129.56875%2070.7273438%2C128.849219%2071.046875%2C127.751562%20C74.678125%2C115.230469%2076.9359375%2C102.877344%2078.9453125%2C89.9078125%20C80.0414063%2C82.8445312%2080.5859375%2C68.4710937%2080.5859375%2C61.9492187%20L80.5859375%2C28.3929687%20C80.5859375%2C18.6890625%2077.5828125%2C9.3203125%2072.1414063%2C2.090625%22%2F%3E%3Cpath%20fill%3D%22%23E4E4E4%22%20d%3D%22M69.0429688%2C0.43984375%20L69%2C0.43984375%20L69%2C129.558594%20L69.05%2C129.558594%20C69.9351563%2C129.558594%2070.73125%2C128.841406%2071.046875%2C127.751562%20C74.678125%2C115.230469%2076.9359375%2C102.877344%2078.9453125%2C89.9078125%20C80.0414062%2C82.8445312%2080.5859375%2C68.4710937%2080.5859375%2C61.9492187%20L80.5859375%2C28.3929687%20C80.5859375%2C18.6890625%2077.5828125%2C9.3203125%2072.1414063%2C2.090625%20C71.3523438%2C1.04140625%2070.2265625%2C0.43984375%2069.0429688%2C0.43984375%22%2F%3E%3Cpath%20fill%3D%22%2300AFDD%22%20d%3D%22M68.6726563%2C9.840625%20C64.709375%2C9.840625%2061.496875%2C13.0523438%2061.496875%2C17.0148438%20C61.496875%2C17.2414063%2061.6507813%2C17.440625%2061.8710938%2C17.4992188%20C62.0898438%2C17.5570313%2062.321875%2C17.4585938%2062.4335938%2C17.2617188%20C63.6648438%2C15.0875%2065.9953125%2C13.6195313%2068.6726563%2C13.6195313%20C71.35%2C13.6195313%2073.6804688%2C15.0875%2074.9109375%2C17.2625%20C75.0234375%2C17.4601563%2075.2546875%2C17.5585938%2075.4742188%2C17.5%20C75.69375%2C17.44375%2075.8484375%2C17.2445313%2075.8484375%2C17.0179688%20L75.8484375%2C17.0164063%20C75.8484375%2C13.0523438%2072.6351563%2C9.840625%2068.6726563%2C9.840625%22%2F%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M68.6726563%2C9.840625%20L68.6726563%2C13.6179688%20C71.3515625%2C13.6179688%2073.68125%2C15.0875%2074.9109375%2C17.2617188%20C75.003125%2C17.4226563%2075.1703125%2C17.5164063%2075.3476563%2C17.5164063%20L75.4757813%2C17.4992188%20C75.6953125%2C17.4421875%2075.85%2C17.2429688%2075.85%2C17.0148438%20C75.85%2C13.0523438%2072.6367188%2C9.840625%2068.6726563%2C9.840625%22%20opacity%3D%22.152%22%2F%3E%3Cpolygon%20fill%3D%22%23FFA600%22%20points%3D%2267.755%20121.461%2070.242%20121.461%2070.242%20105.548%2067.755%20105.548%22%2F%3E%3Cpolygon%20fill%3D%22%23FFA600%22%20points%3D%2269%20121.461%2070.242%20121.461%2070.242%20105.548%2069%20105.548%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E');
+        }
+
+        .cloud1, .cloud4 {
+            background-image: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2242%22%20height%3D%2239%22%20viewBox%3D%220%200%2042%2039%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%20transform%3D%22rotate(180%2021%2019.5)%22%3E%3Cpath%20fill%3D%22%23E6F4FA%22%20d%3D%22M28.9693613%2C12.1008289%20C29.469759%2C12.0343251%2029.9803124%2C12%2030.49887%2C12%20C36.8505945%2C12%2042%2C17.1462684%2042%2C23.4983049%20C42%2C29.8514715%2036.8505945%2C35%2030.49887%2C35%20C28.7713689%2C35%2027.132699%2C34.6188942%2025.6623971%2C33.9361096%20C23.0026635%2C37.029828%2018.9895771%2C39%2014.5%2C39%20C6.49201637%2C39%200%2C32.7318463%200%2C25%20C0%2C21.5922247%201.26111616%2C18.4687811%203.35731092%2C16.0410159%20C3.1237079%2C15.0657103%203%2C14.0476205%203%2C13.0005581%20C3%2C5.82056235%208.81882969%2C0%2016.0005581%2C0%20C22.8787115%2C0%2028.5073872%2C5.34054674%2028.9693613%2C12.1008289%20Z%22%2F%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M25.7129699%2C14.9431541%20C26.8536129%2C14.3396855%2028.1395044%2C14%2029.4988916%2C14%20C34.186139%2C14%2038%2C18.0366482%2038%2C23.0005869%20C38%2C27.9633518%2034.186139%2C32%2029.4988916%2C32%20C27.2986953%2C32%2025.2910292%2C31.1101569%2023.7801166%2C29.6524095%20C21.8873669%2C33.4138935%2017.9900082%2C36%2013.5%2C36%20C7.15899729%2C36%202%2C30.8421581%202%2C24.5%20C2%2C21.1954233%203.40113857%2C18.211869%205.64051942%2C16.1122333%20C5.22624883%2C14.9852652%205%2C13.7682536%205%2C12.4994255%20C5%2C6.70968977%209.71083876%2C2%2015.5005745%2C2%20C21.2903102%2C2%2026%2C6.70968977%2026%2C12.4994255%20C26%2C13.3404802%2025.9006144%2C14.1587676%2025.7129699%2C14.9431541%20Z%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E');
+        }
+
+        .cloud2, .cloud3{
+            background-image: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2285%22%20height%3D%2296%22%20viewBox%3D%220%200%2085%2096%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cpath%20fill%3D%22%23E6F4FA%22%20d%3D%22M53.6261275%2C86.0983539%20C44.9724207%2C86.0904138%2037.961165%2C79.0475196%2037.961165%2C70.367114%20C37.961165%2C70.2821461%2037.9618371%2C70.1973351%2037.9631762%2C70.1126861%20C36.052893%2C71.3237206%2033.7893915%2C72.0245902%2031.3626805%2C72.0245902%20C24.5242637%2C72.0245902%2018.9805825%2C66.4646135%2018.9805825%2C59.6056903%20C18.9805825%2C58.7095146%2019.07527%2C57.8354956%2019.2551602%2C56.9931488%20C14.9861648%2C52.3470271%2012.3786408%2C46.1411762%2012.3786408%2C39.3246282%20C12.3786408%2C38.980572%2012.3852821%2C38.6380723%2012.3984431%2C38.2972509%20C5.24955652%2C36.3134881%200%2C29.739649%200%2C21.9367926%20C0%2C12.565248%207.57527256%2C4.96721311%2016.9183389%2C4.96721311%20C21.1033698%2C4.96721311%2024.9339252%2C6.4922497%2027.8876267%2C9.01856689%20C30.937945%2C3.63274285%2036.7085736%2C0%2043.3269645%2C0%20C53.1237687%2C0%2061.0679612%2C7.96813226%2061.0679612%2C17.7983167%20C61.0679612%2C20.170505%2060.6055033%2C22.4341966%2059.7661462%2C24.5036533%20C62.6686866%2C28.7123217%2064.368932%2C33.8192168%2064.368932%2C39.3246282%20C64.368932%2C45.434588%2062.2742784%2C51.0538958%2058.7658771%2C55.4991083%20C60.2757998%2C56.0228961%2061.6811612%2C56.771633%2062.9421284%2C57.7053251%20C65.1528918%2C56.2866361%2067.7623944%2C55.4672131%2070.5574066%2C55.4672131%20C78.5348335%2C55.4672131%2085%2C62.139615%2085%2C70.3688525%20C85%2C76.9889463%2080.8160275%2C82.6015244%2075.0266219%2C84.5433647%20C75.0411625%2C84.7726494%2075.0485437%2C85.0038839%2075.0485437%2C85.2368457%20C75.0485437%2C91.1795229%2070.2454545%2C96%2064.3203883%2C96%20C58.686077%2C96%2054.0638162%2C91.6384942%2053.6261275%2C86.0983539%20Z%22%2F%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M56.3512418%2C80.989288%20C54.9373334%2C81.5501071%2053.3974426%2C81.8584071%2051.787234%2C81.8584071%20C44.9235834%2C81.8584071%2039.3404255%2C76.2595622%2039.3404255%2C69.3787797%20C39.3404255%2C65.7762562%2040.8716505%2C62.5253142%2043.3161178%2C60.2457302%20C41.9299403%2C60.6282602%2040.4913511%2C60.8826894%2039.0138682%2C60.9954556%20C37.949601%2C64.8651574%2034.4071226%2C67.7168142%2030.2136372%2C67.7168142%20C25.17979%2C67.7168142%2021.0851064%2C63.6105553%2021.0851064%2C58.5663717%20C21.0851064%2C57.3014675%2021.3425925%2C56.0955429%2021.8078058%2C54.9985589%20C17.2845467%2C50.8157531%2014.4468085%2C44.8270972%2014.4468085%2C38.1875636%20C14.4468085%2C36.9014589%2014.5532259%2C35.6397985%2014.7576931%2C34.4109662%20C7.64263685%2C33.9287895%202%2C27.9735101%202%2C20.7168142%20C2%2C13.147399%208.14226892%2C6.99115044%2015.6906203%2C6.99115044%20C20.9926227%2C6.99115044%2025.6003637%2C10.0270806%2027.8742627%2C14.4563702%20C28.8932077%2C7.42179944%2034.9496383%2C2%2042.2455469%2C2%20C50.2497002%2C2%2056.7659574%2C8.53117508%2056.7659574%2C16.5575221%20C56.7659574%2C19.1456372%2056.088719%2C21.5779972%2054.9027194%2C23.6860433%20C58.1397867%2C27.6360187%2060.0851064%2C32.6883322%2060.0851064%2C38.1875636%20C60.0851064%2C45.9744285%2056.1825466%2C52.8660327%2050.2345104%2C56.9992306%20C50.7432832%2C56.9354932%2051.2615023%2C56.9026549%2051.787234%2C56.9026549%20C55.4417448%2C56.9026549%2058.7340461%2C58.490221%2061.0133791%2C61.0134991%20C63.0311172%2C58.9844895%2065.7783823%2C57.7345133%2068.8012587%2C57.7345133%20C74.9763131%2C57.7345133%2080%2C62.9562954%2080%2C69.3787704%20C80%2C75.2436145%2075.8131%2C80.107763%2070.385595%2C80.9103885%20C70.6865252%2C81.721561%2070.8510638%2C82.5988391%2070.8510638%2C83.5141368%20C70.8510638%2C87.6399858%2067.4994155%2C91%2063.383839%2C91%20C59.2631009%2C91%2055.9148936%2C87.6399858%2055.9148936%2C83.5141368%20C55.9148936%2C82.6284372%2056.0688047%2C81.7783382%2056.3512418%2C80.989288%20Z%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E');
+        }
+
+        .demo:empty {
+            margin: auto;
+            width: 100%;
+            height: 600px; /* change height to see repeat-y behavior */
+
+            background-image:
+                    radial-gradient( circle 50px at 50px 50px, lightgray 99%, transparent 0 ),
+                    linear-gradient( 100deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0) 80% ),
+                    linear-gradient( lightgray 20px, transparent 0 ),
+                    linear-gradient( lightgray 20px, transparent 0 ),
+                    linear-gradient( lightgray 20px, transparent 0 ),
+                    linear-gradient( lightgray 20px, transparent 0 );
+
+            background-repeat: repeat-y;
+
+            background-size:
+                    100px 200px, /* circle */
+                    50px 200px, /* highlight */
+                    150px 200px,
+                    350px 200px,
+                    300px 200px,
+                    250px 200px;
+
+            background-position:
+                    0 0, /* circle */
+                    0 0, /* highlight */
+                    120px 0,
+                    120px 40px,
+                    120px 80px,
+                    120px 120px;
+
+            animation: shine 1s infinite;
+        }
+
+        @keyframes shine {
+            to {
+                background-position:
+                        0 0,
+                        100% 0, /* move highlight to right */
+                        120px 0,
+                        120px 40px,
+                        120px 80px,
+                        120px 120px;
+            }
+        }
+
+        .light {
+            width: 10px;
+            height: 10px;
+            background: red;
+            border-radius: 50%;
+            bottom: 295px;
+            position: absolute;
+            z-index: 10;
+            left: 20px;
+            animation: light 800ms ease-in-out 0s infinite alternate;
+        }
+        .cloud11 {
+            position: absolute;
+            top: 0px;
+            right: -500px;
+            opacity: .8;
+            animation: cloud 5s linear 0s infinite reverse;
+            z-index: 99;
+        }
+        @keyframes light {
+            0% {opacity: 0;}
+            100% {opacity: 1;}
+        }
+        @keyframes cloud {
+            from {right:-500px;}
+            to {right: 102%;}
+        }
+        /* Style the container div */
+        .containerrr {
+            display: flex;
+            justify-content: space-between; /* Adjust as needed */
+        }
+
+        /* Style individual divs with different colors */
+        .colored-div {
+            width: 100px; /* Adjust the width as needed */
+            height: 50px; /* Adjust the height as needed */
+            margin-right: 10px; /* Adjust the spacing between divs */
+        }
+        .checkbox-label {
+            text-align: center;
+            margin-top: 5px; /* Adjust the margin as needed */
+        }
+
+        .fare-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .fare-radio {
+            margin-right: 10px; /* Adjust as needed */
+        }
+
+        .fare-label {
+            cursor: pointer;
+        }
+
+        body {
+            font-size: 1.2rem !important; /* Adjust the size as needed */
+        }
+
+        .badge {
+            padding: 3px 6px;
+            border-radius: 3px;
+            margin-left: 5px; /* Adjust as needed */
+        }
+
+        input[type=radio] {
+            border: 0px;
+            width: 1em;
+            height: 1em;
+        }
+
+        .bb {
+            border-radius: 20px !important;
+            border-color: red !important;
+            padding: 10px;
+            font-size: 18px;
+            font-weight: bolder;
+            text-align: center;
+        }
+
+        main {
+            flex: 1 0 auto;
+            display: flex;
+
+            margin-bottom: 50px; /* Add margin to avoid footer overlap */
+        }
+
+        footer {
+            width: 100%;
+            padding: 10px 0;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+        }
+
+        .custom-toast {
+            width: 100vw !important;
+            height: 100vh !important;
+            max-width: 100vw !important;
+            max-height: 100vh !important;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            padding: 0 !important;
+            background: rgba(0, 0, 0, 0.8); /* Optional: Add a semi-transparent background */
+            box-sizing: border-box;
+            margin: 0; /* Remove default margin */
+        }
+
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        .loading-image {
+            max-width: 100%;
+            max-height: 80%; /* Adjust to ensure it doesn't overflow */
+        }
+
+        .loading-text {
+            margin-top: 20px;
+            font-weight: bolder;
+            font-family: 'pacifico', fantasy; /* Customize your font */
+            font-size: 50px; /* Customize your font size */
+            color: white; /* Customize your font color */
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            padding: 12px 16px;
+            z-index: 1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .arrow-container {
+            position: relative;
+            display: inline-block;
+        }
+        .arrow {
+            font-size: 24px;
+            color: red;
+            transition: transform 0.3s;
+        }
+        .arrow.rotate {
+            transform: rotate(180deg);
+        }
+        .card-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease, padding 0.5s ease;
+        }
+        .card-content.show {
+            max-height: 200px; /* Adjust this value as needed */
+            padding: 16px;
+        }
+        .arrow::after {
+            content: '\f107'; /* Unicode for fa-angle-down */
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            font-size: 48px;
+            color: rgba(255, 0, 0, 0.5);
+            position: absolute;
+            top: -50px;
+            left: 0;
+            right: 0;
+            margin: auto;
+            animation: moveShadow 2s infinite;
+        }
+        @keyframes moveShadow {
+            0% {
+                top: -50px;
+                opacity: 0;
+            }
+            50% {
+                top: 0;
+                opacity: 0.5;
+            }
+            100% {
+                top: 50px;
+                opacity: 0;
+            }
+        }
+        .tooltip {
+            visibility: hidden;
+            width: 140px;
+            background-color: black;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 0;
+            position: absolute;
+            bottom: 125%; /* Position above the arrow */
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 1;
+        }
+        .tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: black transparent transparent transparent;
+        }
+        .arrow-container:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .pcontainer {
+            justify-content: center !important;
+            position: relative; /* Enable positioning of the airplane */
+            width: 100%; /* Ensure the container spans the full width of its parent */
+            height: 4px; /* Increase the height to make space for the airplane */
+            background-color: #000; /* Black line background */
+        }
+
+        .pplane {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 30px;
+            color: orange;
+
+        }
+
+        .animate {
+            animation: moveLeftRight 4s linear forwards;
+        }
+
+        @keyframes moveLeftRight {
+            0% {
+                left: 0%;
+            }
+            50% {
+                left: 100%;
+            }
+            100% {
+                left: 0%;
+            }
+        }
+
+        .myElement {
+            display: flex;
+            justify-content: center; /* Horizontally center items */
+            align-items: center; /* Vertically center items */
+            width: 100%; /* Ensure the myElement spans the full width of its parent */
+            position: relative;
+        }
+
+
+    </style>
+
+</head>
+<body onload="renderFlights()">
+<div id="preloader">
+    <div class="loader">
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--text"></div>
+    </div>
+</div>
+<div id="main-wrapper">
+    <%- include('../partials/navbar2') %>
+    <%- include('../partials/sidebar2') %>
+    <div class=" content-body default-height">
+        <div class="container">
+            <div class="row pt-5 mb-5 mb-xl-9 pb-xl-1">
+                <div class="col-lg-4 col-xl-3 mt-xl-1">
+                    <div class="navbar-expand-xl navbar-expand-xl-collapse-block">
+                        <button class="btn d-xl-none mb-5 p-0 collapsed" type="button" data-toggle="collapse"
+                                data-target="#sidebar" aria-controls="sidebar" aria-expanded="false"
+                                aria-label="Toggle navigation">
+                            <i class="far fa-caret-square-down text-primary font-size-20 card-btn-arrow ml-0"></i>
+                            <span class="text-primary ml-2">Filters</span>
+                        </button>
+                        <div id="sidebar" class="card collapse navbar-collapse">
+                            <div class="mb-6 w-100">
+                                <div class="sidenav border border-color-8 rounded-xs">
+                                    <!-- Accordiaon -->
+                                    <div id="card shopCategoryAccordion" class="accordion rounded-0 shadow-none">
+                                        <div class="border-0">
+                                            <div class="card-collapse" id="shopCategoryHeadingOne">
+                                                <h3 class="mb-0">
+                                                    <button type="button"
+                                                            class="btn btn-link btn-block card-btn px-5 text-lh-3 collapsed"
+                                                            data-toggle="collapse" data-target="#shopCategoryOne"
+                                                            aria-expanded="false" aria-controls="shopCategoryOne">
+                                                            <span class="row align-items-center">
+                                                                <span class="col-9">
+                                                                    <span class="font-weight-bold font-size-17 text-dark mb-3">Stops
+                                                                    </span>
+                                                                </span>
+                                                                <span class="col-3 text-right">
+                                                                    <span class="card-btn-arrow">
+                                                                        <span class="fas fa-chevron-down small"></span>
+                                                                    </span>
+                                                                </span>
+                                                            </span>
+                                                    </button>
+                                                </h3>
+                                            </div>
+                                            <div id="shopCategoryOne" class="collapse show"
+                                                 aria-labelledby="shopCategoryHeadingOne"
+                                                 data-parent="#shopCategoryAccordion">
+                                                <div class="card-body pt-0 mt-1 px-5 pb-4" id="stopFilter">
+                                                    <!-- Checkboxes -->
+                                                    <div class="form-group font-size-1 text-lh-md text-gray-1 mb-3">
+                                                        <div class="custom-control custom-checkbox">
+                                                            <input type="checkbox" class="custom-control-input" id="1">
+                                                            <label class="custom-control-label" for="1">Non Stop</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group font-size-1 text-lh-md text-gray-1 mb-3">
+                                                        <div class="custom-control custom-checkbox">
+                                                            <input type="checkbox" class="custom-control-input" id="2">
+                                                            <label class="custom-control-label" for="2">1 Stop</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group font-size-1 text-lh-md text-gray-1 mb-3">
+                                                        <div class="custom-control custom-checkbox">
+                                                            <input type="checkbox" class="custom-control-input" id="3">
+                                                            <label class="custom-control-label" for="3">2 Stop</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group font-size-1 text-lh-md text-gray-1 mb-1">
+                                                        <div class="custom-control custom-checkbox">
+                                                            <input type="checkbox" class="custom-control-input" id="4">
+                                                            <label class="custom-control-label" for="4">3 Stop</label>
+                                                        </div>
+                                                    </div>
+                                                    <!-- End Checkboxes -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- End Accordion -->
+                                 
+                                    <div id="facilityCategoryAccordion" class="accordion rounded-0 shadow-none border-top">
+                                        <div class="border-0">
+                                            <div class="card-collapse" id="facilityCategoryHeadingOne">
+                                                <h3 class="mb-0">
+                                                    <button type="button"
+                                                            class="btn btn-link btn-block card-btn px-5 text-lh-3 collapsed"
+                                                            data-toggle="collapse" data-target="#facilityCategoryOne"
+                                                            aria-expanded="false" aria-controls="facilityCategoryOne">
+                                                            <span class="row align-items-center">
+                                                                <span class="col-9">
+                                                                    <span class="font-weight-bold font-size-17 text-dark mb-3">Airlines</span>
+                                                                </span>
+                                                                <span class="col-3 text-right">
+                                                                    <span class="card-btn-arrow">
+                                                                        <span class="fas fa-chevron-down small"></span>
+                                                                    </span>
+                                                                </span>
+                                                            </span>
+                                                    </button>
+                                                </h3>
+                                            </div>
+
+                                            <!-- Airline Filter -->
+
+                                            <div id="facilityCategoryOne" class="collapse show"
+                                                 aria-labelledby="facilityCategoryHeadingOne"
+                                                 data-parent="#facilityCategoryAccordion">
+                                                <div class="card-body pt-0 mt-1 px-5 pb-4" id="airlineFilter">
+                                                    <div class="form-group d-flex align-items-center justify-content-between font-size-1 text-lh-md text-gray-1 mb-3">
+                                                        <div class="custom-control custom-checkbox">
+                                                            <input type="checkbox" class="custom-control-input"
+                                                                   id="brandAdidas">
+                                                            <label class="custom-control-label" for="brandAdidas">Turkish
+                                                                Airlines</label>
+                                                        </div>
+                                                        <small>749</small>
+                                                    </div>
+                                                    <div class="form-group d-flex align-items-center justify-content-between font-size-1 text-lh-md text-gray-1 mb-3">
+                                                        <div class="custom-control custom-checkbox">
+                                                            <input type="checkbox" class="custom-control-input"
+                                                                   id="brandNewBalance">
+                                                            <label class="custom-control-label" for="brandNewBalance">United
+                                                                Airlines</label>
+                                                        </div>
+                                                        <small>630</small>
+                                                    </div>
+                                                    <div class="form-group d-flex align-items-center justify-content-between font-size-1 text-lh-md text-gray-1 mb-3">
+                                                        <div class="custom-control custom-checkbox">
+                                                            <input type="checkbox" class="custom-control-input"
+                                                                   id="brandNike">
+                                                            <label class="custom-control-label" for="brandNike">Major
+                                                                Airline</label>
+                                                        </div>
+                                                        <small>58</small>
+                                                    </div>
+                                                    <div class="form-group d-flex align-items-center justify-content-between font-size-1 text-lh-md text-gray-1 mb-3 pb-1">
+                                                        <div class="custom-control custom-checkbox">
+                                                            <input type="checkbox" class="custom-control-input"
+                                                                   id="brandFredPerry">
+                                                            <label class="custom-control-label" for="brandFredPerry">Alitalia</label>
+                                                        </div>
+                                                        <small>29</small>
+                                                    </div>
+                                                    <div class="form-group d-flex align-items-center justify-content-between font-size-1 text-lh-md text-gray-1 mb-3 pb-1">
+                                                        <div class="custom-control custom-checkbox">
+                                                            <input type="checkbox" class="custom-control-input"
+                                                                   id="brandPerry">
+                                                            <label class="custom-control-label" for="brandPerry">Air
+                                                                France</label>
+                                                        </div>
+                                                        <small>58</small>
+                                                    </div>
+                                                    <!-- End Checkboxes -->
+
+                                                    <!-- End Airline Filter -->
+                                                    <!-- View More - Collapse -->
+                                                    <div class="collapse" id="collapseBrand1">
+                                                        <div class="form-group d-flex align-items-center justify-content-between font-size-1 text-lh-md text-gray-1 mb-1">
+                                                            <div class="custom-control custom-checkbox">
+                                                                <input type="checkbox" class="custom-control-input"
+                                                                       id="brandGucci">
+                                                                <label class="custom-control-label"
+                                                                       for="brandGucci">Gucci</label>
+                                                            </div>
+                                                            <small>5</small>
+                                                        </div>
+                                                        <div class="form-group d-flex align-items-center justify-content-between font-size-1 text-lh-md text-gray-1 mb-3">
+                                                            <div class="custom-control custom-checkbox">
+                                                                <input type="checkbox" class="custom-control-input"
+                                                                       id="brandMango">
+                                                                <label class="custom-control-label"
+                                                                       for="brandMango">Mango</label>
+                                                            </div>
+                                                            <small>1</small>
+                                                        </div>
+                                                    </div>
+                                                    <!-- End View More - Collapse -->
+
+                                                    <!-- Link -->
+                                                    <a class="link link-collapse small font-size-1" data-toggle="collapse"
+                                                       href="#collapseBrand1" role="button" aria-expanded="false"
+                                                       aria-controls="collapseBrand1">
+                                                        <span class="link-collapse__default font-size-14">Show all 13</span>
+                                                        <span class="link-collapse__active font-size-14">Show less</span>
+                                                    </a>
+                                                    <!-- End Link -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                       <!-- Accordiaon -->
+                                       <div id="shopCartAccordion" class="accordion rounded shadow-none border-top">
+                                        <div class="border-0">
+                                            <div class="card-collapse" id="shopCardHeadingOne">
+                                                <h3 class="mb-0">
+                                                    <button type="button"
+                                                            class="btn btn-link btn-block card-btn px-5 text-lh-3 collapsed"
+                                                            data-toggle="collapse" data-target="#shopCardOne"
+                                                            aria-expanded="false" aria-controls="shopCardOne">
+                                                            <span class="row align-items-center">
+                                                                <span class="col-9">
+                                                                    <span class="d-block font-size-lg-15 font-size-17 font-weight-bold text-dark">Range(AED)</span>
+                                                                </span>
+                                                                <span class="col-3 text-right">
+                                                                    <span class="card-btn-arrow">
+                                                                        <span class="fas fa-chevron-down small"></span>
+                                                                    </span>
+                                                                </span>
+                                                            </span>
+                                                    </button>
+                                                </h3>
+                                            </div>
+                                            <div id="shopCardOne" class="collapse show" aria-labelledby="shopCardHeadingOne"
+                                                 data-parent="#shopCartAccordion">
+                                                <div class="card-body pt-0 px-5" id="priceFilter">
+                                                    <div class="pb-3 mb-1 d-flex text-lh-1">
+                                                        <span>£</span>
+                                                        <span id="rangeSliderExample3MinResult" class=""></span>
+                                                        <span class="mx-0dot5"> — </span>
+                                                        <span>£</span>
+                                                        <span id="rangeSliderExample3MaxResult" class=""></span>
+                                                    </div>
+                                                    <input class="js-range-slider" type="text"
+                                                           data-extra-classes="u-range-slider height-35"
+                                                           data-type="double"
+                                                           data-grid="false"
+                                                           data-hide-from-to="true"
+                                                           data-min="0"
+                                                           data-max="3456"
+                                                           data-from="200"
+                                                           data-to="3456"
+                                                           data-prefix="$"
+                                                           data-result-min="#rangeSliderExample3MinResult"
+                                                           data-result-max="#rangeSliderExample3MaxResult">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- End Accordion -->
+
+
+                                    <!-- End Accordion -->
+                                    <div id="propertyCategoryAccordion" class="accordion rounded-0 shadow-none border-top">
+                                        <div class="border-0">
+                                            <div class="card-collapse" id="propertyCategoryHeadingOne">
+                                                <h3 class="mb-0">
+                                                    <button type="button"
+                                                            class="btn btn-link btn-block card-btn px-5 text-lh-3 collapsed"
+                                                            data-toggle="collapse" data-target="#propertyCategoryOne"
+                                                            aria-expanded="false" aria-controls="propertyCategoryOne">
+                                                            <span class="row align-items-center">
+                                                                <span class="col-9">
+                                                                    <span class="font-weight-bold font-size-17 text-dark mb-3">Time</span>
+                                                                </span>
+                                                                <span class="col-3 text-right">
+                                                                    <span class="card-btn-arrow">
+                                                                        <span class="fas fa-chevron-down small"></span>
+                                                                    </span>
+                                                                </span>
+                                                            </span>
+                                                    </button>
+                                                </h3>
+                                            </div>
+                                            <div id="propertyCategoryOne" class="collapse show"
+                                                 aria-labelledby="propertyCategoryHeadingOne"
+                                                 data-parent="#propertyCategoryAccordion">
+                                                <div class="card-body pt-0 mt-1 px-5 pb-4" id="timeFilter">
+                                                    <div class="form-group d-flex align-items-center justify-content-between font-size-1 text-lh-md text-gray-1 mb-3">
+                                                        <div class="custom-control custom-checkbox">
+                                                            <input type="checkbox" class="custom-control-input"
+                                                                   id="brandhotel">
+                                                            <label class="custom-control-label"
+                                                                   for="brandhotel">Business</label>
+                                                        </div>
+                                                        <small>749</small>
+                                                    </div>
+                                                    <div class="form-group d-flex align-items-center justify-content-between font-size-1 text-lh-md text-gray-1 mb-3">
+                                                        <div class="custom-control custom-checkbox">
+                                                            <input type="checkbox" class="custom-control-input"
+                                                                   id="brandapartmet">
+                                                            <label class="custom-control-label" for="brandapartmet">First
+                                                                Class</label>
+                                                        </div>
+                                                        <small>630</small>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- End Accordion -->
+
+                                    <div id=fareCategoryAccordion" class="accordion rounded-0 shadow-none border-top">
+                                        <div class="border-0">
+                                            <div class="card-collapse" id="fareCategoryHeadingOne">
+                                                <h3 class="mb-0">
+                                                    <button type="button"
+                                                            class="btn btn-link btn-block card-btn px-5 text-lh-3 collapsed"
+                                                            data-toggle="collapse" data-target="#fareCategoryOne"
+                                                            aria-expanded="false" aria-controls="fareCategoryOne">
+                                                            <span class="row align-items-center">
+                                                                <span class="col-9">
+                                                                    <span class="font-weight-bold font-size-17 text-dark mb-3">Fare Classification</span>
+                                                                </span>
+                                                                <span class="col-3 text-right">
+                                                                    <span class="card-btn-arrow">
+                                                                        <span class="fas fa-chevron-down small"></span>
+                                                                    </span>
+                                                                </span>
+                                                            </span>
+                                                    </button>
+                                                </h3>
+                                            </div>
+                                            <div id="fareCategoryOne" class="collapse show"
+                                                 aria-labelledby="fareCategoryHeadingOne"
+                                                 data-parent="#fareCategoryAccordion">
+                                                <div class="card-body pt-0 mt-1 px-5 pb-4" id="myFareFilter">
+                                                    <div class="form-group d-flex align-items-center justify-content-between font-size-1 text-lh-md text-gray-1 mb-3">
+                                                        <div class="custom-control custom-checkbox">
+                                                            <input type="checkbox" class="custom-control-input"
+                                                                   id="brandhotel">
+                                                            <label class="custom-control-label"
+                                                                   for="brandhotel">Business</label>
+                                                        </div>
+                                                        <small>749</small>
+                                                    </div>
+                                                    <div class="form-group d-flex align-items-center justify-content-between font-size-1 text-lh-md text-gray-1 mb-3">
+                                                        <div class="custom-control custom-checkbox">
+                                                            <input type="checkbox" class="custom-control-input"
+                                                                   id="brandapartmet">
+                                                            <label class="custom-control-label" for="brandapartmet">First
+                                                                Class</label>
+                                                        </div>
+                                                        <small>630</small>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div id="cityCategoryAccordion" class="accordion rounded-0 shadow-none border-top">
+                                        <div class="border-0">
+                                            <div class="card-collapse" id="cityCategoryHeadingOne">
+                                                <h3 class="mb-0">
+                                                    <button type="button"
+                                                            class="btn btn-link btn-block card-btn px-5 text-lh-3 collapsed"
+                                                            data-toggle="collapse" data-target="#cityCategoryOne"
+                                                            aria-expanded="false" aria-controls="cityCategoryOne">
+                                                            <span class="row align-items-center">
+                                                                <span class="col-9">
+                                                                    <span class="font-weight-bold font-size-17 text-dark mb-3">Refund Status</span>
+                                                                </span>
+                                                                <span class="col-3 text-right">
+                                                                    <span class="card-btn-arrow">
+                                                                        <span class="fas fa-chevron-down small"></span>
+                                                                    </span>
+                                                                </span>
+                                                            </span>
+                                                    </button>
+                                                </h3>
+                                            </div>
+                                            <div id="cityCategoryOne" class="collapse show"
+                                                 aria-labelledby="cityCategoryHeadingOne"
+                                                 data-parent="#cityCategoryAccordion">
+                                                <div class="card-body pt-0 mt-1 px-5 pb-4" id="refundFilter">
+                                                    <div class="form-group font-size-1 text-lh-md text-secondary mb-3">
+                                                        <div class="custom-control custom-checkbox">
+                                                            <input type="checkbox" class="custom-control-input"
+                                                                   id="branddining">
+                                                            <label class="custom-control-label" for="branddining">Inflight
+                                                                Dining
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group font-size-1 text-lh-md text-secondary mb-3">
+                                                        <div class="custom-control custom-checkbox">
+                                                            <input type="checkbox" class="custom-control-input"
+                                                                   id="brandmusic">
+                                                            <label class="custom-control-label"
+                                                                   for="brandmusic">Music</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group font-size-1 text-lh-md text-secondary mb-3">
+                                                        <div class="custom-control custom-checkbox">
+                                                            <input type="checkbox" class="custom-control-input"
+                                                                   id="brandshopping">
+                                                            <label class="custom-control-label" for="brandshopping">Sky
+                                                                Shopping
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group font-size-1 text-lh-md text-secondary mb-1">
+                                                        <div class="custom-control custom-checkbox">
+                                                            <input type="checkbox" class="custom-control-input"
+                                                                   id="brandcabin">
+                                                            <label class="custom-control-label" for="brandcabin">Seats &
+                                                                Cabin
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <!-- End Checkboxes -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- End Accordion -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-9 mt-xl-1">
+                    <!-- Shop-control-bar Title
+                    <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-md-center mb-4 pb-1">
+                        <h3 class="font-size-21 font-weight-bold mb-4 mb-md-0 text-lh-1 text-center text-md-left"><span
+                                    id="resultCount">
+
+                        </span></h3>
+
+                        <div class="d-flex align-items-center justify-content-between justify-content-md-start">
+                            <div class="position-relative">
+                                <div class="dropdown">
+                                    <span>Sort By</span>
+                                    <div class="dropdown-content">
+                                        <a onclick="sortAir()" href="javascript:void(0)" class="dropdown-item">Airline</a>
+                                        <a onclick="sortDeparture()" href="javascript:void(0)" class="dropdown-item">Departure</a>
+                                        <a onclick="sortArrival()" href="javascript:void(0)" class="dropdown-item">Arrival</a>
+                                        <a onclick="sortPrice()" href="javascript:void(0)" class="dropdown-item">Fare</a>
+                                    </div>
+                                </div>
+
+                                <div id="basicDropdownClick" class="dropdown-menu dropdown-unfold" aria-labelledby="basicDropdownClickInvoker">
+                                    <a class="dropdown-item active" href="#">One</a>
+                                    <a class="dropdown-item" href="#">Two</a>
+                                    <a class="dropdown-item" href="#">Three</a>
+                                </div>
+                            </div> -->
+                            <!--                        <ul class="nav tab-nav-shop flex-nowrap" id="pills-tab" role="tablist">-->
+                            <!--                            <li class="nav-item">-->
+                            <!--                                <a class="nav-link font-size-22 p-0 ml-4" id="pills-three-example1-tab"-->
+                            <!--                                   data-toggle="pill" href="#pills-three-example1" role="tab"-->
+                            <!--                                   aria-controls="pills-three-example1" aria-selected="true">-->
+                            <!--                                    <div class="d-md-flex justify-content-md-center align-items-md-center">-->
+                            <!--                                        <i class="fa fa-list"></i>-->
+                            <!--                                    </div>-->
+                            <!--                                </a>-->
+                            <!--                            </li>-->
+                            <!--                            <li class="nav-item">-->
+                            <!--                                <a class="nav-link font-size-22 p-0 ml-2 active" id="pills-one-example1-tab"-->
+                            <!--                                   data-toggle="pill" href="#pills-one-example1" role="tab"-->
+                            <!--                                   aria-controls="pills-one-example1" aria-selected="false">-->
+                            <!--                                    <div class="d-md-flex justify-content-md-center align-items-md-center">-->
+                            <!--                                        <i class="fa fa-th"></i>-->
+                            <!--                                    </div>-->
+                            <!--                                </a>-->
+                            <!--                            </li>-->
+                            <!--                        </ul>-->
+                        <!-- </div>
+                    </div>
+                    <div class="border rounded">
+
+                    </div> -->
+
+                    <div class="row">
+
+                        <div class="col-12">
+                    <!-- End shop-control-bar Title -->
+                    <div class="tab-content" id="pills-tabContent">
+
+                        <div class="tab-pane fade show active" id="pills-three-example1" role="tabpanel"
+                             aria-labelledby="pills-three-example1-tab" data-target-group="groups">
+                            <div class="plane-loader">
+                                <div class="cloud cloud1"></div>
+                                <div class="cloud cloud4"></div>
+                                <div class="cloud cloud3"></div>
+                                <div class="plane"></div>
+                                <div class="cloud cloud2"></div>
+                                <div class="steam steam1">
+                                    <div class="c1"></div><div class="c2"></div><div class="c3"></div><div class="c4"></div><div class="c5"></div><div class="c6"></div><div class="c7"></div><div class="c8"></div><div class="c9"></div><div class="c10"></div>
+                                </div>
+                                <div class="steam steam2">
+                                    <div class="c1"></div><div class="c2"></div><div class="c3"></div><div class="c4"></div><div class="c5"></div><div class="c6"></div><div class="c7"></div><div class="c8"></div><div class="c9"></div><div class="c10"></div>
+                                </div>
+                                <div class="steam steam3">
+                                    <div class="c1"></div><div class="c2"></div><div class="c3"></div><div class="c4"></div><div class="c5"></div><div class="c6"></div><div class="c7"></div><div class="c8"></div><div class="c9"></div><div class="c10"></div>
+                                </div>
+                                <div class="steam steam4">
+                                    <div class="c1"></div><div class="c2"></div><div class="c3"></div><div class="c4"></div><div class="c5"></div><div class="c6"></div><div class="c7"></div><div class="c8"></div><div class="c9"></div><div class="c10"></div>
+                                </div>
+                            </div>
+                            <h3 style="text-align: center">Please Search Flight</h3>
+                        </div>
+                        <!--                    <div class="tab-pane fade show active" id="pills-one-example1" role="tabpanel"-->
+                        <!--                         aria-labelledby="pills-one-example1-tab" data-target-group="groups">-->
+                        <!--                        <div class="row" id="ans">-->
+
+                        <!--                        </div>-->
+                        <!--                    </div>-->
+                        <div class="text-center text-md-left font-size-14 mb-3 text-lh-1" id="pagination-info"></div>
+                        <nav aria-label="Page navigation">
+                            <ul id="pagination"
+                                class="list-pagination-1 pagination border border-color-4 rounded-sm mb-5 mb-lg-0 overflow-auto overflow-xl-visible justify-content-md-center align-items-center"></ul>
+                        </nav>
+                    </div>
+                    </div>
+
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="/assets2/flights/flightSearch/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <script src="/assets2/flights/flightSearch/js/components/hs.header.js"></script>
+    <script src="/assets2/flights/flightSearch/js/components/hs.unfold.js"></script>
+    <script src="/assets2/flights/flightSearch/js/components/hs.validation.js"></script>
+    <script src="/assets2/flights/flightSearch/js/components/hs.show-animation.js"></script>
+    <script src="/assets2/flights/flightSearch/js/components/hs.range-datepicker.js"></script>
+    <script src="/assets2/flights/flightSearch/js/components/hs.selectpicker.js"></script>
+    <script src="/assets2/flights/flightSearch/js/components/hs.range-slider.js"></script>
+    <script src="/assets2/flights/flightSearch/js/components/hs.go-to.js"></script>
+    <script src="/assets2/flights/flightSearch/js/components/hs.slick-carousel.js"></script>
+    <script src="/assets2/flights/flightSearch/js/components/hs.quantity-counter.js"></script>
+    <script src="/assets2/flights/flightSearch/js/components/hs.g-map.js"></script>
+    <script src="/assets2/flights/flightSearch/js/components/hs.modal-window.js"></script>
+    <script src="/assets2/vendor/global/global.min.js"></script>
+    <script src="/assets2/js/custom.min.js"></script>
+    <script src="/assets2/js/deznav-init.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.min.js"
+            integrity="sha512-frFP3ZxLshB4CErXkPVEXnd5ingvYYtYhE5qllGdZmcOlRKNEPbufyupfdSTNmoF5ICaQNO6SenXzOZvoGkiIA=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="/assets2/vendor/chartjs/chart.bundle.min.js"></script>
+    <script src="/assets2/vendor/bootstrap-datetimepicker/js/moment.js"></script>
+    <script src="/assets2/vendor/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+
+    <!-- Chart piety plugin files -->
+    <script src="/assets2/vendor/peity/jquery.peity.min.js"></script>
+
+    <!-- Apex Chart -->
+    <script src="/assets2/vendor/apexchart/apexchart.js"></script>
+
+    <!-- Dashboard 1 -->
+    <script src="/assets2/js/dashboard/dashboard-1.js"></script>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.21.0/jquery.validate.min.js"
+            integrity="sha512-KFHXdr2oObHKI9w4Hv1XPKc898mE4kgYx58oqsc/JqqdLMDI4YjOLzom+EMlW8HFUd0QfjfAvxSL6sEq/a42fQ=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- JS Implementing Plugins -->
+       <script src="/assets2/flights/flightSearch/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+    <script src="/assets2/flights/flightSearch/vendor/slick-carousel/slick/slick.js"></script>
+    <script src="/assets2/flights/flightSearch/vendor/gmaps/gmaps.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
+    <script src="/assets2/flights/flightSearch/vendor/custombox/dist/custombox.min.js"></script>
+    <script src="/assets2/flights/flightSearch/vendor/custombox/dist/custombox.legacy.min.js"></script>
+
+    <!-- JS MyTravel -->
+
+</div>
+<script>
+    async function logo()
+    {
+        let url="/getAgentData"
+        let response=await fetch(url,{
+            headers:{"Content-Type":"application/json"}
+        })
+        response=await response.json()
+        if (response.error != "") {
+            Swal.fire({
+                icon: "error",
+                title: response.error,
+                showConfirmButton: false,
+                timer: 3000
+            });
+        } else {
+            let x=response.data[0]
+            console.log(x)
+            console.log(x.logo)
+            if (x.logo && x.logo !== "") {
+                document.getElementById('demo_avatar').src = x.logo;
+            } else {
+                document.getElementById('demo_avatar').src = "/assets2/images/demo_avatar.png"; // Fallback to static image
+            }
+
+        }
+    }
+
+    $(document).ready(() => {
+        logo()
+    })
+    let book = [];
+    let $range;
+    let filterArray = [];
+    let markupData;
+    let platformData;
+    let platformFee = 0;
+    let platformFeeTax = 0;
+    let time = '';
+    let arr = [];
+    let selectedMarkupValue = 0;
+    $(window).on('load', function () {
+        // initialization of HSMegaMenu component
+        $('.js-mega-menu').HSMegaMenu({
+            event: 'hover',
+            pageContainer: $('.container'),
+            breakpoint: 1199.98,
+            hideTimeOut: 0
+        });
+
+        // Page preloader
+        setTimeout(function () {
+            $('#jsPreloader').fadeOut(500)
+        }, 800);
+    });
+
+    $(document).ready(function () {
+        // Assuming you have jQuery available
+        $(".js-range-slider").ionRangeSlider({
+            type: "double",
+            grid: false,
+            hide_from_to: true,
+            min: 0,
+            max: 3456,
+            from: 200,
+            to: 3456,
+            prefix: "$",
+            onChange: function (data) {
+                // Update the displayed min and max values
+                $("#rangeSliderExample3MinResult").text(data.from);
+                $("#rangeSliderExample3MaxResult").text(data.to);
+            }
+        });
+    });
+
+
+    async function renderFlights() {
+
+        let agents;
+        let child;
+        let infant;
+        var storedFormData = sessionStorage.getItem("fd");
+        if (storedFormData) {
+
+            var formDataArray = JSON.parse(storedFormData);
+            let length = formDataArray.length;
+            // Accessing "data" property by iterating over the array
+            // for (let i = 0; i < length; i++) {
+            //     if (formDataArray[i][0] === "data") {
+            //         markupData = JSON.parse(formDataArray[i][1]);
+            //         console.log(markupData);
+            //         break; // Stop iteration once "data" property is found
+            //     }
+            // }
+
+            // for (let i = 0; i < length; i++) {
+            //     if (formDataArray[i][0] === "platform") {
+            //         platformData = JSON.parse(formDataArray[i][1]);
+            //         console.log(platformData);
+            //         platformFee = platformData.recordset[0].fee;
+            //         platformFeeTax = platformData.recordset[0].tax;
+            //         break; // Stop iteration once "data" property is found
+            //     }
+            // }
+
+            for (let i = 0; i < length; i++) {
+                if (formDataArray[i][0] === "adults") {
+                    agents = JSON.parse(formDataArray[i][1]);
+
+                    break; // Stop iteration once "data" property is found
+                }
+            }
+
+            for (let i = 0; i < length; i++) {
+                if (formDataArray[i][0] === "child") {
+                    child = JSON.parse(formDataArray[i][1]);
+
+                    break; // Stop iteration once "data" property is found
+                }
+            }
+
+            for (let i = 0; i < length; i++) {
+                if (formDataArray[i][0] === "infants") {
+                    infant = JSON.parse(formDataArray[i][1]);
+
+                    break; // Stop iteration once "data" property is found
+                }
+            }
+            var fd = new FormData();
+
+            formDataArray.forEach(entry => {
+                // If entry has both key and value
+                if (entry.length === 2) {
+                    fd.append(entry[0], entry[1]);
+                }
+                // If entry has only key (for checkboxes without value)
+                else if (entry.length === 1) {
+                    fd.append(entry[0], "");
+                }
+            });
+
+            console.log(fd);
+        }
+        filterArray = [];
+        book = [];
+        arr = [];
+        returnArr = [];
+
+
+
+        document.getElementById("pills-three-example1").innerHTML = `
+<div class="demo"></div>
+                          `;
+
+//         document.getElementById("resultCount").innerHTML = `
+// <!--<div class="cloud11">-->
+
+// <!--                                <div class="light"></div>-->
+
+// <!--                                <img  src="https://images.vexels.com/media/users/3/145795/isolated/preview/05cd33059a006bf49006097af4ccba98-plane-in-flight-by-vexels.png" width="100px"/></div>-->
+// <!--<div id="canvas-container" >-->
+// <!--    <canvas id="sineCanvas"  width="1024" height="300"></canvas>-->
+// <!--</div>-->
+// `;
+
+        document.getElementById("airlineFilter").innerHTML = `<div class="srow">
+	<div class="scontainer">
+
+			<div class="scards">
+
+				<div class="scard_title sloading"></div>
+				<div class="scard_description sloading"></div>
+			</div>
+
+
+	</div>
+</div>`;
+
+        document.getElementById("stopFilter").innerHTML = `<div class="srow">
+	<div class="scontainer">
+
+			<div class="scards">
+
+				<div class="scard_title sloading"></div>
+				<div class="scard_description sloading"></div>
+			</div>
+
+
+	</div>
+</div>`;
+
+        document.getElementById("priceFilter").innerHTML = `<div class="srow">
+	<div class="scontainer">
+
+			<div class="scards">
+
+				<div class="scard_title sloading"></div>
+				<div class="scard_description sloading"></div>
+			</div>
+
+
+	</div>
+</div>`;
+
+        document.getElementById("timeFilter").innerHTML = `<div class="srow">
+	<div class="scontainer">
+
+			<div class="scards">
+
+				<div class="scard_title sloading"></div>
+				<div class="scard_description sloading"></div>
+			</div>
+
+
+	</div>
+</div>`;
+
+        $('#pagination').twbsPagination('destroy');
+
+        let flat = '';
+        let myAns = '';
+        let flat1 = '';
+        try{
+            let val = await fetch("/flights/roundFlightResults",{
+                method : "POST",
+                body : fd
+            });
+
+            val = await val.json();
+
+            console.log(val);
+
+
+
+            if(val.ResponseStatus === 1)
+            {
+
+                var toastMixin = Swal.mixin({
+                    toast: true,
+                    icon: 'success',
+                    title: 'General Title',
+                    animation: false,
+                    position: 'top-right',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                });
+                Swal.fire({
+                    toast: true,
+                    iconHtml: '✈️', // Airplane emoji
+                    html: `<h6 style="color:white">Flights Found</h6>`,
+                    animation: true,
+                    position: 'top',
+                    showConfirmButton: false,
+                    timer: 5000,
+                    timerProgressBar: true,
+                    background: 'green', // Orange background color
+                    customClass: {
+                        popup: 'colored-toast',
+                        timerProgressBar: 'white-timer'
+                    },
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                });
+
+                const itemsPerPage = 15;
+                let totalPages = 0;
+                // const airlineNames = getUniqueAirlineNames(val.Results[0]);
+                // Display items for the specified page
+                sessionStorage.setItem("TraceId", val.TraceId);
+                for (let i = 0; i < val.response.Journeys[0].Flights.length; i++) {
+                    let source = '';
+                    let destination = '';
+                    let departureTime = '';
+                    let arrivalTime = '';
+                    let lcc = '';
+                    let lccColor = '';
+                    let refund = '';
+                    let fromTerminal = '';
+                    let fromAirportName = '';
+                    let toAirportName = '';
+                    let toTerminal = '';
+                    let flightDetails = val.response.Journeys[0].Flights[i];
+                    let Segments = val.response.Journeys[0].Flights[i].Segments;
+                    let stops = Segments.length - 1;
+
+                    // return
+
+                    let returnSource = '';
+                    let returnDestination = '';
+                    let returnDepartureTime = '';
+                    let returnArrivalTime = '';
+                    let returnLcc = '';
+                    let returnLccColor = '';
+                    let returnRefund = '';
+                    let returnFromTerminal = '';
+                    let returnFromAirportName = '';
+                    let returnToAirportName = '';
+                    let returnToTerminal = '';
+                    let returnFlightDetails = val.response.Journeys[1].Flights[i];
+                    let returnSegments = val.response.Journeys[1].Flights[i].Segments;
+                    let returnStops = returnSegments.length - 1;
+
+
+                    book.push(val.response.Journeys[0].Flights[i]);
+                    if (stops === 0) {
+                        stops = 'Non Stop';
+                    } else {
+                        stops = `${stops} Stop`;
+                    }
+
+                    if (returnStops === 0) {
+                        returnStops = 'Non Stop';
+                    } else {
+                        returnStops = `${stops} Stop`;
+                    }
+
+
+
+                    let via = '';
+
+                    for(let x = 0; x <Segments.length; x++) {
+
+                        if(x !== 0) {
+                            via += `<img class="img-fluid" src="https://content.airhex.com/content/logos/airlines_${Segments[x].Carrier}_15_15_s.png" alt="Image-Description"> <span>${Segments[x].OriginDestination.Departure}</span>&nbsp;`;
+                        }
+
+                        else if(x !== 0 && x !== Segments.length - 1) {
+                            via += `<img class="img-fluid" src="https://content.airhex.com/content/logos/airlines_${Segments[x].Carrier}_15_15_s.png" alt="Image-Description"> <span>${Segments[x].OriginDestination.Departure}</span>&nbsp;`;
+                        }
+                    }
+
+
+                    let l = Segments.length - 1;
+
+                    source = flightDetails.OriginDestination.Departure;
+                    fromTerminal = Segments[0].DepartureTerminal;
+                    fromAirportName = Segments[0].OriginDestination.Departure
+                    departureTime = Segments[0].OriginDestination.DepartureDateTime;
+                    destination = flightDetails.OriginDestination.Arrival;
+                    toTerminal = Segments[l].ArrivalTerminal;
+                    toAirportName = Segments[l].OriginDestination.Arrival
+                    arrivalTime = Segments[l].OriginDestination.ArrivalDateTime;
+
+
+                    let rl = returnSegments.length - 1;
+
+returnSource = returnFlightDetails.OriginDestination.Departure;
+returnFromTerminal = returnSegments[0].DepartureTerminal;
+returnFromAirportName = returnSegments[0].OriginDestination.Departure
+returnDepartureTime = returnSegments[0].OriginDestination.DepartureDateTime;
+returnDestination = returnFlightDetails.OriginDestination.Arrival;
+returnToTerminal = returnSegments[rl].ArrivalTerminal;
+returnToAirportName = returnSegments[rl].OriginDestination.Arrival
+returnArrivalTime = returnSegments[rl].OriginDestination.ArrivalDateTime;
+
+
+                    const formattedDepartureTime = formatTime(departureTime);
+                    const formattedReturnDepartureTime = formatTime(returnDepartureTime);
+                    console.log(departureTime + " " + arrivalTime);
+                    const formattedArrivalTime = formatTime(arrivalTime);
+                    const formattedReturnArrivalTime = formatTime(returnArrivalTime);
+
+                    console.log(`Departure Time: ${formattedDepartureTime}`);
+                    console.log(`Arrival Time: ${formattedArrivalTime}`);
+
+                    const formattedDuration = calculateDuration(departureTime, arrivalTime);
+                    const formattedReturnDuration = calculateDuration(returnDepartureTime, returnArrivalTime);
+                    console.log(`Duration: ${formattedDuration}`);
+
+                    if (isEarlyMorning(formattedDepartureTime)) {
+                        time = 'Early Morning'
+                    } else if (isMorning(formattedDepartureTime)) {
+
+                        time = 'Morning';
+                    } else if (isMidDay(formattedDepartureTime)) {
+                        time = 'Mid Day';
+                    } else if (isEvening(formattedDepartureTime)) {
+                        time = 'Evening';
+                    }
+
+                    var fareClassificationValue = '';
+                    var colorCode = '';
+                    if (flightDetails.FareName !== undefined) {
+                        // Access the FareClassification property
+                        fareClassificationValue = flightDetails.FareName;
+
+                        colorCode = 'grey';
+                        // Continue with the rest of your code
+                    } else {
+                        // Handle the case where FareClassification is not present
+                        colorCode = 'grey';
+                        fareClassificationValue = "Normal";
+                    }
+
+                    let airlineCode = flightDetails.ValidatingCarrier;
+                    let returnFlightAirlineCode = returnFlightDetails.ValidatingCarrier;
+                    let fareType = fareClassificationValue;
+                    let markupValue = 0;
+// Iterate through each markup entry
+//                     await  markupData.forEach(markup => {
+//
+//                         if (markup.carrierCode === "All" && markup.fareType === "All") {
+//                             if (markup.type === "Percentage") {
+//                                 markupValue = (markup.markup_value / 100) * val.Results[0][i].Fare.PublishedFare;
+//                             } else {
+//                                 markupValue = markup.markup_value;
+//                             }
+//                         } else if (markup.carrierCode === "All" && markup.fareType === fareType) {
+//                             if (markup.type === "Percentage") {
+//                                 markupValue = (markup.markup_value / 100) * val.Results[0][i].Fare.PublishedFare;
+//                             } else {
+//                                 markupValue = markup.markup_value;
+//                             }
+//                         } else if (markup.carrierCode === airlineCode && markup.fareType === "All") {
+//                             if (markup.type === "Percentage") {
+//                                 markupValue = (markup.markup_value / 100) * val.Results[0][i].Fare.PublishedFare;
+//                             } else {
+//                                 markupValue = markup.markup_value;
+//                             }
+//                         } else {
+//
+//                             if (markup.carrierCode === airlineCode && markup.fareType === fareType) {
+//                                 if (markup.type === "Percentage") {
+//                                     markupValue = (markup.markup_value / 100) * val.Results[0][i].Fare.PublishedFare;
+//                                 } else {
+//                                     markupValue = markup.markup_value;
+//                                 }
+//                             }
+//                         }
+//                     });
+
+                    if (!arr.hasOwnProperty(Segments[0].FlightNumber)) {
+                        arr[Segments[0].FlightNumber] = {
+                            Supplier: "RIYA TRAVELS",
+                            travelDate : val.travelDate,
+                            AirlineCode: airlineCode,
+                            returnFlightAirlineCode :  returnFlightAirlineCode,
+                            FlightNumber: Segments[0].FlightNumber,
+                            returnFlightNumber : returnSegments[0].FlightNumber,
+                            airline: airlineCode,
+                            returnAirline : returnFlightAirlineCode,
+                            formattedDepartureTime: formattedDepartureTime,
+                            formattedReturnDepartureTime : formattedReturnDepartureTime,
+                            source: source,
+                            returnSource : returnSource,
+                            formattedDuration: formattedDuration,
+                            formattedReturnDuration : formattedReturnDuration,
+                            stops: stops,
+                            returnStops : returnStops,
+                            via : via,
+                            json : flightDetails,
+                            returnJson : returnFlightDetails,
+                            formattedArrivalTime: formattedArrivalTime,
+                            formattedReturnArrivalTime : formattedReturnArrivalTime,
+                            destination: destination,
+                            returnDestination : returnDestination,
+                            time: time,
+                            details: []
+                        };
+                    }
+                    arr[Segments[0].FlightNumber].details.push({
+                        colorCode: colorCode,
+                        fareClassificationValue: fareClassificationValue,
+                        //   InCommssion: parseFloat(val.Results[0][i].Fare.PublishedFare - val.Results[0][i].Fare.OfferedFare).toFixed(2),
+                        Markup: parseFloat(markupValue.toFixed(2)),
+                        PublishedFare: parseFloat(flightDetails.TotalFare.toFixed(2)) + parseFloat(returnFlightDetails.TotalFare.toFixed(2)) + parseFloat(markupValue.toFixed(2)),
+                        refund: refund,
+                        ResultIndex: flightDetails.FlightKey
+                    });
+
+
+                }
+
+                for (let i = 0; i < val.response.Journeys[1].Flights.length; i++) {
+                    let source = '';
+                    let destination = '';
+                    let departureTime = '';
+                    let arrivalTime = '';
+                    let lcc = '';
+                    let lccColor = '';
+                    let refund = '';
+                    let fromTerminal = '';
+                    let fromAirportName = '';
+                    let toAirportName = '';
+                    let toTerminal = '';
+                    let flightDetails = val.response.Journeys[1].Flights[i];
+                    let Segments = val.response.Journeys[1].Flights[i].Segments;
+                    let stops = Segments.length - 1;
+                    book.push(val.response.Journeys[1].Flights[i]);
+                    if (stops === 0) {
+                        stops = 'Non Stop';
+                    } else {
+                        stops = `${stops} Stop`;
+                    }
+
+
+
+                    let via = '';
+
+                    for(let x = 0; x <Segments.length; x++) {
+
+                        if(x !== 0) {
+                            via += `<img class="img-fluid" src="https://content.airhex.com/content/logos/airlines_${Segments[x].Carrier}_15_15_s.png" alt="Image-Description"> <span>${Segments[x].OriginDestination.Departure}</span>&nbsp;`;
+                        }
+
+                        else if(x !== 0 && x !== Segments.length - 1) {
+                            via += `<img class="img-fluid" src="https://content.airhex.com/content/logos/airlines_${Segments[x].Carrier}_15_15_s.png" alt="Image-Description"> <span>${Segments[x].OriginDestination.Departure}</span>&nbsp;`;
+                        }
+                    }
+
+
+                    let l = Segments.length - 1;
+
+                    source = flightDetails.OriginDestination.Departure;
+                    fromTerminal = Segments[0].DepartureTerminal;
+                    fromAirportName = Segments[0].OriginDestination.Departure
+                    departureTime = Segments[0].OriginDestination.DepartureDateTime;
+                    destination = flightDetails.OriginDestination.Arrival;
+                    toTerminal = Segments[l].ArrivalTerminal;
+                    toAirportName = Segments[l].OriginDestination.Arrival
+                    arrivalTime = Segments[l].OriginDestination.ArrivalDateTime;
+
+
+                    const formattedDepartureTime = formatTime(departureTime);
+                    console.log(departureTime + " " + arrivalTime);
+                    const formattedArrivalTime = formatTime(arrivalTime);
+
+                    console.log(`Departure Time: ${formattedDepartureTime}`);
+                    console.log(`Arrival Time: ${formattedArrivalTime}`);
+
+                    const formattedDuration = calculateDuration(departureTime, arrivalTime);
+                    console.log(`Duration: ${formattedDuration}`);
+
+                    if (isEarlyMorning(formattedDepartureTime)) {
+                        time = 'Early Morning'
+                    } else if (isMorning(formattedDepartureTime)) {
+
+                        time = 'Morning';
+                    } else if (isMidDay(formattedDepartureTime)) {
+                        time = 'Mid Day';
+                    } else if (isEvening(formattedDepartureTime)) {
+                        time = 'Evening';
+                    }
+
+                    var fareClassificationValue = '';
+                    var colorCode = '';
+                    if (flightDetails.FareName !== undefined) {
+                        // Access the FareClassification property
+                        fareClassificationValue = flightDetails.FareName;
+
+                        colorCode = 'grey';
+                        // Continue with the rest of your code
+                    } else {
+                        // Handle the case where FareClassification is not present
+                        colorCode = 'grey';
+                        fareClassificationValue = "Normal";
+                    }
+
+                    let airlineCode = flightDetails.ValidatingCarrier;
+                    let fareType = fareClassificationValue;
+                    let markupValue = 0;
+// Iterate through each markup entry
+//                     await  markupData.forEach(markup => {
+//
+//                         if (markup.carrierCode === "All" && markup.fareType === "All") {
+//                             if (markup.type === "Percentage") {
+//                                 markupValue = (markup.markup_value / 100) * val.Results[0][i].Fare.PublishedFare;
+//                             } else {
+//                                 markupValue = markup.markup_value;
+//                             }
+//                         } else if (markup.carrierCode === "All" && markup.fareType === fareType) {
+//                             if (markup.type === "Percentage") {
+//                                 markupValue = (markup.markup_value / 100) * val.Results[0][i].Fare.PublishedFare;
+//                             } else {
+//                                 markupValue = markup.markup_value;
+//                             }
+//                         } else if (markup.carrierCode === airlineCode && markup.fareType === "All") {
+//                             if (markup.type === "Percentage") {
+//                                 markupValue = (markup.markup_value / 100) * val.Results[0][i].Fare.PublishedFare;
+//                             } else {
+//                                 markupValue = markup.markup_value;
+//                             }
+//                         } else {
+//
+//                             if (markup.carrierCode === airlineCode && markup.fareType === fareType) {
+//                                 if (markup.type === "Percentage") {
+//                                     markupValue = (markup.markup_value / 100) * val.Results[0][i].Fare.PublishedFare;
+//                                 } else {
+//                                     markupValue = markup.markup_value;
+//                                 }
+//                             }
+//                         }
+//                     });
+
+                    if (!returnArr.hasOwnProperty(Segments[0].FlightNumber)) {
+                        returnArr[Segments[0].FlightNumber] = {
+                            Supplier: "RIYA TRAVELS",
+                            travelReturnDate : val.travelReturnDate,
+                            AirlineCode: airlineCode,
+                            FlightNumber: Segments[0].FlightNumber,
+                            airline: airlineCode,
+                            formattedDepartureTime: formattedDepartureTime,
+                            source: source,
+                            formattedDuration: formattedDuration,
+                            stops: stops,
+                            via : via,
+                            json : flightDetails,
+                            formattedArrivalTime: formattedArrivalTime,
+                            destination: destination,
+                            time: time,
+                            details: []
+                        };
+                    }
+                    returnArr[Segments[0].FlightNumber].details.push({
+                        colorCode: colorCode,
+                        fareClassificationValue: fareClassificationValue,
+                        //   InCommssion: parseFloat(val.Results[0][i].Fare.PublishedFare - val.Results[0][i].Fare.OfferedFare).toFixed(2),
+                        Markup: parseFloat(markupValue.toFixed(2)),
+                        PublishedFare: parseFloat(flightDetails.TotalFare.toFixed(2))  + parseFloat(markupValue.toFixed(2)),
+                        refund: refund,
+                        ResultIndex: flightDetails.FlightKey
+                    });
+
+
+                }
+
+
+                // display function
+                arr = Object.values(arr);
+
+                arr.sort((a, b) => a.details[0].PublishedFare - b.details[0].PublishedFare); // Ascending order
+                // Or, if you want to log the whole object as a string
+             
+
+                totalPages = Math.ceil(arr.length / itemsPerPage);
+
+
+                returnArr = Object.values(returnArr);
+
+returnArr.sort((a, b) => a.details[0].PublishedFare - b.details[0].PublishedFare); // Ascending order
+// Or, if you want to log the whole object as a string
+
+let totalPagesr = Math.ceil(returnArr.length / itemsPerPage);
+
+
+                // Display initial page
+                // displayItemsForPage(1);
+
+                $('#pagination').twbsPagination({
+                    totalPages: totalPages,
+                    visiblePages: 7,
+                    onPageClick: function (event, page) {
+                        displayItemsForPage(page,arr,itemsPerPage);
+                    }
+                });
+
+                // $('#paginationr').twbsPagination({
+                //     totalPages: totalPagesr,
+                //     visiblePages: 7,
+                //     onPageClick: function (event, page) {
+                //         displayItemsForPager(page,returnArr,itemsPerPage);
+                //     }
+                // });
+
+                await updateFilterDivs();
+
+            }
+
+            else if(val.ResponseStatus === 4)
+            {
+                var toastMixin = Swal.mixin({
+                    toast: true,
+                    icon: 'success',
+                    title: 'General Title',
+                    animation: false,
+                    position: 'top-right',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                });
+                Swal.fire({
+                    toast: true,
+                    iconHtml: '✈️', // Airplane emoji
+                    html: `<h6 style="color:white">No Flights Found</h6>`,
+                    animation: true,
+                    position: 'top',
+                    showConfirmButton: false,
+                    timer: 5000,
+                    timerProgressBar: true,
+                    background: 'red', // Orange background color
+                    customClass: {
+                        popup: 'colored-toast',
+                        timerProgressBar: 'white-timer'
+                    },
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                });
+                document.getElementById("pills-three-example1").innerHTML = `Please Login First`;
+
+                document.getElementById("airlineFilter").innerHTML = `No Filters Available`;
+
+                document.getElementById("stopFilter").innerHTML = `No Filters Available`;
+
+                document.getElementById("priceFilter").innerHTML = `No Filters Available`;
+
+                // document.getElementById("fareFilter").innerHTML = `No Filters Available`;
+            }
+
+            else if(val.ResponseStatus === 14)
+            {
+                var toastMixin = Swal.mixin({
+                    toast: true,
+                    icon: 'success',
+                    title: 'General Title',
+                    animation: false,
+                    position: 'top-right',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                });
+                Swal.fire({
+                    toast: true,
+                    iconHtml: '✈️', // Airplane emoji
+                    html: `<h6 style="color:white">No Flights Found</h6>`,
+                    animation: true,
+                    position: 'top',
+                    showConfirmButton: false,
+                    timer: 5000,
+                    timerProgressBar: true,
+                    background: 'red', // Orange background color
+                    customClass: {
+                        popup: 'colored-toast',
+                        timerProgressBar: 'white-timer'
+                    },
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                });
+                document.getElementById("pills-three-example1").innerHTML = `Error Occurred Please try Again !`;
+
+                document.getElementById("airlineFilter").innerHTML = `No Filters Available`;
+
+                document.getElementById("stopFilter").innerHTML = `No Filters Available`;
+
+                document.getElementById("priceFilter").innerHTML = `No Filters Available`;
+
+                // document.getElementById("fareFilter").innerHTML = `No Filters Available`;
+            }
+
+            else
+            {
+                var toastMixin = Swal.mixin({
+                    toast: true,
+                    icon: 'success',
+                    title: 'General Title',
+                    animation: false,
+                    position: 'top-right',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                });
+                Swal.fire({
+                    toast: true,
+                    iconHtml: '✈️', // Airplane emoji
+                    html: `<h6 style="color:white">No Flights Found</h6>`,
+                    animation: true,
+                    position: 'top',
+                    showConfirmButton: false,
+                    timer: 5000,
+                    timerProgressBar: true,
+                    background: 'red', // Orange background color
+                    customClass: {
+                        popup: 'colored-toast',
+                        timerProgressBar: 'white-timer'
+                    },
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                });
+                document.getElementById("pills-three-example1").innerHTML = `No Flights Found`;
+                document.getElementById("airlineFilter").innerHTML = `No Filters Available`;
+
+                document.getElementById("stopFilter").innerHTML = `No Filters Available`;
+
+                document.getElementById("priceFilter").innerHTML = `No Filters Available`;
+
+                //  document.getElementById("fareFilter").innerHTML = `No Filters Available`;
+            }
+
+
+        }
+        catch (e) {
+            console.log(e)
+            Swal.fire({
+                title: "Retry Again",
+                html: `${e}`,
+                icon: "error",
+                allowOutsideClick: false,
+                confirmButtonText: "Confirm"
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+
+                    window.location.href= "/tdoFlight"
+                }
+            });
+        }
+
+
+
+    }
+
+    async function updateFilterDivs() {
+        const filters = [
+            updateStopsFilterDiv,
+            updateAirlineFilterDiv,
+            updateTimeFilterDiv,
+            updateRefundFilterDiv,
+            updateFareFilterDiv,
+            updatePriceFilterDiv
+        ];
+
+        const promises = filters.map(filter => executeWithCatch(filter));
+        await Promise.all(promises);
+    }
+
+    async function executeWithCatch(filterFunction) {
+        try {
+            await filterFunction();
+        } catch (error) {
+            console.error(`Error in ${filterFunction.name}:`, error);
+        }
+    }
+
+    async function updateStopsFilterDiv() {
+        const stopsFilterDiv = document.getElementById('stopFilter');
+        stopsFilterDiv.innerHTML = '';  // Clear existing content
+
+        // Create a map to store counts for each stops option
+        const stopsCounts = new Map();
+
+        // Calculate counts for each stops option
+        arr.forEach((flight) => {
+            const stops = flight.stops || 'Non Stop';  // Use 'stops' property, default to 'Non Stop' if undefined
+            stopsCounts.set(stops, (stopsCounts.get(stops) || 0) + 1);
+        });
+
+        // Create and append elements for each stops option
+        stopsCounts.forEach((count, stopsOption) => {
+            const checkboxId = `stops${stopsOption.replace(/\s/g, '')}`;
+            const checkbox = `<input type="checkbox" class="custom-control-input" id="${checkboxId}" value="${stopsOption}" onchange="applyFilters(this,false,'stops')">`;
+            const label = `<label class="custom-control-label" for="${checkboxId}">${stopsOption}</label>`;
+            const small = `<small>${count} flights</small>`;
+
+            const div = `
+            <div class="form-group font-size-1 text-lh-md text-gray-1 mb-3">
+                <div class="custom-control custom-checkbox">
+                    ${checkbox}
+                    ${label}
+                </div>
+            </div>
+        `;
+
+            // Append the div to the main container
+            stopsFilterDiv.insertAdjacentHTML('beforeend', div);
+        });
+    }
+
+    async function updateAirlineFilterDiv() {
+        const airlineFilterDiv = document.getElementById('airlineFilter');
+        airlineFilterDiv.innerHTML = '';  // Clear existing content
+
+        // Create a map to store counts for each airline
+        const airlineCounts = new Map();
+
+        // Calculate counts for each airline
+        arr.forEach((flight) => {
+            const airlineName = flight.airline;
+            airlineCounts.set(airlineName, (airlineCounts.get(airlineName) || 0) + 1);
+        });
+
+        // Create and append elements for each airline
+        airlineCounts.forEach((count, airlineName) => {
+            const checkboxId = `brand${airlineName.replace(/\s/g, '')}`;
+            const checkbox = `<input type="checkbox" class="custom-control-input" id="${checkboxId}" value="${airlineName}" onchange="applyFilters(this,false,'airline')">`;
+            const label = `<label class="custom-control-label" for="${checkboxId}">${airlineName}</label>`;
+            const small = `<small><img class="img-fluid" src="https://content.airhex.com/content/logos/airlines_${airlineName}_30_30_s.png" alt="Image-Description"></small>`;
+
+            const div = `
+            <div class="form-group d-flex align-items-center justify-content-between font-size-1 text-lh-md text-gray-1 mb-3">
+                <div class="custom-control custom-checkbox">
+                    ${checkbox}
+                    ${label}
+                </div>
+                ${small}
+            </div>
+        `;
+
+            // Append the div to the main container
+            airlineFilterDiv.insertAdjacentHTML('beforeend', div);
+        });
+    }
+
+    async function updateTimeFilterDiv() {
+        const timeFilterDiv = document.getElementById('timeFilter');
+        timeFilterDiv.innerHTML = '';  // Clear existing content
+
+        // Options for time filtering
+        const timeOptions = [
+            { label: 'Early Morning', range: '00am - 06am' },
+            { label: 'Morning', range: '06am - 12am' },
+            { label: 'Mid Day', range: '12am - 18pm' },
+            { label: 'Evening', range: '18pm - 00am' }
+        ];
+
+        // Create and append elements for each time option
+        timeOptions.forEach((timeOption) => {
+            const checkboxId = `time${timeOption.label.replace(/\s/g, '')}`;
+            const checkbox = `<input type="checkbox" class="custom-control-input" id="${checkboxId}" value="${timeOption.label}" onchange="applyFilters(this,false,'time')">`;
+            const label = `<label class="custom-control-label" for="${checkboxId}">${timeOption.label} (${timeOption.range})</label>`;
+
+            const div = `
+            <div class="form-group font-size-1 text-lh-md text-gray-1 mb-3">
+                <div class="custom-control custom-checkbox">
+                    ${checkbox}
+                    ${label}
+                </div>
+            </div>
+        `;
+
+            // Append the div to the main container
+            timeFilterDiv.insertAdjacentHTML('beforeend', div);
+        });
+    }
+
+    async function updateRefundFilterDiv() {
+        const refundFilterDiv = document.getElementById('refundFilter');
+        refundFilterDiv.innerHTML = '';  // Clear existing content
+
+        // Options for refund filtering
+        const refundOptions = ['Refundable', 'Non Refundable'];
+
+        // Create and append elements for each refund option
+        refundOptions.forEach((refundOption) => {
+            const checkboxId = `refund${refundOption.replace(/\s/g, '')}`;
+            const checkbox = `<input type="checkbox" class="custom-control-input" id="${checkboxId}" value="${refundOption}" onchange="applyFilters(this,false,'refund')">`;
+            const label = `<label class="custom-control-label" for="${checkboxId}">${refundOption}</label>`;
+
+            const div = `
+            <div class="form-group font-size-1 text-lh-md text-gray-1 mb-3">
+                <div class="custom-control custom-checkbox">
+                    ${checkbox}
+                    ${label}
+                </div>
+            </div>
+        `;
+
+            // Append the div to the main container
+            refundFilterDiv.insertAdjacentHTML('beforeend', div);
+        });
+    }
+
+    async function updateFareFilterDiv() {
+        const fareDiv = document.getElementById('myFareFilter');
+        fareDiv.innerHTML = ''; // Clear existing content
+
+        // Create a map to store counts for each fare type
+        const fareCounts = new Map();
+
+        arr.forEach((flight) => {
+            flight.details.forEach((detail) => {
+                if (detail.fareClassificationValue) {
+                    const fareType = detail.fareClassificationValue;
+                    const colorCode = detail.colorCode;
+                    const key = `${fareType}-${colorCode}`;
+                    fareCounts.set(key, (fareCounts.get(key) || 0) + 1);
+                }
+            });
+        });
+
+        // Create and append elements for each fare type
+        fareCounts.forEach((count, key) => {
+            const [fareType, colorCode] = key.split('-');
+
+            const checkboxId = `fareType${fareType.replace(/\s/g, '')}`;
+            const checkbox = `<input type="checkbox" class="custom-control-input" id="${checkboxId}" value="${fareType}" onchange="applyFilters(this,false,'fare')" style="appearance: none; border: 2px solid ${colorCode} !important; background-color: ${colorCode} !important; border-radius: 5px;">`;
+            const label = `<label class="custom-control-label" for="${checkboxId}" style="color: white; margin: 5px">${fareType}</label>`;
+            const small = `<small style="background-color: ${colorCode}; color: white !important; text-decoration-color: white;">${count} flights</small>`;
+
+            const div = `
+            <div class="form-group d-flex align-items-center justify-content-between font-size-1 text-lh-md text-gray-1 mb-3">
+                <div class="custom-control custom-checkbox" style="background-color: ${colorCode} !important;">
+                    ${checkbox}
+                    ${label}
+                </div>
+            </div>
+        `;
+
+            fareDiv.insertAdjacentHTML('beforeend', div);
+        });
+    }
+
+    async function updatePriceFilterDiv() {
+        const priceDiv = document.getElementById("priceFilter");
+        priceDiv.innerHTML = '';
+        const publishedFares = [];
+
+        // Collect PublishedFares
+        arr.forEach(flight => {
+            // Iterate through each detail in the flight
+            flight.details.forEach(detail => {
+                // Push the PublishedFare to the publishedFares array
+                publishedFares.push(detail.PublishedFare);
+            });
+        });
+
+        // Calculate min and max values from the array of PublishedFares
+        const minPublishedFare = Math.min(...publishedFares);
+        const maxPublishedFare = Math.max(...publishedFares);
+
+        const div = `
+        <div class="pb-3 mb-1 d-flex text-lh-1">
+            <span>AED&nbsp;</span>
+            <span id="rangeSliderExample3MinResult" class=""></span>
+            <span class="mx-0dot5"> — </span>
+            <span>AED&nbsp;</span>
+            <span id="rangeSliderExample3MaxResult" class=""></span>
+        </div>
+        <input class="js-range-slider" type="text"
+            data-extra-classes="u-range-slider height-35"
+            data-result-min="#rangeSliderExample3MinResult"
+            data-result-max="#rangeSliderExample3MaxResult">
+    `;
+
+        priceDiv.insertAdjacentHTML('beforeend', div);
+
+        // Initialize ionRangeSlider for price filter
+        $(document).ready(function () {
+            $("#rangeSliderExample3MinResult").text(minPublishedFare);
+            $("#rangeSliderExample3MaxResult").text(maxPublishedFare);
+            $(".js-range-slider").ionRangeSlider({
+                type: "double",
+                grid: false,
+                hide_from_to: true,
+                hide_min_max: true,
+                min: minPublishedFare,
+                max: maxPublishedFare,
+                from: minPublishedFare,
+                to: maxPublishedFare,
+                prefix: "AED",
+                onChange: function (data) {
+                    $("#rangeSliderExample3MinResult").text(data.from);
+                    $("#rangeSliderExample3MaxResult").text(data.to);
+
+                    // Call the applyFilters function with the range slider value
+                    applyFilters(data, true, 'price');
+                }
+            });
+        });
+    }
+
+    function formatTime(timeString) {
+        const date = new Date(timeString);
+        const hours = date.getHours();
+        const minutes = date.getMinutes();
+
+        // Format the time as HH:mm
+        const formattedTime = `${hours < 10 ? '0' : ''}${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
+
+        return formattedTime;
+    }
+
+    function calculateDuration(departureTime, arrivalTime) {
+        const departureDate = new Date(departureTime);
+        const arrivalDate = new Date(arrivalTime);
+
+        const durationInMinutes = Math.floor((arrivalDate - departureDate) / (1000 * 60));
+
+        const hours = Math.floor(durationInMinutes / 60);
+        const minutes = durationInMinutes % 60;
+
+        const formattedHours = hours < 10 ? `0${hours}` : `${hours}`;
+        const formattedMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`;
+
+        const formattedDuration = `${formattedHours} hrs ${formattedMinutes} mins`;
+
+        return formattedDuration;
+    }
+
+    $(document).ready(function () {
+        if ($('div.trav_toggle').length > 0) {
+            $('div.trav_toggle').click(function () {
+                if ($(this).hasClass('open')) {
+                    $(this).removeClass('open');
+                    $(this).addClass('close');
+                    $(this).next().slideDown(100);
+                    return false;
+                } else {
+                    $(this).removeClass('close');
+                    $(this).addClass('open');
+                    $(this).next().slideUp(100);
+                    return false;
+                }
+            });
+        }
+        $('.trav_done').click(function () {
+            if ($('div.trav_toggle').hasClass('close')) {
+                $('div.trav_toggle').removeClass('close');
+                $('div.trav_toggle').addClass('open');
+                $('div.trav_toggle').next().slideUp(100);
+            }
+        });
+    });
+
+    function process(v) {
+        var Adult = parseInt(document.getElementById("ddlAdult").value);
+        var Child = parseInt(document.getElementById("ddlChild").value);
+        var Infant = parseInt(document.getElementById("ddlInfant").value);
+        Adult += v;
+        var total = Adult + Child;
+        if (total <= 9 && Adult >= 1) {
+            document.getElementById("ddlAdult").value = Adult;
+            if (Infant > Adult) {
+                document.getElementById("ddlInfant").value = Adult;
+            }
+            var TotTravelers = Adult + Child + Infant;
+            document.getElementById("txtTotalTravelers").value = (TotTravelers + " Traveler(s)");
+        }
+    }
+
+
+    function process2(s) {
+        var Adult = parseInt(document.getElementById("ddlAdult").value);
+        var Child = parseInt(document.getElementById("ddlChild").value);
+        var Infant = parseInt(document.getElementById("ddlInfant").value);
+        Child += s;
+        var total = Adult + Child;
+        if (total <= 9 && Child >= 0) {
+            document.getElementById("ddlChild").value = Child;
+            var TotTravelers = Adult + Child + Infant;
+            document.getElementById("txtTotalTravelers").value = (TotTravelers + " Traveler(s)");
+        }
+    }
+
+
+    function process3(sh) {
+        var Adult = parseInt(document.getElementById("ddlAdult").value);
+        var Infant = parseInt(document.getElementById("ddlInfant").value);
+        var Child = parseInt(document.getElementById("ddlChild").value);
+        Infant += sh;
+        if (Infant <= Adult && Infant >= 0) {
+            document.getElementById("ddlInfant").value = Infant;
+            var TotTravelers = Adult + Child + Infant;
+            document.getElementById("txtTotalTravelers").value = (TotTravelers + " Traveler(s)");
+        }
+    }
+
+    function smoothScrollToTop() {
+        function scrollToTop() {
+            const currentPosition = window.scrollY || document.documentElement.scrollTop;
+
+            if (currentPosition > 0) {
+                // Calculate the next scroll position
+                const newPosition = currentPosition - 100; // Adjust the scroll speed by changing this value
+
+                // Scroll to the new position with a smooth behavior
+                window.scrollTo(0, newPosition);
+
+                // Request the next animation frame
+                window.requestAnimationFrame(scrollToTop);
+            }
+        }
+
+        // Call the smooth scroll function to start the scroll
+        scrollToTop();
+    }
+
+    function displayItemsForPage(pageNumber, arr, itemsPerPage) {
+    let flat1 = '';
+
+    if (arr.length === 0) {
+        document.getElementById("pills-three-example1").innerHTML = "No Flights Found";
+
+        // Update pagination info
+        const paginationInfo = document.getElementById('pagination-info');
+        paginationInfo.textContent = `Showing 0–0 of ${arr.length}`;
+    } else {
+        const startIndex = (pageNumber - 1) * itemsPerPage;
+        const endIndex = Math.min(startIndex + itemsPerPage, arr.length);
+        const itemsToDisplay = arr.slice(startIndex, endIndex);
+
+      //  document.getElementById("resultCount").innerText = arr.length + " results found";
+        flat1 = '';
+
+        for (let i = startIndex; i < endIndex; i++) {
+            flat1 += `
+            <div class="col-md-12"> <!-- Full-width card -->
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- Departure Flight Section -->
+                            <div class="col-md-6 border-right">
+                                 <div class="travel-info-header mb-2 text-center border-bottom">
+            <h4 class="font-size-12 font-weight-bold text-primary d-flex justify-content-center align-items-center">
+                <span>${arr[0].source}</span>
+                <i class="fa-solid fa-plane text-danger mx-2"></i>
+                <span>${arr[0].destination}</span>
+                <span class="ml-4">Travel Date: ${arr[0].travelDate}</span>
+            </h4>
+        </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="d-flex flex-column align-items-center">
+                                        <img class="img-fluid mb-2" src="https://content.airhex.com/content/logos/airlines_${arr[i].AirlineCode}_30_30_s.png" alt="Airline Logo">
+                                        <span class="font-size-14 text-gray-1">${arr[i].airline} ${arr[i].FlightNumber}</span>
+                                    </div>
+                                    <div class="d-flex flex-column align-items-center">
+                                        <i class="fa-solid fa-plane-departure mb-2"></i>
+                                        <h6 class="font-weight-bold text-gray-5">${arr[i].formattedDepartureTime}</h6>
+                                        <span class="font-size-14 text-gray-1">${arr[i].source}</span>
+                                    </div>
+                                    <div class="d-flex flex-column align-items-center">
+                                        <h6 class="font-size-14 font-weight-bold text-gray-5">${arr[i].formattedDuration}</h6>
+                                        <div class="border-top border-primary border-width-2 my-1 w-50"></div>
+                                        <div class="font-size-14 text-gray-1">${arr[i].stops}</div>
+                                    </div>
+                                    <div class="d-flex flex-column align-items-center">
+                                        <i class="fa-solid fa-plane-arrival mb-2"></i>
+                                        <h6 class="font-weight-bold text-gray-5">${arr[i].formattedArrivalTime}</h6>
+                                        <span class="font-size-14 text-gray-1">${arr[i].destination}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            
+
+                            <!-- Return Flight Section -->
+                            <div class="col-md-6">
+                                      <div class="travel-info-header mb-2 text-center border-bottom">
+            <h4 class="font-size-12 font-weight-bold text-primary d-flex justify-content-center align-items-center">
+                <span>${arr[0].destination}</span>
+                <i class="fa-solid fa-plane text-danger mx-2"></i>
+                <span>${arr[0].source}</span>
+                <span class="ml-4">Travel Date: ${arr[0].travelDate}</span>
+            </h4>
+        </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="d-flex flex-column align-items-center">
+                                        <img class="img-fluid mb-2" src="https://content.airhex.com/content/logos/airlines_${arr[i].returnFlightAirlineCode}_30_30_s.png" alt="Airline Logo">
+                                        <span class="font-size-14 text-gray-1">${arr[i].returnAirline} ${arr[i].returnFlightNumber}</span>
+                                    </div>
+                                    <div class="d-flex flex-column align-items-center">
+                                        <i class="fa-solid fa-plane-departure mb-2"></i>
+                                        <h6 class="font-weight-bold text-gray-5">${arr[i].formattedReturnDepartureTime}</h6>
+                                        <span class="font-size-14 text-gray-1">${arr[i].returnSource}</span>
+                                    </div>
+                                    <div class="d-flex flex-column align-items-center">
+                                        <h6 class="font-size-14 font-weight-bold text-gray-5">${arr[i].formattedReturnDuration}</h6>
+                                        <div class="border-top border-primary border-width-2 my-1 w-50"></div>
+                                        <div class="font-size-14 text-gray-1">${arr[i].returnStops}</div>
+                                    </div>
+                                    <div class="d-flex flex-column align-items-center">
+                                        <i class="fa-solid fa-plane-arrival mb-2"></i>
+                                        <h6 class="font-weight-bold text-gray-5">${arr[i].formattedReturnArrivalTime}</h6>
+                                        <span class="font-size-14 text-gray-1">${arr[i].returnDestination}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Fare and Book Now Button -->
+                        <div class="border-top mt-4 pt-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="font-weight-bold">${arr[i].details[0].PublishedFare} AED</h6>
+                                    <small class="text-muted">${arr[i].details[0].fareClassificationValue}</small>
+                                </div>
+                                <button class="btn btn-primary" onclick="bookFlight('${arr[i].Supplier}', '${arr[i].formattedArrivalTime}', '${arr[i].formattedDepartureTime}', '${arr[i].formattedDuration}')">Book Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `;
+        }
+
+        document.getElementById("pills-three-example1").innerHTML = `
+            <div class="row">${flat1}</div>
+        `;
+
+        // Update pagination info
+        const paginationInfo = document.getElementById('pagination-info');
+        const startItemNumber = startIndex + 1;
+        const endItemNumber = endIndex;
+        paginationInfo.textContent = `Showing ${startItemNumber}–${endItemNumber} of ${arr.length}`;
+    }
+}
+
+function displayItemsForPager(pageNumber, arr, itemsPerPage) {
+    let flat1 = '';
+
+    if (arr.length === 0) {
+        console.log(arr);
+        document.getElementById("pills-three-example1r").innerHTML = "No Flights Found";
+
+        // Update pagination info
+        const paginationInfo = document.getElementById('pagination-infor');
+        paginationInfo.textContent = `Showing 0–0 of ${arr.length}`;
+    } else {
+        // Sort by PublishedFare
+        arr.forEach(flight => {
+            flight.details.sort((a, b) => parseFloat(a.PublishedFare) - parseFloat(b.PublishedFare));
+        });
+
+        const startIndex = (pageNumber - 1) * itemsPerPage;
+        const endIndex = Math.min(startIndex + itemsPerPage, arr.length);
+        const itemsToDisplay = arr.slice(startIndex, endIndex);
+
+       // document.getElementById("resultCount").innerText = arr.length + " results found";
+
+        flat1 = '';
+
+        flat1 += `
+        <div class="travel-info-header mb-4 text-center">
+            <h4 class="font-weight-bold text-primary d-flex justify-content-center align-items-center">
+                <span>${arr[0].source}</span>
+                <i class="fa-solid fa-plane text-danger mx-2"></i>
+                <span>${arr[0].destination}</span>
+                <span class="ml-4 badge badge-danger p-1">Travel Date: ${arr[0].travelReturnDate}</span>
+            </h4>
+        </div>
+        `;
+
+        for (let i = startIndex; i < endIndex; i++) {
+            flat1 += `
+            <div class="col-md-12"> 
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-body">
+                        <div class="row align-items-center text-center">
+                            <div class="col-md-3">
+                                <img class="img-fluid mb-2" src="https://content.airhex.com/content/logos/airlines_${arr[i].AirlineCode}_30_30_s.png" alt="Image-Description">
+                                <div class="font-size-14 text-gray-1">${arr[i].airline} ${arr[i].FlightNumber}</div>
+                                <span class="font-size-10 badge badge-${arr[i].Supplier === "TripJack" ? 'warning' : 'success'}">${arr[i].Supplier}</span>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="d-flex flex-column align-items-center">
+                                    <i class="fa-solid fa-plane-departure mb-2"></i>
+                                    <h6 class="font-weight-bold font-size-21 text-gray-5 mb-0">${arr[i].formattedDepartureTime}</h6>
+                                    <span class="font-size-14 text-gray-1">${arr[i].source}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="d-flex flex-column align-items-center">
+                                    <h6 class="font-size-14 font-weight-bold text-gray-5 mb-0">${arr[i].formattedDuration}</h6>
+                                    <div class="border-top border-primary border-width-2 my-1 w-50"></div>
+                                    <div class="font-size-14 text-gray-1">${arr[i].stops} <br> ${arr[i].via}</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="d-flex flex-column align-items-center">
+                                    <i class="fa-solid fa-plane-arrival mb-2"></i>
+                                    <h6 class="font-weight-bold font-size-21 text-gray-5 mb-0">${arr[i].formattedArrivalTime}</h6>
+                                    <span class="font-size-14 text-gray-1">${arr[i].destination}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border-top mt-3 pt-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <div class="font-weight-bold">${arr[i].details[0].PublishedFare} AED</div>
+                                    <small class="text-muted">${arr[i].details[0].fareClassificationValue}</small>
+                                </div>
+                                <button class="btn btn-primary" onclick="bookFlight('${arr[i].Supplier}', '${arr[i].formattedArrivalTime}', '${arr[i].formattedDepartureTime}', '${arr[i].formattedDuration}')">Book Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `;
+        }
+
+        document.getElementById("pills-three-example1r").innerHTML = `
+           ${flat1}
+        `;
+
+        // Update pagination info
+        const paginationInfo = document.getElementById('pagination-infor');
+        const startItemNumber = startIndex + 1;
+        const endItemNumber = endIndex;
+        paginationInfo.textContent = `Showing ${startItemNumber}–${endItemNumber} of ${arr.length}`;
+    }
+}
+
+
+    function displayItemsForPage1(pageNumber, arr, itemsPerPage) {
+        let flat1 = '';
+
+        if (arr.length === 0) {
+            console.log(arr);
+            document.getElementById("pills-three-example1").innerHTML = "No Flights Found";
+           
+
+            // Update pagination info
+            const paginationInfo = document.getElementById('pagination-info');
+            const startItemNumber = 0;
+            const endItemNumber = 0;
+            paginationInfo.textContent = `Showing ${startItemNumber}–${endItemNumber} of ${arr.length}`;
+        } else {
+            // Number of items per page
+            // Calculate total number of pages
+            arr.forEach(flight => {
+                flight.filteredDetails.sort((a, b) => parseFloat(a.PublishedFare) - parseFloat(b.PublishedFare));
+            });
+
+            const startIndex = (pageNumber - 1) * itemsPerPage;
+            const endIndex = Math.min(startIndex + itemsPerPage, arr.length);
+            console.log("------->" + endIndex);
+            const itemsToDisplay = arr.slice(startIndex, endIndex);
+
+            let info = `<div>
+                
+                </div>`;
+
+            document.getElementById("resultCount").innerText = arr.length + " results found";
+
+            flat1 = '';
+
+                 // Show source, destination, and travel date once at the top
+        flat1 += `
+        <div class="travel-info-header mb-4 text-center">
+            <h4 class="font-weight-bold text-primary">${arr[0].source} <i class="fa-solid fa-plane text-danger mx-2"></i> ${arr[0].destination}</h4>
+            <span class="badge badge-info p-2">Travel Date: ${arr[0].formattedTravelDate}</span>
+        </div>
+        `;
+
+            for (let i = startIndex; i < endIndex; i++) {
+                flat1 += `
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-body">
+                        <div class="row align-items-center text-center">
+                            <div class="col-md-2">
+                                <img class="img-fluid" src="https://content.airhex.com/content/logos/airlines_${arr[i].AirlineCode}_30_30_s.png" alt="Image-Description">
+                                <div class="font-size-14 text-gray-1">${arr[i].airline} ${arr[i].FlightNumber}</div>
+                                <span class="badge badge-${arr[i].Supplier === "TripJack" ? 'warning' : 'success'}">${arr[i].Supplier}</span>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="d-flex flex-column align-items-center">
+                                    <i class="flaticon-aeroplane font-size-30 text-primary mb-2"></i>
+                                    <h6 class="font-weight-bold font-size-21 text-gray-5 mb-0">${arr[i].formattedDepartureTime}</h6>
+                                    <span class="font-size-14 text-gray-1">${arr[i].source}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="d-flex flex-column align-items-center">
+                                    <h6 class="font-size-14 font-weight-bold text-gray-5 mb-0">${arr[i].formattedDuration}</h6>
+                                    <div class="border-top border-primary border-width-2 my-1 w-50"></div>
+                                    <div class="font-size-14 text-gray-1">${arr[i].stops} <br> ${arr[i].via}</div>
+ <div class="arrow-container">
+<i class='fas fa-angle-double-down' style='font-size:24px;color:red' class="btn btn-link text-gray-1" type="button" data-toggle="collapse" data-target="#extraDetailss${i}" aria-expanded="false" aria-controls="extraDetailss${i}"></i>
+ <div class="tooltip">For more flight details</div>
+
+
+    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="d-flex flex-column align-items-center">
+                                    <i class="d-block rotate-90 flaticon-aeroplane font-size-30 text-primary mb-2"></i>
+                                    <h6 class="font-weight-bold font-size-21 text-gray-5 mb-0">${arr[i].formattedArrivalTime}</h6>
+                                    <span class="font-size-14 text-gray-1">${arr[i].destination}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="border-left pl-3">
+                                    <div class="mb-2">`;
+
+                // Display only two fare classifications initially
+                for (let j = 0; j < 1 && j < arr[i].filteredDetails.length; j++) {
+                    let refund1 = '';
+                    if (arr[i].filteredDetails[j]["refund"] === 'Refundable') {
+                        refund1 = `<div class="circle bg-success text-white">R</div>`;
+                    } else if (arr[i].filteredDetails[j]["refund"] === 'Partial Refundable') {
+                        refund1 = `<div class="circle bg-warning text-white">PR</div>`;
+                    } else {
+                        refund1 = `<div class="circle bg-danger text-white">NR</div>`;
+                    }
+                    flat1 += `
+                                        <div class="text-gray-1">
+                                            <div class="fare-item">
+                            <input type="radio" class="fare-radio" id="${arr[i].filteredDetails[j].ResultIndex}" name="publishFare" onchange="selectedMarkup(${arr[i].filteredDetails[j].Markup})"/>
+                                                <label for="${arr[i].filteredDetails[j].ResultIndex}" class="fare-label">${arr[i].filteredDetails[j].PublishedFare} AED <span class="badge" style="background-color: ${arr[i].filteredDetails[j].colorCode}; color: white !important;">${arr[i].filteredDetails[j].fareClassificationValue}</span></label>
+
+                                                <label style="margin-left: 2px"> ${refund1}</label>
+                                                <label class="fare-label" onclick="trigger()"><img src="/assets/img/rule.png"></label>
+                                            </div>
+                                        </div>
+                `;
+                }
+
+                // Display a button to toggle visibility of additional fare classifications
+                if (arr[i].filteredDetails.length > 1) {
+                    flat1 += `
+                                        <button class="btn btn-link text-gray-1" type="button" data-toggle="collapse" data-target="#extraDetails${i}" aria-expanded="false" aria-controls="extraDetails${i}">
+                                            <i class="fa fa-eye"></i> View More Fares <i class="fa fa-angle-down"></i>
+                                        </button>
+                `;
+                }
+
+                // Additional fare classifications initially hidden
+                flat1 += `
+                                        <div class="collapse mt-3" id="extraDetails${i}">
+            `;
+
+                // Loop through additional fare classifications starting from index 2
+                for (let j = 1; j < arr[i].filteredDetails.length; j++) {
+                    let refund1 = '';
+                    if (arr[i].filteredDetails[j]["refund"] === 'Refundable') {
+                        refund1 = `<div class="circle bg-success text-white">R</div>`;
+                    } else if (arr[i].filteredDetails[j]["refund"] === 'Partial Refundable') {
+                        refund1 = `<div class="circle bg-warning text-white">PR</div>`;
+                    } else {
+                        refund1 = `<div class="circle bg-danger text-white">NR</div>`;
+                    }
+                    flat1 += `
+                                            <div class="text-gray-1">
+                                                <div class="fare-item">
+                                                    <input type="radio" class="fare-radio" id="${arr[i].filteredDetails[j].ResultIndex}" name="publishFare" onchange="selectedMarkup(${arr[i].filteredDetails[j].Markup})"/>
+                                                    <label for="${arr[i].filteredDetails[j].ResultIndex}" class="fare-label">${arr[i].filteredDetails[j].PublishedFare} AED <span class="badge" style="background-color: ${arr[i].filteredDetails[j].colorCode}; color: white !important;">${arr[i].filteredDetails[j].fareClassificationValue}</span></label>
+
+                                                    <label style="margin-left: 2px"> ${refund1}</label>
+                                                    <label class="fare-label" onclick="trigger()"><img src="/assets/img/rule.png" id="showModalBtn"></label>
+                                                </div>
+                                            </div>
+                `;
+                }
+                flat1 += `
+                                                    </div>
+                                                    <a class="btn btn-outline-primary border-radius-3 d-flex align-items-center justify-content-center font-weight-bold border-width-2 w-100" onclick="bookFlight('${arr[i].Supplier}','${arr[i].formattedArrivalTime}','${arr[i].formattedDepartureTime}','${arr[i].formattedDuration}')">Book Now</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="collapse mt-3" id="extraDetailss${i}">
+            `;
+                if (arr[i].Supplier === "RIYA TRAVELS") {
+                    for (let s = 0; s < arr[i].json.Segments.length; s++) {
+                        let Segments = arr[i].json.Segments;
+
+                        let source = arr[i].json.OriginDestination.Departure;
+                        let fromTerminal = Segments[s].DepartureTerminal;
+                        let fromAirportName = Segments[s].OriginDestination.Departure;
+                        let departureTime = Segments[s].OriginDestination.DepartureDateTime;
+                        let destination = arr[i].json.OriginDestination.Arrival;
+                        let toTerminal = Segments[s].ArrivalTerminal;
+                        let toAirportName = Segments[s].OriginDestination.Arrival;
+                        let arrivalTime = Segments[s].OriginDestination.ArrivalDateTime;
+
+                        let fromTime = Segments[s].OriginDestination.DepartureDateTime;
+                        let toTime = Segments[s].OriginDestination.ArrivalDateTime;
+
+                        let FlightNo = `${Segments[s].FlightNumber}`;
+                        let FlightName = `${arr[i].json.ValidatingCarrier}`;
+
+                        const formattedDepartureTime = formatTime(fromTime);
+                        const formattedArrivalTime = formatTime(toTime);
+
+                        const Duration = calculateDuration(fromTime, toTime);
+                        console.log(`Duration: ${Duration}`);
+
+                        flat1 += `
+                    <div class="travel-card">
+                        <div class="d-flex justify-content-between align-items-center text-primary font-weight-bold mb-2">
+                            <div><img class="img-fluid" src="https://content.airhex.com/content/logos/airlines_${FlightName}_30_30_s.png" alt="Image-Description"> ${FlightName} ${FlightNo}</div>
+                            <div><i class="fa fa-clock"></i> Duration: ${Duration}</div>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center">
+                                <div class="ml-2">
+                                    <div class="font-weight-bold text-dark mb-1"><i class="fa fa-clock"></i> Departure Time: ${formattedDepartureTime}</div>
+                                    <div class="font-weight-bold text-dark mb-1"><i class="fa fa-clock"></i> Arrival Time: ${formattedArrivalTime}</div>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                 <i class="d-block  flaticon-aeroplane font-size-30 text-primary mb-2"></i>
+                                <div class="text-left mx-3">
+                                    <div class="font-weight-bold text-dark mb-1"> Terminal: ${fromTerminal}</div>
+                                    <div class="text-muted">${fromAirportName}</div>
+                                </div>
+ <i class="d-block rotate-90 flaticon-aeroplane font-size-30 text-primary mb-2"></i>
+
+                                <div class="text-left mx-3">
+                                    <div class="font-weight-bold text-dark mb-1"> Terminal: ${toTerminal}</div>
+                                    <div class="text-muted">${toAirportName}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                    }
+                }
+                else {
+                    arr[i].json.segments.forEach(segment => {
+                        let waitTime = '';
+                        if (segment.waitTime !== undefined && segment.waitTime !== null) {
+                            waitTime = `<div class="border-top pt-1">Wait Time: ${segment.waitTime}</div>`;
+                        }
+
+                        flat1 += `
+                        <div class="shadow-soft bg-white border-radius-2 p-4 mb-3">
+                            <div class="d-flex justify-content-between align-items-center text-primary font-weight-bold mb-2">
+                                <div>${segment.airline} ${segment.flightNumber}</div>
+                                <div>${segment.formattedDuration}</div>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center">
+                                    <div>
+                                        <i class="flaticon-aeroplane font-size-40 text-primary mb-2"></i>
+                                    </div>
+                                    <div class="ml-2">
+                                        <div class="font-weight-bold text-dark mb-1">${segment.formattedDepartureTime} - ${segment.formattedArrivalTime}</div>
+                                        <div class="text-muted">${segment.departureDate} - ${segment.arrivalDate}</div>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <div class="text-right">
+                                        <div class="font-weight-bold text-dark mb-1">${segment.departureCity} (${segment.departure})</div>
+                                        <div class="text-muted">${segment.departureAirport}</div>
+                                    </div>
+                                    <i class="flaticon-aeroplane rotate-90 font-size-40 text-primary mx-3"></i>
+                                    <div class="text-left">
+                                        <div class="font-weight-bold text-dark mb-1">${segment.arrivalCity} (${segment.arrival})</div>
+                                        <div class="text-muted">${segment.arrivalAirport}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            ${waitTime}
+                        </div>
+                    `;
+                    });
+                }
+                flat1 += `
+                            </div>
+                        </div>
+                    `;
+            }
+            console.log(flat1);
+            document.getElementById("pills-three-example1").innerHTML = flat1;
+
+            // Update pagination info
+            const paginationInfo = document.getElementById('pagination-info');
+            const startItemNumber = startIndex + 1;
+            const endItemNumber = endIndex;
+            paginationInfo.textContent = `Showing ${startItemNumber}–${endItemNumber} of ${arr.length}`;
+
+    
+        }
+    }
+
+    function applyFilters(value, priceF, filterType) {
+        $('#pagination').twbsPagination('destroy');
+        let stopsFilter = [];
+        let fareTypeFilter = [];
+        let airlineFilter = [];
+        let timeFilter = [];
+        let refundFilter = [];
+        if(priceF)
+        {
+
+            // Clear all other filters when using price filter
+            filterArray = [];
+
+            // Clear radio buttons
+            $('input[type="checkbox"]').prop('checked', false);
+
+
+            const minPrice = parseFloat(value.from);
+            const maxPrice = parseFloat(value.to);
+
+            // Update or add 'Min Price' and 'Max Price' in filterArray
+            const minPriceFilterIndex = filterArray.findIndex(option => option.startsWith('Min Price'));
+            const maxPriceFilterIndex = filterArray.findIndex(option => option.startsWith('Max Price'));
+
+            if (minPriceFilterIndex !== -1) {
+                filterArray[minPriceFilterIndex] = `Min Price: ${minPrice}`;
+            } else {
+                filterArray.push(`Min Price: ${minPrice}`);
+            }
+
+            if (maxPriceFilterIndex !== -1) {
+                filterArray[maxPriceFilterIndex] = `Max Price: ${maxPrice}`;
+            } else {
+                filterArray.push(`Max Price: ${maxPrice}`);
+            }
+
+
+
+            console.log(filterArray);
+
+            const hasFilters = filterArray.length > 0;
+            const filteredArr = hasFilters
+                ? arr.filter((flight) => {
+                    const minPriceOption = filterArray.find(option => option.startsWith('Min Price'));
+                    const maxPriceOption = filterArray.find(option => option.startsWith('Max Price'));
+                    let priceFilter = true;
+
+                    if (minPriceOption && maxPriceOption) {
+                        const minPrice = parseFloat(minPriceOption.split(':')[1]);
+                        const maxPrice = parseFloat(maxPriceOption.split(':')[1]);
+                        // Iterate over each detail in the flight and check PublishedFare
+                        // Filter the details array based on the price range condition
+                        // Create a filtered copy of the details array for display
+                        flight.filteredDetails = flight.details.filter(detail => {
+                            return parseFloat(detail.PublishedFare) >= minPrice && parseFloat(detail.PublishedFare) <= maxPrice;
+                        });
+                        // Merge filteredDetails into filterArray
+                        filterArray.push(...flight.filteredDetails);
+
+                        // Check if there are any details left after filtering
+                        priceFilter = flight.filteredDetails.length > 0;
+                    }
+
+                    return (
+
+                        priceFilter
+                    );
+                })
+                : arr;
+
+            console.log(filteredArr);
+            const totalPages = Math.ceil(filteredArr.length / 15);
+
+            $('#pagination').twbsPagination({
+                totalPages: totalPages,
+                visiblePages: 7,
+                onPageClick: function (event, page) {
+                    displayItemsForPage1(page, filteredArr, 15);
+                }
+            });
+
+        }
+        else {
+            // Handle checkbox filtering
+            const isChecked = value.checked;
+
+            if (isChecked) {
+                filterArray.push({ filterType, value: value.value });
+            } else {
+                const index = filterArray.findIndex(item => item.value === value.value && item.filterType === filterType);
+                if (index !== -1) {
+                    filterArray.splice(index, 1);
+                }
+            }
+
+            let js_range_mass = $(".js-range-slider").data("ionRangeSlider");
+            js_range_mass.reset();
+
+
+            // Separate the filterArray into stops, fareType, and airline arrays
+            const stopsFilter = filterArray.filter((item) => item.filterType === 'stops').map((item) => item.value);
+            const fareTypeFilter = filterArray.filter((item) => item.filterType === 'fare').map((item) => item.value);
+            const airlineFilter = filterArray.filter((item) => item.filterType === 'airline').map((item) => item.value);
+            const timeFilter = filterArray.filter((item) => item.filterType === 'time').map((item) => item.value);
+            const refundFilter = filterArray.filter((item) => item.filterType === 'refund').map((item) => item.value);
+
+            // Apply OR (||) within the same array and AND (&&) across different arrays
+            let finalFilteredArr = []; // Define finalFilteredArr outside
+
+            finalFilteredArr = arr.filter((flight) => {
+                // Filter details array based on fareType and refund
+                flight.filteredDetails = flight.details.filter((detail) => {
+                    return (
+                        (fareTypeFilter.length === 0 || fareTypeFilter.includes(detail.fareClassificationValue)) &&
+                        (refundFilter.length === 0 || refundFilter.includes(detail.refund))
+                    );
+                });
+
+                finalFilteredArr.push(...flight.filteredDetails);
+
+                // Check if the flight matches all filter criteria
+                return (
+                    (stopsFilter.length === 0 || stopsFilter.includes(flight.stops)) &&
+                    (airlineFilter.length === 0 || airlineFilter.includes(flight.airline)) &&
+                    (timeFilter.length === 0 || timeFilter.includes(flight.time)) &&
+                    flight.filteredDetails.length > 0 // Ensure at least one detail matches fareType and refund filters
+                );
+            });
+
+            console.log(finalFilteredArr);
+
+            if(finalFilteredArr.length !== 0 )
+            {
+                const totalPages = Math.ceil(finalFilteredArr.length / 15);
+
+                $('#pagination').twbsPagination({
+                    totalPages: totalPages,
+                    visiblePages: 7,
+                    onPageClick: function (event, page) {
+                        displayItemsForPage1(page, finalFilteredArr, 15);
+                    }
+                });
+            }
+            else
+            {
+                console.log(arr);
+                document.getElementById("resultCount").innerText = 0 + " results found"
+                document.getElementById("pills-three-example1").innerHTML = `     <div class="plane-loader">
+                <div class="cloud cloud1"></div>
+                <div class="cloud cloud4"></div>
+                <div class="cloud cloud3"></div>
+                <div class="plane"></div>
+                <div class="cloud cloud2"></div>
+                <div class="steam steam1">
+                <div class="c1"></div><div class="c2"></div><div class="c3"></div><div class="c4"></div><div class="c5"></div><div class="c6"></div><div class="c7"></div><div class="c8"></div><div class="c9"></div><div class="c10"></div>
+                </div>
+                <div class="steam steam2">
+                <div class="c1"></div><div class="c2"></div><div class="c3"></div><div class="c4"></div><div class="c5"></div><div class="c6"></div><div class="c7"></div><div class="c8"></div><div class="c9"></div><div class="c10"></div>
+                </div>
+                <div class="steam steam3">
+                <div class="c1"></div><div class="c2"></div><div class="c3"></div><div class="c4"></div><div class="c5"></div><div class="c6"></div><div class="c7"></div><div class="c8"></div><div class="c9"></div><div class="c10"></div>
+                </div>
+                <div class="steam steam4">
+                <div class="c1"></div><div class="c2"></div><div class="c3"></div><div class="c4"></div><div class="c5"></div><div class="c6"></div><div class="c7"></div><div class="c8"></div><div class="c9"></div><div class="c10"></div>
+                </div>
+                </div>
+                <h3 style="text-align: center">No Flight Found</h3>`;
+              
+
+                // Update pagination info
+                const paginationInfo = document.getElementById('pagination-info');
+                const startItemNumber =  0;
+                const endItemNumber = 0;
+                paginationInfo.textContent = `Showing ${startItemNumber}–${endItemNumber} of 0`;
+            }
+        }
+
+    }
+
+
+</script>
+<script>
+    function toggleExtraDetails(index) {
+        var extraDetails = document.getElementById("extraDetails" + index);
+        if (extraDetails.style.display === "none" || extraDetails.style.display === "") {
+            extraDetails.style.display = "block";
+        } else {
+            extraDetails.style.display = "none";
+        }
+    }
+
+    async function bookFlight(supplier,arrival, destination, duration)
+    {
+        const resultIndex = document.querySelector('input[name="publishFare"]:checked').id;
+        const resultObject = book.find(obj =>
+            obj.FlightKey === resultIndex
+        );
+
+        console.log(resultObject);
+
+        sessionStorage.setItem("book", JSON.stringify(resultObject));
+        sessionStorage.setItem("arrival", arrival);
+        sessionStorage.setItem("destination", destination);
+        sessionStorage.setItem("duration", duration);
+
+        let fd = new FormData();
+        fd.append("agentEmail", localStorage.getItem("agentEmail"));
+        fd.append("traceId", sessionStorage.getItem("TraceId"));
+        fd.append("returnId", null);
+        fd.append("book", JSON.stringify(resultObject));
+        fd.append("returnBook", null);
+        fd.append("markup", selectedMarkupValue);
+        fd.append("returnMarkup", 0);
+        fd.append("platformFee", platformFee);
+        fd.append("platformTax", platformFeeTax);
+
+        let response = await fetch("/flights/makeSearchingSession", {
+            method: 'POST',
+            body: fd
+        });
+
+        if (response.ok) {
+            window.location.href = '/flights/bookFlight';
+        } else {
+            alert("problem")
+        }
+
+
+
+    }
+
+    function isEarlyMorning(departureTime) {
+        const hours = parseInt(departureTime.split(':')[0], 10);
+        return hours >= 0 && hours < 6;
+    }
+
+    function isMorning(departureTime) {
+        const hours = parseInt(departureTime.split(':')[0], 10);
+        return hours >= 6 && hours < 12;
+    }
+
+    function isMidDay(departureTime) {
+        const hours = parseInt(departureTime.split(':')[0], 10);
+        return hours >= 12 && hours < 18;
+    }
+
+    function isEvening(departureTime) {
+        const hours = parseInt(departureTime.split(':')[0], 10);
+        return hours >= 18 && hours <= 23;
+    }
+
+    $(document).ready(function () {
+        // Function to switch values between "From where" and "To where"
+        function switchValues() {
+            var fromValue = $('#from').val();
+            var toValue = $('#to').val();
+
+            $('#from').val(toValue);
+            $('#to').val(fromValue);
+        }
+
+        // Event listener for the switch button
+        $('.switch-btn').on('click', function () {
+            switchValues();
+        });
+    });
+    function sortAir() {
+        sortArrival.isAscending = false;
+        sortDeparture.isAscending = false;
+        sortPrice.isAscending = false;
+        $('#pagination').twbsPagination('destroy');
+
+        // Toggle between ascending and descending sorting orders
+        if (!sortAir.isAscending) {
+            arr.sort((a, b) => a.airline.localeCompare(b.airline)); // Ascending order
+        } else {
+            arr.sort((a, b) => b.airline.localeCompare(a.airline)); // Descending order
+        }
+
+        // Invert the sorting order flag
+        sortAir.isAscending = !sortAir.isAscending;
+
+        // Render the sorted items
+        const totalPages = Math.ceil(arr.length / 10);
+        $('#pagination').twbsPagination({
+            totalPages: totalPages,
+            visiblePages: 7,
+            onPageClick: function (event, page) {
+                displayItemsForPage(page, arr, 10);
+            }
+        });
+    }
+
+    // Set initial sorting order flag
+    sortAir.isAscending = false;
+
+    function sortPrice() {
+        sortDeparture.isAscending = false;
+        sortAir.isAscending = false;
+        sortArrival.isAscending = false;
+        $('#pagination').twbsPagination('destroy');
+
+        // Toggle between ascending and descending sorting orders
+        if (!sortPrice.isAscending) {
+            arr.sort((a, b) => a.details[0].PublishedFare - b.details[0].PublishedFare); // Ascending order
+        } else {
+            arr.sort((a, b) => b.details[0].PublishedFare - a.details[0].PublishedFare); // Descending order
+        }
+
+        // Invert the sorting order flag
+        sortPrice.isAscending = !sortPrice.isAscending;
+
+        // Render the sorted items
+        const totalPages = Math.ceil(arr.length / 10);
+        $('#pagination').twbsPagination({
+            totalPages: totalPages,
+            visiblePages: 7,
+            onPageClick: function (event, page) {
+                displayItemsForPage(page, arr, 10);
+            }
+        });
+    }
+
+    // Set initial sorting order flag
+    sortPrice.isAscending = true;
+
+    function sortDeparture() {
+        sortPrice.isAscending = false;
+        sortAir.isAscending = false;
+        sortArrival.isAscending = false;
+        $('#pagination').twbsPagination('destroy');
+
+        // Toggle between ascending and descending sorting orders
+        if (!sortDeparture.isAscending) {
+            arr.sort((a, b) => a.formattedDepartureTime.localeCompare(b.formattedDepartureTime)); // Ascending order
+        } else {
+            arr.sort((a, b) => b.formattedDepartureTime.localeCompare(a.formattedDepartureTime)); // Descending order
+        }
+
+        // Invert the sorting order flag
+        sortDeparture.isAscending = !sortDeparture.isAscending;
+
+        // Render the sorted items
+        const totalPages = Math.ceil(arr.length / 10);
+        $('#pagination').twbsPagination({
+            totalPages: totalPages,
+            visiblePages: 7,
+            onPageClick: function (event, page) {
+                displayItemsForPage(page, arr, 10);
+            }
+        });
+    }
+
+    // Set initial sorting order flag
+    sortDeparture.isAscending = false;
+
+    function sortArrival() {
+        sortPrice.isAscending = false;
+        sortAir.isAscending = false;
+        sortDeparture.isAscending = false;
+        $('#pagination').twbsPagination('destroy');
+
+        // Toggle between ascending and descending sorting orders
+        if (!sortArrival.isAscending) {
+            arr.sort((a, b) => a.formattedArrivalTime.localeCompare(b.formattedArrivalTime)); // Ascending order
+        } else {
+            arr.sort((a, b) => b.formattedArrivalTime.localeCompare(a.formattedArrivalTime)); // Descending order
+        }
+
+        // Invert the sorting order flag
+        sortArrival.isAscending = !sortArrival.isAscending;
+
+        // Render the sorted items
+        const totalPages = Math.ceil(arr.length / 10);
+        $('#pagination').twbsPagination({
+            totalPages: totalPages,
+            visiblePages: 7,
+            onPageClick: function (event, page) {
+                displayItemsForPage(page, arr, 10);
+            }
+        });
+    }
+
+    // Set initial sorting order flag
+    sortArrival.isAscending = false;
+
+
+    // Sorting function for airline name
+    function sortByAirlineName(a, b) {
+        var isDescending = true;
+        var isAscending = true;
+
+// we're looking ahead; loop from the first element to one before the last element
+        for (var i=0, l=arr.length-1; i<l; i++)
+        {
+
+            ////////////////////////////////////////////////////////////
+
+            // log to the console to show what's happening for each loop iteration
+
+            // this is the ith iteration
+            console.log("loop iteration %s", i);
+
+            // breaking isDescending down:
+            // is this value greater than the next value?
+            console.log("A: (%s > %s) = %s", array[i], array[i+1], (arr[i] > arr[i+1]));
+
+            // have all values been descending so far?
+            console.log("B: isDescending: %s", isDescending);
+
+            // if this value is greater than the next and all values have been descending so far, isDescending remains true. Otherwise, it's set to false.
+            console.log("are A and B both true? %s", (isDescending && (arr[i] > arr[i+1])));
+
+            // add a line break for clarity
+            console.log("");
+
+            ////////////////////////////////////////////////////////////
+
+
+            // true if this is greater than the next and all other so far have been true
+            isDescending = isDescending && (arr[i] > arr[i+1]);
+
+            // true if this is less than the next and all others so far have been true
+            isAscending = isAscending && (arr[i] < arr[i+1]);
+
+        }
+
+        if (isAscending)
+        {
+            alert("asc")
+            return b.airline.localeCompare(a.airline);
+        }
+        else if (isDescending)
+        {
+            alert("dsc");
+            return a.airline.localeCompare(b.airline);
+        }
+        else
+        {
+            alert("no");
+            return a.airline.localeCompare(b.airline);
+        }
+
+    }
+
+    // Sorting function for duration
+    function sortByDuration(a, b) {
+        return a.formattedDuration - b.formattedDuration;
+    }
+
+    // Sorting function for departure date
+    function sortByDepartureDate(a, b) {
+        return new Date(a.formattedDepartureTime) - new Date(b.formattedDepartureTime);
+    }
+
+    // Sorting function for price
+    function sortByPrice(a, b) {
+        return a.details[0].PublishedFare - b.details[0].PublishedFare;
+    }
+</script>
+
+<script>
+    // document.addEventListener('keydown', function (e) {
+    //    // Check if the user is pressing the F12 key or the context menu key-->
+    //     if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I')) {
+    //         e.preventDefault();
+    //     }
+    // });
+    // document.addEventListener('contextmenu', function (e) {
+    //   e.preventDefault();
+    //    // alert('Right-click is disabled.');-->
+    // });
+
+    function selectedMarkup(markup)
+    {
+        selectedMarkupValue = 0;
+
+        selectedMarkupValue = markup;
+    }
+
+    function trigger() {
+        console.log('Image clicked'); // Check if this logs in the console
+        Swal.fire({
+            title: 'Fare Rule',
+            html: `
+          <div class="row mb-3">
+            <div class="col-lg-12 border text-black p-1 ps-4" style="background-color: lightgrey">
+              FARE RULE INFORMATION
+            </div>
+            <div class="col-lg-12 border">
+<!--              <h5>DEL-ATQ</h5>-->
+            </div>
+            <div class="col-lg-6 border"><h4>Cancellation</h4></div>
+            <div class="col-lg-6 border"><h4>Reissue</h4></div>
+<!--            <div class="col-lg-6 border">-->
+<!--              <strong>INR 3500</strong>-->
+<!--              <p>From 0 to 3 days before Dept.</p>-->
+
+<!--              <strong>INR 3000</strong>-->
+<!--              <p>From 4 days above Dept.</p>-->
+<!--            </div>-->
+<!--            <div class="col-lg-6 border">-->
+<!--              <strong>INR 3250</strong>-->
+<!--              <p>From 0 to 3 days before Dept.</p>-->
+
+<!--              <strong>INR 2750</strong>-->
+<!--              <p>From 4 days above Dept.</p>-->
+<!--            </div>-->
+          </div>
+          <div class="row">
+            <div class="col-lg-12 border">
+              Important:-
+              <ul>
+                <li >Mentioned fee are per pax and per sector</li>
+                <li >Apart from Airline charges, GST+RAF+application charges if any will be charged.</li>
+                <li >For domestic bookings, passenger are required to submit the cancellation or reissue request to TDO at least 2 hours before the airlines cancellation and reissue policy</li>
+                <li >For international bookings, Passenger are required to submit the cancellation or reissue request to TDO at least 4 hours before the airlines cancellation and reissue policy.</li>
+              </ul>
+              <p>* The below fare rules are just a guideline for your convenience and are subject to change by the airlines from time to time. Although we will try to keep this section updated regularly. TDO undertakes no liability for the loss you may suffer due to incorrect information.</p>
+              <div class="row mt-3">
+                <div class="col-lg-6">
+                  <p class="fw-bold">Domestic cancellation fee (per passenger)</p>
+                  <div class="border">TDO Fee <span class="ps-5">&#x20b9; 300</span></div>
+                  <p class="fw-bold">International cancellation fee (per passenger)</p>
+                  <div class="border">TDO Fee <span class="ps-5">&#x20b9; 500</span></div>
+                  Fare rule is not available
+                </div>
+                <div class="col-lg-6">
+                  <p class="fw-bold">Domestic Date Change fee (per passenger)</p>
+                  <div class="border">TDO Fee <span class="ps-5">&#x20b9; 300</span></div>
+                  <p class="fw-bold">International Date Change fee (per passenger)</p>
+                  <div class="border">TDO Fee <span class="ps-5">&#x20b9; 500</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `,
+            showCloseButton: true,
+            showConfirmButton: false,
+            width: '800px',
+            padding: '1rem',
+            background: '#fff',
+            customClass: {
+                popup: 'border-radius-md',
+            }
+        });
+    }
+</script>
+</body>
+</html>

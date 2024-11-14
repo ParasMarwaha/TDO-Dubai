@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- PAGE TITLE HERE -->
+    <title>TDO DXB | Flights </title>
+    <%- include('../partials/headerfiles') %>
+</head>
+<body onload="showVal()" style=" border-radius: 20px; padding:10px;background-image: url('/images/weblet-animation.gif');background-size: cover;background-position: center;background-color: rgba(255, 255, 255, 0.5);background-repeat: no-repeat;">
+<div id="main-wrapper" style="background-color: rgba(255,255,255,0.8)">
+    <br/>
+        <div class="container mt-5">
+
+            <div class="row mb-4">
+                <div class="col-lg-12 col-sm-12 col-12 fs-4 p-2 text-white" style="background-color: rgba(0,0,0,0.7)">
+                    Make Payment
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-lg-3 col-sm-3 col-3">
+                    <div class="btn-group-vertical">
+                        <button type="button" class="btn btn-outline-light border border-2 mb-2 border-secondary" onclick="getPaymentType('wallet')">
+                            <div class="input-group">
+                                <i class="fa fa-wallet fa-2x me-2"></i>
+                                Agency Wallet
+                            </div>
+                        </button>
+                        <button type="button" class="btn btn-outline-light border border-2 mb-2 border-secondary" onclick="getPaymentType('credit card')">
+                            <div class="input-group">
+                                <i class="fa fa-credit-card fa-2x me-2"></i>
+                                Credit Card
+                            </div>
+                        </button>
+                        <button type="button" class="btn btn-outline-light border border-2 mb-2 border-secondary" onclick="getPaymentType('debit card')">
+                            <div class="input-group">
+                                <i class="fa fa-credit-card-alt fa-2x me-2"></i> Debit
+                                Card
+                            </div>
+                        </button>
+                        <button type="button" class="btn btn-outline-light border border-2 mb-2 border-secondary" onclick="getPaymentType('net banking')">
+                            <div class="input-group">
+                                <i class="fa-solid fa-earth-asia fa-2x me-2"></i> Net Banking
+                            </div>
+                        </button>
+                        <button type="button" class="btn btn-outline-light border border-2 mb-2 border-secondary" onclick="getPaymentType('upi')">
+                            <div class="input-group text-center">
+                                <i class="fa-solid fa-earth-asia fa-2x me-2"></i> UPI
+                            </div>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-sm-6 col-6">
+                    <h6 class="pt-3" id="res">Click a button for Payment</h6>
+                </div>
+                <div class="col-lg-3 col-sm-3 col-3">
+                    <div class="row mb-2 border-bottom border-secondary">
+                        <div class="col-12">
+                            <h6>Payment Summary</h6>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-8 col-lg-8 col-sm-8">
+                            <p class="mt-2">Total Amount</p>
+                        </div>
+                        <div class="col-4 col-lg-4 col-sm-4">
+                            <p class="fw-bold">AED <span id="totalAmt"></span></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-8 col-lg-8 col-sm-8">
+                            <p class="">Gateway Charges</p>
+                        </div>
+                        <div class="col-4 col-lg-4 col-sm-4">
+                            <p class="fw-bold">AED <span id="sCharge">0</span></p>
+                        </div>
+                    </div>
+
+                    <div class="row mb-2 border-bottom border-top border-secondary">
+                        <div class="col-8 col-lg-8 col-sm-8">
+                            <h6 class="mt-2">Total Fee to be paid</h6>
+                        </div>
+                        <div class="col-4 col-lg-4 col-sm-4">
+                            <h6 class="mt-2">AED <span id="finalAmt"></span></h6>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-lg-12 col-sm-12 col-12" >
+                            <form id="payment-form" method="post">
+                                <input type="hidden" id="CompanyId" name="CompanyId"/>
+                                <input type="hidden" id="paymentMethod" name="paymentMethod"/>
+                                <input type="hidden" id="finaAmtCtrl" name="finalAmt"/>
+                                <input type="hidden" id="gCharge" name="gCharge"/>
+                                <input type="hidden" id="agentEmail" name="agentEmail"/>
+                                <input type="hidden" id="agName" name="agName"/>
+                                <input type="hidden" id="payType" name="payType"/>
+                                <input type="hidden" id="agPhone" name="agPhone"/>
+                                <input type="hidden" id="insId" value="<%=traceId%>" name="insId"/>
+                                <div id="finalBtn"></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+<!--    </div>-->
+
+
+</div>
+<%- include('../partials/scripts') %>
+<script src="/vendor/chart.js/Chart.bundle.min.js"></script>
+<script src="/vendor/apexchart/apexchart.js"></script>
+
+<!-- Dashboard 1 -->
+<script src="/js/dashboard/dashboard-1.js"></script>
+<script src="/vendor/swiper/js/swiper-bundle.min.js"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="/protected/razorpay.js"></script>
+<script>
+
+    let getPaymentType = (type) => {
+        var payType = "";
+        if(type ==="credit card") payType = "card"
+        else if(type==="debit card") payType = "card"
+        else if(type==="net banking") payType = "netbanking"
+        else if(type === "upi") payType ="upi"
+        else {}
+        document.getElementById("payType").value = payType;
+        document.getElementById("agName").value = localStorage.getItem("agentName")
+        document.getElementById("agPhone").value = localStorage.getItem("agentPhone")
+        document.getElementById("agentEmail").value = localStorage.getItem("agentEmail");
+        if (type ==="wallet"){
+            document.getElementById("res").innerText = "Pay using Wallet";
+            document.getElementById("paymentMethod").value = "wallet";
+            let formData = new FormData();
+            let agentEmail = localStorage.getItem("agentEmail")
+            formData.append("agentEmail",agentEmail)
+            // fetch("/agent/fetch-wallet-balance",{
+            //     method:"POST",
+            //     body:formData
+            // })
+              fetch("/getBalance").then(res=>res.json())
+                .then(val=>{
+                    console.log(val);
+                    // document.getElementById("CompanyId").value = val.recordset[0].CompanyId;
+                    document.getElementById("sCharge").innerText = 0
+                    document.getElementById("finalAmt").innerHTML = parseFloat(<%=total%>);
+                    document.getElementById("finaAmtCtrl").value = parseFloat(<%=total%>)
+                    document.getElementById("gCharge").value = 0
+                    // document.getElementById("res").innerText = "Agency Balance: "+val.recordset[0].TotalBalance;
+                    document.getElementById("res").innerText = "Agency Wallet Balance: AED "+val.data[0].balance;
+                    <!--if(parseFloat(<%=total%>) <= val.recordset[0].TotalBalance) -->
+                    if(parseFloat(<%=total%>) <= val.data[0].balance)
+                    {
+                        document.getElementById("payment-form").action = "/flights/razorpay-options";
+                         document.getElementById("finalBtn").innerHTML = '<button type="submit" class="btn btn-primary form-control" id="rzp-button1">Pay Now</button>';
+                       // document.getElementById("finalBtn").innerHTML = '<button type="button" onclick="PayNow()" class="btn btn-primary form-control" id="rzp-button1">Pay Now</button>';
+
+                    }
+                    else
+                    {
+                        document.getElementById("finalBtn").innerHTML = '<h3>Insufficient Balance!</h3>';
+                    }
+                })
+            // document.getElementById("finaAmtCtrl").value = amt
+            // localStorage.setItem("finalAmountToBePaid",amt);
+            // document.getElementById("sCharge").innerText = 0
+            // document.getElementById("finalBtn").innerHTML = '<button type="submit" class="btn btn-primary form-control">Proceed</button>';
+        }
+        else if(type==="credit card" || type==="debit card" || type==="net banking" ){
+
+            document.getElementById("paymentMethod").value = type;
+            document.getElementById("res").innerText ="Pay using EaseBuzz";
+            var perAmt =( parseFloat(<%=total%>) * 2.5)/100;
+            document.getElementById("sCharge").innerText = parseFloat(perAmt);
+            document.getElementById("gCharge").value = parseFloat(perAmt)
+            document.getElementById("finalAmt").innerHTML = parseFloat(<%=total%>) + perAmt
+            document.getElementById("finaAmtCtrl").value = parseFloat(<%=total%>) + perAmt
+            localStorage.setItem("finalAmountToBePaid",(parseFloat(<%=total%>) + perAmt));
+            document.getElementById("finalBtn").innerHTML = '<button type="submit" class="btn btn-primary form-control" id="rzp-button1">Pay Now</button>';
+        }
+        else{
+            document.getElementById("paymentMethod").value = type;
+            document.getElementById("finalAmt").innerHTML = parseFloat(<%=total%>);
+            document.getElementById("finaAmtCtrl").value = parseFloat(<%=total%>)
+            document.getElementById("sCharge").innerText = 0
+            document.getElementById("gCharge").innerText = 0
+            localStorage.setItem("finalAmountToBePaid",parseFloat(<%=total%>));
+            document.getElementById("finalBtn").innerHTML = '<button type="submit" class="btn btn-primary form-control" id="rzp-button1">Pay Now</button>';
+        }
+    }
+    let showVal = ()=>{
+        document.getElementById("totalAmt").innerHTML = parseFloat(<%=total%>);
+        document.getElementById("finalAmt").innerHTML = parseFloat(<%=total%>);
+    }
+    async function PayNow() {
+        let amount=parseFloat(<%=total%>)
+        Swal.fire({
+            title: "Success",
+            text: "Ticket Booked Successfully",
+            icon: "success"
+        });
+        let url = "/addWalletDetails";
+        try {
+            let response = await fetch(url, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    amount: amount,
+                    transaction_type: "Flight Booked",
+                    mode_of_payment: "Wallet"
+                })
+            });
+
+            let result = await response.json();
+            console.log(result)
+            // Assuming you handle response validation here
+            if (result.message==="success") { // Add a condition based on your API response
+                setTimeout(() => {
+                    window.location.href = "/flights/viewTicketedBookings";
+                }, 3000);
+            } else {
+                // Handle error or unsuccessful response
+                console.log("Error in response:", result);
+                // window.location.href = "/agent-dashboard";
+            }
+        } catch (error) {
+            console.error("Error occurred while fetching:", error);
+        }
+
+    }
+</script>
+</body>
+</html>

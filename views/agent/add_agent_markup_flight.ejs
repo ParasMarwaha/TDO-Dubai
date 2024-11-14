@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>TDO DXB | Welcome to Agent Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+
+    <%- include('../partials/header2') %>
+
+</head>
+<body onload="airlines_types()">
+<div id="preloader">
+    <div class="loader">
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--text"></div>
+    </div>
+</div>
+<div id="main-wrapper">
+    <%- include('../partials/navbar2') %>
+    <%- include('../partials/sidebar2') %>
+    <div class="content-body default-height">
+        <!-- row -->
+        <div class="container-fluid">
+            <div class="row page-titles">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item active"><a href="javascript:void(0)">Add Markup</a></li>
+                </ol>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Create Markup</h4>
+                            <a href="/agent_markup_flight">
+                                <button type="button" class="btn btn-primary p-3">View Markups
+                                </button>
+                            </a>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="basic-form">
+                                <form class="form-valide-with-icon needs-validation" novalidate id="createMarkup">
+                                    <div class="mb-3  mt-3 row">
+                                        <div class="col-sm-6 mt-2">
+                                            <label class="text-label form-label" for="plan_type">Plan
+                                                Type</label>
+                                            <select class="default-select form-control wide" name="plan_type"
+                                                    id="plan_type" required>
+                                                <option value="">Select</option>
+                                                <option value="Flight">Flight</option>
+                                                <option value="Fixed Departures">Fixed Departures</option>
+                                                <option value="Hotel">Hotel</option>
+                                                <option value="Insurance">Insurance</option>
+                                            </select>
+
+                                        </div>
+                                        <div class="col-sm-6 mt-2" style="display: none" id="fare_type_div">
+                                            <label class="text-label form-label" for="fare_type">Product
+                                                Type</label>
+
+                                            <select class="default-select form-control wide" name="fare_type"
+                                                    id="fare_type" required>
+                                                <option value="">Select</option>
+                                                <option value="All">All</option>
+                                                <option value="Fixed Departures">Fixed Departures</option>
+                                                <option value="Regular">Regular</option>
+                                            </select>
+
+                                        </div>
+
+                                        <div class="col-sm-6 mt-2">
+                                            <label class="text-label form-label" for="trip_type">Trip
+                                                Type</label>
+
+                                            <select class="default-select form-control wide" name="trip_type"
+                                                    id="trip_type" required>
+                                                <option value="">Select</option>
+                                                <option value="All">All</option>
+                                                <option value="Domestic">Domestic</option>
+                                                <option value="International">International</option>
+                                            </select>
+
+                                        </div>
+                                        <div class="col-sm-6 mt-2">
+                                            <label class="text-label form-label" for="markup_type">Markup
+                                                Type</label>
+
+                                            <select class="default-select form-control wide" name="markup_type"
+                                                    id="markup_type" required>
+                                                <option value="">Select</option>
+                                                <option value="Fixed">Fixed</option>
+                                                <option value="Percentage">Percentage</option>
+                                            </select>
+
+                                        </div>
+
+
+                                        <div class="col-sm-6 mt-2">
+                                            <label class="text-label form-label" for="deposit_value">
+                                                Markup Amount</label>
+
+                                            <input type="text" id="deposit_value" class="form-control" data- maxlength="4" minlength="1"
+                                                   name="deposit_value" placeholder="Enter Amount" required>
+                                        </div>
+                                        <div class="col-sm-6 mt-2" style="display: none" id="airline_div">
+                                            <label class="text-label form-label" for="airline">
+                                                Airline</label>
+
+                                            <select class="multi-select-placeholder form-control js-states w-100"
+                                                    name="airline"
+                                                    id="airline">
+                                                <option value=""></option>
+                                            </select>
+
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn me-2 mt-3 btn-primary" id="travelAgent_markup"
+                                            onclick="travelAgent_markups()">Submit
+                                    </button>
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- row -->
+
+    </div>
+</div>
+
+
+<%- include('../partials/footer2') %>
+<script>
+    $(document).ready(function(){
+        $('#deposit_value').on('input', function() {
+            // Allow only integer input
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+    });
+    document.getElementById('markup_type').addEventListener('change', function () {
+        const markupType = document.getElementById('markup_type').value;
+        const depositValueInput = document.getElementById('deposit_value');
+
+        if (markupType === 'Percentage') {
+            // Restrict deposit_value between 1 and 100
+            depositValueInput.setAttribute('min', '1');
+            depositValueInput.setAttribute('max', '100');
+            depositValueInput.setAttribute('placeholder', 'Enter Percentage (1 to 100)');
+
+            // Optionally, you can clear the input to avoid invalid values after switching
+            depositValueInput.value = '';
+
+        } else if (markupType === 'Fixed') {
+            // Remove the percentage restriction
+            depositValueInput.removeAttribute('min');
+            depositValueInput.removeAttribute('max');
+            depositValueInput.setAttribute('placeholder', 'Enter Amount');
+
+            // Optionally, clear the input when switching back to fixed
+            depositValueInput.value = '';
+        }
+    });
+
+    // Validation when the user tries to input a value
+    document.getElementById('deposit_value').addEventListener('input', function () {
+        const markupType = document.getElementById('markup_type').value;
+        const depositValue = parseInt(this.value, 10);
+
+        if (markupType === 'Percentage' && (depositValue < 1 || depositValue > 100)) {
+            alert('Please enter a value between 1 and 100 for Percentage Markup');
+            this.value = ''; // Reset the value
+        }
+    });
+
+    $(document).ready(function () {
+        $('#plan_type').on('change', function () {
+            if ($(this).val() === 'Flight') {
+                // Show fare_type_div and airline_div if "Flight" is selected
+                $('#fare_type_div').show();
+                $('#airline_div').show();
+            } else {
+                // Hide fare_type_div and airline_div for any other option
+                $('#fare_type_div').hide();
+                $('#airline_div').hide();
+            }
+        });
+    });
+
+
+    async function airlines_types() {
+        try {
+            let url = "/carriers";
+            let response = await fetch(url, {
+                headers: {"Content-Type": "application/json"}
+            });
+            let data = await response.json();
+            let airline_data = data['data'];
+            console.log(airline_data)
+            let html = `<option value=""></option>`;
+            for (let i = 0; i < airline_data.length; i++) {
+                html += `<option value="${airline_data[i].Code}">${airline_data[i].Name}</option>`;
+            }
+            document.getElementById("airline").innerHTML = html;
+
+            // Re-initialize Select2 after populating options
+            $('#airline').select2({
+                placeholder: "Select Airlines",
+                allowClear: true,
+                width: '100%'
+            });
+
+            // Add event listener to handle selection logic
+            $('#airline').on('change', function () {
+                let selectedValues = $(this).val(); // Get selected options
+
+                if (selectedValues.includes('all')) {
+                    // If "All" is selected, disable other options
+                    $('#airline option:not([value="all"])').prop('disabled', true);
+                } else {
+                    // If "All" is not selected, enable other options
+                    $('#airline option[value="all"]').prop('disabled', selectedValues.length > 0);
+                    $('#airline option:not([value="all"])').prop('disabled', false);
+                }
+
+                // Re-trigger Select2 to update the visual UI of disabled options
+                $('#airline').select2({
+                    placeholder: "Select Airlines",
+                    allowClear: true,
+                    width: '100%'
+                });
+            });
+
+        } catch (e) {
+            Swal.fire({
+                title: "OOPS!",
+                text: e.message,
+                icon: "question"
+            });
+        }
+    }
+
+    async function travelAgent_markups() {
+        try {
+            if ($("#createMarkup").valid()) {
+
+                document.getElementById("travelAgent_markup").disabled = true;
+                const plan_type = document.getElementById("plan_type").value;
+                const fare_type = document.getElementById('fare_type').value;
+                const trip_type = document.getElementById('trip_type').value;
+                const markup_type = document.getElementById('markup_type').value;
+                const deposit_value = document.getElementById('deposit_value').value;
+                const airline = document.getElementById("airline").value
+
+                console.log(plan_type, fare_type, trip_type, markup_type, deposit_value, airline)
+
+                let form = document.getElementById('createMarkup')
+                let formData = new FormData(form)
+                if (airline === '') {
+                    formData.append("airline", airline);
+                }
+                let url = "/add-agent-markup";
+                let response = await fetch(url, {
+                    method: "POST",
+                    body: formData  // Convert to JSON string
+                });
+                let result = await response.json();
+                console.log(result)
+                if (result.error) {
+                    Swal.fire({
+                        title: "OOPS!",
+                        text: result.message,
+                        icon: "question"
+                    });
+
+                } else {
+                    Swal.fire({
+                        title: "Success",
+                        text: result.message,
+                        icon: "success"
+                    });
+                    document.getElementById("airline").value=''
+                    document.getElementById("travelAgent_markup").disabled = false;
+                    document.getElementById("createMarkup").reset()
+
+                }
+            }
+        } catch (e) {
+            Swal.fire({
+                title: "OOPS!",
+                text: e.message,
+                icon: "question"
+            });
+        }
+    }
+
+
+</script>
+<!--<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>-->
+
+</body>
+</html>

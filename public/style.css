@@ -1,0 +1,73 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+.line-text {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.line-text::before,
+.line-text::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #000;
+}
+
+.line-text::before {
+    margin-right: 10px;
+}
+
+.line-text::after {
+    margin-left: 10px;
+}
+
+.line-text span {
+    white-space: nowrap;
+}
+
+input[type="file"] {
+    padding-top: 16px !important;
+}
+
+.error {
+    color: orangered;
+}
+
+input:disabled,
+select:disabled {
+    cursor: inherit;
+    background: rgba(229, 229, 229, 0.92) !important;
+}
+
+@media only screen and (min-width: 992px) {
+    .header-layout1 .main-menu {
+        margin-left: 135px !important;
+    }
+}
+
+@media only screen and (min-width: 1500px) {
+    .header-layout1 .main-menu {
+        margin-left: 170px !important;
+    }
+}
+
+@media only screen and (min-width: 1500px) {
+    .header-layout1 .main-menu {
+        margin-left: 180px !important;
+    }
+}
+
+@media only screen and (min-width: 1900px) {
+    .header-layout1 .main-menu {
+        margin-left: 270px !important;
+    }
+}
+
+/*@media only screen and (max-width: 1700px) {*/
+/*    .header-layout1 .main-menu {*/
+/*        margin-left: 127px !important;*/
+/*    }*/
+/*}*/

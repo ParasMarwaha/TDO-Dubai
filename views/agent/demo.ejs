@@ -1,0 +1,342 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content="Author: HiBootstrap, Category: Tourism, Multipurpose, HTML, SASS, Bootstrap"/>
+
+    <title>TDO DXB | Welcome to TDO DXB</title>
+
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css"/>
+
+    <link rel="stylesheet" href="/assets/css/fontawesome.min.css"/>
+
+    <link rel="stylesheet" href="/assets/css/boxicons.min.css">
+
+    <link rel="stylesheet" href="/assets/css/animate.min.css"/>
+
+    <link rel="stylesheet" href="/assets/css/bootstrap-datepicker.min.css">
+
+    <link rel="stylesheet" href="/assets/css/nice-select.css">
+
+    <link rel="stylesheet" href="/assets/css/magnific-popup.min.css"/>
+
+    <link rel="stylesheet" href="/assets/css/owl.carousel.min.css"/>
+
+    <link rel="stylesheet" href="/assets/css/meanmenu.min.css"/>
+
+    <link rel="stylesheet" href="/assets/css/style.css"/>
+    <link rel="stylesheet" href="/assets/css/style1.css"/>
+    <link rel="stylesheet" href="/assets/css/responsive.css"/>
+
+    <link rel="stylesheet" href="/assets/css/theme-dark.css"/>
+
+    <link rel="icon" href="/assets/img/img_1.png" type="image/png"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+
+    <link rel="stylesheet" href="/assets/css/registerAgent.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        /*.form-border {*/
+        /*    border: 1px solid #e0e0e0; !* Slightly lighter grey border *!*/
+        /*    border-radius: 10px; !* More rounded corners *!*/
+        /*    padding: 25px; !* Slightly more space inside the border *!*/
+        /*    background-color: #ffffff; !* White background for a clean look *!*/
+        /*    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); !* Soft shadow for depth *!*/
+        /*    transition: all 0.3s ease; !* Smooth transition for interactive effects *!*/
+        /*}*/
+
+        /*.form-border:hover {*/
+        /*    border-color: #b0b0b0; !* Darker border on hover *!*/
+        /*    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); !* Enhanced shadow on hover *!*/
+        /*}*/
+
+        /*.ptb-100 {*/
+        /*    padding-top: 100px;*/
+        /*    padding-bottom: 100px;*/
+        /*}*/
+
+        /*.error {*/
+        /*    color: #c02323;*/
+        /*    font-size: 0.875em;*/
+        /*}*/
+
+        /*.login-link {*/
+        /*    font-weight: bold; !* Makes the text bold *!*/
+        /*    color: #c02323; !* Sets a striking color (e.g., red) *!*/
+        /*    !*text-decoration: underline;  !* Adds an underline *!*!*/
+        /*    font-size: 25px; !* Increases the font size for emphasis *!*/
+        /*    transition: color 0.3s ease, text-shadow 0.3s ease;*/
+        /*}*/
+
+        /*.login-link:hover {*/
+        /*    color: #ee4242; !* Changes color on hover *!*/
+        /*    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2); !* Adds a subtle shadow on hover *!*/
+        /*}*/
+        /*.input-group-text.show-pass {*/
+        /*    cursor: pointer;*/
+        /*    transition: background-color 0.3s ease;*/
+        /*}*/
+
+        /*.input-group-text.show-pass:hover {*/
+        /*    background-color: #f8f9fa;*/
+        /*}*/
+
+        /*.input-group-text i {*/
+        /*    font-size: 1rem;*/
+        /*    color: #c02323;*/
+        /*}*/
+        /*..service-card {*/
+        /*    margin: 20px;*/
+        /*}*/
+
+        /*.service-card:hover {*/
+        /*    box-shadow: 0 0 20px rgba(236, 62, 62);*/
+        /*}*/
+
+        body {
+            overflow-x: hidden;
+        }
+        .input-width{
+            height: 35px;
+        }
+    </style>
+</head>
+
+<body>
+<%- include('../partials/header.ejs') %>
+
+<div class="container-fluid mt-5">
+    <div class="row">
+        <div class="col-sm-8">
+            <div class="card bg-light">
+                from-To<br>
+                Journey Date and Stop information<br>
+                flight Name logo<br>
+                baggage Information
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card bg-light">
+                <div class="container-fluid">
+                    <span style="font-size: 25px">Fare Breakup Summary</span>
+                    <hr>
+                    Adult X 2
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-sm-8">
+            <div class="card">
+                <div class="card-header">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-telephone-fill text-danger" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877z"/>
+                    </svg>
+                    <span style="font-size: 25px">Contact Information</span>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <label>Phone Number</label>
+                            <input type="number" class="form-control input-width">
+                        </div>
+                        <div class="col-sm-3">
+                            <label>Email</label>
+                            <input type="email" class="form-control input-width">
+                        </div>
+                        <div class="col-sm-3">
+                            <label>Address</label>
+                            <input type="text" class="form-control input-width">
+                        </div>
+                        <div class="col-sm-3">
+                            <label>City</label>
+                            <input type="text" class="form-control input-width">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-sm-8">
+            <div class="card">
+                <div class="card-header bg-danger-subtle">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-person-fill text-danger" viewBox="0 0 16 16">
+                        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                    </svg>
+                    <span style="font-size: 25px">Traveller Information</span>
+                </div>
+                <div class="card-body">
+
+                    <% for (let i=0;i<2;i++){%>
+                        <div class="row pb-3">
+                            <h5>Adult <%= i+1%>:-</h5>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label>Title</label>
+                                    <select class="form-control input-width">
+                                        <option>Mr.</option>
+                                        <option>Mrs.</option>
+                                        <option>Master.</option>
+                                        <option>Ms.</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <label>First Name</label>
+                                <input type="text" class="form-control input-width">
+                            </div>
+                            <div class="col-sm-3">
+                                <label>Last Name</label>
+                                <input type="text" class="form-control input-width">
+                            </div>
+                            <div class="col-sm-3">
+                                <label>Date</label>
+                                <input type="date" class="form-control input-width">
+                            </div>
+                            <div class="col-sm-3">
+                                <label class="pt-1">Nationality</label>
+                                <input type="text" class="form-control input-width">
+                            </div>
+                            <div class="col-sm-3">
+                                <label class="pt-1">Passport Number</label>
+                                <input type="text" class="form-control input-width">
+                            </div>
+                            <div class="col-sm-3">
+                                <label class="pt-1">Passport Expiry</label>
+                                <input type="date" class="form-control input-width">
+                            </div>
+                            <div class="col-sm-3">
+                                <label class="pt-1">Passport Issue</label>
+                                <input type="date" class="form-control input-width">
+                            </div>
+                        </div>
+                    <%}%>
+
+                    <% for (let i=0;i<2;i++){%>
+                        <div class="row pb-3">
+                            <h5>Child <%= i+1%>:-</h5>
+                            <div class="col-sm-3">
+                                <label>Title</label>
+                                <select class="form-control input-width">
+                                    <option>Mr.</option>
+                                    <option>Mrs.</option>
+                                    <option>Master.</option>
+                                    <option>Ms.</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-3">
+                                <label>First Name</label>
+                                <input type="text" class="form-control input-width">
+                            </div>
+                            <div class="col-sm-3">
+                                <label>Last Name</label>
+                                <input type="text" class="form-control input-width">
+                            </div>
+                            <div class="col-sm-3">
+                                <label>Date</label>
+                                <input type="date" class="form-control input-width">
+                            </div>
+                            <div class="col-sm-3">
+                                <label class="pt-1">Nationality</label>
+                                <input type="text" class="form-control input-width">
+                            </div>
+                            <div class="col-sm-3">
+                                <label class="pt-1">Passport Number</label>
+                                <input type="text" class="form-control input-width">
+                            </div>
+                            <div class="col-sm-3">
+                                <label class="pt-1">Passport Expiry</label>
+                                <input type="date" class="form-control input-width">
+                            </div>
+                            <div class="col-sm-3">
+                                <label class="pt-1">Passport Issue</label>
+                                <input type="date" class="form-control input-width">
+                            </div>
+                        </div>
+                    <%}%>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-sm-8">
+            <div class="card">
+                <div class="card-header">
+                    <input type="checkbox" id="gst-checkbox" onclick="toggleForm()">
+                    <span style="font-size: 25px" >GST Details(optional)</span>
+                </div>
+                <div class="card-body" id="gst-form" style="display: none;">
+                    <div class="row pb-3">
+                        <div class="col-sm-3">
+                            <label>GST Number</label>
+                            <input type="text" class="form-control input-width">
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="pt-1">Company Name</label>
+                            <input type="text" class="form-control input-width">
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="pt-1">Company Email Address</label>
+                            <input type="email" class="form-control input-width">
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="pt-1">GST Phone Number</label>
+                            <input type="text" class="form-control input-width">
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="pt-1">GST Company Address</label>
+                            <input type="text" class="form-control input-width">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4 mb-5">
+        <div class="col-sm-8">
+            <div class="card">
+                <div class="card-header">
+                    <span style="font-size: 25px" >Special Service Request (SSR)</span>
+                </div>
+                <div class="card-body">
+                    <div class="row pb-3">
+                        <div class="col-sm-3">
+                            <button type="button" class="btn btn-p">Seat</button>
+                        </div>
+                        <div class="col-sm-3">
+                            <button type="button" class="btn btn-success-subtle form-control">Baggage</button>
+                        </div>
+                        <div class="col-sm-3">
+                            <button type="button" class="btn btn-danger-subtle form-control">Meal</button>
+                        </div>
+                        <div class="col-sm-3">
+                            <button type="button" class="btn btn-info form-control">Special SSR</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    function toggleForm() {
+        var checkbox = document.getElementById("gst-checkbox");
+        var form = document.getElementById("gst-form");
+
+        if (checkbox.checked) {
+            form.style.display = "block"; // Show the form
+        } else {
+            form.style.display = "none"; // Hide the form
+        }
+    }
+</script>
+</html>

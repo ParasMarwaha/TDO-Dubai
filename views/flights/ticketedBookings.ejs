@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>TDO DXB | Flights </title>
+    <%- include('../partials/header2') %>
+
+    <style>
+        .paginate_button.previous  {
+            /*font-size: 12px !important;*/
+            width: 85px !important;
+        }
+    </style>
+</head>
+<body onload="GetTicketedBookings()">
+<div id="preloader">
+    <div class="loader">
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--text"></div>
+    </div>
+</div>
+<div id="main-wrapper">
+    <%- include('../partials/navbar2') %>
+    <%- include('../partials/sidebar2') %>
+    <div class=" content-body default-height">
+        <!-- row -->
+        <div class="container-fluid">
+<!--            <div class="row page-titles">-->
+<!--                <ol class="breadcrumb">-->
+                    <!--                    <li class="breadcrumb-item active"><a href="javascript:void(0)">Logs</a></li>-->
+<!--                </ol>-->
+<!--            </div>-->
+            <div class="col-12">
+                <div class="card">
+                    <card class="card-header">
+                        <h3>Ticketed Bookings</h3>
+                    </card>
+                    <!--                    <div class="card-header">-->
+                    <!--                        <h3 class="card-title">Logs</h3>-->
+                    <!--                    </div>-->
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="logsTable" class="display table-light" style="min-width: 845px">
+                                <thead class="text-bg-primary">
+                                <tr >
+                                    <th style="color:#fff;"></th>
+                                    <th style="color:#fff;"></th>
+                                    <th style="color:#fff;">PNR</th>
+                                    <th style="color:#fff;">Booking Date Time</th>
+                                    <th style="color:#fff;">Total Pax</th>
+                                    <th style="color:#fff;">Base Fare</th>
+                                    <th style="color:#fff;">Gross Fare</th>
+                                    <th style="color:#fff;">Net Fare</th>
+                                    <th style="color:#fff;">Tax</th>
+
+                                </tr>
+                                </thead>
+                                <tbody id="logData"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <%- include('../partials/footer2') %>
+</div>
+<div class="modal fade" id="detailModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog bg-white modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">View Booking Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body table-responsive" id="bResult" >
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary mt-2" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    async function GetTicketedBookings() {
+        let url = "/flights/getTicketedBookings"
+        let response = await fetch(url)
+        response = await response.json()
+        console.log(response)
+        if (response.error) {
+            Swal.fire({
+                title: "OOPS!",
+                text: response.message,
+                icon: "error"
+            });
+        }  else {
+            let html = ``
+            for (let i = 0; i < response.recordset.length; i++) {
+                let x = response.recordset[i]
+                console.log(x)
+                html += `<tr>
+<td><button type="button"  class="btn btn-info p-2" onclick="DetailModal(${x.booking_id})"><i class="fa fa-eye"></td>
+<td><button type="button"  class="btn btn-success p-2" onclick="DownloadTicket(${x.booking_id})"><i class='fa fa-print'></i></button></td>
+<td style="color: black">${x.PNR}</td>
+<td style="color: black">${x.booking_date_time}</td>
+<td style="color: black">${x.total_no_of_pax} (${x.total_adult}+${x.total_child}+${x.total_infant})</td>
+<td style="color: black">${x.total_base_fare}</td>
+<td style="color: black">${x.total_gross_fare}</td>
+<td style="color: black">${x.total_net_fare}</td>
+<td style="color: black">${x.total_tax}</td>
+
+</tr>`
+            }
+            document.getElementById("logData").innerHTML = html;
+            new DataTable('#logsTable');
+        }
+
+    }
+    async function DetailModal(booking_id)
+    {
+        let url = "/flights/getTicketedBookingsDetails/"+booking_id
+        let response = await fetch(url)
+        response = await response.json()
+        console.log(response)
+        if (response.error) {
+            Swal.fire({
+                title: "OOPS!",
+                text: response.message,
+                icon: "error"
+            });
+        }  else {
+                $("#detailModal").modal("show")
+           let html1=`
+ <div class="container mt-3 mb-3">
+    <div class="row align-items-center transaction-details">
+      <div class="col-6 text-center">
+        <p><i class="icon1 fas fa-plane"></i> Departure Date Time: <span style="color: #007bff">${response.data[0].departure_date}</span></p>
+      </div>
+
+  <div class="col-6 text-center">
+        <p><i class="icon1 fas fa-plane"></i> Arrival Date Time: <span style="color: #007bff">${response.data[0].arrival_date}</span></p>
+      </div>
+    </div>
+  </div>
+<table class='table'><thead>
+<tr>
+<th style="font-size: 1rem;">Sr. No.</th>
+<th style="font-size: 1rem;">Name</th>
+<th style="font-size: 1rem;">Date of Birth</th>
+<th style="font-size: 1rem;">Booking Status</th>
+<th style="font-size: 1rem;">Origin</th>
+<th style="font-size: 1rem;">Destination</th>
+<th style="font-size: 1rem;">Fare Type</th>
+<th style="font-size: 1rem;">Ticket Id</th>
+</tr>
+</thead><tbody>`
+                for(let i=0;i<response.data.length;i++)
+                {
+                    let y=response.data[i]
+                    html1 += `<tr>
+<td style="color: black">${i+1}</td>
+
+<td style="color: black">${y.title+" "+y.first_name+" "+y.last_name}</td>
+                        <td style="color: black">${y.date_of_birth}</td>`
+                    if(y.booking_status==='Ticketed')
+                        html1+=`<td><span class="badge" style="background-color:green ; color: white !important;">${y.booking_status}</span></td>`
+                    else  if(y.booking_status==='cancel request')
+                        html1+=`<td><span class="badge" style="background-color:yellow ; color: black !important;">${y.booking_status}</span></td>`
+                    else
+                        html1+=`<td><span class="badge" style="background-color:red ; color: white !important;">${y.booking_status}</span></td>`
+
+html1+=`<td style="color: black">${y.origin}</td>
+<td style="color: black">${y.destination}</td>
+<td style="color: black">${y.fare_name}</td>
+<td style="color: black">${y.booking_detail_id}</td>
+</tr>`
+                }
+                html1+=`</tbody></table>`
+            document.getElementById("bResult").innerHTML = html1
+        }
+    }
+
+    function DownloadTicket(booking_id)
+    {
+        window.open("/flights/viewTicket/" + booking_id, '_blank');
+        // window.location.href="/flights/viewTicket/" + booking_id
+    }
+</script>
+</body>
+</html>

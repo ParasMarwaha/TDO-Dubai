@@ -1,0 +1,1124 @@
+<html lang="en">
+<head>
+    <%- include('../partials/header2') %>
+    <script src="https://static.iween.co.in/iife.min.js"></script>
+    <meta charset="utf-8">
+    <link rel="icon" href="/favicon.ico">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="#000000">
+    <meta name="description" content="Flightworth.com, best b2b travel portal">
+    <link rel="apple-touch-icon" href="/logo192.png">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/css/ion.rangeSlider.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.6.0/css/fontawesome.min.css" integrity="sha384-NvKbDTEnL+A8F/AA5Tc5kmMLSJHUO868P+lDtTpJIeQdGYaUIuLr4lVGOEA1OcMy" crossorigin="anonymous">
+    <title>FlightWorth</title>
+    <link href="/flightWorthCSS/css/myStyle.css" rel="stylesheet">
+    <style>
+        .fare-breakup_value {
+            text-align: right;
+            padding-right:300px ;
+            width: 30px; /* Adjust this width as per your layout */
+        }
+        .hidden {
+            display: none; /* Hides the element */
+        }
+
+        .tab-content {
+            display: none; /* Hide all sections by default */
+        }
+
+        .tab-content.active {
+            display: block; /* Show only the active section */
+        }
+
+        /* CSS */
+        .show {
+            display: block !important;
+        }
+
+        .hide {
+            display: none !important;
+        }
+
+
+        @import url("https://fonts.googleapis.com/css?family=Josefin+Sans:100,300,400,600,700");
+        @import url("https://fonts.googleapis.com/css?family=Indie+Flower");
+
+
+        .irs--round .irs-bar{
+            background-color: red !important;
+        }
+
+        .irs--round .irs-handle
+        {
+            border : 2px solid red !important;
+        }
+    </style>
+    <style data-emotion="css" data-s=""></style>
+</head>
+<body class="" style="" onload="getAllFlights()">
+<%-include('../partials/topNavbar.ejs')%>
+<noscript>You need to enable JavaScript to run this app.</noscript>
+<div id="root">
+    <main dir="ltr">
+        <div class="app-main-content">
+            <div class="scroll-to-top-button" style="display: none;">
+                <button>
+                    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em"
+                         width="1em" xmlns="http://www.w3.org/2000/svg">
+                        <path fill="none" d="M0 0h24v24H0V0z"></path>
+                        <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6 1.41 1.41z"></path>
+                    </svg>
+                    SHOW/HIDE NET
+                </button>
+            </div>
+            <section class="flight-round-trip-search-results-page">
+                <div class="countdown-timer-container visually-hidden">
+                    <div class="countdown-timer">
+                        <div class="text-center">
+                            <div class="countdown-timer__timer">
+                                <div><span class="me-1">14</span><span>:</span><span class="ms-1">19</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <section class="flight-app-container p-sm-3 p-0">
+                    <div class="spacing-16 row">
+                        <div class=" display-md-none p-0 col-lg-3">
+                            <div class="mb-2" style="font-weight: 600; font-size: 14px;">Filters</div>
+                            <section class="one-way-flight-filters">
+                                <div class="one-way-flight-filters_section">
+                                    <div class="flex-1">
+                                        <div class="one-way-flight-filters_section_content d-flex flex-column gap-2">
+                                            <div class="position-relative app-text-input"><label
+                                                        class="position-absolute text-input-label " id="dFN">Filter by Flight
+                                                    Number</label><input name="" placeholder="" class=" " type="text" value="" id="fSearch" onkeyup="applyFilters()"
+                                                                         style="height: 42px; border: 0.0625rem solid rgb(221, 221, 221); padding: 12px; border-radius: 6px; width: 100%;">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="one-way-flight-filters_section_content d-flex flex-column gap-2">
+                                            <div class="position-relative app-text-input"><label
+                                                        class="position-absolute text-input-label " id="dFNR">Filter by Flight
+                                                    Number</label><input name="" placeholder="" class=" " type="text" value="" id="fSearchReturn" onkeyup="applyFiltersReturn()"
+                                                                         style="height: 42px; border: 0.0625rem solid rgb(221, 221, 221); padding: 12px; border-radius: 6px; width: 100%;">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="one-way-flight-filters_section" id="priceFilter">
+                                    <div class="one-way-flight-filters_section_header justify-content-between d-flex align-items-center">
+                                        Price Range :
+                                        <div class="d-flex gap-2 align-items-center fw-500"><a
+                                                    class="fs-12 app-link-purple">Clear</a><a
+                                                    class=" app-link-secondary">
+                                                <svg stroke="currentColor" fill="currentColor" stroke-width="0"
+                                                     viewBox="0 0 24 24" height="1em" width="1em"
+                                                     xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill="none" d="M0 0h24v24H0V0z"></path>
+                                                    <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"></path>
+                                                </svg>
+                                            </a></div>
+                                    </div>
+
+                                </div>
+                                <div class="one-way-flight-filters_section">
+                                    <div class="one-way-flight-filters_section_header justify-content-between d-flex  align-items-center">
+                                        Stops
+                                        <div class="d-flex gap-2 align-items-center fw-500 "><a
+                                                    class="fs-12 app-link-purple">Clear</a><a
+                                                    class=" app-link-secondary">
+                                                <svg stroke="currentColor" fill="currentColor" stroke-width="0"
+                                                     viewBox="0 0 24 24" height="1em" width="1em"
+                                                     xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill="none" d="M0 0h24v24H0V0z"></path>
+                                                    <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"></path>
+                                                </svg>
+                                            </a></div>
+                                    </div>
+                                    <div class="d-flex">
+                                        <div class="flex-1">
+                                            <div class="one-way-flight-filters_section_header" id="stopSector"></div>
+                                            <div class="one-way-flight-filters_section_content d-flex flex-column gap-2" id="stopFilter">
+
+                                            </div>
+                                        </div>
+                                        <div class="flex-1">
+                                            <div class="one-way-flight-filters_section_header" id="stopSectorReturn"></div>
+                                            <div class="one-way-flight-filters_section_content d-flex flex-column gap-2" id="stopFilterReturn">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="one-way-flight-filters_section">
+                                    <div class="one-way-flight-filters_section_header d-flex justify-content-between align-items-center">
+                                        Fare Types
+                                        <div class="d-flex gap-2 align-items-center fw-500"><a
+                                                    class="fs-12 app-link-purple">Clear</a><a
+                                                    class=" app-link-secondary">
+                                                <svg stroke="currentColor" fill="currentColor" stroke-width="0"
+                                                     viewBox="0 0 24 24" height="1em" width="1em"
+                                                     xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill="none" d="M0 0h24v24H0V0z"></path>
+                                                    <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"></path>
+                                                </svg>
+                                            </a></div>
+                                    </div>
+                                    <div class="d-flex">
+                                        <div class="flex-1">
+                                            <div class="one-way-flight-filters_section_header" id="fareSector">
+                                            </div>
+                                            <div class="one-way-flight-filters_section_content d-flex flex-column gap-2" id="fareFilter">
+
+                                            </div>
+                                        </div>
+                                        <div class="flex-1">
+                                            <div class="one-way-flight-filters_section_header" id="fareSectorReturn">
+                                            </div>
+                                            <div class="one-way-flight-filters_section_content d-flex flex-column gap-2" id="fareFilterReturn">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="one-way-flight-filters_section">
+                                    <div class="one-way-flight-filters_section_header d-flex justify-content-between align-items-center">
+                                        Departure Time
+                                        <div class="d-flex gap-2 align-items-center fw-500"><a
+                                                    class="fs-12 app-link-purple">Clear</a><a
+                                                    class=" app-link-secondary">
+                                                <svg stroke="currentColor" fill="currentColor" stroke-width="0"
+                                                     viewBox="0 0 24 24" height="1em" width="1em"
+                                                     xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill="none" d="M0 0h24v24H0V0z"></path>
+                                                    <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"></path>
+                                                </svg>
+                                            </a></div>
+                                    </div>
+                                    <div class="d-flex">
+                                        <div class="flex-1">
+                                            <div class="one-way-flight-filters_section_header text-center" id="dTime">
+                                            </div>
+                                            <div class="one-way-flight-filters_section_content d-flex flex-column">
+                                                <div class="app-chip m-1 text-center flex-1 " id="Early Morning"><span
+                                                            style="font-weight: 500; font-size: 12px;"><div
+                                                                class="d-flex gap-1 align-items-center justify-content-center"><img
+                                                                    src="/flightWorthCSS/images/sunrise.svg"
+                                                                    alt=""><span>00 -06</span></div></span></div>
+                                                <div class="app-chip m-1 text-center flex-1 " id="Afternoon"><span
+                                                            style="font-weight: 500; font-size: 12px;"><div
+                                                                class="d-flex gap-1 align-items-center justify-content-center"><img
+                                                                    src="/flightWorthCSS/images/afternoon_sun.svg" alt=""><span>06 -12</span></div></span>
+                                                </div>
+                                                <div class="app-chip m-1 text-center flex-1 " id="Evening"><span
+                                                            style="font-weight: 500; font-size: 12px;"><div
+                                                                class="d-flex gap-1 align-items-center justify-content-center"><img
+                                                                    src="/flightWorthCSS/images/evening_time.svg" alt=""><span>12-18</span></div></span>
+                                                </div>
+                                                <div class="app-chip m-1 text-center flex-1 " id="Night"><span
+                                                            style="font-weight: 500; font-size: 12px;"><div
+                                                                class="d-flex gap-1 align-items-center justify-content-center"><img
+                                                                    src="/flightWorthCSS/images/night_time.svg" alt=""><span>18-00</span></div></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="flex-1">
+                                            <div class="one-way-flight-filters_section_header text-center" id="dTimeReturn">
+                                            </div>
+                                            <div class="one-way-flight-filters_section_content d-flex flex-column">
+                                                <div class="app-chip-return m-1 text-center flex-1 " id="Early Morning"><span
+                                                            style="font-weight: 500; font-size: 12px;"><div
+                                                                class="d-flex gap-1 align-items-center justify-content-center"><img
+                                                                    src="/flightWorthCSS/images/sunrise.svg"
+                                                                    alt=""><span>00 -06</span></div></span></div>
+                                                <div class="app-chip-return m-1 text-center flex-1 " id="Afternoon"><span
+                                                            style="font-weight: 500; font-size: 12px;"><div
+                                                                class="d-flex gap-1 align-items-center justify-content-center"><img
+                                                                    src="/flightWorthCSS/images/afternoon_sun.svg" alt=""><span>06 -12</span></div></span>
+                                                </div>
+                                                <div class="app-chip-return m-1 text-center flex-1 " id="Evening"><span
+                                                            style="font-weight: 500; font-size: 12px;"><div
+                                                                class="d-flex gap-1 align-items-center justify-content-center"><img
+                                                                    src="/flightWorthCSS/images/evening_time.svg" alt=""><span>12-18</span></div></span>
+                                                </div>
+                                                <div class="app-chip-return m-1 text-center flex-1 " id="Night"><span
+                                                            style="font-weight: 500; font-size: 12px;"><div
+                                                                class="d-flex gap-1 align-items-center justify-content-center"><img
+                                                                    src="/flightWorthCSS/images/night_time.svg" alt=""><span>18-00</span></div></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="one-way-flight-filters_section">
+                                    <div class="one-way-flight-filters_section_header d-flex justify-content-between align-items-center">
+                                        Arraival Time
+                                        <div class="d-flex gap-2 align-items-center fw-500"><a
+                                                    class="fs-12 app-link-purple">Clear</a><a
+                                                    class=" app-link-secondary">
+                                                <svg stroke="currentColor" fill="currentColor" stroke-width="0"
+                                                     viewBox="0 0 24 24" height="1em" width="1em"
+                                                     xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill="none" d="M0 0h24v24H0V0z"></path>
+                                                    <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"></path>
+                                                </svg>
+                                            </a></div>
+                                    </div>
+                                    <div class="d-flex">
+                                        <div class="flex-1">
+                                            <div class="one-way-flight-filters_section_header text-center" id="aTime">
+                                            </div>
+                                            <div class="one-way-flight-filters_section_content d-flex flex-column">
+                                                <div class="a-app-chip m-1 text-center flex-1 " id="Early Morning"><span
+                                                            style="font-weight: 500; font-size: 12px;"><div
+                                                                class="d-flex gap-1 align-items-center justify-content-center"><img
+                                                                    src="/flightWorthCSS/images/sunrise.svg"
+                                                                    alt=""><span>00 -06</span></div></span></div>
+                                                <div class="a-app-chip m-1 text-center flex-1 " id="Afternoon"><span
+                                                            style="font-weight: 500; font-size: 12px;"><div
+                                                                class="d-flex gap-1 align-items-center justify-content-center"><img
+                                                                    src="/flightWorthCSS/images/afternoon_sun.svg" alt=""><span>06 -12</span></div></span>
+                                                </div>
+                                                <div class="a-app-chip m-1 text-center flex-1 " id="Evening"><span
+                                                            style="font-weight: 500; font-size: 12px;"><div
+                                                                class="d-flex gap-1 align-items-center justify-content-center"><img
+                                                                    src="/flightWorthCSS/images/evening_time.svg" alt=""><span>12-18</span></div></span>
+                                                </div>
+                                                <div class="a-app-chip m-1 text-center flex-1 " id="Night"><span
+                                                            style="font-weight: 500; font-size: 12px;"><div
+                                                                class="d-flex gap-1 align-items-center justify-content-center"><img
+                                                                    src="/flightWorthCSS/images/night_time.svg" alt=""><span>18-00</span></div></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="flex-1">
+                                            <div class="one-way-flight-filters_section_header text-center" id="aTimeReturn">
+                                            </div>
+                                            <div class="one-way-flight-filters_section_content d-flex flex-column">
+                                                <div class="a-app-chip-return m-1 text-center flex-1 " id="Early Morning"><span
+                                                            style="font-weight: 500; font-size: 12px;"><div
+                                                                class="d-flex gap-1 align-items-center justify-content-center"><img
+                                                                    src="/flightWorthCSS/images/sunrise.svg"
+                                                                    alt=""><span>00 -06</span></div></span></div>
+                                                <div class="a-app-chip-return m-1 text-center flex-1 " id="Afternoon"><span
+                                                            style="font-weight: 500; font-size: 12px;"><div
+                                                                class="d-flex gap-1 align-items-center justify-content-center"><img
+                                                                    src="/flightWorthCSS/images/afternoon_sun.svg" alt=""><span>06 -12</span></div></span>
+                                                </div>
+                                                <div class="a-app-chip-return m-1 text-center flex-1 " id="Evening"><span
+                                                            style="font-weight: 500; font-size: 12px;"><div
+                                                                class="d-flex gap-1 align-items-center justify-content-center"><img
+                                                                    src="/flightWorthCSS/images/evening_time.svg" alt=""><span>12-18</span></div></span>
+                                                </div>
+                                                <div class="a-app-chip-return m-1 text-center flex-1 " id="Night"><span
+                                                            style="font-weight: 500; font-size: 12px;"><div
+                                                                class="d-flex gap-1 align-items-center justify-content-center"><img
+                                                                    src="/flightWorthCSS/images/night_time.svg" alt=""><span>18-00</span></div></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="one-way-flight-filters_section">
+                                    <div class="one-way-flight-filters_section_header d-flex justify-content-between align-items-center">
+                                        Search By Airlines
+                                        <div class="d-flex gap-2 align-items-center fw-500"><a
+                                                    class="fs-12 app-link-purple">Clear</a><a
+                                                    class=" app-link-secondary">
+                                                <svg stroke="currentColor" fill="currentColor" stroke-width="0"
+                                                     viewBox="0 0 24 24" height="1em" width="1em"
+                                                     xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill="none" d="M0 0h24v24H0V0z"></path>
+                                                    <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"></path>
+                                                </svg>
+                                            </a></div>
+                                    </div>
+                                    <div class="d-flex">
+                                        <div class="flex-1">
+                                            <div class="one-way-flight-filters_section_header" id="airlineSector"></div>
+                                            <div class="one-way-flight-filters_section_content d-flex flex-column gap-2" id="airlineFilter">
+
+                                            </div>
+                                        </div>
+                                        <div class="flex-1">
+                                            <div class="one-way-flight-filters_section_header" id="airlineSectorReturn"></div>
+                                            <div class="one-way-flight-filters_section_content d-flex flex-column gap-2" id="airlineFilterReturn">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                        <div class="col-lg-9" id="renderFixed">
+
+                            <section class="d-flex round-trip-results-page-hide-xs" id="renderFlight">
+
+                            </section>
+                        </div>
+                    </div>
+                </section>
+            </section>
+        </div>
+    </main>
+    <footer class="results-footer" style="display: none" id="selectedFlightsDetails">
+        <section class="results-footer__container  d-flex justify-content-between align-items-center">
+            <div class="d-flex flex-sm-row flex-column">
+                <div class="d-flex gap-2 align-items-center flex-sm-row flex-column">
+                    <div id="departFlight">
+                    </div>
+                    <div id="returnFlight">
+
+                    </div>
+                </div>
+            </div>
+            <div  class="d-flex justify-content-end align-items-center flex-sm-row flex-column">
+                <div id="priceSummary" class="me-5 text-center"><h4 class="results-footer__price mb-0">AED 9615.00</h4><a
+                            class=" app-link-purple">View summary</a></div>
+                <button id="continueButton" type="button" onclick="Book()"
+                        class="app-btn app-btn-primary app-btn-medium results-footer__book-btn"
+                        style="display: none;padding: 0.5rem; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px; font-weight: 600;">
+                    Continue
+                </button>
+            </div>
+        </section>
+    </footer>
+
+</div>
+<div role="dialog" aria-modal="true" class="fade app-sidebar  modal show" tabindex="-1"
+     style="display: block; " id="div2"></div>
+<%-include('../partials/footer2.ejs')%>
+<!--jQuery-->
+<script src='https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.all.min.js'></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<!--Plugin JavaScript file-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
+
+<script src="/flights_india/roundFlightCards.js"></script>
+<script src="/flights_india/roundFixedCard.js"></script>
+
+
+
+
+<script>
+    let flightData = '';
+    let res = '';
+    let agents;
+    let child;
+    let infant;
+    let travelDate;
+    let travelReturnDate;
+    let filteredFlights = [];
+    let filteredFlightsReturn = [];
+    let type = '';
+    let flightArray=[]
+
+    async function getAllFlights()
+    {
+
+        document.getElementById("renderFlight").innerHTML = `<div class="animation">
+  <svg id="master-artboard" class="animation__cloud--back" viewBox="0 0 45 18" version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="45px" height="18px"><path d="M 58.88372802734375 825.155517578125 C 16.61685562133789 826.1433715820312 57.925209045410156 781.6769409179688 58.883731842041016 781.3507080078125 C 106.25779724121094 731.152099609375 169.17739868164062 692.9862670898438 226.64694213867188 694.6730346679688 C 227.2968292236328 557.091552734375 389.74322509765625 563.0558471679688 425.166748046875 635.9559326171875 C 534.7359619140625 431.2034912109375 793.6226196289062 599.6361694335938 715.956298828125 741.27392578125 C 820.5570068359375 803.94287109375 789.773193359375 826.9736328125 767.21728515625 825.1555786132812 C 394.85125732421875 825.5911865234375 359.5561218261719 823.805908203125 58.88372802734375 825.155517578125 Z" transform="matrix(0.0573558509349823, 0, 0, 0.056244850158691406, -1.3596858978271484, -29.666284561157227)"/></svg>
+<svg id="master-artboard" class="animation__cloud--middle" viewBox="0 0 45 18" version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="45px" height="18px"><path d="M 58.88372802734375 825.155517578125 C 16.61685562133789 826.1433715820312 57.925209045410156 781.6769409179688 58.883731842041016 781.3507080078125 C 106.25779724121094 731.152099609375 169.17739868164062 692.9862670898438 226.64694213867188 694.6730346679688 C 227.2968292236328 557.091552734375 389.74322509765625 563.0558471679688 425.166748046875 635.9559326171875 C 534.7359619140625 431.2034912109375 793.6226196289062 599.6361694335938 715.956298828125 741.27392578125 C 820.5570068359375 803.94287109375 789.773193359375 826.9736328125 767.21728515625 825.1555786132812 C 394.85125732421875 825.5911865234375 359.5561218261719 823.805908203125 58.88372802734375 825.155517578125 Z" transform="matrix(0.0573558509349823, 0, 0, 0.056244850158691406, -1.3596858978271484, -29.666284561157227)"/></svg>
+<div class="animation__plane--shadow"></div>
+<svg class="animation__plane" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" data-name="svgi-plane" viewBox="0 0 135.67 49.55"><path fill="#fff" stroke="#464646" stroke-linejoin="round" d="M74.663 45.572h-9.106z" class="svgi-plane--stripe3"/><path fill="#fff" stroke="#464646" stroke-linejoin="round" stroke-width="1" d="M.75 26.719h23.309z" class="svgi-plane--stripe1"/><path fill="#fff" stroke="#464646" stroke-linejoin="round" stroke-width="1" d="M11.23 31.82h22.654z" class="svgi-plane--stripe2"/><path fill="#fff" stroke="#464646" stroke-linejoin="round" stroke-width="1" d="m 53.47597,24.263013 h 68.97869 c 6.17785,0 12.47074,6.758518 12.40872,8.67006 -0.05,1.537903 -5.43763,7.036166 -11.72452,7.056809 l -59.599872,0.201269 c -9.092727,0.03097 -23.597077,-5.992662 -22.178652,-11.794378 1.160348,-4.74789 7.862358,-4.13376 12.115634,-4.13376 z"/><path fill="#fff" stroke="#464646" stroke-linejoin="round" stroke-width="1" d="M 45.243501,24.351777 37.946312,0.952937 h 7.185155 c 15.37061,20.184725 28.402518,23.28324 28.402518,23.28324 0,0 -27.106129,-0.178562 -28.290484,0.1156 z"/><path fill="#fff" stroke="#464646" stroke-linejoin="round" stroke-width="1" d="m 42.699738,18.984597 h 10.627187 c 5.753726,0 5.364609,7.799958 0,7.799958 H 42.998828 c -4.96749,0 -5.574672,-7.799958 -0.29909,-7.799958 z m 33.139939,16.164502 h 29.656893 c 6.62199,0 6.49395,6.577892 0,6.577892 H 75.940707 c -8.658596,0 -8.499549,-6.35598 -0.10103,-6.577892 z m 9.693907,6.664592 h 8.86866 c 4.439332,0 4.309293,7.066099 0,7.066099 h -8.756626 z"/><path fill="#fff" stroke="#464646" stroke-linejoin="round" stroke-width="1" d="m 85.55159,42.447431 c 0,0 -5.282585,0.456211 -6.372912,3.263659 1.335401,2.378073 6.397919,2.528767 6.397919,2.528767 z"/><path fill="#fff" stroke="#464646" stroke-linejoin="round" stroke-width="1" d="m 133.68903,31.07417 h -7.01411 c -1.26938,0 -2.89286,-1.005314 -3.21496,-3.216179 h 7.50225 z"/><ellipse cx="113.564" cy="29.448534" fill="#fff" stroke="#464646" stroke-linecap="square" stroke-linejoin="round" stroke-width="1" rx="1.3354006" ry="1.6400863"/><ellipse cx="107.56219" cy="29.448534" fill="#fff" stroke="#464646" stroke-linecap="square" stroke-linejoin="round" stroke-width="1" rx="1.3354006" ry="1.6400863"/><ellipse cx="101.56039" cy="29.448534" fill="#fff" stroke="#464646" stroke-linecap="square" stroke-linejoin="round" stroke-width="1" rx="1.3354006" ry="1.6400863"/><ellipse cx="95.558594" cy="29.448534" fill="#fff" stroke="#464646" stroke-linecap="square" stroke-linejoin="round" stroke-width="1" rx="1.3354006" ry="1.6400863"/><ellipse cx="89.556793" cy="29.448534" fill="#fff" stroke="#464646" stroke-linecap="square" stroke-linejoin="round" stroke-width="1" rx="1.3354006" ry="1.6400863"/><ellipse cx="83.554993" cy="29.448534" fill="#fff" stroke="#464646" stroke-linecap="square" stroke-linejoin="round" stroke-width="1" rx="1.3354006" ry="1.6400863"/><ellipse cx="77.553192" cy="29.448534" fill="#fff" stroke="#464646" stroke-linecap="square" stroke-linejoin="round" stroke-width="1" rx="1.3354006" ry="1.6400863"/><ellipse cx="71.551392" cy="29.448534" fill="#fff" stroke="#464646" stroke-linecap="square" stroke-linejoin="round" stroke-width="1" rx="1.3354006" ry="1.6400863"/><ellipse cx="65.549591" cy="29.448534" fill="#fff" stroke="#464646" stroke-linecap="square" stroke-linejoin="round" stroke-width="1" rx="1.3354006" ry="1.6400863"/></svg>
+<svg id="master-artboard" class="animation__cloud--front" viewBox="0 0 45 18" version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="45px" height="18px"><path d="M 58.88372802734375 825.155517578125 C 16.61685562133789 826.1433715820312 57.925209045410156 781.6769409179688 58.883731842041016 781.3507080078125 C 106.25779724121094 731.152099609375 169.17739868164062 692.9862670898438 226.64694213867188 694.6730346679688 C 227.2968292236328 557.091552734375 389.74322509765625 563.0558471679688 425.166748046875 635.9559326171875 C 534.7359619140625 431.2034912109375 793.6226196289062 599.6361694335938 715.956298828125 741.27392578125 C 820.5570068359375 803.94287109375 789.773193359375 826.9736328125 767.21728515625 825.1555786132812 C 394.85125732421875 825.5911865234375 359.5561218261719 823.805908203125 58.88372802734375 825.155517578125 Z" transform="matrix(0.0573558509349823, 0, 0, 0.056244850158691406, -1.3596858978271484, -29.666284561157227)"/></svg>
+        <div class="animation__loader"></div>
+ </div>
+`
+        var storedFormData = sessionStorage.getItem("fd");
+        // console.log(fd)
+        if (storedFormData) {
+
+            var formDataArray = JSON.parse(storedFormData);
+            let length = formDataArray.length;
+            // Accessing "data" property by iterating over the array
+            // for (let i = 0; i < length; i++) {
+            //     if (formDataArray[i][0] === "data") {
+            //         markupData = JSON.parse(formDataArray[i][1]);
+            //         console.log(markupData);
+            //         break; // Stop iteration once "data" property is found
+            //     }
+            // }
+
+            // for (let i = 0; i < length; i++) {
+            //     if (formDataArray[i][0] === "platform") {
+            //         platformData = JSON.parse(formDataArray[i][1]);
+            //         console.log(platformData);
+            //         platformFee = platformData.recordset[0].fee;
+            //         platformFeeTax = platformData.recordset[0].tax;
+            //         break; // Stop iteration once "data" property is found
+            //     }
+            // }
+
+            for (let i = 0; i < length; i++) {
+                if (formDataArray[i][0] === "adults") {
+                    agents = JSON.parse(formDataArray[i][1]);
+
+                    break; // Stop iteration once "data" property is found
+                }
+            }
+
+            for (let i = 0; i < length; i++) {
+                if (formDataArray[i][0] === "child") {
+                    child = JSON.parse(formDataArray[i][1]);
+
+                    break; // Stop iteration once "data" property is found
+                }
+            }
+
+            for (let i = 0; i < length; i++) {
+                if (formDataArray[i][0] === "travelDate") {
+                    travelDate = formDataArray[i][1];
+                    //  document.getElementById("ddate").innerHTML = `<i class="fas fa-plane-departure"></i> Date: ${travelDate}`
+                    break; // Stop iteration once "data" property is found
+                }
+            }
+
+            for (let i = 0; i < length; i++) {
+                if (formDataArray[i][0] === "travelReturnDate") {
+                    travelReturnDate = formDataArray[i][1];
+                    //  document.getElementById("ddate").innerHTML = `<i class="fas fa-plane-departure"></i> Date: ${travelDate}`
+                    break; // Stop iteration once "data" property is found
+                }
+            }
+
+            for (let i = 0; i < length; i++) {
+                if (formDataArray[i][0] === "infants") {
+                    infant = JSON.parse(formDataArray[i][1]);
+
+                    break; // Stop iteration once "data" property is found
+                }
+            }
+            var fd = new FormData();
+
+            formDataArray.forEach(entry => {
+                // If entry has both key and value
+                if (entry.length === 2) {
+                    fd.append(entry[0], entry[1]);
+                }
+                // If entry has only key (for checkboxes without value)
+                else if (entry.length === 1) {
+                    fd.append(entry[0], "");
+                }
+            });
+
+            //console.log(fd);
+        }
+
+        let newDatePlus = adjustDate(travelDate, 1);
+        ///console.log("After adding 1 day: ", newDatePlus);
+
+// Subtract one day, ensuring it doesn't go before today
+        let newDateMinus = adjustDate(travelDate, -1);
+        //console.log("After subtracting 1 day: ", newDateMinus);
+
+        let newDatePlusReturn = adjustDate(travelReturnDate, 1);
+        //console.log("After adding 1 day: ", newDatePlus);
+
+// Subtract one day, ensuring it doesn't go before today
+        let newDateMinusReturn = adjustDate(travelReturnDate, -1);
+        //console.log("After subtracting 1 day: ", newDateMinus);
+
+
+        flightData = await fetch("/flights/getAllFlightsRound", {
+            method : "POST",
+            body : fd
+        });
+
+        res = await flightData.json();
+
+        //console.log(res)
+        // flightData = res?.data || res?.COMBO || [];
+        // type = res?.data ? 'CUSTOM' : res?.COMBO ? 'FIXED' : '';
+        //console.log(flightData);
+
+
+        ///Cases For Flights Cards
+//
+//         if(type === 'FIXED')
+//         {
+//             document.getElementById("renderFixed").innerHTML = '';
+//
+//             let flightHTML = `
+//                     <div class="row">
+//                                 <div class="d-flex align-items-center col-lg-7 col-md-7 col-sm-12 col-12">
+//                                     <div class="fs-14 d-flex gap-3 align-content-center pt-2">
+//                                         <div class="sort-heading d-flex justify-content-center align-items-center">
+//                                             Sort
+//                                         </div>
+//                                         <div class="d-flex justify-content-center align-items-center"><a
+//                                                     class="ps-1 sort-option app-link-grey" onclick="sortAir()">Airline</a></div>
+//                                         <div class="d-flex justify-content-center align-items-center"><a
+//                                                     class="ps-1 sort-option app-link-grey" onclick="sortDeparture()">Departure</a></div>
+// <!--                                        <div class="d-flex justify-content-center align-items-center"><a-->
+// <!--                                                    class="ps-1 sort-option app-link-grey">Duration</a></div>-->
+//                                         <div class="d-flex justify-content-center align-items-center"><a
+//                                                     class="ps-1 sort-option app-link-grey" onclick="sortArrival()">Arrival</a></div>
+//                                         <div class="d-flex justify-content-center align-items-center">
+//                                             <svg stroke="currentColor" fill="currentColor" stroke-width="0"
+//                                                  viewBox="0 0 24 24" height="1em" width="1em"
+//                                                  xmlns="http://www.w3.org/2000/svg">
+//                                                 <path fill="none" d="M0 0h24v24H0z"></path>
+//                                                 <path d="M19 15l-1.41-1.41L13 18.17V2h-2v16.17l-4.59-4.59L5 15l7 7 7-7z"></path>
+//                                             </svg>
+//                                             <a class="ps-1 sort-option app-link-primary" onclick="sortPrice()">Price</a></div>
+//                                     </div>
+//                                 </div>
+//                                 <div class="col-lg-5 col-md-5 col-sm-12 col-12">
+//                                     <div class="d-flex justify-content-end">
+//                                         <div class="d-flex justify-content-between gap-1 align-items-center">
+//
+//                                             <button type="button" class="app-btn-transparent fs-12"
+//                                                     style="padding: 0.5rem; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px; font-weight: 600;">
+//                                                 <svg stroke="currentColor" fill="currentColor" stroke-width="0"
+//                                                      viewBox="0 0 24 24" height="1em" width="1em"
+//                                                      xmlns="http://www.w3.org/2000/svg">
+//                                                     <path fill="none" d="M0 0h24v24H0z"></path>
+//                                                     <path d="M19.05 4.91A9.816 9.816 0 0012.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01zm-7.01 15.24c-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.264 8.264 0 01-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24 2.2 0 4.27.86 5.82 2.42a8.183 8.183 0 012.41 5.83c.02 4.54-3.68 8.23-8.22 8.23zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.78.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43s.17-.25.25-.41c.08-.17.04-.31-.02-.43s-.56-1.34-.76-1.84c-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.22.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18s-.22-.16-.47-.28z"></path>
+//                                                 </svg>
+//                                             </button>
+//                                             <button type="button" class="app-btn-transparent fs-12"
+//                                                     style="padding: 0.5rem; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px; font-weight: 600;">
+//                                                 <svg stroke="currentColor" fill="currentColor" stroke-width="0"
+//                                                      viewBox="0 0 24 24" height="1em" width="1em"
+//                                                      xmlns="http://www.w3.org/2000/svg">
+//                                                     <path fill="none" d="M0 0h24v24H0V0z"></path>
+//                                                     <path d="M22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6zm-2 0l-8 4.99L4 6h16zm0 12H4V8l8 5 8-5v10z"></path>
+//                                                 </svg>
+//                                             </button>
+//                                             <button type="button" class="app-btn-transparent fs-12" onclick="showNet()"
+//                                                     style="padding: 0.5rem; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px; font-weight: 600;">
+//                                                 <svg stroke="currentColor" fill="currentColor" stroke-width="0"
+//                                                      viewBox="0 0 512 512" height="1em" width="1em"
+//                                                      xmlns="http://www.w3.org/2000/svg">
+//                                                     <path d="M256 105c-101.8 0-188.4 62.4-224 151 35.6 88.6 122.2 151 224 151s188.4-62.4 224-151c-35.6-88.6-122.2-151-224-151zm0 251.7c-56 0-101.8-45.3-101.8-100.7S200 155.3 256 155.3 357.8 200.6 357.8 256 312 356.7 256 356.7zm0-161.1c-33.6 0-61.1 27.2-61.1 60.4s27.5 60.4 61.1 60.4 61.1-27.2 61.1-60.4-27.5-60.4-61.1-60.4z"></path>
+//                                                 </svg>
+//                                                 Show/Hide NET
+//                                             </button>
+//                                         </div>
+//                                     </div>
+//                                 </div>
+//                             </div>
+//                             <div class="d-flex align-items-center justify-content-between px-2 mt-2" id="datePlusMinus">
+//
+//                             </div>
+//                             <div id="renderResults">
+//             `;
+//             if(flightData.length >0)
+//             {
+//                 flightData.forEach((flight, index) => {
+//                     let flightCards = new FlightFixedCards(flight, index)
+//                     flightHTML += flightCards.render()
+//                 })
+//
+//                 flightHTML +=`</div>`
+//                 document.getElementById("renderFixed").innerHTML = flightHTML;
+//                 AirlineFIlterFixed();
+//                 PriceFilterDivFixed();
+//                 stopsFilterFixed();
+//                 fareFIlterFixed()
+//                 AirlineFIlterReturnFixed();
+//                 stopsFilterReturnFixed();
+//                 fareFIlterReturnFixed()
+//             }
+//             else {
+//                 document.getElementById("renderFixed").innerHTML = `
+//              <section class="no-search-results app-container mt-3 p-3 d-flex flex-column justify-content-center align-items-center"><div class="no-search-results__plane"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M10.5 7.67V3.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5V9l8.5 5v2l-4.49-1.32-7.01-7.01zm9.28 14.94l1.41-1.41-7.69-7.7-3.94-3.94-6.75-6.75-1.42 1.41 6.38 6.38L2 14v2l8.5-2.5V19L8 20.5V22l4-1 4 1v-1.5L13.5 19v-2.67l6.28 6.28z"></path><path fill="none" d="M0 0h24v24H0V0z"></path></svg></div><div class="search-info--item_value mb-3">NO READYMADE ROUNDTRIP FOUND</div><div class="secondary-text">Please change your filter criteria and try again</div></section>
+//             `
+//             }
+//         }
+//         else
+//         {
+//             document.getElementById("renderFlight").innerHTML = '';
+//             let flightHTML = `
+//     <div class="flex-1 pe-1 ps-2 rt-info">
+//         <div class="d-flex fs-14 fw-500 justify-content-between px-1 py-1 prev-next-day-container">
+//             <button type="button" class="app-btn app-btn-outlined app-btn-medium"
+//                 onclick="getFlightsByDate('${backDate(`${newDateMinus}`)}')"
+//                 style="padding: 0.5rem; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px; font-weight: 600;">
+//                 <div class="d-flex gap-2">
+//                     <div class="d-flex align-items-center">
+//                         <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+//                             <path fill="none" d="M0 0h24v24H0z"></path>
+//                             <path d="M9 19l1.41-1.41L5.83 13H22v-2H5.83l4.59-4.59L9 5l-7 7 7 7z"></path>
+//                         </svg>
+//                     </div>
+//                     <span class="fs-12">${newDateMinus}</span>
+//                 </div>
+//             </button>
+//             <div class="d-flex align-items-center text-black fw-600">
+//                 ${flightData[0].onwardFlights[0].Origin.CityName}
+//                 <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+//                     <path fill="none" d="M0 0h24v24H0z"></path>
+//                     <path d="M15 5l-1.41 1.41L18.17 11H2v2h16.17l-4.59 4.59L15 19l7-7-7-7z"></path>
+//                 </svg>
+//                 ${flightData[0].onwardFlights[0].Destination.CityName}
+//             </div>
+//             <button type="button" class="app-btn app-btn-outlined app-btn-medium"
+//                 onclick="getFlightsByDate('${backDate(`${newDatePlus}`)}')"
+//                 style="padding: 0.5rem; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px; font-weight: 600;">
+//                 <div class="d-flex gap-2">
+//                     <span class="fs-12">${newDatePlus}</span>
+//                     <div class="d-flex align-items-center">
+//                         <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+//                             <path fill="none" d="M0 0h24v24H0z"></path>
+//                             <path d="M15 5l-1.41 1.41L18.17 11H2v2h16.17l-4.59 4.59L15 19l7-7-7-7z"></path>
+//                         </svg>
+//                     </div>
+//                 </div>
+//             </button>
+//         </div>
+//         <div>
+//             <div class="fs-14 d-flex gap-3 align-content-center pt-2">
+//                 <div class="sort-heading d-flex justify-content-center align-items-center">
+//                     Sort
+//                 </div>
+//                 <div class="d-flex justify-content-center align-items-center">
+//                     <a class="ps-1 sort-option app-link-grey" onclick="sortAir()">Airline</a>
+//                 </div>
+//                 <div class="d-flex justify-content-center align-items-center">
+//                     <a class="ps-1 sort-option app-link-grey" onclick="sortDeparture()">Departure</a>
+//                 </div>
+//                 <div class="d-flex justify-content-center align-items-center">
+//                     <a class="ps-1 sort-option app-link-grey" >Duration</a>
+//                 </div>
+//                 <div class="d-flex justify-content-center align-items-center">
+//                     <a class="ps-1 sort-option app-link-grey" onclick="sortArrival()">Arrival</a>
+//                 </div>
+//                 <div class="d-flex justify-content-center align-items-center">
+//                     <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+//                         <path fill="none" d="M0 0h24v24H0z"></path>
+//                         <path d="M19 15l-1.41-1.41L13 18.17V2h-2v16.17l-4.59-4.59L5 15l7 7 7-7z"></path>
+//                     </svg>
+//                     <a class="ps-1 sort-option app-link-primary" onclick="sortPrice()">Price</a>
+//                 </div>
+//             </div>
+//         </div>
+// <div id="myOnward">
+// `;
+//             if(flightData[0].onwardFlights.length > 0) {
+//                 flightData[0].onwardFlights.forEach((flight, index) => {
+//                     let flightCards = new FlightRoundCards(flight, index)
+//                     flightHTML += flightCards.render()
+//                 })
+//             }
+//             else
+//             {
+//                 flightHTML += `
+//             <section class="no-search-results app-container mt-3 p-3 d-flex flex-column justify-content-center align-items-center"><div class="no-search-results__plane"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M10.5 7.67V3.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5V9l8.5 5v2l-4.49-1.32-7.01-7.01zm9.28 14.94l1.41-1.41-7.69-7.7-3.94-3.94-6.75-6.75-1.42 1.41 6.38 6.38L2 14v2l8.5-2.5V19L8 20.5V22l4-1 4 1v-1.5L13.5 19v-2.67l6.28 6.28z"></path><path fill="none" d="M0 0h24v24H0V0z"></path></svg></div><div class="search-info--item_value mb-3">No Onward Flights Found</div><div class="secondary-text">Please change your filter criteria and try again</div></section>
+//             `;
+//             }
+//
+//             flightHTML += `</div></div>
+//
+// <div class="flex-1 pe-2 ps-1 rt-info">
+//                                     <div class="d-flex fs-14 fw-500 justify-content-between px-1 py-1 prev-next-day-container">
+//                                         <button type="button" class="app-btn app-btn-outlined app-btn-medium"
+//                 onclick="getFlightsByDate('${backDate(`${newDateMinusReturn}`)}')"
+//                 style="padding: 0.5rem; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px; font-weight: 600;">
+//                 <div class="d-flex gap-2">
+//                     <div class="d-flex align-items-center">
+//                         <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+//                             <path fill="none" d="M0 0h24v24H0z"></path>
+//                             <path d="M9 19l1.41-1.41L5.83 13H22v-2H5.83l4.59-4.59L9 5l-7 7 7 7z"></path>
+//                         </svg>
+//                     </div>
+//                     <span class="fs-12">${newDateMinusReturn}</span>
+//                 </div>
+//             </button>
+//                                         <div class="d-flex align-items-center text-black fw-600">${flightData[0].returnFlights[0].Origin.CityName}
+//                                             <svg stroke="currentColor" fill="currentColor" stroke-width="0"
+//                                                  viewBox="0 0 24 24" height="1em" width="1em"
+//                                                  xmlns="http://www.w3.org/2000/svg">
+//                                                 <path fill="none" d="M0 0h24v24H0z"></path>
+//                                                 <path d="M15 5l-1.41 1.41L18.17 11H2v2h16.17l-4.59 4.59L15 19l7-7-7-7z"></path>
+//                                             </svg>
+//                                             ${flightData[0].returnFlights[0].Destination.CityName}
+//                                         </div>
+//                                            <button type="button" class="app-btn app-btn-outlined app-btn-medium"
+//                 onclick="getFlightsByDate('${backDate(`${newDatePlusReturn}`)}')"
+//                 style="padding: 0.5rem; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px; font-weight: 600;">
+//                 <div class="d-flex gap-2">
+//                     <span class="fs-12">${newDatePlusReturn}</span>
+//                     <div class="d-flex align-items-center">
+//                         <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+//                             <path fill="none" d="M0 0h24v24H0z"></path>
+//                             <path d="M15 5l-1.41 1.41L18.17 11H2v2h16.17l-4.59 4.59L15 19l7-7-7-7z"></path>
+//                         </svg>
+//                     </div>
+//                 </div>
+//             </button>
+//                                     </div>
+//                                     <div>
+//                                         <div class="fs-14 d-flex gap-3 align-content-center pt-2">
+//                                             <div class="sort-heading d-flex justify-content-center align-items-center">
+//                                                 Sort
+//                                             </div>
+//                                             <div class="d-flex justify-content-center align-items-center"><a
+//                                                         class="ps-1 sort-option app-link-grey">Airline</a></div>
+//                                             <div class="d-flex justify-content-center align-items-center"><a
+//                                                         class="ps-1 sort-option app-link-grey">Departure</a></div>
+//                                             <div class="d-flex justify-content-center align-items-center"><a
+//                                                         class="ps-1 sort-option app-link-grey">Duration</a></div>
+//                                             <div class="d-flex justify-content-center align-items-center"><a
+//                                                         class="ps-1 sort-option app-link-grey">Arrival</a></div>
+//                                             <div class="d-flex justify-content-center align-items-center">
+//                                                 <svg stroke="currentColor" fill="currentColor" stroke-width="0"
+//                                                      viewBox="0 0 24 24" height="1em" width="1em"
+//                                                      xmlns="http://www.w3.org/2000/svg">
+//                                                     <path fill="none" d="M0 0h24v24H0z"></path>
+//                                                     <path d="M19 15l-1.41-1.41L13 18.17V2h-2v16.17l-4.59-4.59L5 15l7 7 7-7z"></path>
+//                                                 </svg>
+//                                                 <a class="ps-1 sort-option app-link-primary">Price</a></div>
+//                                         </div>
+//                                     </div>
+// <div id="myReturn">
+// `;
+//
+//             flightData[0].returnFlights.forEach((flight, index) => {
+//                 let flightCards = new FlightRoundCards(flight, index)
+//                 flightHTML += flightCards.renderReturn()
+//             })
+//
+//             flightHTML+=`</div></div>
+// `;
+//
+//             document.getElementById("renderFlight").innerHTML = flightHTML;
+//
+//             AirlineFIlter();
+//             PriceFilterDiv();
+//             stopsFilter();
+//             fareFIlter()
+//             AirlineFIlterReturn();
+//             stopsFilterReturn();
+//             fareFIlterReturn()
+//         }
+
+
+        document.getElementById("renderFixed").innerHTML = '';
+
+        let flightHTML = `
+                    <div class="row">
+                                <div class="d-flex align-items-center col-lg-7 col-md-7 col-sm-12 col-12">
+                                    <div class="fs-14 d-flex gap-3 align-content-center pt-2">
+                                        <div class="sort-heading d-flex justify-content-center align-items-center">
+                                            Sort
+                                        </div>
+                                        <div class="d-flex justify-content-center align-items-center"><a
+                                                    class="ps-1 sort-option app-link-grey" onclick="sortAir()">Airline</a></div>
+                                        <div class="d-flex justify-content-center align-items-center"><a
+                                                    class="ps-1 sort-option app-link-grey" onclick="sortDeparture()">Departure</a></div>
+<!--                                        <div class="d-flex justify-content-center align-items-center"><a-->
+<!--                                                    class="ps-1 sort-option app-link-grey">Duration</a></div>-->
+                                        <div class="d-flex justify-content-center align-items-center"><a
+                                                    class="ps-1 sort-option app-link-grey" onclick="sortArrival()">Arrival</a></div>
+                                        <div class="d-flex justify-content-center align-items-center">
+                                            <svg stroke="currentColor" fill="currentColor" stroke-width="0"
+                                                 viewBox="0 0 24 24" height="1em" width="1em"
+                                                 xmlns="http://www.w3.org/2000/svg">
+                                                <path fill="none" d="M0 0h24v24H0z"></path>
+                                                <path d="M19 15l-1.41-1.41L13 18.17V2h-2v16.17l-4.59-4.59L5 15l7 7 7-7z"></path>
+                                            </svg>
+                                            <a class="ps-1 sort-option app-link-primary" onclick="sortPrice()">Price</a></div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-5 col-md-5 col-sm-12 col-12">
+                                    <div class="d-flex justify-content-end">
+                                        <div class="d-flex justify-content-between gap-1 align-items-center">
+
+                                            <button type="button" class="app-btn-transparent fs-12"
+                                                    style="padding: 0.5rem; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px; font-weight: 600;">
+                                                <svg stroke="currentColor" fill="currentColor" stroke-width="0"
+                                                     viewBox="0 0 24 24" height="1em" width="1em"
+                                                     xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill="none" d="M0 0h24v24H0z"></path>
+                                                    <path d="M19.05 4.91A9.816 9.816 0 0012.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01zm-7.01 15.24c-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.264 8.264 0 01-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24 2.2 0 4.27.86 5.82 2.42a8.183 8.183 0 012.41 5.83c.02 4.54-3.68 8.23-8.22 8.23zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.78.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43s.17-.25.25-.41c.08-.17.04-.31-.02-.43s-.56-1.34-.76-1.84c-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.22.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18s-.22-.16-.47-.28z"></path>
+                                                </svg>
+                                            </button>
+                                            <button type="button" class="app-btn-transparent fs-12"
+                                                    style="padding: 0.5rem; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px; font-weight: 600;">
+                                                <svg stroke="currentColor" fill="currentColor" stroke-width="0"
+                                                     viewBox="0 0 24 24" height="1em" width="1em"
+                                                     xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill="none" d="M0 0h24v24H0V0z"></path>
+                                                    <path d="M22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6zm-2 0l-8 4.99L4 6h16zm0 12H4V8l8 5 8-5v10z"></path>
+                                                </svg>
+                                            </button>
+                                            <button type="button" class="app-btn-transparent fs-12" onclick="showNet()"
+                                                    style="padding: 0.5rem; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px; font-weight: 600;">
+                                                <svg stroke="currentColor" fill="currentColor" stroke-width="0"
+                                                     viewBox="0 0 512 512" height="1em" width="1em"
+                                                     xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M256 105c-101.8 0-188.4 62.4-224 151 35.6 88.6 122.2 151 224 151s188.4-62.4 224-151c-35.6-88.6-122.2-151-224-151zm0 251.7c-56 0-101.8-45.3-101.8-100.7S200 155.3 256 155.3 357.8 200.6 357.8 256 312 356.7 256 356.7zm0-161.1c-33.6 0-61.1 27.2-61.1 60.4s27.5 60.4 61.1 60.4 61.1-27.2 61.1-60.4-27.5-60.4-61.1-60.4z"></path>
+                                                </svg>
+                                                Show/Hide NET
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between px-2 mt-2" id="datePlusMinus">
+
+                            </div>
+                            <div id="renderResults">
+            `;
+        //console.log(res.response.data.onwardFlights.length)
+        //console.log(res)
+        if (res.response.data?.onwardFlights?.length > 0 && res.response.data?.returnFlights?.length > 0) {
+            const onwardFlights = res.response.data.onwardFlights;
+            const returnFlights = res.response.data.returnFlights;
+
+            onwardFlights.forEach((onwardFlight, index) => {
+                // Make sure there is a return flight at the same index
+                if (index < returnFlights.length) {
+                    const returnFlight = returnFlights[index];
+                    let flight = { onwardFlight, returnFlight }; // Combine both flights data
+                    flightArray.push({
+                        "flight":flight
+                    });
+
+                    flightData[index] = flight
+                    let flightCards = new FlightFixedCards(flight, index);
+                    flightHTML += flightCards.render();
+                }
+            });
+            // console.log("fa",flightArray)
+            // console.log(flightData)
+            flightHTML += `</div>`;
+            document.getElementById("renderFixed").innerHTML = flightHTML;
+
+            AirlineFIlterFixed();
+            PriceFilterDivFixed();
+            stopsFilterFixed();
+            fareFIlterFixed();
+            AirlineFIlterReturnFixed();
+            stopsFilterReturnFixed();
+            fareFIlterReturnFixed();
+        }
+        else {
+            document.getElementById("renderFixed").innerHTML = `
+             <section class="no-search-results app-container mt-3 p-3 d-flex flex-column justify-content-center align-items-center"><div class="no-search-results__plane"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M10.5 7.67V3.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5V9l8.5 5v2l-4.49-1.32-7.01-7.01zm9.28 14.94l1.41-1.41-7.69-7.7-3.94-3.94-6.75-6.75-1.42 1.41 6.38 6.38L2 14v2l8.5-2.5V19L8 20.5V22l4-1 4 1v-1.5L13.5 19v-2.67l6.28 6.28z"></path><path fill="none" d="M0 0h24v24H0V0z"></path></svg></div><div class="search-info--item_value mb-3">NO READYMADE ROUNDTRIP FOUND</div><div class="secondary-text">Please change your filter criteria and try again</div></section>
+            `
+        }
+
+    }
+
+
+    function removeDiv() {
+        // Find the dynamically added div
+        let dynamicDiv = document.getElementById("div1");
+        let dynamicDiv1 = document.getElementById("ans");
+
+        // Check if the div exists, then remove it
+        if (dynamicDiv) {
+            dynamicDiv.remove();
+        }
+        if (dynamicDiv1) {
+            dynamicDiv1.remove();
+        }
+    }
+
+    function initializeTabs() {
+        // Remove existing event listeners if needed
+        document.querySelectorAll('.tab-btn').forEach(button => {
+            button.addEventListener('click', (event) => {
+                // Get the target tab content ID
+                const targetTab = button.getAttribute('data-target');
+
+                // Remove 'selected-tab-btn' class from all buttons
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.classList.remove('selected-tab-btn');
+                });
+
+                // Add 'selected-tab-btn' class to the clicked button
+                button.classList.add('selected-tab-btn');
+
+                // Hide all tab content sections
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.style.display = 'none';
+                });
+
+                // Show the tab content that corresponds to the clicked button
+                const targetElement = document.getElementById(targetTab);
+                if (targetElement) {
+                    targetElement.style.display = 'block';
+                } else {
+                    console.error('Target tab element not found:', targetTab);
+                }
+            });
+        });
+    }
+
+    // Initialize the first tab as visible
+    // Function to filter by Flight Number
+
+    // Function to convert '13 Sept 2024' to a Date object
+    function parseDate(dateStr) {
+        return new Date(dateStr);
+    }
+
+    // Function to format Date object to '13 Sept 2024'
+    function formatDate(date) {
+        const options = { day: 'numeric', month: 'short', year: 'numeric' };
+        return date.toLocaleDateString('en-GB', options);
+    }
+
+    // Function to adjust date by +1 or -1
+    function adjustDate(dateStr, days) {
+        let date = parseDate(dateStr);
+        let today = new Date();
+
+        // Adjust the date
+        date.setDate(date.getDate() + days);
+
+        // Ensure the new date is not before today
+        if (days < 0 && date < today) {
+            date = today; // Keep the date as today if it goes before
+        }
+
+        return formatDate(date);
+    }
+
+    function backDate(inputDate) {
+        const date = new Date(inputDate);
+
+        // Get the timezone offset in minutes and adjust the date
+        const offset = date.getTimezoneOffset(); // Timezone offset in minutes
+
+        // Adjust the date to account for the timezone
+        date.setMinutes(date.getMinutes() - offset);
+
+        // Format the date as "YYYY-MM-DD"
+        const formattedDate = date.toISOString().slice(0, 10);
+
+        return formattedDate;
+    }
+
+    function toggleVisibility(type,index) {
+
+        var div = document.getElementById(`${type}otherFares${index}`);
+        if (div.classList.contains('hide')) {
+            div.classList.remove('hide');
+            div.classList.add('show');
+        } else {
+            div.classList.remove('show');
+            div.classList.add('hide');
+        }
+    }
+
+    let flightSelection = {
+        departureFlight: null,
+        returnFlight: null,
+        totalDeparture: 0,
+        totalReturn: 0
+    };
+
+    function departFlightDetails(index) {
+        // Get the selected flight's segments
+        const myArr = (filteredFlightsReturn.length > 0) ? filteredFlights : flightData[0].onwardFlights;
+
+        let selectedFlight = JSON.parse(JSON.stringify(myArr[index]));
+
+        // console.log(selectedFlight);
+
+        // Get the selected radio button value more efficiently
+        const selectedRadio = document.querySelector(`input[name="d${index}"]:checked`);
+        if (!selectedRadio) {
+            alert("Please select a Departure flight");
+            return;
+        }
+
+        const selectedValue = selectedRadio.value;
+
+        alert(selectedValue);
+
+        // Replace Segments with the selected value
+        selectedFlight.Segments = [myArr[index].Segments[selectedValue]];  // Ensure it's in array format
+
+        // console.log("Selected flight after modification:", selectedFlight);
+
+        flightSelection.departureFlight = selectedFlight;
+        // console.log(selectedFlight);
+        flightSelection.totalDeparture = parseFloat(selectedFlight.Segments[0].FareBreakup.PublishedFare);
+
+        // Update the departure flight section in the UI
+        let departureFlightHTML = `
+        <div class="fs-14 black-color mb-1">Departure</div>
+        <div class="results-footer__flight-info">
+            <div class="fs-12 grey-color">${selectedFlight.AirlineName} (${selectedFlight.Origin.CityCode} - ${selectedFlight.Destination.CityCode})</div>
+            <div class="results-footer__flight-info_details">
+                <div><img width="20px" height="20px" alt="Flight" src="https://static.iween.co.in/airlinelogos/${selectedFlight.AirlineCode}.jpg"></div>
+                <div>${selectedFlight.Origin.DepTime}</div>
+                <div class="results-footer__seperator secondary-background-color"></div>
+                <div>${selectedFlight.Destination.ArrTime}</div>
+                <div class="secondary-color fs-16 d-sm-block d-none">AED ${flightSelection.totalDeparture}</div>
+            </div>
+        </div>
+    `;
+
+        document.getElementById("departFlight").innerHTML = departureFlightHTML;
+        updatePriceSummary();
+        document.getElementById("selectedFlightsDetails").style.display="block"
+
+    }
+
+    function returnFlightDetails(index) {
+        // Get the selected flight's segments
+        let myArr = (filteredFlightsReturn.length > 0) ? filteredFlightsReturn : flightData[0].returnFlights;
+
+        let selectedFlight = JSON.parse(JSON.stringify(myArr[index]));
+
+        // console.log(selectedFlight);
+
+        // Get the selected radio button value more efficiently
+        const selectedRadio = document.querySelector(`input[name="r${index}"]:checked`);
+        if (!selectedRadio) {
+            alert("Please select a return flight");
+            return;
+        }
+
+        const selectedValue = selectedRadio.value;
+
+        // Replace Segments with the selected value
+        selectedFlight.Segments = [myArr[index].Segments[selectedValue]];  // Ensure it's in array format
+
+        // console.log("Selected flight after modification:", selectedFlight);
+
+        flightSelection.returnFlight = selectedFlight;
+        flightSelection.totalReturn = parseFloat(selectedFlight.Segments[0].FareBreakup.PublishedFare);
+
+        // Update the return flight section in the UI
+        let returnFlightHTML = `
+        <div class="fs-14 black-color mb-1">Return</div>
+        <div class="results-footer__flight-info">
+            <div class="fs-12 grey-color">${selectedFlight.AirlineName} (${selectedFlight.Origin.CityCode} - ${selectedFlight.Destination.CityCode})</div>
+            <div class="results-footer__flight-info_details">
+                <div><img width="20px" height="20px" alt="Flight" src="https://static.iween.co.in/airlinelogos/${selectedFlight.AirlineCode}.jpg"></div>
+                <div>${selectedFlight.Origin.DepTime}</div>
+                <div class="results-footer__seperator secondary-background-color"></div>
+                <div>${selectedFlight.Destination.ArrTime}</div>
+                <div class="secondary-color fs-16 d-sm-block d-none">AED ${flightSelection.totalReturn}</div>
+            </div>
+        </div>
+    `;
+
+        document.getElementById("returnFlight").innerHTML = returnFlightHTML;
+        updatePriceSummary();
+        document.getElementById("selectedFlightsDetails").style.display="block"
+    }
+
+    function updatePriceSummary() {
+        // Update the total price summary
+        const totalPrice = flightSelection.totalDeparture + flightSelection.totalReturn;
+        document.getElementById("priceSummary").innerHTML = `<h4 class="results-footer__price mb-0">AED ${totalPrice}</h4><a class="app-link-purple">View summary</a>`;
+        document.getElementById("continueButton").style.display = "block";
+    }
+
+
+</script>
+</body>
+</html>

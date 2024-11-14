@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>TDO DXB | Welcome to Agent Dashboard</title>
+    <%- include('../partials/header2') %>
+
+    <style>
+        .paginate_button.previous  {
+            /*font-size: 12px !important;*/
+            width: 85px !important;
+        }
+    </style>
+</head>
+<body onload="GetSearchLogData()">
+<div id="preloader">
+    <div class="loader">
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--text"></div>
+    </div>
+</div>
+<div id="main-wrapper">
+    <%- include('../partials/navbar2') %>
+    <%- include('../partials/sidebar2') %>
+    <div class=" content-body default-height">
+        <!-- row -->
+        <div class="container-fluid">
+            <div class="col-12">
+                <div class="card">
+                    <card class="card-header">
+                        <h3>Flight Search Log</h3>
+                    </card>
+                    <!--                    <div class="card-header">-->
+                    <!--                        <h3 class="card-title">Logs</h3>-->
+                    <!--                    </div>-->
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="logsTable" class="display table-light" style="min-width: 845px">
+                                <thead class="text-bg-primary">
+                                <tr >
+                                    <th style="color:#fff;">Sr. No.</th>
+                                    <th style="color:#fff;">From</th>
+                                    <th style="color:#fff;">To</th>
+                                    <th style="color:#fff;">Journey Type</th>
+                                    <th style="color:#fff;width: 80px;">No of Passengers</th>
+                                    <!--                                    <th style="color:#fff;width: 80px;">No of Adults</th>-->
+                                    <!--                                    <th style="color:#fff;width: 80px;">No of Children</th>-->
+                                    <!--                                    <th style="color:#fff;width: 80px;">No of Infants-->
+                                    <!--                                    </th>-->
+                                    <th style="color:#fff;">Departure Date</th>
+                                    <th style="color:#fff;">Return Date</th>
+                                    <th style="color:#fff;">Class</th>
+                                    <th style="color:#fff;">Time</th>
+                                    <th style="color:#fff;">IP</th>
+                                </tr>
+                                </thead>
+                                <tbody id="logData"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <%- include('../partials/footer2') %>
+</div>
+
+<script>
+    async function GetSearchLogData() {
+        let url = "/get-search-log";
+        let response = await fetch(url);
+        response = await response.json();
+
+        if (response.error) {
+            Swal.fire({
+                title: "OOPS!",
+                text: response.message,
+                icon: "error"
+            });
+        } else if (response.warning) {
+            Swal.fire({
+                title: "OOPS!",
+                text: response.message,
+                icon: "warning"
+            });
+        } else {
+            console.log(response.data);
+            let html = ``;
+            let totalRows = response.data.length
+            for (let i = 0; i < response.data.length; i++) {
+                let x = response.data[i];
+                let srno = totalRows - i
+                html += `<tr>
+                <td style="color: black">${srno}</td>
+                <td style="color: black">${x.from}</td>
+                <td style="color: black">${x.to}</td>
+                <td style="color: black">${x.journey_type}</td>
+                <td style="color: black">${x.total_no_of_pax} (${x.no_of_adults}+${x.no_of_childs}+${x.no_of_infants})</td>
+                <td style="color: black">${x.departure_date}</td>
+                <td style="color: black">${x.return_date}</td>
+                <td style="color: black">`;
+
+                // Add the class condition
+                if (x.class === '2') {
+                    html += `Economy`;
+                } else if (x.class === '6') {
+                    html += `First Class`;
+                }
+                else if (x.class === '3') {
+                    html += `Premium Economy`;
+                }else if (x.class === '4') {
+                    html += `Business`;
+                }
+                else {
+                    html += `Unknown Class`;
+                }
+
+                html += `</td>
+<td style="color: black">${x.search_date_time}</td>
+<td style="color: black">${x.client_ip}</td>
+
+</tr>`;
+            }
+
+            document.getElementById("logData").innerHTML = html;
+            // new DataTable('#logsTable');
+            new DataTable('#logsTable', {
+                "order": [[0, "desc"]] // Sort Sr. No. in descending order
+            });
+        }
+    }
+
+</script>
+</body>
+</html>
+
+<td style="color: black">${x.total_no_of_pax}</td>
+
+<!--<td style="color: black">${x.no_of_adults}</td>-->
+<!--<td style="color: black">${x.no_of_childs}</td>-->
+<!--<td style="color: black">${x.no_of_infants}</td>-->

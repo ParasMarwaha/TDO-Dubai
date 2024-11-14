@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>TDO DXB | Welcome to Agent Dashboard</title>
+    <%- include('../partials/header2') %>
+
+    <style>
+        .paginate_button.previous {
+            /*font-size: 12px !important;*/
+            width: 85px !important;
+        }
+
+        .varify {
+            color: #c02323;
+        !important;
+        }
+    </style>
+</head>
+<body onload="GetAgentWalletRequest()">
+<div id="preloader">
+    <div class="loader">
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--text"></div>
+    </div>
+</div>
+<div id="main-wrapper">
+    <%- include('../partials/navbar2') %>
+    <%- include('../partials/sidebar2') %>
+    <div class=" content-body default-height">
+        <div class="container-fluid">
+            <div class="row page-titles">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item active me-2"><a href="javascript:void(0)">Request to Add Wallet</a></li>
+                </ol>
+            </div>
+            <!-- row -->
+            <div class="row">
+                <div class="col-12 d-flex justify-content-end">
+
+                    <button type="button" class="btn btn-outline-primary w-10 mb-2" data-bs-toggle="modal"
+                            data-bs-target=".bd-example-modal-lg"><i class="fa-solid fa-plus me-2"></i>Request to Add
+                        Wallet
+                    </button>
+
+                </div>
+                <div class="col-12 col-lg-12 mt-5">
+                    <div class="card">
+
+                        <div class="card-body">
+                            <!--                            <h3 class="mb-4 mt-5">View Wallet Requests</h3>-->
+                            <div class="table-responsive">
+                                <table id="agent_wallet_request" class="display table-light" style="min-width: 845px">
+                                    <thead class="text-bg-primary">
+                                    <tr>
+                                        <th style="color:#fff;">#</th>
+                                        <th style="color:#fff;">Deposit Date</th>
+                                        <th style="color:#fff;">DepositAmount</th>
+                                        <th style="color:#fff;">Payment Mode</th>
+                                        <th style="color:#fff;">Account Name</th>
+                                        <th style="color:#fff;">Transaction Id</th>
+                                        <th style="color:#fff;">Status</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="wallet_request"></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="basicModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Request to Add Wallet</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form class="form-valide-with-icon needs-validation mt-4" novalidate id="walletAR">
+                        <div class="row">
+                            <div class="mb-3 col-md-6 col-12">
+                                <label for="amount" class="fs-7" style="color:#c02323;">
+                                    Enter Deposit Amount <span style="color:#c02323;">*</span>
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fa-solid fa-money-bill"></i></span>
+                                    <input type="number" id="amount" name="amount" class="form-control"
+                                           placeholder="Enter the Amount" required>
+                                </div>
+                            </div>
+                            <div class="mb-3 col-md-6 col-12">
+                                <label for="deposit_date" class="fs-7" style="color:#c02323;">
+                                    Enter Deposit Date
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fa-regular fa-calendar-days"></i></span>
+                                    <input type="text" id="deposit_date" name="deposit_date" class="form-control"
+                                           placeholder="Select the Deposit date"
+                                           onfocus="(this.type='date'); this.placeholder='';setMaxDate(this);" required
+                                           onblur="if(!this.value){this.type='text'; this.placeholder='Select the Deposit date';};">
+                                </div>
+                            </div>
+                            <div class="mb-3 col-md-6 col-12">
+                                <label for="p_mode" class="fs-7" style="color:#c02323;">
+                                    Select Payment Mode
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fa-solid fa-money-check"></i></span>
+                                    <select name="p_mode" id="p_mode" class="form-control" required>
+                                        <option value="">Select Option</option>
+                                        <option value="Cash">Cash</option>
+                                        <option value="Wire">Wire</option>
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mb-3 col-md-6 col-12">
+                                <label for="account" class="fs-7" style="color:#c02323;">
+                                    Deposit Bank
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fa-solid fa-money-check"></i></span>
+                                    <select name="account" id="account" class="form-control" required>
+                                        <option value="">Select Bank Account</option>
+                                        <option value="HDFC">HDFC</option>
+                                        <option value="ICICI">ICICI</option>
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mb-3 col-md-6 col-12">
+                                <label for="transaction_id" class="fs-7" style="color:#c02323;">
+                                    Enter Transaction Id
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fa-solid fa-id-card"></i></span>
+                                    <input type="text" id="transaction_id" name="transaction_id" class="form-control"
+                                           placeholder="Enter Transaction ID"
+                                           pattern="^[a-zA-Z0-9]{8,20}$" required>
+                                </div>
+                                <small id="alert-message" class="form-text" style="display:none;color:#c02323 ">
+                                    Please enter a valid Transaction ID (8-20 alphanumeric characters).
+                                </small>
+                            </div>
+                            <div class="mb-3 col-md-6 col-12">
+                                <label for="transaction_screenshot" class="fs-7" style="color:#c02323;">
+                                    Upload Transaction Proof
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-file-upload"></i></span>
+                                    <input type="file" id="transaction_screenshot" name="transaction_screenshot"
+                                           accept=".png, .jpg, .jpeg, .pdf" class="form-control"
+                                           placeholder="Upload Transaction Proof" required>
+                                </div>
+                            </div>
+                            <div class="mb-3 col-md-12 col-12">
+                                <label for="agent_remarks" class="fs-7" style="color:#c02323;">
+                                    Agent Remarks <span style="color:#c02323;">*</span>
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fa-solid fa-money-bill"></i></span>
+                                    <input type="text" id="agent_remarks" name="agent_remarks" class="form-control"
+                                           placeholder="Enter remarks" required>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-primary light" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="add_wallet()">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <%- include('../partials/footer2') %>
+</div>
+
+<script>
+    async function GetAgentWalletRequest() {
+        try {
+            let url = "/GetAgentWalletRequest";
+            let response = await fetch(url);
+            let result = await response.json();
+            console.log("Result: ", result);
+
+            // Check for errors or warnings
+            if (result.error || result.warning) {
+                let icon = result.error ? 'error' : 'warning';
+                Swal.fire({
+                    title: "OOPS!",
+                    text: result.message,
+                    icon: icon
+                });
+            } else {
+                let data = result.data;
+                console.log("Data received: ", data);
+
+                // Destroy the existing DataTable instance if it exists
+                if ($.fn.DataTable.isDataTable('#agent_wallet_request')) {
+                    $('#agent_wallet_request').DataTable().destroy();
+                }
+
+                let html = ``;
+
+                // Loop through the data array and populate the table rows
+                for (let i = 0; i < data.length; i++) {
+                    let x = data[i];
+                    let statusText = '';
+                    let statusColor = '';
+
+                    // Set status text and color based on the status value
+                    if (x.status === 0) {
+                        statusText = 'Pending';
+                        statusColor = '#052643';
+                    } else if (x.status === 1) {
+                        statusText = 'Accepted';
+                        statusColor = 'green';
+                    } else if (x.status === 2) {
+                        statusText = 'Rejected';
+                        statusColor = '#c02323';
+                    }
+
+                    // Create table row HTML for each data item
+                    html += `
+                <tr>
+                    <td style="color: black">${i + 1}</td>
+                    <td style="color: black">${x.date_of_deposit}</td>
+                    <td style="color: black">${x.amount}</td>
+                    <td style="color: black">${x.mode_of_payment}</td>
+                    <td style="color: black">${x.bank_account}</td>
+                    <td style="color: black">${x.transaction_id}</td>
+                    <td style="color: ${statusColor};">${statusText}</td>
+                </tr>`;
+                }
+
+                // Insert the generated rows into the table body
+                document.getElementById("wallet_request").innerHTML = html;
+
+                // Reinitialize the DataTable after data has been inserted
+                new DataTable('#agent_wallet_request');
+            }
+        } catch (e) {
+            Swal.fire({
+                title: "OOPS!",
+                text: e.message,
+                icon: "question"
+            });
+        }
+    }
+
+
+
+    document.getElementById('transaction_id').addEventListener('input', function () {
+        const transactionIdInput = this.value;
+        const alertMessage = document.getElementById('alert-message');
+        const pattern = /^[a-zA-Z0-9]{8,20}$/;
+
+        if (!pattern.test(transactionIdInput)) {
+            alertMessage.style.display = 'block'; // Show validation message
+        } else {
+            alertMessage.style.display = 'none'; // Hide validation message
+        }
+    });
+
+    function setMaxDate(input) {
+        // Get today's date in YYYY-MM-DD format
+        const today = new Date().toISOString().split('T')[0];
+
+        // Set the max attribute to today's date
+        input.setAttribute('max', today);
+    }
+
+    async function add_wallet() {
+        try {
+            let form = document.getElementById('walletAR');
+            if ($("#walletAR").valid()) {
+                let formData = new FormData(form);
+
+                // Submit the form via Fetch API
+                let url = "/addWalletRequest";
+                let response = await fetch(url, {
+                    method: "POST",
+                    body: formData
+                });
+
+                let result = await response.json();
+                console.log(result);
+
+                // Handle server response
+                if (result.error) {
+                    Swal.fire({
+                        title: "OOPS!",
+                        text: result.message,
+                        icon: "error"
+                    });
+                } else if (result.warning) {
+                    Swal.fire({
+                        title: "OOPS!",
+                        text: result.message,
+                        icon: "warning"
+                    });
+                } else {
+                    // Success case
+                    Swal.fire({
+                        title: "Success",
+                        text: result.message,
+                        icon: "success"
+                    }).then(() => {
+                        // Reset the form
+                        document.getElementById("walletAR").reset();
+
+                        // Close the modal
+                        var modalElement = document.getElementById('basicModal');
+                        var modal = bootstrap.Modal.getInstance(modalElement);
+                        modal.hide();
+
+                        // Call GetAgentWalletRequest to update the table with new data
+                        if (typeof GetAgentWalletRequest === 'function') {
+                            GetAgentWalletRequest();
+                        } else {
+                            console.error("GetAgentWalletRequest is not defined");
+                        }
+                    });
+                }
+            }
+        } catch (e) {
+            Swal.fire({
+                title: "OOPS!",
+                text: e.message,
+                icon: "question"
+            });
+        }
+    }
+
+</script>
+
+</body>
+</html>

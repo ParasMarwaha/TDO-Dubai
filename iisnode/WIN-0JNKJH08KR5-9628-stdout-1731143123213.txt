@@ -1,0 +1,67 @@
+Server is running on port:  \\.\pipe\b70558d3-b0cc-4a6b-990c-35bf30eb2401
+[0mGET /manager/text/list [33m404[0m 38.490 ms - 156[0m
+[0mGET /cgi-bin/luci/;stok=/locale [33m404[0m 12.130 ms - 165[0m
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZ2VudElkIjoyMTcsImFnZW50RW1haWwiOiJwYXJhc21hcndhaGEzNjlAZ21haWwuY29tIiwiYWdlbnROYW1lIjoiUEFSQVMgTUFSV0FIQSIsImlhdCI6MTczMTE0MTIzMSwiZXhwIjoxNzMxMjI3NjMxfQ.0MYYZwtWEvK2LB9jfo_QGBRXYVMI1HCNq43e6V0dqQI
+[0mGET /flights [36m304[0m 69.649 ms - -[0m
+[0mGET /assets2/vendor/bootstrap-select/css/bootstrap-select.min.css [36m304[0m 4.962 ms - -[0m
+[0mGET /assets2/vendor/chartist/css/chartist.min.css [36m304[0m 1.209 ms - -[0m
+[0mGET /assets2/css/style.css [36m304[0m 1.533 ms - -[0m
+[0mGET /assets2/vendor/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css [36m304[0m 3.263 ms - -[0m
+[0mGET /assets2/vendor/datatables/css/jquery.dataTables.min.css [36m304[0m 4.917 ms - -[0m
+[0mGET /assets2/flights/css/bootstrap.min.css [36m304[0m 7.264 ms - -[0m
+[0mGET /assets2/vendor/datatables/responsive/responsive.css [36m304[0m 5.763 ms - -[0m
+[0mGET /assets2/flights/css/animation.css [36m304[0m 4.764 ms - -[0m
+[0mGET /assets2/flights/css/flatpickr.min.css [36m304[0m 1.579 ms - -[0m
+[0mGET /assets2/flights/css/dropzone.min.css [36m304[0m 3.920 ms - -[0m
+[0mGET /assets2/flights/css/flickity.min.css [36m304[0m 3.084 ms - -[0m
+[0mGET /assets2/flights/css/magnifypopup.css [36m304[0m 3.732 ms - -[0m
+[0mGET /assets2/flights/css/lightbox.min.css [36m304[0m 6.210 ms - -[0m
+[0mGET /assets2/flights/css/select2.min.css [36m304[0m 1.866 ms - -[0m
+[0mGET /assets2/flights/css/rangeSlider.min.css [36m304[0m 1.445 ms - -[0m
+[0mGET /assets2/flights/css/prism.css [36m304[0m 1.277 ms - -[0m
+[0mGET /assets2/flights/css/bootstrap-icons.css [36m304[0m 2.285 ms - -[0m
+[0mGET /assets2/flights/css/fontawesome.css [36m304[0m 3.307 ms - -[0m
+[0mGET /assets2/flights/css/style.css [36m304[0m 1.946 ms - -[0m
+[0mGET /assets2/icons/fontawesome/css/all.min.css [36m304[0m 1.214 ms - -[0m
+[0mGET /assets2/icons/material-design-iconic-font/css/materialdesignicons.min.css [36m304[0m 1.188 ms - -[0m
+[0mGET /assets2/icons/themify-icons/css/themify-icons.css [36m304[0m 1.162 ms - -[0m
+[0mGET /assets2/icons/flaticon_1/flaticon_1.css [36m304[0m 3.573 ms - -[0m
+[0mGET /assets2/icons/line-awesome/css/line-awesome.min.css [36m304[0m 2.679 ms - -[0m
+[0mGET /assets2/icons/flaticon/flaticon.css [36m304[0m 2.207 ms - -[0m
+[0mGET /assets2/vendor/metismenu/css/metisMenu.min.css [36m304[0m 1.186 ms - -[0m
+[0mGET /assets2/flights/js/lightbox.min.js [36m304[0m 4.416 ms - -[0m
+[0mGET /assets2/flights/js/jquery.min.js [36m304[0m 3.782 ms - -[0m
+[0mGET /assets/img/TDO_logo1.png [36m304[0m 3.494 ms - -[0m
+[0mGET /assets2/flights/js/flatpickr.js [36m304[0m 4.175 ms - -[0m
+[0mGET /assets2/flights/js/flickity.pkgd.min.js [36m304[0m 4.055 ms - -[0m
+[0mGET /assets2/flights/js/rangeslider.js [36m304[0m 1.942 ms - -[0m
+[0mGET /assets2/flights/webfonts/fa-solid-900.woff2 [36m304[0m 2.130 ms - -[0m
+[0mGET /assets2/img_2.png [36m304[0m 1.847 ms - -[0m
+[0mGET /assets2/flights/js/addadult.js [36m304[0m 1.328 ms - -[0m
+[0mGET /assets2/flights/js/custom.js [36m304[0m 1.043 ms - -[0m
+[0mGET /assets2/vendor/global/global.min.js [36m304[0m 1.129 ms - -[0m
+[0mGET /assets2/js/custom.min.js [36m304[0m 3.982 ms - -[0m
+[0mGET /assets2/js/deznav-init.js [36m304[0m 4.318 ms - -[0m
+[0mGET /assets2/flights/js/select2.min.js [36m304[0m 3.128 ms - -[0m
+[0mGET /assets2/vendor/chartjs/chart.bundle.min.js [36m304[0m 1.307 ms - -[0m
+[0mGET /assets2/vendor/bootstrap-datetimepicker/js/moment.js [36m304[0m 1.490 ms - -[0m
+[0mGET /assets2/vendor/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js [36m304[0m 1.121 ms - -[0m
+[0mGET /assets2/vendor/peity/jquery.peity.min.js [36m304[0m 1.410 ms - -[0m
+[0mGET /assets2/vendor/apexchart/apexchart.js [36m304[0m 2.474 ms - -[0m
+[0mGET /assets2/js/dashboard/dashboard-1.js [36m304[0m 1.476 ms - -[0m
+[0mGET /assets2/vendor/datatables/js/jquery.dataTables.min.js [36m304[0m 0.964 ms - -[0m
+[0mGET /assets2/vendor/datatables/responsive/responsive.js [36m304[0m 1.084 ms - -[0m
+[0mGET /assets2/js/plugins-init/datatables.init.js [36m304[0m 1.042 ms - -[0m
+[0mGET /assets2/flights/images/loading.gif [36m304[0m 7.700 ms - -[0m
+[0mGET /assets2/flights/images/prev.png [33m404[0m 6.167 ms - 170[0m
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZ2VudElkIjoyMTcsImFnZW50RW1haWwiOiJwYXJhc21hcndhaGEzNjlAZ21haWwuY29tIiwiYWdlbnROYW1lIjoiUEFSQVMgTUFSV0FIQSIsImlhdCI6MTczMTE0MTIzMSwiZXhwIjoxNzMxMjI3NjMxfQ.0MYYZwtWEvK2LB9jfo_QGBRXYVMI1HCNq43e6V0dqQI
+[0mGET /assets2/flights/images/next.png [33m404[0m 12.402 ms - 170[0m
+[0mGET /assets2/flights/images/close.png [33m404[0m 12.986 ms - 171[0m
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZ2VudElkIjoyMTcsImFnZW50RW1haWwiOiJwYXJhc21hcndhaGEzNjlAZ21haWwuY29tIiwiYWdlbnROYW1lIjoiUEFSQVMgTUFSV0FIQSIsImlhdCI6MTczMTE0MTIzMSwiZXhwIjoxNzMxMjI3NjMxfQ.0MYYZwtWEvK2LB9jfo_QGBRXYVMI1HCNq43e6V0dqQI
+[0mGET /assets2/flights/img/favicon.png [36m304[0m 11.476 ms - -[0m
+Connected to MySQL database
+Connected to MySQL database
+25
+[0mGET /getBalance [36m304[0m 172.340 ms - -[0m
+[0mGET /getAgentData [36m304[0m 248.480 ms - -[0m
+[0mGET /assets2/images/demo_avatar.png [36m304[0m 1.084 ms - -[0m

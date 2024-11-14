@@ -1,0 +1,164 @@
+Server is running on port:  \\.\pipe\20b19591-4094-4a20-b5f5-c1da32a5094e
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZ2VudElkIjoyMTcsImFnZW50RW1haWwiOiJwYXJhc21hcndhaGEzNjlAZ21haWwuY29tIiwiYWdlbnROYW1lIjoiUEFSQVMgTUFSV0FIQSIsImlhdCI6MTczMTE0MTIzMSwiZXhwIjoxNzMxMjI3NjMxfQ.0MYYZwtWEvK2LB9jfo_QGBRXYVMI1HCNq43e6V0dqQI
+[0mGET /flights/viewTicketedBookings [36m304[0m 86.981 ms - -[0m
+[0mGET /assets2/vendor/bootstrap-select/css/bootstrap-select.min.css [36m304[0m 4.407 ms - -[0m
+[0mGET /assets2/vendor/chartist/css/chartist.min.css [36m304[0m 1.344 ms - -[0m
+[0mGET /assets2/vendor/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css [36m304[0m 3.260 ms - -[0m
+[0mGET /assets2/css/style.css [36m304[0m 2.437 ms - -[0m
+[0mGET /assets2/vendor/datatables/responsive/responsive.css [36m304[0m 3.027 ms - -[0m
+[0mGET /assets2/vendor/datatables/css/jquery.dataTables.min.css [36m304[0m 2.155 ms - -[0m
+[0mGET /assets/img/TDO_logo1.png [36m304[0m 1.286 ms - -[0m
+[0mGET /assets2/flights/js/flickity.pkgd.min.js [36m304[0m 11.727 ms - -[0m
+[0mGET /assets2/flights/js/lightbox.min.js [36m304[0m 10.435 ms - -[0m
+[0mGET /assets2/flights/js/flatpickr.js [36m304[0m 9.442 ms - -[0m
+[0mGET /assets2/flights/js/rangeslider.js [36m304[0m 6.377 ms - -[0m
+[0mGET /assets2/flights/js/jquery.min.js [36m304[0m 2.439 ms - -[0m
+[0mGET /assets2/icons/fontawesome/css/all.min.css [36m304[0m 1.653 ms - -[0m
+[0mGET /assets2/icons/material-design-iconic-font/css/materialdesignicons.min.css [36m304[0m 2.562 ms - -[0m
+[0mGET /assets2/icons/themify-icons/css/themify-icons.css [36m304[0m 2.030 ms - -[0m
+[0mGET /assets2/icons/line-awesome/css/line-awesome.min.css [36m304[0m 5.683 ms - -[0m
+[0mGET /assets2/icons/flaticon_1/flaticon_1.css [36m304[0m 4.455 ms - -[0m
+[0mGET /assets2/icons/flaticon/flaticon.css [36m304[0m 4.071 ms - -[0m
+[0mGET /assets2/vendor/metismenu/css/metisMenu.min.css [36m304[0m 1.187 ms - -[0m
+[0mGET /assets2/flights/js/addadult.js [36m304[0m 4.434 ms - -[0m
+[0mGET /assets2/js/deznav-init.js [36m304[0m 3.904 ms - -[0m
+[0mGET /assets2/js/custom.min.js [36m304[0m 3.421 ms - -[0m
+[0mGET /assets2/vendor/global/global.min.js [36m304[0m 4.193 ms - -[0m
+[0mGET /assets2/flights/js/custom.js [36m304[0m 6.921 ms - -[0m
+[0mGET /assets2/flights/js/select2.min.js [36m304[0m 1.085 ms - -[0m
+[0mGET /assets2/vendor/peity/jquery.peity.min.js [36m304[0m 4.566 ms - -[0m
+[0mGET /assets2/vendor/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js [36m304[0m 3.939 ms - -[0m
+[0mGET /assets2/vendor/chartjs/chart.bundle.min.js [36m304[0m 3.489 ms - -[0m
+[0mGET /assets2/vendor/bootstrap-datetimepicker/js/moment.js [36m304[0m 2.667 ms - -[0m
+[0mGET /assets2/vendor/apexchart/apexchart.js [36m304[0m 8.070 ms - -[0m
+[0mGET /assets2/icons/fontawesome/webfonts/fa-solid-900.woff2 [36m304[0m 1.235 ms - -[0m
+[0mGET /assets2/js/dashboard/dashboard-1.js [36m304[0m 4.522 ms - -[0m
+[0mGET /assets2/vendor/datatables/responsive/responsive.js [36m304[0m 3.953 ms - -[0m
+[0mGET /assets2/vendor/datatables/js/jquery.dataTables.min.js [36m304[0m 3.160 ms - -[0m
+[0mGET /assets2/js/plugins-init/datatables.init.js [36m304[0m 2.742 ms - -[0m
+[0mGET /assets2/icons/flaticon_1/Flaticon_1.woff2 [36m304[0m 1.043 ms - -[0m
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZ2VudElkIjoyMTcsImFnZW50RW1haWwiOiJwYXJhc21hcndhaGEzNjlAZ21haWwuY29tIiwiYWdlbnROYW1lIjoiUEFSQVMgTUFSV0FIQSIsImlhdCI6MTczMTE0MTIzMSwiZXhwIjoxNzMxMjI3NjMxfQ.0MYYZwtWEvK2LB9jfo_QGBRXYVMI1HCNq43e6V0dqQI
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZ2VudElkIjoyMTcsImFnZW50RW1haWwiOiJwYXJhc21hcndhaGEzNjlAZ21haWwuY29tIiwiYWdlbnROYW1lIjoiUEFSQVMgTUFSV0FIQSIsImlhdCI6MTczMTE0MTIzMSwiZXhwIjoxNzMxMjI3NjMxfQ.0MYYZwtWEvK2LB9jfo_QGBRXYVMI1HCNq43e6V0dqQI
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZ2VudElkIjoyMTcsImFnZW50RW1haWwiOiJwYXJhc21hcndhaGEzNjlAZ21haWwuY29tIiwiYWdlbnROYW1lIjoiUEFSQVMgTUFSV0FIQSIsImlhdCI6MTczMTE0MTIzMSwiZXhwIjoxNzMxMjI3NjMxfQ.0MYYZwtWEvK2LB9jfo_QGBRXYVMI1HCNq43e6V0dqQI
+[0mGET /assets/img/img_1.png [36m304[0m 49.903 ms - -[0m
+Connected to MySQL database
+Connected to MySQL database
+Connected to MySQL database
+25
+[0mGET /flights/getTicketedBookings [32m200[0m 202.805 ms - 317[0m
+[0mGET /getAgentData [36m304[0m 183.160 ms - -[0m
+[0mGET /getBalance [36m304[0m 198.139 ms - -[0m
+[0mGET /assets2/images/demo_avatar.png [36m304[0m 1.221 ms - -[0m
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZ2VudElkIjoyMTcsImFnZW50RW1haWwiOiJwYXJhc21hcndhaGEzNjlAZ21haWwuY29tIiwiYWdlbnROYW1lIjoiUEFSQVMgTUFSV0FIQSIsImlhdCI6MTczMTE0MTIzMSwiZXhwIjoxNzMxMjI3NjMxfQ.0MYYZwtWEvK2LB9jfo_QGBRXYVMI1HCNq43e6V0dqQI
+Connected to MySQL database
+[0mGET /flights/getTicketedBookingsDetails/118 [36m304[0m 40.112 ms - -[0m
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZ2VudElkIjoyMTcsImFnZW50RW1haWwiOiJwYXJhc21hcndhaGEzNjlAZ21haWwuY29tIiwiYWdlbnROYW1lIjoiUEFSQVMgTUFSV0FIQSIsImlhdCI6MTczMTE0MTIzMSwiZXhwIjoxNzMxMjI3NjMxfQ.0MYYZwtWEvK2LB9jfo_QGBRXYVMI1HCNq43e6V0dqQI
+[0mGET /flights/viewTicket/118 [36m304[0m 20.160 ms - -[0m
+[0mGET /form-wizard/style.css [36m304[0m 1.313 ms - -[0m
+[0mGET /css/loader.css [36m304[0m 4.072 ms - -[0m
+[0mGET /css/style.css [36m304[0m 3.688 ms - -[0m
+[0mGET /vendor/bootstrap-select/dist/css/bootstrap-select.min.css [36m304[0m 6.494 ms - -[0m
+[0mGET /vendor/jquery-smartwizard/dist/css/smart_wizard.min.css [36m304[0m 5.971 ms - -[0m
+[0mGET /form-wizard/travellers-style.css [36m304[0m 5.464 ms - -[0m
+[0mGET /images/icons/lighter.svg [36m304[0m 6.714 ms - -[0m
+[0mGET /images/logo/full-logo.png [33m404[0m 13.455 ms - 164[0m
+[0mGET /images/icons/flammableLiquid.png [36m304[0m 4.147 ms - -[0m
+[0mGET /images/icons/toxic.webp [36m304[0m 1.699 ms - -[0m
+[0mGET /images/icons/fontawesome6/css/all.min.css [33m404[0m 9.389 ms - 180[0m
+[0mGET /images/icons/simple-line-icons/css/simple-line-icons.css [33m404[0m 7.763 ms - 195[0m
+[0mGET /images/icons/fontawesome/css/all.min.css [33m404[0m 3.560 ms - 179[0m
+[0mGET /images/icons/material-design-iconic-font/css/materialdesignicons.min.css [33m404[0m 6.246 ms - 211[0m
+[0mGET /images/icons/themify-icons/css/themify-icons.css [33m404[0m 6.761 ms - 187[0m
+[0mGET /images/icons/line-awesome/css/line-awesome.min.css [33m404[0m 2.774 ms - 189[0m
+[0mGET /images/icons/avasta/css/style.css [33m404[0m 3.122 ms - 172[0m
+[0mGET /images/icons/flaticon/flaticon.css [33m404[0m 3.476 ms - 173[0m
+[0mGET /images/icons/flaticon_1/flaticon_1.css [33m404[0m 3.226 ms - 177[0m
+[0mGET /images/icons/icomoon/icomoon.css [33m404[0m 5.228 ms - 171[0m
+[0mGET /images/icons/bootstrap-icons/font/bootstrap-icons.css [33m404[0m 6.018 ms - 192[0m
+[0mGET /vendor/animate/animate.min.css [36m304[0m 1.096 ms - -[0m
+[0mGET /vendor/aos/css/aos.min.css [36m304[0m 1.086 ms - -[0m
+[0mGET /vendor/perfect-scrollbar/css/perfect-scrollbar.css [36m304[0m 2.396 ms - -[0m
+[0mGET /vendor/metismenu/css/metisMenu.min.css [36m304[0m 1.506 ms - -[0m
+[0mGET /images/icons/bleach.svg [36m304[0m 1.152 ms - -[0m
+[0mGET /images/icons/explosive.svg [36m304[0m 1.079 ms - -[0m
+[0mGET /images/icons/virus.svg [36m304[0m 1.129 ms - -[0m
+[0mGET /images/icons/pepper-spray.webp [36m304[0m 1.169 ms - -[0m
+[0mGET /images/icons/radioactive.svg [36m304[0m 1.025 ms - -[0m
+[0mGET /images/icons/flammableGas.png [36m304[0m 3.241 ms - -[0m
+[0mGET /images/icons/corrosive.png [36m304[0m 0.972 ms - -[0m
+[0mGET /images/icons/powerbank.jpg [36m304[0m 1.199 ms - -[0m
+[0mGET /images/icons/lithiumBattery.svg [36m304[0m 1.017 ms - -[0m
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZ2VudElkIjoyMTcsImFnZW50RW1haWwiOiJwYXJhc21hcndhaGEzNjlAZ21haWwuY29tIiwiYWdlbnROYW1lIjoiUEFSQVMgTUFSV0FIQSIsImlhdCI6MTczMTE0MTIzMSwiZXhwIjoxNzMxMjI3NjMxfQ.0MYYZwtWEvK2LB9jfo_QGBRXYVMI1HCNq43e6V0dqQI
+Connected to MySQL database
+Error: Unknown column 'b.PNR' in 'field list'
+    at PromisePoolConnection.execute (C:\TDO\Dubai\tdo-dubai-phase-1\node_modules\mysql2\promise.js:112:22)
+    at flightsServices.ticketDetaisl (C:\TDO\Dubai\tdo-dubai-phase-1\services\flights\flights.services.js:87:23)
+    at flightController.fetchTicketDetails (C:\TDO\Dubai\tdo-dubai-phase-1\controllers\flights\flightController.js:3087:48)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5) {
+  code: 'ER_BAD_FIELD_ERROR',
+  errno: 1054,
+  sql: 'SELECT \n' +
+    '    b.total_no_of_pax,\n' +
+    '    b.booking_id,\n' +
+    '    b.total_adult,\n' +
+    '    b.total_child,\n' +
+    '    b.PNR,\n' +
+    '    b.total_infant,\n' +
+    "    DATE_FORMAT(b.booking_date_time, '%d-%b-%Y %H:%i:%s') AS booking_date_time,\n" +
+    '    b.response_json,\n' +
+    '    b.total_base_fare,\n' +
+    '    b.total_tax,\n' +
+    '    b.total_gross_fare,\n' +
+    '    b.total_net_fare,\n' +
+    '    bd.booking_detail_id,\n' +
+    '    bd.title,\n' +
+    '    bd.first_name,\n' +
+    '    bd.last_name,\n' +
+    '    bd.date_of_birth,\n' +
+    '    bd.passport_no,\n' +
+    '    bd.passport_expiry_date,\n' +
+    '    bd.passport_issue_date,\n' +
+    '    bd.barcode,\n' +
+    '    bd.origin,\n' +
+    '    bd.destination,\n' +
+    '    bd.flight_number,\n' +
+    '    bd.flight_name,\n' +
+    '    bd.iata_code,\n' +
+    "    DATE_FORMAT(bd.departure_date, '%d-%b-%Y %H:%i:%s') AS departure_date,\n" +
+    "    DATE_FORMAT(bd.arrival_date, '%d-%b-%Y %H:%i:%s') AS arrival_date,\n" +
+    '    bd.duration,\n' +
+    '    bd.departure_terminal,\n' +
+    '    bd.arrival_terminal,\n' +
+    '    bd.fare_name,\n' +
+    '    bd.booking_status,\n' +
+    '    bd.ticket_status\n' +
+    'FROM flight_booking b\n' +
+    'JOIN flight_booking_details bd ON b.booking_id = bd.booking_id\n' +
+    'WHERE b.booking_id = ?;\n',
+  sqlState: '42S22',
+  sqlMessage: "Unknown column 'b.PNR' in 'field list'"
+}
+[0mPOST /flights/fetchTicketDetails [32m200[0m 47.613 ms - 1231[0m
+[0mGET /vendor/jquery-smartwizard/dist/css/smart_wizard.min.css [36m304[0m 3.448 ms - -[0m
+[0mGET /vendor/bootstrap-select/dist/css/bootstrap-select.min.css [36m304[0m 2.997 ms - -[0m
+[0mGET /form-wizard/style.css [36m304[0m 5.725 ms - -[0m
+[0mGET /css/style.css [36m304[0m 3.563 ms - -[0m
+[0mGET /images/icons/fontawesome6/css/all.min.css [33m404[0m 18.343 ms - 180[0m
+[0mGET /images/icons/simple-line-icons/css/simple-line-icons.css [33m404[0m 14.329 ms - 195[0m
+[0mGET /images/icons/fontawesome/css/all.min.css [33m404[0m 4.253 ms - 179[0m
+[0mGET /images/icons/material-design-iconic-font/css/materialdesignicons.min.css [33m404[0m 6.457 ms - 211[0m
+[0mGET /images/icons/line-awesome/css/line-awesome.min.css [33m404[0m 7.172 ms - 189[0m
+[0mGET /images/icons/themify-icons/css/themify-icons.css [33m404[0m 7.536 ms - 187[0m
+[0mGET /images/icons/avasta/css/style.css [33m404[0m 2.837 ms - 172[0m
+[0mGET /images/icons/flaticon/flaticon.css [33m404[0m 2.889 ms - 173[0m
+[0mGET /images/icons/flaticon_1/flaticon_1.css [33m404[0m 3.121 ms - 177[0m
+[0mGET /images/icons/icomoon/icomoon.css [33m404[0m 2.712 ms - 171[0m
+[0mGET /vendor/animate/animate.min.css [36m304[0m 2.242 ms - -[0m
+[0mGET /images/icons/bootstrap-icons/font/bootstrap-icons.css [33m404[0m 3.943 ms - 192[0m
+[0mGET /vendor/aos/css/aos.min.css [36m304[0m 0.861 ms - -[0m
+[0mGET /vendor/perfect-scrollbar/css/perfect-scrollbar.css [36m304[0m 0.957 ms - -[0m
+[0mGET /vendor/metismenu/css/metisMenu.min.css [36m304[0m 0.947 ms - -[0m
+[0mGET /css/loader.css [36m304[0m 0.993 ms - -[0m
+[0mGET /form-wizard/travellers-style.css [36m304[0m 0.942 ms - -[0m
+[0mGET /css/style.css.map [33m404[0m 5.463 ms - 156[0m
+[0mGET / [32m200[0m 17.502 ms - 31962[0m

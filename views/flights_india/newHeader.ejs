@@ -1,0 +1,627 @@
+<!--Sweet Alert script -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- font awesome css-->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<style>
+    .trav_inner1 span {
+        font-size: 11px;
+        display: block;
+        color: #888888;
+    }
+
+    @keyframes loading {
+        100% {
+            transform: translateX(100%);
+        }
+    }
+
+    .steam div {
+        opacity: 0;
+        position: absolute;
+        height: 120px;
+        width: 10px;
+        background: #FFFFFF;
+        border-radius: 5px;
+        animation: steam .4s ease-in-out infinite;
+    }
+
+    @keyframes levitate {
+        0% {
+            transform: translate(0, 0) scale(1);
+        }
+        25% {
+            transform: translate(-1px, 1px) scale(1.003);
+        }
+        50% {
+            transform: translate(0, 1px) scale(1);
+        }
+        75% {
+            transform: translate(-1px, 0) scale(1);
+        }
+        100% {
+            transform: translate(0, -1px) scale(0.997);
+        }
+    }
+
+    @keyframes cloud1 {
+        0% {
+            transform: translate(0, 0) scale(1);
+        }
+        98% {
+            transform: translate(0, 290px) scale(1);
+        }
+        99% {
+            transform: translate(-100px, 290px) scale(1);
+        }
+        100% {
+            transform: translate(-100px, 0) scale(1);
+        }
+    }
+
+    @keyframes cloud2 {
+        0% {
+            transform: translate(0, 0) scale(4);
+        }
+        70% {
+            transform: translate(0, 0) scale(4);
+        }
+        98% {
+            transform: translate(0, 1000px) scale(4);
+        }
+        99% {
+            transform: translate(200px, 1000px) scale(1);
+        }
+        100% {
+            transform: translate(200px, 0) scale(1);
+        }
+    }
+
+    @keyframes cloud4 {
+        0% {
+            transform: translate(0, 0) scale(0.3) rotate(150deg);
+        }
+        98% {
+            transform: translate(0, 290px) scale(0.3) rotate(150deg);
+        }
+        99% {
+            transform: translate(200px, 290px) scale(1);
+        }
+        100% {
+            transform: translate(200px, 0) scale(1);
+        }
+    }
+
+    @keyframes cloud3 {
+        0% {
+            transform: translate(0, 0) scale(1) rotate(180deg);
+        }
+        98% {
+            transform: translate(0, 330px) scale(1) rotate(180deg);
+        }
+        99% {
+            transform: translate(200px, 330px) scale(1);
+        }
+        100% {
+            transform: translate(200px, 0) scale(1);
+        }
+    }
+
+    @keyframes steam {
+        0% {
+            transform: translate(0, 0) scale(0);
+            opacity: 0;
+        }
+        100% {
+            transform: translate(0, 280px) scale(1, 3);
+            opacity: 1;
+        }
+    }
+
+
+    @keyframes shine {
+        to {
+            background-position: 0 0,
+            100% 0, /* move highlight to right */ 120px 0,
+            120px 40px,
+            120px 80px,
+            120px 120px;
+        }
+    }
+
+    @keyframes light {
+        0% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes cloud {
+        from {
+            right: -500px;
+        }
+        to {
+            right: 102%;
+        }
+    }
+
+    body {
+        font-size: 1.2rem !important; /* Adjust the size as needed */
+    }
+
+    .badge {
+        padding: 3px 6px;
+        border-radius: 3px;
+        margin-left: 5px; /* Adjust as needed */
+    }
+
+    input[type=radio] {
+        border: 0px;
+        width: 1em;
+        height: 1em;
+    }
+
+
+    main {
+        flex: 1 0 auto;
+        display: flex;
+
+        margin-bottom: 50px; /* Add margin to avoid footer overlap */
+    }
+
+    footer {
+        width: 100%;
+        padding: 10px 0;
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        position: fixed;
+        bottom: 0;
+    }
+
+
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+
+    @keyframes moveShadow {
+        0% {
+            top: -50px;
+            opacity: 0;
+        }
+        50% {
+            top: 0;
+            opacity: 0.5;
+        }
+        100% {
+            top: 50px;
+            opacity: 0;
+        }
+    }
+
+    .arrow-container:hover .tooltip {
+        visibility: visible;
+        opacity: 1;
+    }
+
+    @keyframes moveLeftRight {
+        0% {
+            left: 0%;
+        }
+        50% {
+            left: 100%;
+        }
+        100% {
+            left: 0%;
+        }
+
+    }
+
+    .nav-brand,
+    .nav-brand:focus,
+    .nav-brand:hover,
+    .nav-menu > li > a {
+        color: #022f5d;
+    }
+
+    /* Custom CSS for the navigation bar */
+    .nav-brand img {
+        height: 50px;
+        width: auto;
+    }
+
+    .mobile_nav ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .mobile_nav ul li {
+        display: inline;
+    }
+
+    .img-fluid {
+        height: 50px;
+        width: 50px;
+    }
+
+
+    .nav-dropdown .nav-submenu {
+        display: none;
+        position: absolute;
+    }
+
+    .nav-dropdown:hover .nav-submenu {
+        display: block;
+    }
+
+    #logo_id {
+        border-radius: 20px; /* Optional: Adds a slight curve to the edges */
+        background: rgba(255, 0, 0, 0.8); /* Red color with transparency */
+        backdrop-filter: blur(10px); /* Adds a blur effect to the background */
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); /* Box shadow for depth */
+        backdrop-filter: blur(8px); /* Adjust the blur as needed */
+        -webkit-backdrop-filter: blur(4px); /* For Safari */
+    }
+
+    .nav-menu-design .nav-link {
+        font-size: 13px; /* Set font size for links */
+        color: #022f5d; /* Set text color */
+        font-weight: 600;
+    }
+
+    .nav-dropdown {
+        display: none; /* Hidden by default */
+        position: absolute;
+        min-width: 250px;
+        z-index: 98;
+        white-space: nowrap;
+        margin: 0;
+        padding: 0;
+    }
+
+    .nav-menu-design .nav-link:hover {
+        color: #d02824; /* Change color on hover (optional) */
+    }
+
+    .dropdown-menu {
+        font-size: 14px; /* Set font size for dropdown items */
+        color: #022f5d; /* Set text color for dropdown items */
+    }
+
+    #agEmailId {
+        font-size: 15px; /* Set font size for links */
+    !important;
+        color: black; /* Set text color */
+    !important;
+        font-weight: 600;
+    !important;
+    }
+
+    .navbar-nav .dropdown:hover .dropdown-menu {
+        display: block;
+        margin-top: 0; /* Remove the default margin added by Bootstrap */
+    }
+
+    /* To ensure it works on hover and click */
+    .dropdown-toggle::after {
+        display: none;
+    }
+
+    /* Ensure the dropdown arrow points down initially */
+    .dropdown-arrow {
+        transition: transform 0.3s ease;
+        margin-left: 5px; /* Space between text and arrow */
+    }
+
+    /* Rotate the arrow when the dropdown is open */
+    .nav-item.dropdown.show .dropdown-arrow {
+        transform: rotate(180deg); /* Arrow points up when open */
+    }
+
+    /* Align text to the left for all dropdown items */
+    .dropdown-menu .dropdown-item {
+        text-align: left; /* Ensures all dropdown items are aligned to the left */
+        padding-left: 20px; /* Optional: Add some left padding for better spacing */
+    }
+
+    /* On hover, keep the text aligned to the left */
+    .dropdown-menu .dropdown-item:hover {
+        text-align: left;
+        padding-left: 20px; /* Maintain padding on hover */
+        background-color: #f8f9fa; /* Optional: Change background color on hover */
+    }
+
+    /* Active state (when clicked) */
+    .dropdown-menu .dropdown-item:active {
+        text-align: left;
+        padding-left: 20px; /* Maintain padding when clicked */
+        background-color: #f8f9fa; /* Optional: Maintain background color when active */
+    }
+
+
+    /* Ensure submenu dropdown padding is visually consistent */
+    .dropdown-menu {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .dropdown-submenu {
+        position: relative; /* Allows absolute positioning of the submenu */
+    }
+
+    .dropdown-submenu .dropdown-menu {
+        top: 0; /* Aligns the submenu with the parent item */
+        left: 100%; /* Positions the submenu to the right */
+        margin-left: 0; /* Removes any margin */
+        display: none; /* Hide by default */
+    }
+
+    .dropdown-submenu:hover .dropdown-menu {
+        display: block; /* Show on hover */
+    }
+
+
+    .dropdown-submenu.show .dropdown-menu {
+        display: block; /* Show when parent is active */
+    }
+
+
+</style>
+
+<div class="header header-light ">
+    <div class="container-fluid">
+        <nav id="navigation" class="navigation navbar navbar-expand-lg navbar-light ">
+            <div class="nav-header">
+                <a class="navbar-brand nav-brand" href="#"><img id="logo_id" src="/login/images/full-logo.png"
+                                                                class="logo"
+                                                                alt=""></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto nav-menu-design">
+                    <!-- Dashboard Link -->
+                    <li class="nav-item">
+                        <a href="/agent/dashboard" class="nav-link">Dashboard</a>
+                    </li>
+
+
+                    <li class="nav-item dropdown ms-2">
+                        <a href="#" class="nav-link dropdown-toggle" id="insuranceDropdown" role="button"
+                            aria-expanded="false">
+                            Insurance <i class="fa-solid fa-angle-down ms-1"></i>
+                        </a>
+                        <ul class="dropdown-menu nav-dropdown">
+                            <li><a href="/agent/booking" class="dropdown-item">Book Insurance <span
+                                            class="badge bg-danger ms-1">NEW</span></a></li>
+                            <li><a href="/agent/view-insurance" class="dropdown-item">View all Insurances</a></li>
+                            <li><a href="/agent/search-insurance" class="dropdown-item">Search Insurance</a></li>
+                            <li><a href="/agent/requestClaim" class="dropdown-item">Request Claim</a></li>
+                            <li class="dropdown-submenu">
+                                <a href="#" class="dropdown-item dropdown-toggle" id="reportsDropdown">Reports <i
+                                            class="fa-solid fa-angle-right ms-1"></i></a>
+                                <ul class="dropdown-menu" id="insurance_id" style="display: none">
+                                    <li><a href="/agent/dateWiseReport" class="dropdown-item">Single Day Report</a></li>
+                                    <li><a href="/agent/dateWiseReportRange" class="dropdown-item">Date Range Report</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!-- Flights Dropdown -->
+                    <li class="nav-item dropdown ms-3">
+                        <a href="#" class="nav-link dropdown-toggle" id="flightsDropdown" role="button"
+                            aria-expanded="false">Flights <i
+                                    class="fa-solid fa-angle-down ms-1"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/tdoFlight" class="dropdown-item">Book Flight</a></li>
+                            <li><a href="/holdBookings" class="dropdown-item">View Hold Bookings</a></li>
+                            <li><a href="/releasedBookings" class="dropdown-item">View Released Bookings</a></li>
+                            <li><a href="/ticketedBookings" class="dropdown-item">View Ticketed Bookings</a></li>
+                            <li class="dropdown-submenu">
+                                <a href="#" class="dropdown-item dropdown-toggle" id="reportsDropdown1">Reports<i
+                                            class="fa-solid fa-angle-right ms-1"></i></a>
+                                <ul class="dropdown-menu" id="flight_id" style="display: none">
+                                    <li><a href="/flightDateWiseReport" class="dropdown-item">Single Day Report</a></li>
+                                    <li><a href="/flightRangeDateWiseReport" class="dropdown-item">Date Range Report</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!-- Fixed Departure Dropdown -->
+                    <li class="nav-item dropdown  ms-3">
+                        <a href="#" class="nav-link dropdown-toggle" id="fixedDepartureDropdown" role="button" aria-expanded="false">Fixed Departure<i
+                                    class="fa-solid fa-angle-down ms-1"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/fixedDeparture/searchFlightPage" class="dropdown-item">Book Flight</a></li>
+                            <li><a href="/fixedDeparture/ticketed-bookings" class="dropdown-item">Ticketed Bookings</a>
+                            </li>
+                            <li><a href="/fixedDeparture/search-filters" class="dropdown-item">Search Bookings</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Hotel Dropdown -->
+                    <li class="nav-item dropdown ms-3">
+                        <a href="#" class="nav-link dropdown-toggle" id="flightsDropdown" role="button"
+                            aria-expanded="false">Hotels <i
+                                    class="fa-solid fa-angle-down ms-1"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/hotel/search-hotel" class="dropdown-item">Book Hotel</a></li>
+                            <li><a href="/hotel/successBooking" class="dropdown-item">View Success Bookings</a></li>
+                            <li><a href="/hotel/holdBookings" class="dropdown-item">View Hold Booking</a></li>
+                            <li><a href="/hotel/releasedBookings" class="dropdown-item">View Released Bookings</a></li>
+                            <li class="dropdown-submenu">
+                                <a href="#" class="dropdown-item dropdown-toggle" id="reportsDropdown2">Reports<i
+                                            class="fa-solid fa-angle-right ms-1"></i></a>
+                                <ul class="dropdown-menu" id="hotel_id" style="display: none">
+                                    <li><a href="/hotel/dateWiseReport" class="dropdown-item">Single Day Report</a></li>
+                                    <li><a href="/hotel/date-range-report" class="dropdown-item">Date Range Report</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <!-- User Profile and Dropdown -->
+
+                <ul class="nav-menu nav-menu-social align-to-right">
+                    <li style="position: absolute; right: 2vh; top: 1vh" class="dropdown">
+                        <div style="display: inline-flex" class="text-end">
+                            <span id="agEmailId"></span>
+                            <img src="/images/user-icon.png" id="userLogo" class="img-fluid ms-1 dropdown-toggle"
+                                 style="height: 50px; width: 50px;" alt="" onclick="toggleDropdown()">
+                        </div>
+                        <ul class="nav-dropdown nav-submenu dropdown-menu" id="dropdownMenu" style="display: none;">
+                            <li><a href="/agent/my-profile" class="dropdown-item">View My Profile</a></li>
+                            <li><a href="/walletTopup" class="dropdown-item">Wallet Top Up</a></li>
+                            <li><a href="/agentTransactions" class="dropdown-item">Wallet Transactions</a></li>
+                            <li><a href="/agent/change-password" class="dropdown-item">Change Password</a></li>
+                            <li>
+                                <button class="btn btn-light w-25" type="button" onclick="logout()">Logout</button>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+
+            </div>
+
+        </nav>
+    </div>
+</div>
+
+
+<!-- Bootstrap 5 JS CDN -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // Get the reports dropdown and the nested insurance_id menu
+    var reportsDropdown2 = document.getElementById('reportsDropdown2');
+    var insuranceIdMenu2 = document.getElementById('hotel_id');
+
+    // Add click event to toggle the nested dropdown
+    reportsDropdown2.addEventListener('click', function (event) {
+        event.preventDefault(); // Prevent default anchor click behavior
+        // Toggle the display style between 'none' and 'block'
+        if (insuranceIdMenu2.style.display === 'none' || insuranceIdMenu2.style.display === '') {
+            insuranceIdMenu2.style.display = 'block';
+        } else {
+            insuranceIdMenu2.style.display = 'none';
+        }
+    });
+
+    // Get the reports dropdown and the nested insurance_id menu
+    var reportsDropdown1 = document.getElementById('reportsDropdown1');
+    var insuranceIdMenu1 = document.getElementById('flight_id');
+
+    // Add click event to toggle the nested dropdown
+    reportsDropdown1.addEventListener('click', function (event) {
+        event.preventDefault(); // Prevent default anchor click behavior
+        // Toggle the display style between 'none' and 'block'
+        if (insuranceIdMenu1.style.display === 'none' || insuranceIdMenu1.style.display === '') {
+            insuranceIdMenu1.style.display = 'block';
+        } else {
+            insuranceIdMenu1.style.display = 'none';
+        }
+    });
+
+    // Get the reports dropdown and the nested insurance_id menu
+    var reportsDropdown = document.getElementById('reportsDropdown');
+    var insuranceIdMenu = document.getElementById('insurance_id');
+
+    // Add click event to toggle the nested dropdown
+    reportsDropdown.addEventListener('click', function (event) {
+        event.preventDefault(); // Prevent default anchor click behavior
+        // Toggle the display style between 'none' and 'block'
+        if (insuranceIdMenu.style.display === 'none' || insuranceIdMenu.style.display === '') {
+            insuranceIdMenu.style.display = 'block';
+        } else {
+            insuranceIdMenu.style.display = 'none';
+        }
+    });
+
+    // Optional: Close the dropdown when clicking outside
+    document.addEventListener('click', function (event) {
+        if (!reportsDropdown.contains(event.target) && !insuranceIdMenu.contains(event.target)) {
+            insuranceIdMenu.style.display = 'none';
+        }
+    });
+
+
+    // Optional: Close the dropdown if clicked outside
+    document.addEventListener('click', function (event) {
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        const userLogo = document.getElementById('userLogo');
+
+        if (!userLogo.contains(event.target) && !dropdownMenu.contains(event.target)) {
+            dropdownMenu.style.display = 'none';
+        }
+    });
+
+
+
+    let fetchWalletBal = () => {
+        let formData = new FormData();
+        let agentEmail = localStorage.getItem("agentEmail")
+        formData.append("agentEmail", agentEmail)
+        fetch("/agent/fetch-wallet-balance", {
+            method: "POST",
+            body: formData
+        }).then(res => res.json())
+            .then(val => {
+                console.log("Data from wallet ------")
+                console.log(val.recordset[0])
+                if (val.recordset[0].TotalBalance !== undefined) {
+                    console.log(val.recordset[0].TotalBalance);
+                    console.log(val.recordset[0].AgencyLogo);
+                    <!---->
+                    document.getElementById("agEmailId").innerHTML = `<span class="text-danger fs-16" style="color:#d02824 !important"><i class="fa-solid fa-wallet" style="color:black;"></i> ${val.recordset[0].TotalBalance}</span> <br/> ${localStorage.getItem("agentEmail")} `;
+                    document.getElementById("userLogo").src = `/${val.recordset[0].AgencyLogo}`;
+                    <!---->
+                }
+
+                <!---->
+                // document.getElementById("finaAmtCtrl").value = amt
+                // document.getElementById("res").innerText = "Agency Balance: " + val.recordset.TotalBalance;
+                // document.getElementById("finalBtn").innerHTML = '<button type="submit" class="btn btn-primary form-control">Proceed</button>';
+            })
+    }
+    function toggleDropdown() {
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        dropdownMenu.style.display = dropdownMenu.style.display === 'none' || dropdownMenu.style.display === '' ? 'block' : 'none';
+    }
+    function logout() {
+        // alert();
+        Swal.fire({
+            title: 'Are you sure?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, Logout!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                localStorage.clear();
+                window.location.href = "/agent/logout";
+            }
+        })
+    }
+</script>
+

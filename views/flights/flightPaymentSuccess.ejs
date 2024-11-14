@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>TDO DXB | Flights </title>
+    <%- include('../partials/header2') %>
+    <style>
+        .top-padding {
+            padding-top: -3px; /* Adjust the value as needed */
+            width: 30px;
+            height: 30px;
+
+        }
+
+    </style>
+</head>
+<body onload="total_flight_search(); issueTicket()">
+<input type="hidden" value="<%= insId %>" id="insuranceId" /> <input type="hidden" value="<%= tx %>" id="transactionId" /> <input type="hidden" value="<%= payType %>" id="payType" /> <input type="hidden" value="<%=test1%>"> <input type="hidden" value="<%=gCharge%>" id="gCharge">
+<div id="preloader">
+    <div class="loader">
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--text"></div>
+    </div>
+</div>
+<div id="main-wrapper">
+    <%- include('../partials/navbar2') %>
+    <%- include('../partials/sidebar2') %>
+    <div class=" content-body default-height">
+     <div id="response">
+
+     </div>
+    </div>
+    <%- include('../partials/footer2') %>
+</div>
+
+</body>
+<script>
+    document.getElementById("myHeading").innerText = "Dashboard"
+
+    async function total_flight_search() {
+
+        let url = "/flight-search"
+        let response = await fetch(url, {
+            headers: {"Content-Type": "application/json"}  // Convert to JSON string
+        });
+        response = await response.json()
+        console.log(response)
+        console.log(response.data[0])
+        let x = response.data[0];
+        let searchCount = x.search_count;
+        let bookCount = x.book_count;
+
+        // Ensure that searchCount is not 0 to avoid division by zero
+        let ratio = searchCount > 0 ? (bookCount / searchCount * 100).toFixed(2) : 0;
+        let value = `${searchCount}/${bookCount} (${ratio}%)`;
+
+        document.getElementById("totalFlightSearch").innerText = searchCount;
+        document.getElementById("totalFlightBook").innerText = bookCount;
+        document.getElementById("totalFlightBookRatio").innerText = value;
+
+    }
+
+    async function issueTicket() {
+
+        try {
+            let rs;
+            rs = `           <div class="loader">
+<!--<div class="wait" style="color: green">Payment Successful <br><br> Now Issuing Ticket Please Wait <br><br> Don't Close Window Please</div>                     &lt;!&ndash;                    <div class="iata_code departure_city">TD</div>&ndash;&gt;                     <div class="plane">                         <img src="https://zupimages.net/up/19/34/4820.gif" class="plane-img">                     </div>                     <div class="earth-wrapper">                         <div class="earth"></div>                     </div>                  </div>-->`;
+            document.getElementById("response").innerHTML = rs;
+            console.log(JSON.parse(<%- test1 %>));
+            let obj = JSON.parse(<%- test1 %>);
+            let fd = new FormData();
+            fd.append("traceId", obj.traceId);
+            fd.append("flight", obj.flight)
+            fd.append("sellKey", obj.sellKey);
+            fd.append("passengers", obj.passengers);
+            fd.append("email", obj.email);
+            fd.append("mobile", obj.mobile);
+            fd.append('total', obj.total);
+            fd.append("hold", obj.hold);
+            fd.append("revised", obj.revised);
+            fd.append("totalAdult", obj.totalAdult);
+            fd.append("totalChild", obj.totalChild);
+            fd.append("totalInfant", obj.totalInfant);
+            fd.append("trip", obj.trip);
+            fd.append("riyaTrip", obj.riyaTrip)
+            let res1 = await fetch("/flights/ticket", {
+                method: "POST",
+                body: fd
+            });
+
+            res1 = await res1.json();
+
+            console.log(res1);
+
+            if (res1.error === false) {
+                Swal.fire({
+                    icon: 'success',
+                    title: "Ticket Successfully"
+                }).then(() => {
+                    sessionStorage.setItem("ticket", JSON.stringify(res1));
+                    $('#staticBackdrop1').modal('hide');
+                    window.location.href = "/flights/viewTicketedBookings";
+                });
+            } else if (res1.ResponseStatus === 14) {
+                let timerInterval;
+                Swal.fire({
+                    title: "Booking Failed",
+                    icon: "error",
+                    html: `<h2 style="color: red">Error Occurred</h2> <br> <b></b> milliseconds.`,
+                    timer: 4000,
+                    timerProgressBar: true,
+                    allowOutsideClick: false,  // Disable outside click
+                    didOpen: () => {
+                        Swal.showLoading();
+                        const timer = Swal.getPopup().querySelector("b");
+                        timerInterval = setInterval(() => {
+                            timer.textContent = `${Swal.getTimerLeft()}`;
+                        }, 100);
+                    },
+                    willClose: () => {
+                        clearInterval(timerInterval);
+                    }
+                }).then(async (result) => {
+                    /* Read more about handling dismissals below */
+                    if (result.dismiss === Swal.DismissReason.timer) {
+                        // window.location.href = "/FailedBookings"
+                    }
+                });
+            } else {
+                let timerInterval;
+                Swal.fire({
+                    title: "Booking Failed",
+                    icon: "error",
+                    html: `<h2 style="color: red">Error Occurred</h2> <br> <b></b> milliseconds.`,
+                    timer: 4000,
+                    timerProgressBar: true,
+                    allowOutsideClick: false,  // Disable outside click
+                    didOpen: () => {
+                        Swal.showLoading();
+                        const timer = Swal.getPopup().querySelector("b");
+                        timerInterval = setInterval(() => {
+                            timer.textContent = `${Swal.getTimerLeft()}`;
+                        }, 100);
+                    },
+                    willClose: () => {
+                        clearInterval(timerInterval);
+                    }
+                }).then(async (result) => {
+                    /* Read more about handling dismissals below */
+                    if (result.dismiss === Swal.DismissReason.timer) {
+                       // window.location.href="/flights"
+                        // window.location.href = "/FailedBookings"
+                    }
+                });
+            }
+        } catch (e) {
+            let timerInterval;
+            Swal.fire({
+                title: "Booking Failed",
+                icon: "error",
+                html: `<h2 style="color: red">Error Occurred</h2> <br> <b></b> milliseconds.`,
+                timer: 4000,
+                timerProgressBar: true,
+                allowOutsideClick: false,  // Disable outside click
+                didOpen: () => {
+                    Swal.showLoading();
+                    const timer = Swal.getPopup().querySelector("b");
+                    timerInterval = setInterval(() => {
+                        timer.textContent = `${Swal.getTimerLeft()}`;
+                    }, 100);
+                },
+                willClose: () => {
+                    clearInterval(timerInterval);
+                }
+            }).then(async (result) => {
+                /* Read more about handling dismissals below */
+                if (result.dismiss === Swal.DismissReason.timer) {
+                   // window.location.href="/flights"
+                    // window.location.href = "/FailedBookings"
+                }
+            });
+        }
+    }
+      </script>
+</html>

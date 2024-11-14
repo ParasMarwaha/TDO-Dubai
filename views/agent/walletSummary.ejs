@@ -1,0 +1,494 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>TDO DXB | Welcome to Agent Dashboard</title>
+    <%- include('../partials/header2') %>
+    <style>
+        div.dt-buttons {
+            float: right;
+            margin-left: 20px; /* Space between buttons and content */
+        }
+
+        .paginate_button.previous {
+            /*font-size: 12px !important;*/
+            width: 85px !important;
+        }
+
+        .custom-excel-btn {
+            background-color: #e75555 !important; /* Green */
+            color: white !important;
+        }
+        /* #FF9F00 */
+
+        .custom-csv-btn {
+            background-color: #05264e !important; /* Light Blue */
+            color: white !important;
+        }
+
+        .custom-pdf-btn {
+            background-color: #e75555 !important; /* Red */
+            color: white !important;
+        }
+    </style>
+
+
+
+</head>
+<body onload="GetWalletSummary()">
+<div id="preloader">
+    <div class="loader">
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--text"></div>
+    </div>
+</div>
+<div id="main-wrapper">
+    <%- include('../partials/navbar2') %>
+    <%- include('../partials/sidebar2') %>
+    <div class="content-body default-height">
+        <!-- row -->
+        <div class="container-fluid">
+
+
+
+            <div class="card">
+                <card class="card-header">
+                    <h3 style="color:#05264e;">Wallet Statement</h3>
+                </card>
+
+                <div class="card-body">
+                    <form class="form-valide-with-icon needs-validation" novalidate id="walletForm">
+                        <div class="row">
+                            <div class="col-12 col-sm-5 mb-3">
+                                <label for="fromDate">From</label>
+                                <input type="text" id="fromDate" name="fromDate" class="form-control"
+                                       style="min-width: 140px; height: 40px;" placeholder="Select From Date"
+                                       onfocus="(this.type='date'); this.placeholder='';setMaxDate(this);" required
+                                       onblur="if(!this.value){this.type='text'; this.placeholder='Select From Date';};">
+                            </div>
+                            <div class="col-12 col-sm-5 mb-3">
+                                <label for="toDate">To</label>
+                                <input type="text" id="toDate" name="toDate" class="form-control"
+                                       style="min-width: 140px; height: 40px;" placeholder="Select To Date"
+                                       onfocus="(this.type='date'); this.placeholder='';" required
+                                       onblur="if(!this.value){this.type='text'; this.placeholder='Select To Date'};">
+                            </div>
+                            <div class="col-12 col-sm-2 mb-3">
+                                <br>
+                                <button type="button" class="btn btn-primary mt-2" onclick="GetAgentWallet()">
+                                    Submit
+                                </button>
+                            </div>
+
+                        </div>
+                    </form>
+                    <div class="ms-2 mb-0 fs-4" style="font-weight: bold" id="agentWalletData">Current Wallet
+                        Balance:0/-
+                    </div>
+                    <div class="table-responsive">
+                        <table id="agent_flight_markup_Table" class="display table-light"
+                               style="min-width: 845px">
+                            <thead class="text-bg-primary" >
+                            <tr>
+                                <th style="color:#fff;">#</th>
+                                <th style="color:#fff;">Type</th>
+                                <th style="color:#fff;">Transaction Id</th>
+                                <th style="color:#fff;">Deposit</th>
+                                <th style="color:#fff;">Withdraw</th>
+                                <th style="color:#fff;">Payment Mode</th>
+                                <th style="color:#fff;">Date/Time</th>
+                                <th style="color:#fff;">Remarks</th>
+
+                            </tr>
+                            </thead>
+                            <tbody id="agent_flight_markup"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<!--</div>-->
+
+
+<%- include('../partials/footer2') %>
+</body>
+<script>
+    // Function to set the max attribute to today's date
+    function setMaxDate(input) {
+        const today = new Date().toISOString().split('T')[0]; // Get current date in YYYY-MM-DD format
+        input.max = today;
+    }
+
+    // When 'fromDate' is changed, update 'toDate' min attribute
+    $(document).ready(function() {
+        $('#fromDate').on('change', function() {
+            var fromDate = $(this).val();
+            $('#toDate').attr('min', fromDate); // Set 'toDate' min attribute based on 'fromDate'
+
+            // Clear 'toDate' value if it's earlier than 'fromDate'
+            if ($('#toDate').val() < fromDate) {
+                $('#toDate').val('');
+            }
+        });
+    });
+
+    // Function to format dates for display (e.g., DD-MM-YYYY)
+    function formatDate(dateString) {
+        let [year, month, day] = dateString.split('-');
+        return `${day}-${month}-${year}`;
+    }
+
+    // Function to get agent wallet details based on selected date range
+    async function GetAgentWallet() {
+        try {
+            if ($("#walletForm").valid()) {
+                let fromDate = document.getElementById("fromDate").value;
+                let toDate = document.getElementById("toDate").value;
+
+                let formData = new FormData();
+                formData.append("fromDate", fromDate);
+                formData.append("toDate", toDate);
+
+                let url = "/getWalletSummaryByDates";
+                let response = await fetch(url, {
+                    method: "POST",
+                    body: formData
+                });
+
+                let result = await response.json();
+                if (result.error || result.warning) {
+                    let icon = result.error ? 'error' : 'warning';
+                    Swal.fire({
+                        title: "OOPS!",
+                        text: result.message,
+                        icon: icon
+                    });
+                } else {
+                    fromDate = formatDate(fromDate);
+                    toDate = formatDate(toDate);
+                    updateTable(result.data, fromDate, toDate);
+                }
+            }
+        } catch (e) {
+            Swal.fire({
+                title: "OOPS!",
+                text: e.message,
+                icon: "question"
+            });
+        }
+    }
+
+    async function GetWalletSummary() {
+        try {
+            let url = "/getWalletSummary";
+            let response = await fetch(url);
+            let result = await response.json();
+            console.log("Result ",result)
+
+            if (result.error || result.warning) {
+                let icon = result.error ? 'error' : 'warning';
+                Swal.fire({
+                    title: "OOPS!",
+                    text: result.message,
+                    icon: icon
+                });
+            } else {
+                let data = result.data;
+                let fromDate = '';
+                let toDate = '';
+
+                if (data.length > 0) {
+                    toDate = data[0].transaction_date_time.split(' ')[0];
+                    fromDate = data[data.length - 1].transaction_date_time.split(' ')[0];
+                }
+
+                updateTable(data, fromDate, toDate);
+            }
+        } catch (e) {
+            Swal.fire({
+                title: "OOPS!",
+                text: e.message,
+                icon: "question"
+            });
+        }
+    }
+
+    async function updateTable(data, fromDate = '', toDate = '') {
+        try {
+            // Calculate closing balance
+            let closingBalance = 0;
+            for (const transaction of data) {
+                if (transaction.transaction_type === "Credit") {
+                    closingBalance += parseFloat(transaction.amount);
+                } else if (transaction.transaction_type === "Debit") {
+                    closingBalance -= parseFloat(transaction.amount);
+                }
+            }
+
+            // Destroy DataTable if it exists
+            if ($.fn.DataTable.isDataTable('#agent_flight_markup_Table')) {
+                $('#agent_flight_markup_Table').DataTable().destroy();
+            }
+
+            document.getElementById("agent_flight_markup").innerHTML = '';
+
+            let html = ``;
+            let startPeriod = '';
+            let endPeriod = '';
+            let agent_name = '';
+            let agent_id = '';
+
+            const body = [['#', 'Type','Transaction Id', 'Deposit', 'Withdraw','Payment Mode', 'Date/Time']];
+
+            for (let i = 0; i < data.length; i++) {
+                let x = data[i];
+
+                if (i === 0) {
+                    startPeriod = x.transaction_date_time;
+                }
+
+                endPeriod = x.transaction_date_time;
+                agent_name = x.agent_name;
+                agent_id = x.agent_id;
+
+                html += `<tr>
+            <td style="color: black">${i + 1}</td>
+            <td style="color: black">${x.transaction_type}</td>`
+                    if(x.transaction_id===null)
+                    {
+                    html+=`<td style="color: black"></td>`
+            }
+                    else{
+                        html+=`<td style="color: black">${x.transaction_id}</td>`
+            }
+
+         html+=`<td style="color: black">${x.transaction_type === "Credit" ? x.amount : ""}</td>
+            <td style="color: black">${x.transaction_type === "Debit" ? x.amount : ""}</td>
+            <td style="color: black">${x.mode_of_payment}</td>
+            <td style="color: black">${x.transaction_date_time}</td>
+            <td style="color: black">${x.remarks.replace('By Payment Gateway.', 'By Payment Gateway.<br>')}</td>
+
+
+        </tr>`;
+
+                body.push([
+                    i + 1,
+                    x.transaction_type,
+                    x.transaction_id,
+                    x.transaction_type === "Credit" ? x.amount : '',
+                    x.transaction_type === "Debit" ? x.amount : '',
+                    x.mode_of_payment,
+                    x.transaction_date_time
+                ]);
+            }
+
+            // Insert the HTML table
+            document.getElementById("agent_flight_markup").innerHTML = html;
+
+            const logoBase64 = await convertImageToBase64('assets/img/TDO_logo1.png');
+
+            // Initialize DataTable with buttons
+            $('#agent_flight_markup_Table').DataTable({
+                dom: '<"top"fB>rt<"bottom"ip><"clear">',
+                buttons: [
+                    // {
+                    //     extend: 'excelHtml5',
+                    //     text: 'Export to Excel',
+                    //     className: 'custom-excel-btn',
+                    //     title: 'Wallet Statement', // Add your custom title
+                    // },
+                    {
+                        extend: 'excelHtml5',
+                        text: 'Export to Excel',
+                        className: 'custom-excel-btn',
+                        title: function() {
+                            return `Wallet Statement for ${agent_name} (ID: ${agent_id})`;
+                        },
+                        messageTop: function() {
+                            // Date range and closing balance
+                            const dateRange = `Date Range: ${fromDate || startPeriod} To ${toDate || endPeriod}`;
+                            const balance = `Closing Balance As Today: ${closingBalance.toFixed(2)}`;
+                            return `${dateRange}\n${balance}`;
+                        },
+                        filename: function() {
+                            // Custom filename with date
+                            var currentDate = new Date();
+                            // return `Wallet_Statement_${currentDate.toISOString().slice(0, 10)}`;
+                            return `Wallet_Statement`;
+                        },
+                        customize: function (xlsx) {
+                            var sheet = xlsx.xl.worksheets['sheet1.xml'];
+                        }
+                    },
+
+
+                    {
+                        extend: 'pdfHtml5',
+                        text: 'Export to PDF',
+                        title: '',
+                        className: 'custom-pdf-btn',
+                        orientation: 'portrait',
+                        pageSize: 'A4',
+                        exportOptions: {
+                            modifier: {page: 'all'}
+                        },
+                        filename: function() {
+                            // Custom filename with date
+                            var currentDate = new Date();
+                            // return `Wallet_Statement_${currentDate.toISOString().slice(0, 10)}`;
+                            return `Wallet_Statement`;
+                        },
+                        customize: function (doc) {
+                            doc.content = [];
+                            doc.images = {logo: logoBase64};
+
+                            // Insert logo and title
+                            doc.content.unshift({
+                                table: {
+                                    widths: ['*'],
+                                    body: [
+                                        [
+                                            {image: 'logo', width: 120, alignment: 'left', margin: [0, 0, 0, 5]} // Logo
+                                        ],
+                                        [
+                                            {
+                                                text: 'Wallet Statement',
+                                                style: 'header',
+                                                alignment: 'center',
+                                                color: '#c02323',
+                                                margin: [0, 5, 0, 5]
+                                            }
+                                        ]
+                                    ]
+                                },
+                                layout: {padding: 0, hLineWidth: () => 0, vLineWidth: () => 0},
+                                margin: [0, 0, 0, 10]
+                            });
+
+                            // Add agent name, email, and user-selected date range (fromDate and toDate)
+                            doc.content.push({
+                                table: {
+                                    widths: ['*', '*'],
+                                    body: [
+                                        [
+                                            {
+                                                text: `Establishment name: ${agent_name}`,
+                                                alignment: 'left',
+                                                fontSize: 12,
+                                                bold: true
+                                            },
+                                            {
+                                                text: `Agent Id: ${agent_id}`,
+                                                alignment: 'right',
+                                                fontSize: 12,
+                                                bold: true
+                                            }
+                                        ],
+                                        [
+                                            {
+                                                text: `Date Range: ${fromDate || startPeriod} To ${toDate || endPeriod}`,
+                                                alignment: 'left',
+                                                fontSize: 12,
+                                                bold: true
+                                            },
+                                            {
+                                                text: `Closing Balance As Today: ${closingBalance.toFixed(2)}`,
+                                                alignment: 'right',
+                                                fontSize: 12,
+                                                bold: true
+                                            }
+                                        ]
+                                    ]
+                                },
+                                layout: {
+                                    hLineWidth: () => 0,
+                                    vLineWidth: () => 0,
+                                },
+                                margin: [0, 0, 0, 10]
+                            });
+
+
+                            doc.styles = {
+                                header: {
+                                    fontSize: 22,
+                                    bold: true,
+                                    margin: [0, 5, 0, 10],
+                                    color: '#c02323'
+                                },
+                                tableHeader: {
+                                    fillColor: '#c02323',
+                                    color: 'white',
+                                    fontSize: 12,
+                                    bold: true,
+                                    alignment: 'center'
+                                }
+                            };
+
+                            doc.content.push({
+                                style: 'tableExample',
+                                table: {
+                                    headerRows: 1,
+                                    widths: ['10%', '10%', '20%', '15%', '15%','20%','15%'],
+                                    body: body
+                                },
+                                layout: {
+                                    hLineWidth: (i) => i === 0 ? 2 : 1,
+                                    vLineWidth: () => 0,
+                                    hLineColor: (i) => '#c02323',
+                                    paddingLeft: () => 8,
+                                    paddingRight: () => 8,
+                                    paddingTop: () => 8,
+                                    paddingBottom: () => 8
+                                }
+                            });
+                        }
+                    }
+                ],
+                bFilter: false,
+                language: {search: ""}
+            });
+        } catch (error) {
+            console.error('Error updating the table:', error);
+            Swal.fire({
+                title: "Error",
+                text: "An error occurred while updating the table. Please try again.",
+                icon: "error"
+            });
+        }
+    }
+
+    async function convertImageToBase64(url) {
+        return new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.onload = () => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result);
+                reader.readAsDataURL(xhr.response);
+            };
+            xhr.onerror = reject;
+            xhr.open('GET', url);
+            xhr.responseType = 'blob';
+            xhr.send();
+        });
+    }
+
+</script>
+
+
+<!-- DataTables JS -->
+<!---->
+</html>

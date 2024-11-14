@@ -1,0 +1,439 @@
+<html lang="en">
+<head>
+    <script src="https://static.iween.co.in/iife.min.js"></script>
+    <meta charset="utf-8">
+    <link rel="icon" href="/favicon.ico">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="#000000">
+    <meta name="description" content="Flightworth.com, best b2b travel portal">
+    <link rel="apple-touch-icon" href="/logo192.png">
+    <link rel="manifest" href="/manifest.json">
+    <title>TDO :: FLIGHTS</title>
+    <script defer="defer" src="/static/js/main.c9d5cbec.js"></script>
+
+    <link href="/flightWorthCSS/css/myStyle.css" rel="stylesheet">
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.min.css'><link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/css/intlTelInput.css">
+    <style>
+        .error{
+            color : red !important;
+        }
+        main
+        {
+            background: #f6f4f0 !important;
+        }
+    </style>
+</head>
+<body class="" style="">
+<%-include('./newHeader.ejs')%>
+<div id="root">
+    <main dir="ltr">
+        <div class="app-main-content">
+            <section class="flight-booking-page pb-2">
+                <section class="flight-booking-page_container">
+                    <div class="spacing-8 row">
+                        <div class="col-lg-9 col-md-12 col-sm-12 col-12">
+                            <section class="flight-booking-page_content">
+                                <div class="d-flex justify-content-between p-3 align-items-center">
+                                    <div class="fs-5 fw-600">Review flight</div>
+                                    <div><a class=" fs-14 fw-600 app-link-primary text-danger">Change Flight</a></div>
+                                </div>
+                                <div id="flightInfo">
+
+
+
+                                </div>
+                            </section>
+                            <div class="separator"></div>
+                            <form id="details">
+                                <div class="flight-booking-page_content">
+                                    <div class="flight-booking-page_header">Traveller Details</div>
+                                    <div class="p-3 pt-0"><p class="contact-details__subtitle mt-2">Contact Information
+                                            (Your ticket and flight info will be sent here)</p>
+                                        <div class="spacing-8 d-flex my-2 fs-14 row">
+
+                                            <div class="col-lg-3 col-md-2 col-sm-3 col-12">
+                                                <div class="app-text-input position-relative"><label
+                                                            class="position-absolute z-1 text-input-label required">Mobile
+                                                        Number</label>
+                                                    <input type="text" class="form-control valid" id="mobile" name="mobile"  placeholder="Phone Number" required data-rule-number="true" autocomplete="off" style="padding-left: 83px;" aria-invalid="false"
+                                                           minlength="10" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+
+                                                    <!--                                                <input id="mobile" type="tel" name="mobile" class="form-control">-->
+                                                    <!--                                                <div class="app-select country-codes-input css-b62m3t-container"-->
+                                                    <!--                                                     id="countryCode"><span id="react-select-2-live-region"-->
+                                                    <!--                                                                            class="css-7pg0cj-a11yText"></span><span-->
+                                                    <!--                                                            aria-live="polite" aria-atomic="false"-->
+                                                    <!--                                                            aria-relevant="additions text" role="log"-->
+                                                    <!--                                                            class="css-7pg0cj-a11yText"></span>-->
+                                                    <!--                                                    <div class=" css-1mzbvz2-control">-->
+                                                    <!--                                                        <div class=" css-13mzt3w">-->
+                                                    <!--                                                            <div class=" css-1dimb5e-singleValue">-->
+                                                    <!--                                                                <div class="d-flex justify-content-between align-items-center p-1">-->
+                                                    <!--                                                                    <span class="fs-14">+91</span>-->
+                                                    <!--                                                                    <div>-->
+                                                    <!--                                                                        <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/in.svg"-->
+                                                    <!--                                                                             alt="IN"-->
+                                                    <!--                                                                             style="width: 17px; height: 15px;"></div>-->
+                                                    <!--                                                                </div>-->
+                                                    <!--                                                            </div>-->
+                                                    <!--                                                            <div class=" css-19bb58m" data-value=""><input class=""-->
+                                                    <!--                                                                                                           autocapitalize="none"-->
+                                                    <!--                                                                                                           autocomplete="off"-->
+                                                    <!--                                                                                                           autocorrect="off"-->
+                                                    <!--                                                                                                           id="react-select-2-input"-->
+                                                    <!--                                                                                                           spellcheck="false"-->
+                                                    <!--                                                                                                           tabindex="0"-->
+                                                    <!--                                                                                                           type="text"-->
+                                                    <!--                                                                                                           aria-autocomplete="list"-->
+                                                    <!--                                                                                                           aria-expanded="false"-->
+                                                    <!--                                                                                                           aria-haspopup="true"-->
+                                                    <!--                                                                                                           aria-required="true"-->
+                                                    <!--                                                                                                           role="combobox"-->
+                                                    <!--                                                                                                           aria-activedescendant=""-->
+                                                    <!--                                                                                                           value=""-->
+                                                    <!--                                                                                                           style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;">-->
+                                                    <!--                                                            </div>-->
+                                                    <!--                                                        </div>-->
+                                                    <!--                                                        <div class=" css-1wy0on6"><span-->
+                                                    <!--                                                                    class=" css-1u9des2-indicatorSeparator"></span>-->
+                                                    <!--                                                            <div class=" css-1xc3v61-indicatorContainer"-->
+                                                    <!--                                                                 aria-hidden="true">-->
+                                                    <!--                                                                <svg height="20" width="20" viewBox="0 0 20 20"-->
+                                                    <!--                                                                     aria-hidden="true" focusable="false"-->
+                                                    <!--                                                                     class="css-8mmkcg">-->
+                                                    <!--                                                                    <path d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"></path>-->
+                                                    <!--                                                                </svg>-->
+                                                    <!--                                                            </div>-->
+                                                    <!--                                                        </div>-->
+                                                    <!--                                                    </div>-->
+                                                    <!--                                                </div>-->
+                                                </div>
+                                            </div>
+                                            <!--                                        <div class="col-lg-3 col-md-3 col-sm-3 col-12">-->
+                                            <!--                                            <div class="position-relative app-text-input"><label-->
+                                            <!--                                                        class="position-absolute text-input-label required">Mobile-->
+                                            <!--                                                    Number</label><input name="leadmobile" placeholder=""-->
+                                            <!--                                                                         class="contact-input false" type="text"-->
+                                            <!--                                                                         id="leadmobile" required="" value=""-->
+                                            <!--                                                                         style="height: 42px; border: 0.0625rem solid rgb(221, 221, 221); padding: 12px; border-radius: 6px; width: 100%;">-->
+                                            <!--                                            </div>-->
+                                            <!--                                        </div>-->
+                                            <div class="col-lg-3 col-md-3 col-sm-3 col-12">
+                                                <div class="position-relative app-text-input"><label
+                                                            class="position-absolute text-input-label required">Email
+                                                        ID</label><input name="leademail" placeholder=""
+                                                                         class="contact-input false" type="email"
+                                                                         id="leademail" required
+                                                                         value="info@traveldealsonline.com"
+                                                                         style="height: 42px; border: 0.0625rem solid rgb(221, 221, 221); padding: 12px; border-radius: 6px; width: 100%;">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <span class="primary-color my-2 fs-16 fw-600">Traveller Details</span>
+                                        <div id="AdultForm">
+
+                                        </div>
+                                        <div id="childForm">
+
+                                        </div>
+                                        <div id="infantForm">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="separator"></div>
+                            <div class="flight-booking-page_content">
+                                <div class="flight-booking-page_header d-flex justify-content-between align-items-center">
+                                    <input type="checkbox" id="gst-checkbox" onclick="toggleForm()">
+                                    <span class="ps-0">GST details (Optional)</span><a class="fs-14 fw-400 app-link-purple">Select
+                                        GST</a></div>
+                                <div class="p-3 fs-14" id="gst-form" style="display: none">
+                                    <div class="spacing-8 row" >
+                                        <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+                                            <div class="position-relative app-text-input"><label
+                                                        class="position-absolute text-input-label ">GST Number (UPPER
+                                                    CASE)</label><input name="gstnumber" placeholder="" class=" false"
+                                                                        type="text" value=""
+                                                                        style="height: 42px; border: 0.0625rem solid rgb(221, 221, 221); padding: 12px; border-radius: 6px; width: 100%;">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+                                            <div class="position-relative app-text-input"><label
+                                                        class="position-absolute text-input-label ">Company Name</label><input
+                                                        name="gstcompany" placeholder="" class=" false" type="text"
+                                                        value=""
+                                                        style="height: 42px; border: 0.0625rem solid rgb(221, 221, 221); padding: 12px; border-radius: 6px; width: 100%;">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+                                            <div class="position-relative app-text-input"><label
+                                                        class="position-absolute text-input-label ">Company Email
+                                                    Address</label><input name="gstemail" placeholder="" class=" false"
+                                                                          type="text" value=""
+                                                                          style="height: 42px; border: 0.0625rem solid rgb(221, 221, 221); padding: 12px; border-radius: 6px; width: 100%;">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+                                            <div class="position-relative app-text-input"><label
+                                                        class="position-absolute text-input-label ">GST Phone
+                                                    Number</label><input name="gstphone" placeholder="" class=" false"
+                                                                         type="text" value=""
+                                                                         style="height: 42px; border: 0.0625rem solid rgb(221, 221, 221); padding: 12px; border-radius: 6px; width: 100%;">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+                                            <div class="position-relative app-text-input"><label
+                                                        class="position-absolute text-input-label ">GST company
+                                                    Address</label><input name="gstaddress" placeholder=""
+                                                                          class=" false" type="text" value=""
+                                                                          style="height: 42px; border: 0.0625rem solid rgb(221, 221, 221); padding: 12px; border-radius: 6px; width: 100%;">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="separator"></div>
+                            <div class="flight-booking-page_content add-ons-section">
+                                <div class="flight-booking-page_header">Special Service Request</div>
+                                <div class="d-flex flex-wrap">
+                                    <div class="m-2">
+                                        <button type="button" class="app-btn-transparent p-0" style="padding: 0.5rem; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px; font-weight: 600;"><img src="/flightWorthCSS/images/Seat.png" alt=""> </button>
+                                    </div>
+                                    <div class="m-2">
+                                        <button type="button" class="app-btn-transparent p-0" onclick="BaggageModal()" style="padding: 0.5rem; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px; font-weight: 600;"><img src="/flightWorthCSS/images/Baggage1.png" alt=""> </button>
+                                    </div>
+                                    <div class="m-2">
+                                        <button type="button" class="app-btn-transparent p-0" onclick="MealModal()" style="padding: 0.5rem; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px; font-weight: 600;"><img src="/flightWorthCSS/images/Meal.png" alt=""> </button>
+                                    </div>
+                                    <div class="m-2">
+                                        <button type="button" class="app-btn-transparent p-0 special-ssr-btn"
+                                                style="padding: 0.5rem; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px; font-weight: 600;">
+                                            <div>
+                                                <svg stroke="currentColor" fill="currentColor" stroke-width="0"
+                                                     viewBox="0 0 24 24" height="1em" width="1em"
+                                                     xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill="none" d="M0 0h24v24H0z"></path>
+                                                    <path d="M4.5 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zm5.5 6.95V9c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v6h2v7h3.5v-.11c-1.24-1.26-2-2.99-2-4.89 0-2.58 1.41-4.84 3.5-6.05zM16.5 17c0 1.65-1.35 3-3 3s-3-1.35-3-3c0-1.11.61-2.06 1.5-2.58v-2.16c-2.02.64-3.5 2.51-3.5 4.74 0 2.76 2.24 5 5 5s5-2.24 5-5h-2zm3.04-3H15V8h-2v8h5.46l2.47 3.71 1.66-1.11-3.05-4.6z"></path>
+                                                </svg>
+                                                <span>Special SSR</span>
+                                            </div>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-12 col-sm-12 col-12" id="fareSummary">
+
+                        </div>
+                    </div>
+                    <div class="spacing-0 row">
+                        <div class="col-lg-9 col-md-12 col-sm-12 col-12">
+                            <div class="separator"></div>
+                            <div class="flight-booking-page_content p-3 d-flex flex-column flex-md-row justify-content-between">
+                                <div>
+                                    <div class="fs-6 fw-600">Share Booking Details</div>
+                                    <div class="fs-12 fw-400 mb-2">Share the booking details to the customer after
+                                        confirmation
+                                    </div>
+                                </div>
+                                <div class="d-flex gap-2 flex-wrap gap-1 fs-3">
+                                    <button type="button" class="app-btn-transparent " style="color: rgb(3, 126, 11);">
+                                        <svg stroke="currentColor" fill="currentColor" stroke-width="0"
+                                             viewBox="0 0 24 24" height="1em" width="1em"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <path fill="none" d="M0 0h24v24H0z"></path>
+                                            <path d="M19.05 4.91A9.816 9.816 0 0012.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01zm-7.01 15.24c-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.264 8.264 0 01-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24 2.2 0 4.27.86 5.82 2.42a8.183 8.183 0 012.41 5.83c.02 4.54-3.68 8.23-8.22 8.23zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.78.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43s.17-.25.25-.41c.08-.17.04-.31-.02-.43s-.56-1.34-.76-1.84c-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.22.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18s-.22-.16-.47-.28z"></path>
+                                        </svg>
+                                    </button>
+                                    <button type="button" class="app-btn-transparent " style="color: rgb(3, 126, 11);">
+                                        <svg stroke="currentColor" fill="currentColor" stroke-width="0"
+                                             viewBox="0 0 24 24" height="1em" width="1em"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <path fill="none" d="M0 0h24v24H0V0z"></path>
+                                            <path d="M22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6zm-2 0l-8 5-8-5h16zm0 12H4V8l8 5 8-5v10z"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="separator"></div>
+                            <!--                            <div class="flight-booking-page_content p-3 d-flex flex-column flex-md-row justify-content-between">-->
+                            <!--                                <div>-->
+                            <!--                                    <div class="fs-6 fw-600">Travel Insurance</div>-->
+                            <!--                                    <div class="fs-12 fw-400 mb-2">Click here to Book Domestic Insurance (Rs XXX)</div>-->
+                            <!--                                    <div class="d-flex flex-column gap-2"><label-->
+                            <!--                                                class=" d-flex  fw-500 align-items-center fs-12 cursor-pointer "-->
+                            <!--                                                for="true" style="color: rgb(91, 91, 91);"><input-->
+                            <!--                                                    class="cursor-pointer " id="true" type="radio"-->
+                            <!--                                                    name="travelInsurance"-->
+                            <!--                                                    style="appearance: none; border-width: 2px; border-style: solid; min-width: 16px; min-height: 16px; border-radius: 50%; border-color: rgb(91, 91, 91); background-color: rgb(255, 255, 255); margin-right: 7px; box-shadow: none;">Yes,-->
+                            <!--                                            Secure my trip</label><label-->
+                            <!--                                                class=" d-flex  fw-500 align-items-center fs-12 cursor-pointer radio-label-checked"-->
+                            <!--                                                for="false" style="color: rgb(30, 30, 30);"><input-->
+                            <!--                                                    class="cursor-pointer " id="false" type="radio"-->
+                            <!--                                                    name="travelInsurance" checked=""-->
+                            <!--                                                    style="appearance: none; border-width: 2px; border-style: solid; min-width: 16px; min-height: 16px; border-radius: 50%; border-color: rgb(113, 191, 68); background-color: rgb(113, 191, 68); margin-right: 7px; box-shadow: rgb(255, 255, 255) 0px 0px 0px 2px inset;">No,-->
+                            <!--                                            I will book without travel insurance.</label>-->
+                            <!--                                        <div class="fs-12 grey-color">By adding insurance I agree to the Terms &amp;-->
+                            <!--                                            Conditions and confirm all passengers are between 2 to 70 years of age. I-->
+                            <!--                                            hereby declare and understand that Flightworth facilitates the access of-->
+                            <!--                                            third party travel insurance to its customer. I shall not mark-up or charge-->
+                            <!--                                            any additional amount for facilitating the access of third party travel-->
+                            <!--                                            insurance to the end customer.-->
+                            <!--                                        </div>-->
+                            <!--                                    </div>-->
+                            <!--                                </div>-->
+                            <!--                            </div>-->
+                            <div class="separator"></div>
+                            <div class="flight-booking-page_content p-3 d-flex justify-content-between flex-column flex-sm-row gap-1">
+                                <label class=" d-flex fs-14 fw-500 fw-500 align-items-center fs-12 cursor-pointer app-check-box"
+                                       style="color: rgb(91, 91, 91);"><input id="acceptTerms" type="checkbox" onclick="ActiveButton()"
+                                                                              name="acceptTerms"
+                                                                              style="margin-right: 7px; appearance: none; width: 15px; height: 15px; border-radius: 3px; border: 1px solid rgb(91, 91, 91);">I
+                                    have Read and Accept Terms and Conditions</label>
+                                <div class="d-flex gap-2">
+                                    <button type="button" onclick="ConfirmBooking()" class="app-btn app-btn-primary app-btn-medium " disabled="" id="ActiveButton"
+                                            style="padding: 0.5rem; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px; font-weight: 600;">
+                                        Confirm Booking
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+        </div>
+    </main>
+    <div role="dialog" id="mealModal" aria-modal="true" class="fade app-modal booking-confirm-modal modal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title h4">Meals</div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="separator"></div>
+                    <div class="meal-sectors-row d-flex" id="mealSectors">
+
+                    </div>
+                    <div class="separator"></div>
+                    <div>
+                        <div class="d-flex p-3 travellers-info" id="mealTravellers">
+                        </div>
+                        <div class="separator"></div>
+                        <div class="d-flex flex-wrap justify-content-between p-3">
+                            <div class="row" id="mealOptions">
+                                <div class="col-sm-6">
+                                    <div class="card p-2 mb-2">
+                                        <div><img class="meal-image" src="https://static.iween.co.in/airlinelogos/mealicon.svg"
+                                                  alt="1-Vegetable junglee sandwich in white bread"></div>
+                                        <div class="ps-3 pe-3 w-100 d-flex flex-column">
+                                            <div class="flex-1"><p class="ssr-card__meal-name">1-Vegetable junglee sandwich in white
+                                                    bread</p>
+                                                <p class="ssr-card__meal-description"></p></div>
+                                            <div class="d-flex justify-content-between align-items-center"><p
+                                                        class="ssr-card__meal-name">₹445.00</p>
+                                                <button type="button"
+                                                        class="app-btn app-btn-primary app-btn-medium ssr-card__add-btn"
+                                                        style="padding: 0.5rem; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px; font-weight: 600;">
+                                                    Add
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div role="dialog" id="baggageModal" aria-modal="true" class="fade app-modal booking-confirm-modal modal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title h4">Baggage</div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="separator"></div>
+                    <div class="baggage-sectors-row d-flex" id="baggageSectors">
+
+                    </div>
+                    <div class="separator"></div>
+                    <div>
+                        <div class="d-flex p-3 baggage-travellers-info" id="baggageTravellers">
+                        </div>
+                        <div class="separator"></div>
+                        <div class="d-flex flex-wrap justify-content-between p-3">
+                            <div class="row" id="baggageOptions">
+                                <div class="col-sm-6">
+                                    <div class="card p-2 mb-2">
+                                        <div><img class="meal-image" src="https://static.iween.co.in/airlinelogos/mealicon.svg"
+                                                  alt="1-Vegetable junglee sandwich in white bread"></div>
+                                        <div class="ps-3 pe-3 w-100 d-flex flex-column">
+                                            <div class="flex-1"><p class="ssr-card__meal-name">1-Vegetable junglee sandwich in white
+                                                    bread</p>
+                                                <p class="ssr-card__meal-description"></p></div>
+                                            <div class="d-flex justify-content-between align-items-center"><p
+                                                        class="ssr-card__meal-name">₹445.00</p>
+                                                <button type="button"
+                                                        class="app-btn app-btn-primary app-btn-medium ssr-card__add-btn"
+                                                        style="padding: 0.5rem; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px; font-weight: 600;">
+                                                    Add
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+<script src='https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.all.min.js'></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput-jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.21.0/jquery.validate.min.js"
+        integrity="sha512-KFHXdr2oObHKI9w4Hv1XPKc898mE4kgYx58oqsc/JqqdLMDI4YjOLzom+EMlW8HFUd0QfjfAvxSL6sEq/a42fQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+
+<script src="/flights/roundFixedCard.js"></script>
+<script src="/flights/roundFixedBooking.js"></script>
+<script src="/flights/common.js"></script>
+<script>
+    let mealArray = [];
+    let baggageArray = [];
+    let segmentArray = [];
+    let totalAmount = 0;
+    let arr = JSON.parse(<%- book %>);
+    let markup = parseFloat(<%= markup %>);
+    let platformFee = parseFloat(<%=platformFee%>);
+    let platformTax = parseFloat(<%=platformTax%>);
+    let traceId = '<%=traceId%>';
+    let paxArray = [];
+    let fareResponse = '';
+    let fareBreakupResponse= '';
+    let ssrResponse =  '';
+
+</script>
+
+</html>
+
+
+
+

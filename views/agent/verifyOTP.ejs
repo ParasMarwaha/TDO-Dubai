@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content="Author: HiBootstrap, Category: Tourism, Multipurpose, HTML, SASS, Bootstrap"/>
+
+    <title>TDO DXB | Welcome to TDO DXB</title>
+
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css"/>
+
+    <link rel="stylesheet" href="/assets/css/fontawesome.min.css"/>
+
+    <link rel="stylesheet" href="/assets/css/boxicons.min.css">
+
+    <link rel="stylesheet" href="/assets/css/animate.min.css"/>
+
+    <link rel="stylesheet" href="/assets/css/bootstrap-datepicker.min.css">
+
+    <link rel="stylesheet" href="/assets/css/nice-select.css">
+
+    <link rel="stylesheet" href="/assets/css/magnific-popup.min.css"/>
+
+    <link rel="stylesheet" href="/assets/css/owl.carousel.min.css"/>
+
+    <link rel="stylesheet" href="/assets/css/meanmenu.min.css"/>
+
+    <link rel="stylesheet" href="/assets/css/style.css"/>
+
+    <link rel="stylesheet" href="/assets/css/responsive.css"/>
+
+    <link rel="stylesheet" href="/assets/css/theme-dark.css"/>
+
+    <link rel="icon" href="/assets/img/img_1.png" type="image/png"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+
+    <link rel="stylesheet" href="/assets/css/registerAgent.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        .form-border {
+            border: 1px solid #e0e0e0; /* Slightly lighter grey border */
+            border-radius: 10px; /* More rounded corners */
+            padding: 25px; /* Slightly more space inside the border */
+            background-color: #ffffff; /* White background for a clean look */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+            transition: all 0.3s ease; /* Smooth transition for interactive effects */
+        }
+
+        .form-border:hover {
+            border-color: #b0b0b0; /* Darker border on hover */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+        }
+
+        .ptb-100 {
+            padding-top: 100px;
+            padding-bottom: 100px;
+        }
+
+        .step-container {
+            position: relative;
+            text-align: center;
+            transform: translateY(-43%);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .step-circle {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #fff;
+            border: 2px solid #c02323;
+            line-height: 30px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            cursor: pointer; /* Added cursor pointer */
+        }
+
+
+        #multi-step-form {
+            /*overflow-x: hidden;*/
+        }
+
+
+        .step-item {
+            text-align: center;
+            position: relative;
+        }
+
+        .step-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #c02323;
+
+            line-height: 40px;
+            color: white;
+            font-size: 18px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .step-circle:hover {
+            background-color: indianred; /* Change background color on hover */
+            transform: scale(1.1); /* Slightly increase the size on hover */
+        }
+
+
+        .step-text {
+            margin-top: 10px;
+            color: #c02323;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .step-item:first-of-type .step-line {
+            display: none;
+        }
+
+        .error {
+            color: #c02323;
+            font-size: 0.875em;
+        }
+
+        .nice-select .list {
+            max-height: 200px; /* Set the maximum height */
+            overflow-y: auto; /* Add a vertical scrollbar */
+        }
+
+        .input-file {
+            padding-top: 16px;
+        }
+    </style>
+</head>
+<body onload="checkIdInLocalStorage();GetOtp()">
+<!--Header File-->
+<%- include('../partials/header.ejs') %>
+<div class="page-title-area ptb-100 ">
+    <div class="container">
+        <div class="page-title-content">
+            <h1>Verify OTP</h1>
+            <ul>
+                <li class="item"><a href="/" class="customized-link">Home</a></li>
+                <li class="item"><a href="#" class="customized-link"><i class="bx bx-chevrons-right"></i>Verify OTP</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="bg-image">
+        <img src="/assets/img/page-title-area/register.jpg" alt="Demo Image">
+    </div>
+</div>
+<div id="container-fluid" class="container mt-5">
+
+    <div class="container">
+        <div class="form-border ptb-50 ">
+
+            <h3 class="font-normal"
+                style="display: flex; justify-content: space-between; color: #c02323">
+                <span>Verify OTP</span>
+                <span>التحقق من كلمة المرور</span>
+            </h3>
+            <form action="" id="verify_OTP">
+                <div class="mt-4">
+                    <div class="row">
+                        <div class="col-sm-6 mb-3">
+                            <label for="emailOTP" class="form-label">Email OTP<span
+                                        class="text-danger">*</span></label>
+                            <input type="text" id="emailOTP" name="emailOTP" required
+                                   class="form-control">
+                        </div>
+
+                        <div class="col-sm-6 mb-3">
+                            <label for="mobileOTP" class="form-label">Mobile OTP<span
+                                        class="text-danger">*</span></label>
+                            <input type="text" id="mobileOTP" name="mobileOTP" required class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn btn-danger next-step mt-5" style="width: 120px;"
+                            onclick="verifyOtp()"
+                    >Verify
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+</div>
+
+
+<%- include('../partials/footer.ejs') %>
+</body>
+<script>
+    var id_mobileOTP = JSON.parse(localStorage.getItem('id and Mobile OTP'));
+    // document.getElementById("mobileOTP").value = id_mobileOTP.mobile_OTP;
+    console.log("wsdadxws", id_mobileOTP)
+
+    function checkIdInLocalStorage() {
+        if (!localStorage.getItem('id and Mobile OTP')) {
+            window.location.href = "/"
+        }
+
+    }
+
+    async function verifyOtp() {
+        try {
+            if ($("#verify_OTP").valid()) {
+                const id = id_mobileOTP.id;
+                console.log(id)
+                // const staffId = document.getElementById("staffId").value
+
+                let form = document.getElementById('verify_OTP')
+                let formData = new FormData(form)
+                formData.append("id", id)
+                console.log(formData)
+
+                // let ip = 'http://192.168.1.20:4000'
+                // let url = ip + "/verify-otps";
+                let url = "/verify-otps";
+                let response = await fetch(url, {
+                    method: "POST",
+                    body: formData  // Convert to JSON string
+                });
+                let result = await response.json();
+                console.log(result)
+                if (result.error) {
+                    Swal.fire({
+                        title: "OOPS!",
+                        text: result.message,
+                        icon: "error"
+                    });
+                } else if (result.warning) {
+                    Swal.fire({
+                        title: "OOPS!",
+                        text: result.message,
+                        icon: "warning"
+                    });
+                } else {
+                    Swal.fire({
+                        title: "Success",
+                        text: result.message,
+                        icon: "success"
+                    });
+                    setTimeout("window.location.href='/ThankYou';", 3000)
+                }
+
+            }
+        } catch
+            (e) {
+            console.log(e)
+        }
+    }
+
+    async function GetOtp(){
+        const id = id_mobileOTP.id;
+        console.log(id)
+        let ip = 'http://192.168.1.20:4000'
+        let url = ip + "/get-otp/" + id
+        let response = await fetch(url )
+        response = await response.json()
+        console.log(response)
+        document.getElementById("mobileOTP").value=response.otp;
+    }
+</script>
+</html>

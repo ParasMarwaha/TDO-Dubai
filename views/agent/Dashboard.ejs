@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>TDO DXB | Welcome to Agent Dashboard</title>
+    <%- include('../partials/header2') %>
+    <style>
+        .top-padding {
+            padding-top: -3px; /* Adjust the value as needed */
+            width: 30px;
+            height: 30px;
+        }
+        .card {
+            transition: box-shadow 0.3s ease, border 0.3s ease;
+            border: 2px solid transparent; /* Initial border */
+        }
+
+        .card:hover {
+            border: 2px solid #c02323; /* Red border on hover */
+            box-shadow: 0 2px 10px rgba(196, 34, 34, 0.5); /* Shadow effect */
+        }
+
+        /* Optional: To prevent the shadow from appearing below the card */
+        .card-body {
+            transition: box-shadow 0.3s ease;
+        }
+
+        .card:hover .card-body {
+            box-shadow: none; /* Remove body shadow on hover */
+        }
+
+
+    </style>
+</head>
+<body onload="total_flight_search()">
+<div id="preloader">
+    <div class="loader">
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--text"></div>
+    </div>
+</div>
+<div id="main-wrapper">
+    <%- include('../partials/navbar2') %>
+    <%- include('../partials/sidebar2') %>
+    <div class=" content-body default-height">
+        <!-- row -->
+        <div class="container">
+
+            <h3>Total Flight Searches and Booked</h3>
+            <div class="row mt-3">
+                <!-- Flights -->
+                <div class="col-xl-4 col-sm-4 col-12">
+                    <div class="card">
+                        <a href="/show_flight_search_log">
+                            <div class="card-body d-flex justify-content-between shadow">
+                                <div class="card-menu ">
+                                    <span style="color: #c02323">Total Flight Searched : </span>
+                                    <h2 class="mb-0" id="totalFlightSearch">0</h2>
+                                </div>
+                                <i class="fa fa-plane pt-3" style="font-size:30px;color: #c02323"></i>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-sm-4 col-12">
+                    <div class="card">
+                        <div class="card-body d-flex justify-content-between shadow">
+                            <div class="card-menu">
+                                <span>Total Flight Booked : </span>
+                                <h2 class="mb-0"><span id="totalFlightBook">0</span></h2>
+                            </div>
+                            <i class="fa fa-plane pt-3" style="font-size: 30px"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-sm-4 col-12">
+                    <div class="card">
+                        <div class="card-body d-flex justify-content-between shadow">
+                            <div class="card-menu">
+                                <span>Book to Look Ratio : </span>
+                                <h3 class="mb-1"><span id="totalFlightBookRatio">0/0 (0%)</span></h3>
+                            </div>
+                            <i class="fa fa-plane pt-3" style="font-size: 30px"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-sm-4 col-12">
+                    <div class="card">
+                        <div class="card-body d-flex justify-content-between shadow">
+                            <div class="card-menu ">
+                                <span>Total Amount spent for Flights:</span>
+                                <h3 class="mb-0">AED  <span id="totalFlightAmt">0</span></h3>
+                            </div>
+                            <i class="fa-solid fa-credit-card pt-3" style="font-size: 30px"></i>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <!--        <div class="container">-->
+
+        <!--            <h3>Revenue generated from Flights</h3>-->
+        <!--            <div class="row mt-3">-->
+        <!--                &lt;!&ndash; Flights &ndash;&gt;-->
+        <!--                <div class="col-xl-6 col-sm-6 col-12">-->
+        <!--                    <div class="card">-->
+
+        <!--                        <div class="card-body d-flex justify-content-between shadow">-->
+
+        <!--                            <div class="card-menu ">-->
+        <!--                                <span>Total no. of Flights booked : </span>-->
+        <!--                                <h2 class="mb-0" id="totalFlightCount">0</h2>-->
+        <!--                            </div>-->
+        <!--                            <i class="flaticon-025-dashboard pt-3" style="font-size: 30px"></i>-->
+
+        <!--                        </div>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--                <div class="col-xl-6 col-sm-6 col-12">-->
+        <!--                    <div class="card">-->
+        <!--                        <div class="card-body d-flex justify-content-between shadow">-->
+        <!--                            <div class="card-menu">-->
+        <!--                                <span>Total Amount spent for Flights:</span>-->
+        <!--                                <h2 class="mb-0">₹ <span id="totalFlightAmt">0</span></h2>-->
+        <!--                            </div>-->
+        <!--                            <i class="fa-solid fa-credit-card pt-3" style="font-size: 30px"></i>-->
+        <!--                        </div>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--                 Flight Chart-->
+        <!--                                <div class="col-xl-12 custome-width">-->
+        <!--                                    <div class="card">-->
+        <!--                                        <div class="card-header border-0 pb-0">-->
+        <!--                                            <h3 class="h-title">Revenue From Flights</h3>-->
+        <!--                                        </div>-->
+
+        <!--                                    </div>-->
+        <!--                                </div>-->
+        <!--            </div>-->
+
+        <!--        </div>-->
+    </div>
+    <%- include('../partials/footer2') %>
+</div>
+
+
+</body>
+<script>
+    document.getElementById("myHeading").innerText = "Dashboard"
+
+    async function total_flight_search() {
+
+        let url = "/flight-search"
+        let response = await fetch(url, {
+            headers: {"Content-Type": "application/json"}  // Convert to JSON string
+        });
+        response = await response.json()
+        console.log(response)
+        console.log(response.data[0])
+        let x = response.data[0];
+        let searchCount = x.search_count;
+        let bookCount = x.book_count;
+        let totalFlightRevenue=x.totalFlightRevenue
+
+        // Ensure that searchCount is not 0 to avoid division by zero
+        let ratio = searchCount > 0 ? (bookCount / searchCount * 100).toFixed(2) : 0;
+        let value = `${bookCount}/${searchCount} (${ratio}%)`;
+
+        document.getElementById("totalFlightSearch").innerText = searchCount;
+        document.getElementById("totalFlightBook").innerText = bookCount;
+        document.getElementById("totalFlightBookRatio").innerText = value;
+        document.getElementById("totalFlightAmt").innerText=totalFlightRevenue
+    }
+</script>
+</html>

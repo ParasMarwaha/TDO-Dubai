@@ -1,0 +1,373 @@
+<!-- template.ejs -->
+<!DOCTYPE html>
+<html lang="eng">
+<head>
+    <title>TDO DXB | Flights </title>
+    <%- include('../partials/headerfiles') %>
+    <style>
+        /* Updated CSS Styles for Coloring */
+
+        body {
+            color: black;
+            font-size: 12px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .visible {
+            display: block;
+        }
+
+        table {
+            width: 98%;
+            text-align: center;
+            margin: auto 2em;
+            font-size: 12px;
+            color: black;
+        }
+
+        th, td {
+            padding: 8px;
+        }
+
+        /* Coloring with Theme */
+        .text-white {
+            color: white !important;
+        }
+
+        .text-danger {
+            color: #c02323 !important;
+        }
+
+        .text-success {
+            color: #c02323 !important;
+        }
+
+        .bg-black {
+            background-color: #c02323 !important;
+            color: white !important;
+        }
+
+        .bg-lightGray {
+            background-color: #f2e0e0 !important;
+            color: #c02323 !important;
+        }
+
+        .border-bottom {
+            border-bottom: 2px solid #c02323 !important;
+        }
+
+        .border-right {
+            border-right: 2px solid #c02323 !important;
+        }
+
+        .border-left {
+            border-left: 2px solid #c02323 !important;
+        }
+
+        .border-top {
+            border-top: 2px solid #c02323 !important;
+        }
+
+        .flightLogo {
+            height: 30px;
+            width: 40px;
+            margin: 0 !important;
+            padding: 1px;
+        }
+
+        ol li {
+            text-align: left;
+            margin-bottom: 1px;
+            font-size: 10px;
+        }
+
+        ol {
+            margin-bottom: 0.5em;
+        }
+
+        /* Icon styling with new theme */
+        .icon-flights {
+            width: 40px;
+            margin: auto;
+            float: left;
+        }
+
+        /* Additional coloring for buttons and strong text */
+        .fw-bolder {
+            color: #c02323 !important;
+        }
+
+        .fs-1 {
+            font-size: 50px !important;
+            font-weight: bolder;
+            color: #c02323 !important;
+        }
+
+    </style>
+</head>
+<body onload="fetchValues();">
+<div class="container-fluid mt-2">
+
+    <div class="row mb-2">
+        <div class="col-lg-3 col-sm-5" id="logo">
+
+        </div>
+        <div class="col-lg-5 col-sm-7 offset-lg-4" id="agentDetails">
+        </div>
+    </div>
+
+    <div class="row mb-2 border-bottom border-top text-center">
+        <div class="col-lg-4 col-sm-3">
+            <strong class="fw-bolder fs-3" id="pnr"></strong><br/>
+            <span class="ps-2">Airline PNR</span>
+        </div>
+
+        <div class="col-lg-4 col-sm-2 text-center">
+            <span class="fw-bold">Booking ID:</span>
+            <span id="bookingId" class="fw-bolder fs-5"></span>
+        </div>
+
+        <div class="col-lg-4 col-sm-3">
+            <strong class="fw-bolder fs-3" id="csr-pnr"></strong><br/>
+            <span class="ps-2">CRS PNR</span>
+        </div>
+    </div>
+
+    <div class="row bg-black text-white p-2">
+        <div class="col-lg-3 col-sm-3">Flight Details</div>
+        <div class="col-lg-9 col-sm-9 text-end">*Please verify flight timings & terminal info
+            with the airlines
+        </div>
+    </div>
+
+
+    <div class="row text-center p-2">
+        <div class="col-lg-12 col-sm-12" id="flightDetails"></div>
+    </div>
+
+    <div class="row text-center p-2 hidden" id="rr">
+        <div class="col-lg-2 col-sm-2" id="rairname"><i class="spinner-grow"></i></div>
+        <div class="col-lg-2 col-sm-2">Non<br/>Refundable</div>
+        <div class="col-lg-2 col-sm-2" id="rdeparture">
+            <i class="spinner-grow"></i>
+        </div>
+        <div class="col-lg-2 col-sm-2" id="rarrival">
+            <i class="spinner-grow"></i>
+        </div>
+        <div class="col-lg-1 col-sm-1" id="rduration"><i class="spinner-grow"></i></div>
+    </div>
+
+    <div class="row bg-black text-white p-2">
+        <div class="col-lg-12 col-sm-12">Passenger Details</div>
+    </div>
+
+    <div class="row mb-2">
+        <div class="col-lg-12 col-sm-12" id="passengerDetails"></div>
+    </div>
+    <!--
+
+
+        <div class="row mb-2">
+            <div class="col-lg-12 col-sm-12 border border-black" id="fareDetails"></div>
+        </div>
+    -->
+    <div class="row bg-black text-white p-2">
+        <div class="col-lg-12 col-sm-12">Important Information</div>
+    </div>
+
+    <div class="row border-bottom border-black p-2 mb-4">
+        <div class="col-lg-12 col-sm-12">
+            <ol>
+                <li>1 - You must web check-in on the airline website and obtain a boarding pass.</li>
+                <li>2 - Reach the terminal at least 2 hours prior to the departure for domestic flight and 4 hours
+                    prior to the departure of international flight.
+                </li>
+                <li> 3 - For departure terminal please check with the airline first.</li>
+                <li> 4 - Date & Time is calculated based on the local time of the city/destination.</li>
+                <li> 5 - Use the Airline PNR for all Correspondence directly with the Airline</li>
+                <li> 6 - For rescheduling/cancellation within 4 hours of the departure time contact the airline
+                    directly
+                </li>
+                <li> 7 - Your ability to travel is at the sole discretion of the airport authorities and we shall
+                    not be held responsible.
+                </li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="row text-center">
+        <div class="col-lg-7 col-sm-7 border-right">
+            <div class="row mb-2">
+                <div class="col-lg-4 col-sm-4  text-end">
+                    <i class="fa-solid fa-xmark text-danger fs-1"></i>
+                </div>
+                <div class="col-lg-8 col-sm-8 text-start fw-bold">
+                    The items are Dangerous Goods and are not permitted<br/> to be carried as
+                    Hand/Check-In Baggage
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-lg-2 col-sm-2 offset-lg-1 offset-sm-1">
+                    <img src="/images/icons/lighter.svg" class="icon-flights"/>
+                    <div>Lighters</div>
+                </div>
+                <div class="col-lg-2 col-sm-2">
+                    <img src="/images/icons/flammableLiquid.png" class="icon-flights"/><br/>
+                    Flammable<br/>Liquids
+                </div>
+                <div class="col-lg-2 col-sm-2">
+                    <img src="/images/icons/toxic.webp" class="icon-flights"/><br/> Toxic
+                </div>
+                <div class="col-lg-2 col-sm-2">
+                    <img src="/images/icons/bleach.svg" class="icon-flights"/><br/> Bleach
+                </div>
+                <div class="col-lg-2 col-sm-2">
+
+                    <img src="/images/icons/explosive.svg" class="icon-flights"/><br/> Explosives
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-lg-2 col-sm-2  offset-lg-1 offset-sm-1">
+                    <img src="/images/icons/virus.svg" class="icon-flights"/><br/> Infectious<br/>Substances
+                </div>
+                <div class="col-lg-2 col-sm-2 ">
+                    <img src="/images/icons/pepper-spray.webp" class="icon-flights"/><br/>
+                    Pepper<br/>Spray
+                </div>
+                <div class="col-lg-2 col-sm-2 ">
+                    <img src="/images/icons/radioactive.svg" class="icon-flights"/><br/>
+                    RadioActive Materials
+                </div>
+                <div class="col-lg-2 col-sm-2 ">
+                    <img src="/images/icons/flammableGas.png" class="icon-flights"/><br/>
+                    Flammable<br/>Gas
+                </div>
+                <div class="col-lg-2 col-sm-2 ">
+                    <img src="/images/icons/corrosive.png" class="icon-flights"/><br/> Corrosive
+                </div>
+            </div>
+
+        </div>
+        <div class="col-lg-5 col-sm-5">
+            <div class="row mb-2">
+                <div class="col-lg-4 col-sm-4  text-end">
+                    <i class="fa-solid fa-check text-success fs-1"></i>
+                </div>
+                <div class="col-lg-8 col-sm-8 text-start fw-bold">
+                    Items allowed only in Hand Baggage
+                </div>
+            </div>
+            <div class="row text-center mt-2 mb-2">
+                <div class="col-lg-3 col-sm-3 text-center offset-lg-3 offset-sm-3">
+                    <img src="/images/icons/powerbank.jpg" class="icon-flights bg-white"/><br/>
+                    Power Banks
+                </div>
+                <div class="col-lg-3 col-sm-3 offset-lg-1 offset-sm-1">
+                    <img src="/images/icons/lithiumBattery.svg" class="icon-flights"/><br/>
+                    Lithium Batteries
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+
+<script>
+
+
+
+    let fetchValues = () => {
+
+        var fd = new FormData();
+
+        fd.append("bookingId", <%=bookingId%>)
+
+        fetch("/flights/fetchTicketDetails", {
+            method: "post",
+            body: fd
+        }).then(res => res.json())
+            .then(val => {
+                console.log("ticket",val)
+                let {recordset} = val
+                let output = `<div class="row bg-lightGray text-black fw-bold text-center p-2 border border-black">
+        <div class="col-lg-4 col-sm-3">Sr. No.</div>
+        <div class="col-lg-4 col-sm-3">Name & FF</div>
+        <div class="col-lg-4 col-sm-3">Sector</div>
+      </div>`;
+                let totalAmt = 0;
+                for (let i = 0; i < recordset.length; i++) {
+
+
+                    output += `<div class='row mt-1 mb-1 text-center border border-black'>
+<div class="col-lg-4 col-sm-3">${i + 1}</div>
+<div class="col-lg-4 col-sm-3">${recordset[i].title} ${recordset[i].first_name} ${recordset[i].last_name}</div>
+<div class="col-lg-4 col-sm-3">${recordset[i].origin} - ${recordset[i].destination}</div>
+</div>`
+
+                }
+
+
+                let output1 =`<div class="row bg-lightGray text-black fw-bold text-center p-2">
+        <div class="col-lg-1 col-sm-2"></div>
+        <div class="col-lg-2 col-sm-2">Flight</div>
+        <div class="col-lg-2 col-sm-2">Fare Name</div>
+        <div class="col-lg-3 col-sm-2">Departing</div>
+        <div class="col-lg-3 col-sm-2">Arriving</div>
+        <div class="col-lg-1 col-sm-1">Duration</div>
+    </div>`
+                for (let i = 0; i < recordset.length; i++) {
+
+
+                    output1 += `<div class='row mt-1 mb-1 text-center border border-black'>
+<div class="col-lg-1 col-sm-2">
+                            <img src="https://content.airhex.com/content/logos/airlines_${recordset[i].iata_code}_50_50_s.png" class="flightLogo" alt="Airline Logo" />
+                            <span>${recordset[i].flight_name}</span>
+                        </div>
+<div class="col-lg-2 col-sm-2" ><b> ${recordset[i].flight_name} - ${recordset[i].flight_number} </b></div>
+        <div class="col-lg-2 col-sm-2" ><b> ${recordset[i].fare_name}</b></div>
+        <div class="col-lg-3 col-sm-2" >${recordset[0].flight_sectors[i].departureDate}</div>
+        <div class="col-lg-3 col-sm-2" >${recordset[0].flight_sectors[i].arrivalDate}</div>
+        <div class="col-lg-1 col-sm-1" >${recordset[0].flight_sectors[i].duration}</div>
+</div>`
+                }
+
+               // document.getElementById("airimage").src = `https://content.airhex.com/content/logos/airlines_${recordset[0].iata_code}_50_50_s.png`;
+               // document.getElementById("name").innerHTML = `${recordset[0].flight_name}`;
+               // document.getElementById("departure").innerHTML = `${recordset[0].departure_date}`
+                //document.getElementById("arrival").innerHTML = `${recordset[0].arrival_date}`
+
+                //document.getElementById("airname").innerHTML = `<b> ${recordset[0].flight_name} - ${recordset[0].flight_number} </b>`
+                //document.getElementById("farename").innerHTML = `<b> ${recordset[0].fare_name}</b>`
+
+
+
+                const originalDate = new Date(recordset[0].booking_date_time);
+                const formattedDate = originalDate.toLocaleString(); // Converts to local time format
+                const year = originalDate.getFullYear();
+                const month = originalDate.getMonth() + 1; // Month is zero-based, so we add 1
+                const day = originalDate.getDate();
+                const hour = originalDate.getHours();
+                const minute = originalDate.getMinutes();
+                const second = originalDate.getSeconds();
+
+                //document.getElementById("bookedOn").innerHTML = `${day.toString().padStart(2, '0')}-${month.toString().padStart(2, '0')}-${year} ${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}:${second.toString().padStart(2, '0')}`;
+                document.getElementById("bookingId").innerHTML = `${recordset[0].booking_id}`
+                document.getElementById("pnr").innerHTML = `${recordset[0].PNR}`
+                document.getElementById("csr-pnr").innerHTML = `${recordset[0].Airline_PNR}`
+                //document.getElementById("duration").innerHTML = `${recordset[0].duration}`
+                console.log(output)
+
+                document.getElementById("passengerDetails").innerHTML = output
+                document.getElementById("flightDetails").innerHTML = output1
+            })
+
+    }
+
+    // Function to convert date format from YYYY/MM/DD to YYYY-MM-D
+
+</script>
+</html>

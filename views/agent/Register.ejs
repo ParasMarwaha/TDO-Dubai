@@ -1,0 +1,2066 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content="Author: HiBootstrap, Category: Tourism, Multipurpose, HTML, SASS, Bootstrap"/>
+
+    <title>TDO DXB | Welcome to TDO DXB</title>
+
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css"/>
+
+    <link rel="stylesheet" href="/assets/css/fontawesome.min.css"/>
+
+    <link rel="stylesheet" href="/assets/css/boxicons.min.css">
+
+    <link rel="stylesheet" href="/assets/css/animate.min.css"/>
+
+    <link rel="stylesheet" href="/assets/css/bootstrap-datepicker.min.css">
+
+    <link rel="stylesheet" href="/assets/css/nice-select.css">
+
+    <link rel="stylesheet" href="/assets/css/magnific-popup.min.css"/>
+
+    <link rel="stylesheet" href="/assets/css/owl.carousel.min.css"/>
+
+    <link rel="stylesheet" href="/assets/css/meanmenu.min.css"/>
+
+    <link rel="stylesheet" href="/assets/css/style.css"/>
+    <link rel="stylesheet" href="/assets/css/style1.css"/>
+    <link rel="stylesheet" href="/assets/css/responsive.css"/>
+
+    <link rel="stylesheet" href="/assets/css/theme-dark.css"/>
+
+    <link rel="icon" href="/assets/img/img_1.png" type="image/png"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+
+    <link rel="stylesheet" href="/assets/css/registerAgent.css">
+    <style>
+        .form-border {
+            border: 1px solid #e0e0e0; /* Slightly lighter grey border */
+            border-radius: 10px; /* More rounded corners */
+            padding: 25px; /* Slightly more space inside the border */
+            background-color: #ffffff; /* White background for a clean look */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+            transition: all 0.3s ease; /* Smooth transition for interactive effects */
+        }
+
+        .form-border:hover {
+            border-color: #b0b0b0; /* Darker border on hover */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+        }
+
+        .ptb-100 {
+            padding-top: 100px;
+            padding-bottom: 100px;
+        }
+
+        .step-container {
+            position: relative;
+            text-align: center;
+            transform: translateY(-43%);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .step-circle {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #fff;
+            border: 2px solid #c02323;
+            line-height: 30px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            cursor: pointer; /* Added cursor pointer */
+        }
+
+
+        #multi-step-form {
+            /*overflow-x: hidden;*/
+        }
+
+
+        .step-item {
+            text-align: center;
+            position: relative;
+        }
+
+        .step-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #c02323;
+
+            line-height: 40px;
+            color: white;
+            font-size: 18px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .step-circle:hover {
+            background-color: indianred; /* Change background color on hover */
+            transform: scale(1.1); /* Slightly increase the size on hover */
+        }
+
+
+        .step-text {
+            margin-top: 10px;
+            color: #c02323;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .step-item:first-of-type .step-line {
+            display: none;
+        }
+
+        .error {
+            color: #c02323;
+            font-size: 0.875em;
+        }
+
+        .nice-select .list {
+            max-height: 200px; /* Set the maximum height */
+            overflow-y: auto; /* Add a vertical scrollbar */
+        }
+
+        .input-file {
+            padding-top: 16px;
+        }
+    </style>
+</head>
+
+
+<body>
+<div id="preloader">
+    <div class="loader">
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--text"></div>
+    </div>
+</div>
+<!--Header File-->
+<%- include('../partials/header.ejs') %>
+
+<div class="page-title-area ptb-100 ">
+    <div class="container">
+        <div class="page-title-content">
+            <h1>Onboarding</h1>
+            <ul>
+                <li class="item"><a href="/" class="customized-link">Home</a></li>
+                <li class="item"><a href="/agentRegister" class="customized-link"><i class="bx bx-chevrons-right"></i>Onboarding</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="bg-image">
+        <img src="/assets/img/page-title-area/register.jpg" alt="Demo Image">
+    </div>
+</div>
+
+<body id="tabbing" tabindex="-1">
+<div id="container-fluid" class="container mt-5">
+    <div class="progress px-1" style="height: 3px;">
+        <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0"
+             aria-valuemax="100"></div>
+    </div>
+
+
+    <!--MultiStep Form Start-->
+    <div class="step-container d-flex justify-content-between align-items-center mt-3">
+        <div class="" id="stepone">
+            <div class="step-circle">1</div>
+            <div class="step-text">Establishment Details</div>
+        </div>
+        <div class=""></div>
+        <div class="step-item" id="steptwo">
+            <div class="step-circle">2</div>
+            <div class="step-text">Management Details</div>
+        </div>
+        <div class=""></div>
+        <div class="step-item" id="stepthree">
+            <div class="step-circle">3</div>
+            <div class="step-text">Finishing Up</div>
+        </div>
+    </div>
+    <!-- MultiStep Form End-->
+
+    <!--    Form Start -->
+    <form id="multi-step-form" class="mt-3">
+        <!--  Step 1 Start-->
+        <div class="step step-1">
+            <div class="form-border ptb-50 ">
+
+                <!-- Step 1 form fields here -->
+                <h3 class="font-normal"
+                    style="display: flex; justify-content: space-between; color: #c02323; font-weight: bold">
+                    <span>About Your Establishment</span>
+                    <span>حول مؤسستك</span>
+                </h3>
+                <p><strong>Fields marked with asterisk (<span class="text-danger">*</span>) are mandatory.</strong></p>
+                <div class="mt-4">
+
+                    <div class="row">
+                        <div class="col-12 col-md-6 col-lg-4 mb-3">
+                            <label for="nameEstablishment" class="form-label">Name of Establishment<span
+                                        class="text-danger">*</span></label>
+                            <input type="text" id="nameEstablishment" name="nameEstablishment" required
+                                   class="form-control">
+                        </div>
+
+                        <div class="col-12 col-md-6 col-lg-4 mb-3">
+                            <label for="tradeLicense" class="form-label">Trade License<span class="text-danger">*</span></label>
+                            <input type="text" id="tradeLicense" name="tradeLicense" required class="form-control"
+                                   minlength="10" maxlength="10"
+                                   oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                   title="Trade License Number must be exactly 10 digits long">
+                            <div id="tradeLicenseError"
+                                 style="color: #c02323; font-family: Arial; font-size: 14px;"></div>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-4 mb-3">
+                            <label for="uploadLicense" class="form-label">Upload License Image<span
+                                        class="text-danger">*</span></label>
+                            <input type="file" id="uploadLicense" name="uploadLicense" required
+                                   class="form-control input-file"
+                                   accept=".png, .jpg, .jpeg, .pdf">
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-4 mb-3">
+                            <label for="address" class="form-label">Address<span class="text-danger">*</span></label>
+                            <input type="text" id="address" name="address" required class="form-control">
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-4 mb-3">
+                            <label for="area" class="form-label">Area<span class="text-danger">*</span></label>
+                            <input type="text" id="area" name="area" required class="form-control">
+
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-4 mb-3">
+                            <label for="natureOfBusiness" class="form-label">Nature of Business<span
+                                        class="text-danger">*</span></label>
+                            <select name="natureOfBusiness" id="natureOfBusiness" required class="form-control">
+                                <option value="">Select Option</option>
+                                <option value="Iata Agent">Iata Agent</option>
+                                <option value="Non Iata Agent">Non Iata Agent</option>
+                                <option value="Other Business">Other Business</option>
+                            </select>
+                            <div id="natureOfBusinessError"></div>
+
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-4 mb-3">
+                            <label for="emirates" class="form-label">Emirates<span class="text-danger">*</span></label>
+                            <select name="emirates" id="emirates" required class="form-control">
+                                <option value="">Select Option</option>
+                                <option value="Abu Dhabi">Abu Dhabi</option>
+                                <option value="Ajman">Ajman</option>
+                                <option value="Dubai">Dubai</option>
+                                <option value="Fujairah">Fujairah</option>
+                                <option value="Ras Al Khaimah">Ras Al Khaimah</option>
+                                <option value="Sharjah">Sharjah</option>
+                                <option value="Umm Al-Quwain">Umm Al-Quwain</option>
+                            </select>
+                            <div id="EmiratesError"></div>
+
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-4 mb-3">
+                            <label for="email" class="form-label">Email<span class="text-danger">*</span></label>
+                            <input type="email" id="email" required name="email" class="form-control">
+                            <span id="emailError" class="text-danger"
+                                  style="display: none;font-family: 'Arial';font-size: 14px;color: #c02323">Please enter a valid
+                                Email Address.</span>
+
+                        </div>
+                        <div class="col-12 col-md-12 col-lg-4 mb-3">
+                            <label for="MobileNo" class="form-label">Mobile No<span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text">+971</span>
+                                <input type="tel" id="MobileNo" name="MobileNo" class="form-control">
+                            </div>
+                            <span id="mobileError" class="text-danger"
+                                  style="display: none;font-family: 'Arial';font-size: 14px;color: #c02323">Please enter a valid
+                                Mobile number.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end">
+                <button type="button" class="btn btn-danger next-step mt-5" style="width: 120px;"
+                        onclick="displayStep(1)">Next
+                </button>
+            </div>
+        </div>
+
+        <!--  Step 2 Start-->
+        <div class="step step-2">
+            <!-- Step 2 form fields here -->
+            <div class="form-border ptb-50">
+                <h3 class="font-normal "
+                    style="display: flex; justify-content: space-between; color: #c02323">
+                    <span style="font-weight: bold">Director Details 1</span>
+                    <span>تفاصيل المدير 1ر</span>
+                </h3>
+                <p><strong>Fields marked with asterisk (<span class="text-danger">*</span>) are mandatory.</strong>
+                </p>
+                <div class="mt-3">
+                    <div class="row">
+                        <div class="col-12 col-md-6 col-lg-4 mb-3">
+                            <label for="namePassport1" class="form-label">Name as per Passport<span
+                                        class="text-danger">*</span></label>
+                            <input type="text" id="namePassport1" required name="namePassport1"
+                                   class="form-control" oninput="this.value = this.value.replace(/[^A-Za-z\s]/g, '')">
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-4 mb-3">
+                            <label for="Nationality1" class="form-label">Nationality<span
+                                        class="text-danger">*</span></label>
+                            <input type="text" id="Nationality1" required name="Nationality1" class="form-control"
+                                   oninput="this.value = this.value.replace(/[^A-Za-z\s]/g, '')">
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-4 mb-3">
+                            <label for="PassportNumber1" class="form-label">Passport Number<span
+                                        class="text-danger">*</span></label>
+                            <input type="text" id="PassportNumber1" name="PassportNumber1" required
+                                   class="form-control" oninput="validatePassportNumber(this)">
+                            <div id="PassportNumberError1"
+                                 style="color: #c02323; font-family: Arial; font-size: 14px;"></div>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-4 mb-3">
+                            <label for="PassportCountry1" class="form-label">Passport Issuing Country<span
+                                        class="text-danger">*</span></label>
+                            <select id="PassportCountry1" name="PassportCountry1" class="form-control" required>
+                                <!--                                <option value="">Select Option</option>-->
+                                <option value="">Select Country</option>
+                                <option value="Afghanistan">Afghanistan</option>
+                                <option value="Albania">Albania</option>
+                                <option value="Algeria">Algeria</option>
+                                <option value="Andorra">Andorra</option>
+                                <option value="Angola">Angola</option>
+                                <option value="Antigua and Barbuda">Antigua and Barbuda</option>
+                                <option value="Argentina">Argentina</option>
+                                <option value="Armenia">Armenia</option>
+                                <option value="Australia">Australia</option>
+                                <option value="Austria">Austria</option>
+                                <option value="Azerbaijan">Azerbaijan</option>
+                                <option value="Bahamas">Bahamas</option>
+                                <option value="Bahrain">Bahrain</option>
+                                <option value="Bangladesh">Bangladesh</option>
+                                <option value="Barbados">Barbados</option>
+                                <option value="Belarus">Belarus</option>
+                                <option value="Belgium">Belgium</option>
+                                <option value="Belize">Belize</option>
+                                <option value="Benin">Benin</option>
+                                <option value="Bhutan">Bhutan</option>
+                                <option value="Bolivia">Bolivia</option>
+                                <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
+                                <option value="Botswana">Botswana</option>
+                                <option value="Brazil">Brazil</option>
+                                <option value="Brunei">Brunei</option>
+                                <option value="Bulgaria">Bulgaria</option>
+                                <option value="Burkina Faso">Burkina Faso</option>
+                                <option value="Burundi">Burundi</option>
+                                <option value="Cabo Verde">Cabo Verde</option>
+                                <option value="Cambodia">Cambodia</option>
+                                <option value="Cameroon">Cameroon</option>
+                                <option value="Canada">Canada</option>
+                                <option value="Central African Republic">Central African Republic</option>
+                                <option value="Chad">Chad</option>
+                                <option value="Chile">Chile</option>
+                                <option value="China">China</option>
+                                <option value="Colombia">Colombia</option>
+                                <option value="Comoros">Comoros</option>
+                                <option value="Congo, Democratic Republic of the">Congo, Democratic Republic of
+                                    the
+                                </option>
+                                <option value="Congo, Republic of the">Congo, Republic of the</option>
+                                <option value="Costa Rica">Costa Rica</option>
+                                <option value="Croatia">Croatia</option>
+                                <option value="Cuba">Cuba</option>
+                                <option value="Cyprus">Cyprus</option>
+                                <option value="Czech Republic">Czech Republic</option>
+                                <option value="Denmark">Denmark</option>
+                                <option value="Djibouti">Djibouti</option>
+                                <option value="Dominica">Dominica</option>
+                                <option value="Dominican Republic">Dominican Republic</option>
+                                <option value="Ecuador">Ecuador</option>
+                                <option value="Egypt">Egypt</option>
+                                <option value="El Salvador">El Salvador</option>
+                                <option value="Equatorial Guinea">Equatorial Guinea</option>
+                                <option value="Eritrea">Eritrea</option>
+                                <option value="Estonia">Estonia</option>
+                                <option value="Eswatini">Eswatini</option>
+                                <option value="Ethiopia">Ethiopia</option>
+                                <option value="Fiji">Fiji</option>
+                                <option value="Finland">Finland</option>
+                                <option value="France">France</option>
+                                <option value="Gabon">Gabon</option>
+                                <option value="Gambia">Gambia</option>
+                                <option value="Georgia">Georgia</option>
+                                <option value="Germany">Germany</option>
+                                <option value="Ghana">Ghana</option>
+                                <option value="Greece">Greece</option>
+                                <option value="Grenada">Grenada</option>
+                                <option value="Guatemala">Guatemala</option>
+                                <option value="Guinea">Guinea</option>
+                                <option value="Guinea-Bissau">Guinea-Bissau</option>
+                                <option value="Guyana">Guyana</option>
+                                <option value="Haiti">Haiti</option>
+                                <option value="Honduras">Honduras</option>
+                                <option value="Hungary">Hungary</option>
+                                <option value="Iceland">Iceland</option>
+                                <option value="India">India</option>
+                                <option value="Indonesia">Indonesia</option>
+                                <option value="Iran">Iran</option>
+                                <option value="Iraq">Iraq</option>
+                                <option value="Ireland">Ireland</option>
+                                <option value="Israel">Israel</option>
+                                <option value="Italy">Italy</option>
+                                <option value="Jamaica">Jamaica</option>
+                                <option value="Japan">Japan</option>
+                                <option value="Jordan">Jordan</option>
+                                <option value="Kazakhstan">Kazakhstan</option>
+                                <option value="Kenya">Kenya</option>
+                                <option value="Kiribati">Kiribati</option>
+                                <option value="Korea, North">Korea, North</option>
+                                <option value="Korea, South">Korea, South</option>
+                                <option value="Kosovo">Kosovo</option>
+                                <option value="Kuwait">Kuwait</option>
+                                <option value="Kyrgyzstan">Kyrgyzstan</option>
+                                <option value="Laos">Laos</option>
+                                <option value="Latvia">Latvia</option>
+                                <option value="Lebanon">Lebanon</option>
+                                <option value="Lesotho">Lesotho</option>
+                                <option value="Liberia">Liberia</option>
+                                <option value="Libya">Libya</option>
+                                <option value="Liechtenstein">Liechtenstein</option>
+                                <option value="Lithuania">Lithuania</option>
+                                <option value="Luxembourg">Luxembourg</option>
+                                <option value="Madagascar">Madagascar</option>
+                                <option value="Malawi">Malawi</option>
+                                <option value="Malaysia">Malaysia</option>
+                                <option value="Maldives">Maldives</option>
+                                <option value="Mali">Mali</option>
+                                <option value="Malta">Malta</option>
+                                <option value="Marshall Islands">Marshall Islands</option>
+                                <option value="Mauritania">Mauritania</option>
+                                <option value="Mauritius">Mauritius</option>
+                                <option value="Mexico">Mexico</option>
+                                <option value="Micronesia">Micronesia</option>
+                                <option value="Moldova">Moldova</option>
+                                <option value="Monaco">Monaco</option>
+                                <option value="Mongolia">Mongolia</option>
+                                <option value="Montenegro">Montenegro</option>
+                                <option value="Morocco">Morocco</option>
+                                <option value="Mozambique">Mozambique</option>
+                                <option value="Myanmar">Myanmar</option>
+                                <option value="Namibia">Namibia</option>
+                                <option value="Nauru">Nauru</option>
+                                <option value="Nepal">Nepal</option>
+                                <option value="Netherlands">Netherlands</option>
+                                <option value="New Zealand">New Zealand</option>
+                                <option value="Nicaragua">Nicaragua</option>
+                                <option value="Niger">Niger</option>
+                                <option value="Nigeria">Nigeria</option>
+                                <option value="North Macedonia">North Macedonia</option>
+                                <option value="Norway">Norway</option>
+                                <option value="Oman">Oman</option>
+                                <option value="Pakistan">Pakistan</option>
+                                <option value="Palau">Palau</option>
+                                <option value="Palestine">Palestine</option>
+                                <option value="Panama">Panama</option>
+                                <option value="Papua New Guinea">Papua New Guinea</option>
+                                <option value="Paraguay">Paraguay</option>
+                                <option value="Peru">Peru</option>
+                                <option value="Philippines">Philippines</option>
+                                <option value="Poland">Poland</option>
+                                <option value="Portugal">Portugal</option>
+                                <option value="Qatar">Qatar</option>
+                                <option value="Romania">Romania</option>
+                                <option value="Russia">Russia</option>
+                                <option value="Rwanda">Rwanda</option>
+                                <option value="Saint Kitts and Nevis">Saint Kitts and Nevis</option>
+                                <option value="Saint Lucia">Saint Lucia</option>
+                                <option value="Saint Vincent and the Grenadines">Saint Vincent and the Grenadines
+                                </option>
+                                <option value="Samoa">Samoa</option>
+                                <option value="San Marino">San Marino</option>
+                                <option value="Sao Tome and Principe">Sao Tome and Principe</option>
+                                <option value="Saudi Arabia">Saudi Arabia</option>
+                                <option value="Senegal">Senegal</option>
+                                <option value="Serbia">Serbia</option>
+                                <option value="Seychelles">Seychelles</option>
+                                <option value="Sierra Leone">Sierra Leone</option>
+                                <option value="Singapore">Singapore</option>
+                                <option value="Slovakia">Slovakia</option>
+                                <option value="Slovenia">Slovenia</option>
+                                <option value="Solomon Islands">Solomon Islands</option>
+                                <option value="Somalia">Somalia</option>
+                                <option value="South Africa">South Africa</option>
+                                <option value="South Sudan">South Sudan</option>
+                                <option value="Spain">Spain</option>
+                                <option value="Sri Lanka">Sri Lanka</option>
+                                <option value="Sudan">Sudan</option>
+                                <option value="Suriname">Suriname</option>
+                                <option value="Sweden">Sweden</option>
+                                <option value="Switzerland">Switzerland</option>
+                                <option value="Syria">Syria</option>
+                                <option value="Taiwan">Taiwan</option>
+                                <option value="Tajikistan">Tajikistan</option>
+                                <option value="Tanzania">Tanzania</option>
+                                <option value="Thailand">Thailand</option>
+                                <option value="Timor-Leste">Timor-Leste</option>
+                                <option value="Togo">Togo</option>
+                                <option value="Tonga">Tonga</option>
+                                <option value="Trinidad and Tobago">Trinidad and Tobago</option>
+                                <option value="Tunisia">Tunisia</option>
+                                <option value="Turkey">Turkey</option>
+                                <option value="Turkmenistan">Turkmenistan</option>
+                                <option value="Tuvalu">Tuvalu</option>
+                                <option value="Uganda">Uganda</option>
+                                <option value="Ukraine">Ukraine</option>
+                                <option value="United Arab Emirates">United Arab Emirates</option>
+                                <option value="United Kingdom">United Kingdom</option>
+                                <option value="United States">United States</option>
+                                <option value="Uruguay">Uruguay</option>
+                                <option value="Uzbekistan">Uzbekistan</option>
+                                <option value="Vanuatu">Vanuatu</option>
+                                <option value="Vatican City">Vatican City</option>
+                                <option value="Venezuela">Venezuela</option>
+                                <option value="Vietnam">Vietnam</option>
+                                <option value="Yemen">Yemen</option>
+                                <option value="Zambia">Zambia</option>
+                                <option value="Zimbabwe">Zimbabwe</option>
+                            </select>
+                            <div id="PassportCountryError1"></div>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-4 mb-3">
+                            <label for="PassportCountryFile1" class="form-label">
+                                Upload Passport Country Image <span
+                                        class="text-danger">*</span></label>
+                            <input type="file" id="PassportCountryFile1" required name="PassportCountryFile1"
+                                   accept=".png, .jpg, .jpeg, .pdf"
+                                   class="form-control input-file">
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-4 mb-3">
+                            <label for="PassportExpiryDate1" class="form-label">Passport Expiry Date<span
+                                        class="text-danger">*</span></label>
+                            <input type="date" id="PassportExpiryDate1" name="PassportExpiryDate1"
+                                   class="form-control input-file">
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-4 mb-3">
+                            <label for="EmiratesId1" class="form-label">Emirates ID<span
+                                        class="text-danger">*</span></label>
+                            <input type="text" id="EmiratesId1" name="EmiratesId1" required class="form-control"
+                                   minlength="16" maxlength="16"
+                                   oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                   title="Emirates ID must be of exactly 16 digits.">
+                            <div id="EmiratesIdError"
+                                 style="color: #c02323; font-family: Arial; font-size: 14px;"></div>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-4 mb-3">
+                            <label for="EmiratesIdFile1" class="form-label">Upload Emirates ID Image<span
+                                        class="text-danger">*</span></label>
+                            <input type="file" id="EmiratesIdFile1" name="EmiratesIdFile1" required
+                                   accept=".png, .jpg, .jpeg, .pdf"
+                                   class="form-control input-file">
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-4 mb-3">
+                            <label for="EmiratesIdValidity1" class="form-label">Emirates Id Validity<span
+                                        class="text-danger">*</span></label>
+                            <input type="date" id="EmiratesIdValidity1" required name="EmiratesIdValidity1"
+                                   class="form-control">
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-6 mb-3">
+                            <label for="emailId1" class="form-label">Email ID<span
+                                        class="text-danger">*</span></label>
+                            <input type="email" id="emailId1" name="emailId1" required class="form-control">
+                            <span id="emailErrorId1" class="text-danger"
+                                  style="display: none;font-family: 'Arial';font-size: 14px;color: #c02323">Please enter a valid
+                                Email Address.</span>
+                        </div>
+                        <div class="col-12 col-md-12 col-lg-6 mb-3">
+                            <label for="mobileId1" class="form-label">Mobile No<span
+                                        class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text">+971</span>
+                                <input type="tel" id="mobileId1" name="mobileId1" class="form-control">
+                            </div>
+                            <span id="mobileError1" class="text-danger"
+                                  style="display: none;font-family: 'Arial';font-size: 14px;color: #c02323">Please enter a valid
+                                Mobile number.</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="mt-3">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 d-flex align-items-center">
+                        <input class="form-check-input" type="checkbox" value="Director_2" id="showDirector2"
+                               name="showDirector2">
+                        <label class="form-check-label ms-2" for="showDirector2"
+                               style="color: #c02323; font-size: 25px; flex: 1; font-weight: bold">
+                            Director Details 2 (Optional)
+                        </label>
+                    </div>
+
+                    <div id="directorForm" class="mt-3" style="display: none;">
+                        <div class="mt-3">
+                            <div class="row">
+                                <div class="col-12 col-md-6 col-lg-4 mb-3">
+                                    <label for="namePassport2" class="form-label">Name as per Passport</label>
+                                    <input type="text" id="namePassport2" name="namePassport2"
+                                           class="form-control"
+                                           oninput="this.value = this.value.replace(/[^A-Za-z\s]/g, '')">
+                                    <div class="namePassportError"></div>
+                                </div>
+                                <div class="col-12 col-md-6 col-lg-4 mb-3">
+                                    <label for="Nationality2" class="form-label">Nationality</label>
+                                    <input type="text" id="Nationality2" name="Nationality2" class="form-control"
+                                           oninput="this.value = this.value.replace(/[^A-Za-z\s]/g, '')">
+                                    <div class="nameNationalityError"></div>
+                                </div>
+                                <div class="col-12 col-md-6 col-lg-4 mb-3">
+                                    <label for="PassportNumber2" class="form-label">Passport Number</label>
+                                    <input type="text" id="PassportNumber2" name="PassportNumber2"
+                                           class="form-control" oninput="validatePassportNumber(this)" )>
+                                    <div id="PassportNumberError2"
+                                         style="color: #c02323; font-family: Arial; font-size: 14px;"></div>
+                                </div>
+                                <div class="col-12 col-md-6 col-lg-4 mb-3">
+                                    <label for="PassportCountry2" class="form-label">Passport Issuing Country</label>
+                                    <select id="PassportCountry2" name="PassportCountry2" class="form-control">
+                                        <option value="">Select</option>
+                                        <option value="Afghanistan">Afghanistan</option>
+                                        <option value="Albania">Albania</option>
+                                        <option value="Algeria">Algeria</option>
+                                        <option value="Andorra">Andorra</option>
+                                        <option value="Angola">Angola</option>
+                                        <option value="Antigua and Barbuda">Antigua and Barbuda</option>
+                                        <option value="Argentina">Argentina</option>
+                                        <option value="Armenia">Armenia</option>
+                                        <option value="Australia">Australia</option>
+                                        <option value="Austria">Austria</option>
+                                        <option value="Azerbaijan">Azerbaijan</option>
+                                        <option value="Bahamas">Bahamas</option>
+                                        <option value="Bahrain">Bahrain</option>
+                                        <option value="Bangladesh">Bangladesh</option>
+                                        <option value="Barbados">Barbados</option>
+                                        <option value="Belarus">Belarus</option>
+                                        <option value="Belgium">Belgium</option>
+                                        <option value="Belize">Belize</option>
+                                        <option value="Benin">Benin</option>
+                                        <option value="Bhutan">Bhutan</option>
+                                        <option value="Bolivia">Bolivia</option>
+                                        <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
+                                        <option value="Botswana">Botswana</option>
+                                        <option value="Brazil">Brazil</option>
+                                        <option value="Brunei">Brunei</option>
+                                        <option value="Bulgaria">Bulgaria</option>
+                                        <option value="Burkina Faso">Burkina Faso</option>
+                                        <option value="Burundi">Burundi</option>
+                                        <option value="Cabo Verde">Cabo Verde</option>
+                                        <option value="Cambodia">Cambodia</option>
+                                        <option value="Cameroon">Cameroon</option>
+                                        <option value="Canada">Canada</option>
+                                        <option value="Central African Republic">Central African Republic</option>
+                                        <option value="Chad">Chad</option>
+                                        <option value="Chile">Chile</option>
+                                        <option value="China">China</option>
+                                        <option value="Colombia">Colombia</option>
+                                        <option value="Comoros">Comoros</option>
+                                        <option value="Congo, Democratic Republic of the">Congo, Democratic Republic of
+                                            the
+                                        </option>
+                                        <option value="Congo, Republic of the">Congo, Republic of the</option>
+                                        <option value="Costa Rica">Costa Rica</option>
+                                        <option value="Croatia">Croatia</option>
+                                        <option value="Cuba">Cuba</option>
+                                        <option value="Cyprus">Cyprus</option>
+                                        <option value="Czech Republic">Czech Republic</option>
+                                        <option value="Denmark">Denmark</option>
+                                        <option value="Djibouti">Djibouti</option>
+                                        <option value="Dominica">Dominica</option>
+                                        <option value="Dominican Republic">Dominican Republic</option>
+                                        <option value="Ecuador">Ecuador</option>
+                                        <option value="Egypt">Egypt</option>
+                                        <option value="El Salvador">El Salvador</option>
+                                        <option value="Equatorial Guinea">Equatorial Guinea</option>
+                                        <option value="Eritrea">Eritrea</option>
+                                        <option value="Estonia">Estonia</option>
+                                        <option value="Eswatini">Eswatini</option>
+                                        <option value="Ethiopia">Ethiopia</option>
+                                        <option value="Fiji">Fiji</option>
+                                        <option value="Finland">Finland</option>
+                                        <option value="France">France</option>
+                                        <option value="Gabon">Gabon</option>
+                                        <option value="Gambia">Gambia</option>
+                                        <option value="Georgia">Georgia</option>
+                                        <option value="Germany">Germany</option>
+                                        <option value="Ghana">Ghana</option>
+                                        <option value="Greece">Greece</option>
+                                        <option value="Grenada">Grenada</option>
+                                        <option value="Guatemala">Guatemala</option>
+                                        <option value="Guinea">Guinea</option>
+                                        <option value="Guinea-Bissau">Guinea-Bissau</option>
+                                        <option value="Guyana">Guyana</option>
+                                        <option value="Haiti">Haiti</option>
+                                        <option value="Honduras">Honduras</option>
+                                        <option value="Hungary">Hungary</option>
+                                        <option value="Iceland">Iceland</option>
+                                        <option value="India">India</option>
+                                        <option value="Indonesia">Indonesia</option>
+                                        <option value="Iran">Iran</option>
+                                        <option value="Iraq">Iraq</option>
+                                        <option value="Ireland">Ireland</option>
+                                        <option value="Israel">Israel</option>
+                                        <option value="Italy">Italy</option>
+                                        <option value="Jamaica">Jamaica</option>
+                                        <option value="Japan">Japan</option>
+                                        <option value="Jordan">Jordan</option>
+                                        <option value="Kazakhstan">Kazakhstan</option>
+                                        <option value="Kenya">Kenya</option>
+                                        <option value="Kiribati">Kiribati</option>
+                                        <option value="Korea, North">Korea, North</option>
+                                        <option value="Korea, South">Korea, South</option>
+                                        <option value="Kosovo">Kosovo</option>
+                                        <option value="Kuwait">Kuwait</option>
+                                        <option value="Kyrgyzstan">Kyrgyzstan</option>
+                                        <option value="Laos">Laos</option>
+                                        <option value="Latvia">Latvia</option>
+                                        <option value="Lebanon">Lebanon</option>
+                                        <option value="Lesotho">Lesotho</option>
+                                        <option value="Liberia">Liberia</option>
+                                        <option value="Libya">Libya</option>
+                                        <option value="Liechtenstein">Liechtenstein</option>
+                                        <option value="Lithuania">Lithuania</option>
+                                        <option value="Luxembourg">Luxembourg</option>
+                                        <option value="Madagascar">Madagascar</option>
+                                        <option value="Malawi">Malawi</option>
+                                        <option value="Malaysia">Malaysia</option>
+                                        <option value="Maldives">Maldives</option>
+                                        <option value="Mali">Mali</option>
+                                        <option value="Malta">Malta</option>
+                                        <option value="Marshall Islands">Marshall Islands</option>
+                                        <option value="Mauritania">Mauritania</option>
+                                        <option value="Mauritius">Mauritius</option>
+                                        <option value="Mexico">Mexico</option>
+                                        <option value="Micronesia">Micronesia</option>
+                                        <option value="Moldova">Moldova</option>
+                                        <option value="Monaco">Monaco</option>
+                                        <option value="Mongolia">Mongolia</option>
+                                        <option value="Montenegro">Montenegro</option>
+                                        <option value="Morocco">Morocco</option>
+                                        <option value="Mozambique">Mozambique</option>
+                                        <option value="Myanmar">Myanmar</option>
+                                        <option value="Namibia">Namibia</option>
+                                        <option value="Nauru">Nauru</option>
+                                        <option value="Nepal">Nepal</option>
+                                        <option value="Netherlands">Netherlands</option>
+                                        <option value="New Zealand">New Zealand</option>
+                                        <option value="Nicaragua">Nicaragua</option>
+                                        <option value="Niger">Niger</option>
+                                        <option value="Nigeria">Nigeria</option>
+                                        <option value="North Macedonia">North Macedonia</option>
+                                        <option value="Norway">Norway</option>
+                                        <option value="Oman">Oman</option>
+                                        <option value="Pakistan">Pakistan</option>
+                                        <option value="Palau">Palau</option>
+                                        <option value="Palestine">Palestine</option>
+                                        <option value="Panama">Panama</option>
+                                        <option value="Papua New Guinea">Papua New Guinea</option>
+                                        <option value="Paraguay">Paraguay</option>
+                                        <option value="Peru">Peru</option>
+                                        <option value="Philippines">Philippines</option>
+                                        <option value="Poland">Poland</option>
+                                        <option value="Portugal">Portugal</option>
+                                        <option value="Qatar">Qatar</option>
+                                        <option value="Romania">Romania</option>
+                                        <option value="Russia">Russia</option>
+                                        <option value="Rwanda">Rwanda</option>
+                                        <option value="Saint Kitts and Nevis">Saint Kitts and Nevis</option>
+                                        <option value="Saint Lucia">Saint Lucia</option>
+                                        <option value="Saint Vincent and the Grenadines">Saint Vincent and the
+                                            Grenadines
+                                        </option>
+                                        <option value="Samoa">Samoa</option>
+                                        <option value="San Marino">San Marino</option>
+                                        <option value="Sao Tome and Principe">Sao Tome and Principe</option>
+                                        <option value="Saudi Arabia">Saudi Arabia</option>
+                                        <option value="Senegal">Senegal</option>
+                                        <option value="Serbia">Serbia</option>
+                                        <option value="Seychelles">Seychelles</option>
+                                        <option value="Sierra Leone">Sierra Leone</option>
+                                        <option value="Singapore">Singapore</option>
+                                        <option value="Slovakia">Slovakia</option>
+                                        <option value="Slovenia">Slovenia</option>
+                                        <option value="Solomon Islands">Solomon Islands</option>
+                                        <option value="Somalia">Somalia</option>
+                                        <option value="South Africa">South Africa</option>
+                                        <option value="South Sudan">South Sudan</option>
+                                        <option value="Spain">Spain</option>
+                                        <option value="Sri Lanka">Sri Lanka</option>
+                                        <option value="Sudan">Sudan</option>
+                                        <option value="Suriname">Suriname</option>
+                                        <option value="Sweden">Sweden</option>
+                                        <option value="Switzerland">Switzerland</option>
+                                        <option value="Syria">Syria</option>
+                                        <option value="Taiwan">Taiwan</option>
+                                        <option value="Tajikistan">Tajikistan</option>
+                                        <option value="Tanzania">Tanzania</option>
+                                        <option value="Thailand">Thailand</option>
+                                        <option value="Timor-Leste">Timor-Leste</option>
+                                        <option value="Togo">Togo</option>
+                                        <option value="Tonga">Tonga</option>
+                                        <option value="Trinidad and Tobago">Trinidad and Tobago</option>
+                                        <option value="Tunisia">Tunisia</option>
+                                        <option value="Turkey">Turkey</option>
+                                        <option value="Turkmenistan">Turkmenistan</option>
+                                        <option value="Tuvalu">Tuvalu</option>
+                                        <option value="Uganda">Uganda</option>
+                                        <option value="Ukraine">Ukraine</option>
+                                        <option value="United Arab Emirates">United Arab Emirates</option>
+                                        <option value="United Kingdom">United Kingdom</option>
+                                        <option value="United States">United States</option>
+                                        <option value="Uruguay">Uruguay</option>
+                                        <option value="Uzbekistan">Uzbekistan</option>
+                                        <option value="Vanuatu">Vanuatu</option>
+                                        <option value="Vatican City">Vatican City</option>
+                                        <option value="Venezuela">Venezuela</option>
+                                        <option value="Vietnam">Vietnam</option>
+                                        <option value="Yemen">Yemen</option>
+                                        <option value="Zambia">Zambia</option>
+                                        <option value="Zimbabwe">Zimbabwe</option>
+                                    </select>
+                                    <div id="PassportCountryError2"></div>
+                                </div>
+                                <div class="col-12 col-md-6 col-lg-4 mb-3">
+                                    <label for="PassportCountryFile2" class="form-label">Upload Passport
+                                        Country Image</label>
+                                    <input type="file" id="PassportCountryFile2" name="PassportCountryFile2"
+                                           accept=".png, .jpg, .jpeg, .pdf"
+                                           class="form-control input-file">
+                                    <div class="namePassportCountryFileError"></div>
+                                </div>
+                                <div class="col-12 col-md-6 col-lg-4 mb-3">
+                                    <label for="PassportExpiryDate2" class="form-label">Passport Expiry Date</label>
+                                    <input type="date" id="PassportExpiryDate2" name="PassportExpiryDate2"
+                                           class="form-control">
+                                    <div class="namePassportExpiryDateError"></div>
+                                </div>
+                                <div class="col-12 col-md-6 col-lg-4 mb-3">
+                                    <label for="EmiratesId2" class="form-label">Emirates ID</label>
+                                    <input type="text" id="EmiratesId2" name="EmiratesId2" minlength="16" maxlength="16"
+                                           oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                           title="Emirates ID must be of exactly 16 digits." class="form-control">
+                                    <div class="nameEmiratesIdError"></div>
+                                </div>
+                                <div class="col-12 col-md-6 col-lg-4 mb-3">
+                                    <label for="EmiratesIdFile2" class="form-label">Upload Emirates ID Image</label>
+                                    <input type="file" id="EmiratesIdFile2" name="EmiratesIdFile2"
+                                           class="form-control input-file"
+                                           accept=".png, .jpg, .jpeg, .pdf"
+                                    >
+                                    <div class="nameEmiratesFileError"></div>
+
+                                </div>
+                                <div class="col-12 col-md-6 col-lg-4 mb-3">
+                                    <label for="EmiratesIdValidity2" class="form-label">Emirates Id Validity</label>
+                                    <input type="date" id="EmiratesIdValidity2" name="EmiratesIdValidity2"
+                                           class="form-control">
+                                    <div class="nameEmiratesIdFileError"></div>
+
+                                </div>
+                                <div class="col-12 col-md-6 col-lg-6 mb-3">
+                                    <label for="emailId2" class="form-label">Email ID</label>
+                                    <input type="email" id="emailId2" name="emailId2" class="form-control">
+                                    <span id="emailError2" class="text-danger"
+                                          style="display: none;font-family: 'Arial';font-size: 14px;color: #c02323">Please enter a valid
+                                Email Address.</span>
+                                </div>
+                                <div class="col-12 col-md-12 col-lg-6 mb-3">
+                                    <label for="mobileId2" class="form-label">Mobile Number </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">+971</span>
+                                        <input type="tel" id="mobileId2" name="mobileId2" class="form-control"
+
+                                        ></div>
+                                    <small id="mobileError2" class="text-danger"
+                                           style="display: none;font-family: 'Arial';font-size: 14px;color: #c02323">Please
+                                        enter a valid
+                                        Mobile number.</small>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end">
+                <button type="button" class="btn btn-secondary prev-step mt-5" style="width: 150px;">Previous</button>
+                <button type="button" class="btn btn-danger mt-5" style="margin-left: 10px; width: 120px;"
+                        onclick="displayStep(2)">Next
+                </button>
+            </div>
+        </div>
+
+        <!--  Step 3 Start-->
+        <div class="step step-3">
+            <!-- Step 3 form fields here -->
+            <div class="mb-3">
+                <div class="form-border ptb-50">
+                    <div class="row">
+                        <div class="col-sm-6">
+
+                            <label style="display: flex; align-items: center;" class="ms-3">
+                                <input type="radio" name="signatory_type" id="Director 1" value="Director 1" checked
+                                       class="form-check-inline">
+                                <span style="color: #c02323; margin-left: 8px; font-size: 30px; font-weight: bold">Director 1 As Signatory</span>
+                            </label>
+                        </div>
+                        <div class="col-sm-6">
+                            <label style="display: flex; align-items: center;">
+                                <input type="radio" name="signatory_type" id="New Signatory" value="New Signatory">
+                                <span style="color: #c02323; margin-left: 8px; font-size: 30px;font-weight: bold">New Signatory</span>
+                            </label>
+                        </div>
+                    </div>
+                    <hr>
+                    <div id="new-signatory-form" class="container-fluid">
+                        <form>
+                            <h5 class="mt-3" style="color: #c02323;" id="headingId">Authorised Signatory Details</h5>
+                            <!-- Add your form fields here -->
+                            <div class="row">
+                                <div class="col-12 col-md-6 col-lg-4 mb-3">
+                                    <label for="newNamePassport" class="form-label">Name as per Passport<span
+                                                class="text-danger">*</span></label>
+                                    <input type="text" id="newNamePassport" required name="newNamePassport"
+                                           class="form-control"
+                                           oninput="this.value = this.value.replace(/[^A-Za-z\s]/g, '')">
+                                    <!---->
+                                </div>
+                                <!---->
+                                <div class="col-12 col-md-6 col-lg-4 mb-3">
+                                    <label for="newNationality" class="form-label">Nationality<span
+                                                class="text-danger">*</span></label>
+                                    <input type="text" id="newNationality" required name="newNationality"
+                                           class="form-control"
+                                           oninput="this.value = this.value.replace(/[^A-Za-z\s]/g, '')">
+                                    <!---->
+                                </div>
+                                <!---->
+                                <div class="col-12 col-md-6 col-lg-4 mb-3">
+                                    <label for="newPassportNumber" class="form-label">Passport Number<span
+                                                class="text-danger">*</span></label>
+                                    <input type="text" id="newPassportNumber" name="newPassportNumber" required
+                                           class="form-control" oninput="validatePassportNumber(this)">
+                                    <!---->
+                                </div>
+
+                                <div class="col-12 col-md-6 col-lg-4 mb-3" id="divId">
+                                    <label for="newPassportCountry" class="form-label">Passport Issuing Country<span
+                                                class="text-danger">*</span></label>
+                                    <select id="newPassportCountry" name="newPassportCountry" class="form-control"
+                                            required>
+                                        <option data-display="Select Option">Select Option</option>
+                                        <option value="Afghanistan">Afghanistan</option>
+                                        <option value="Albania">Albania</option>
+                                        <option value="Algeria">Algeria</option>
+                                        <option value="Andorra">Andorra</option>
+                                        <option value="Angola">Angola</option>
+                                        <option value="Antigua and Barbuda">Antigua and Barbuda</option>
+                                        <option value="Argentina">Argentina</option>
+                                        <option value="Armenia">Armenia</option>
+                                        <option value="Australia">Australia</option>
+                                        <option value="Austria">Austria</option>
+                                        <option value="Azerbaijan">Azerbaijan</option>
+                                        <option value="Bahamas">Bahamas</option>
+                                        <option value="Bahrain">Bahrain</option>
+                                        <option value="Bangladesh">Bangladesh</option>
+                                        <option value="Barbados">Barbados</option>
+                                        <option value="Belarus">Belarus</option>
+                                        <option value="Belgium">Belgium</option>
+                                        <option value="Belize">Belize</option>
+                                        <option value="Benin">Benin</option>
+                                        <option value="Bhutan">Bhutan</option>
+                                        <option value="Bolivia">Bolivia</option>
+                                        <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
+                                        <option value="Botswana">Botswana</option>
+                                        <option value="Brazil">Brazil</option>
+                                        <option value="Brunei">Brunei</option>
+                                        <option value="Bulgaria">Bulgaria</option>
+                                        <option value="Burkina Faso">Burkina Faso</option>
+                                        <option value="Burundi">Burundi</option>
+                                        <option value="Cabo Verde">Cabo Verde</option>
+                                        <option value="Cambodia">Cambodia</option>
+                                        <option value="Cameroon">Cameroon</option>
+                                        <option value="Canada">Canada</option>
+                                        <option value="Central African Republic">Central African Republic</option>
+                                        <option value="Chad">Chad</option>
+                                        <option value="Chile">Chile</option>
+                                        <option value="China">China</option>
+                                        <option value="Colombia">Colombia</option>
+                                        <option value="Comoros">Comoros</option>
+                                        <option value="Congo, Democratic Republic of the">Congo, Democratic Republic of
+                                            the
+                                        </option>
+                                        <option value="Congo, Republic of the">Congo, Republic of the</option>
+                                        <option value="Costa Rica">Costa Rica</option>
+                                        <option value="Croatia">Croatia</option>
+                                        <option value="Cuba">Cuba</option>
+                                        <option value="Cyprus">Cyprus</option>
+                                        <option value="Czech Republic">Czech Republic</option>
+                                        <option value="Denmark">Denmark</option>
+                                        <option value="Djibouti">Djibouti</option>
+                                        <option value="Dominica">Dominica</option>
+                                        <option value="Dominican Republic">Dominican Republic</option>
+                                        <option value="Ecuador">Ecuador</option>
+                                        <option value="Egypt">Egypt</option>
+                                        <option value="El Salvador">El Salvador</option>
+                                        <option value="Equatorial Guinea">Equatorial Guinea</option>
+                                        <option value="Eritrea">Eritrea</option>
+                                        <option value="Estonia">Estonia</option>
+                                        <option value="Eswatini">Eswatini</option>
+                                        <option value="Ethiopia">Ethiopia</option>
+                                        <option value="Fiji">Fiji</option>
+                                        <option value="Finland">Finland</option>
+                                        <option value="France">France</option>
+                                        <option value="Gabon">Gabon</option>
+                                        <option value="Gambia">Gambia</option>
+                                        <option value="Georgia">Georgia</option>
+                                        <option value="Germany">Germany</option>
+                                        <option value="Ghana">Ghana</option>
+                                        <option value="Greece">Greece</option>
+                                        <option value="Grenada">Grenada</option>
+                                        <option value="Guatemala">Guatemala</option>
+                                        <option value="Guinea">Guinea</option>
+                                        <option value="Guinea-Bissau">Guinea-Bissau</option>
+                                        <option value="Guyana">Guyana</option>
+                                        <option value="Haiti">Haiti</option>
+                                        <option value="Honduras">Honduras</option>
+                                        <option value="Hungary">Hungary</option>
+                                        <option value="Iceland">Iceland</option>
+                                        <option value="India">India</option>
+                                        <option value="Indonesia">Indonesia</option>
+                                        <option value="Iran">Iran</option>
+                                        <option value="Iraq">Iraq</option>
+                                        <option value="Ireland">Ireland</option>
+                                        <option value="Israel">Israel</option>
+                                        <option value="Italy">Italy</option>
+                                        <option value="Jamaica">Jamaica</option>
+                                        <option value="Japan">Japan</option>
+                                        <option value="Jordan">Jordan</option>
+                                        <option value="Kazakhstan">Kazakhstan</option>
+                                        <option value="Kenya">Kenya</option>
+                                        <option value="Kiribati">Kiribati</option>
+                                        <option value="Korea, North">Korea, North</option>
+                                        <option value="Korea, South">Korea, South</option>
+                                        <option value="Kosovo">Kosovo</option>
+                                        <option value="Kuwait">Kuwait</option>
+                                        <option value="Kyrgyzstan">Kyrgyzstan</option>
+                                        <option value="Laos">Laos</option>
+                                        <option value="Latvia">Latvia</option>
+                                        <option value="Lebanon">Lebanon</option>
+                                        <option value="Lesotho">Lesotho</option>
+                                        <option value="Liberia">Liberia</option>
+                                        <option value="Libya">Libya</option>
+                                        <option value="Liechtenstein">Liechtenstein</option>
+                                        <option value="Lithuania">Lithuania</option>
+                                        <option value="Luxembourg">Luxembourg</option>
+                                        <option value="Madagascar">Madagascar</option>
+                                        <option value="Malawi">Malawi</option>
+                                        <option value="Malaysia">Malaysia</option>
+                                        <option value="Maldives">Maldives</option>
+                                        <option value="Mali">Mali</option>
+                                        <option value="Malta">Malta</option>
+                                        <option value="Marshall Islands">Marshall Islands</option>
+                                        <option value="Mauritania">Mauritania</option>
+                                        <option value="Mauritius">Mauritius</option>
+                                        <option value="Mexico">Mexico</option>
+                                        <option value="Micronesia">Micronesia</option>
+                                        <option value="Moldova">Moldova</option>
+                                        <option value="Monaco">Monaco</option>
+                                        <option value="Mongolia">Mongolia</option>
+                                        <option value="Montenegro">Montenegro</option>
+                                        <option value="Morocco">Morocco</option>
+                                        <option value="Mozambique">Mozambique</option>
+                                        <option value="Myanmar">Myanmar</option>
+                                        <option value="Namibia">Namibia</option>
+                                        <option value="Nauru">Nauru</option>
+                                        <option value="Nepal">Nepal</option>
+                                        <option value="Netherlands">Netherlands</option>
+                                        <option value="New Zealand">New Zealand</option>
+                                        <option value="Nicaragua">Nicaragua</option>
+                                        <option value="Niger">Niger</option>
+                                        <option value="Nigeria">Nigeria</option>
+                                        <option value="North Macedonia">North Macedonia</option>
+                                        <option value="Norway">Norway</option>
+                                        <option value="Oman">Oman</option>
+                                        <option value="Pakistan">Pakistan</option>
+                                        <option value="Palau">Palau</option>
+                                        <option value="Palestine">Palestine</option>
+                                        <option value="Panama">Panama</option>
+                                        <option value="Papua New Guinea">Papua New Guinea</option>
+                                        <option value="Paraguay">Paraguay</option>
+                                        <option value="Peru">Peru</option>
+                                        <option value="Philippines">Philippines</option>
+                                        <option value="Poland">Poland</option>
+                                        <option value="Portugal">Portugal</option>
+                                        <option value="Qatar">Qatar</option>
+                                        <option value="Romania">Romania</option>
+                                        <option value="Russia">Russia</option>
+                                        <option value="Rwanda">Rwanda</option>
+                                        <option value="Saint Kitts and Nevis">Saint Kitts and Nevis</option>
+                                        <option value="Saint Lucia">Saint Lucia</option>
+                                        <option value="Saint Vincent and the Grenadines">Saint Vincent and the
+                                            Grenadines
+                                        </option>
+                                        <option value="Samoa">Samoa</option>
+                                        <option value="San Marino">San Marino</option>
+                                        <option value="Sao Tome and Principe">Sao Tome and Principe</option>
+                                        <option value="Saudi Arabia">Saudi Arabia</option>
+                                        <option value="Senegal">Senegal</option>
+                                        <option value="Serbia">Serbia</option>
+                                        <option value="Seychelles">Seychelles</option>
+                                        <option value="Sierra Leone">Sierra Leone</option>
+                                        <option value="Singapore">Singapore</option>
+                                        <option value="Slovakia">Slovakia</option>
+                                        <option value="Slovenia">Slovenia</option>
+                                        <option value="Solomon Islands">Solomon Islands</option>
+                                        <option value="Somalia">Somalia</option>
+                                        <option value="South Africa">South Africa</option>
+                                        <option value="South Sudan">South Sudan</option>
+                                        <option value="Spain">Spain</option>
+                                        <option value="Sri Lanka">Sri Lanka</option>
+                                        <option value="Sudan">Sudan</option>
+                                        <option value="Suriname">Suriname</option>
+                                        <option value="Sweden">Sweden</option>
+                                        <option value="Switzerland">Switzerland</option>
+                                        <option value="Syria">Syria</option>
+                                        <option value="Taiwan">Taiwan</option>
+                                        <option value="Tajikistan">Tajikistan</option>
+                                        <option value="Tanzania">Tanzania</option>
+                                        <option value="Thailand">Thailand</option>
+                                        <option value="Timor-Leste">Timor-Leste</option>
+                                        <option value="Togo">Togo</option>
+                                        <option value="Tonga">Tonga</option>
+                                        <option value="Trinidad and Tobago">Trinidad and Tobago</option>
+                                        <option value="Tunisia">Tunisia</option>
+                                        <option value="Turkey">Turkey</option>
+                                        <option value="Turkmenistan">Turkmenistan</option>
+                                        <option value="Tuvalu">Tuvalu</option>
+                                        <option value="Uganda">Uganda</option>
+                                        <option value="Ukraine">Ukraine</option>
+                                        <option value="United Arab Emirates">United Arab Emirates</option>
+                                        <option value="United Kingdom">United Kingdom</option>
+                                        <option value="United States">United States</option>
+                                        <option value="Uruguay">Uruguay</option>
+                                        <option value="Uzbekistan">Uzbekistan</option>
+                                        <option value="Vanuatu">Vanuatu</option>
+                                        <option value="Vatican City">Vatican City</option>
+                                        <option value="Venezuela">Venezuela</option>
+                                        <option value="Vietnam">Vietnam</option>
+                                        <option value="Yemen">Yemen</option>
+                                        <option value="Zambia">Zambia</option>
+                                        <option value="Zimbabwe">Zimbabwe</option>
+                                    </select>
+
+                                </div>
+
+                                <div class="col-12 col-md-6 col-lg-4 mb-3">
+                                    <label for="newPassportCountryFile" class="form-label">Upload Passport Country Image<span
+                                                class="text-danger">*</span></label>
+                                    <input type="file" id="newPassportCountryFile" required
+                                           accept=".png, .jpg, .jpeg, .pdf"
+                                           name="newPassportCountryFile"
+                                           class="form-control input-file">
+
+                                </div>
+
+                                <div class="col-12 col-md-6 col-lg-4 mb-3">
+                                    <label for="newPassportExpiryDate" class="form-label">Passport Expiry Date<span
+                                                class="text-danger">*</span></label>
+                                    <input type="date" id="newPassportExpiryDate" name="newPassportExpiryDate"
+                                           class="form-control">
+                                </div>
+
+                                <div class="col-12 col-md-6 col-lg-4 mb-3">
+                                    <label for="newEmiratesId" class="form-label">Emirates ID<span
+                                                class="text-danger">*</span></label>
+                                    <input type="text" id="newEmiratesId" name="newEmiratesId" minlength="16"
+                                           maxlength="16" oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                           title="Emirates ID must be of exactly 16 digits." required
+                                           class="form-control">
+
+                                </div>
+
+                                <div class="col-12 col-md-6 col-lg-4 mb-3">
+                                    <label for="newEmiratesIdFile" class="form-label">Upload Emirates ID Image<span
+                                                class="text-danger">*</span></label>
+                                    <input type="file" id="newEmiratesIdFile" name="newEmiratesIdFile" required
+                                           accept=".png, .jpg, .jpeg, .pdf"
+                                           class="form-control input-file">
+
+                                </div>
+
+                                <div class="col-12 col-md-6 col-lg-4 mb-3">
+                                    <label for="newEmiratesIdValidity" class="form-label">Emirates Id Validity<span
+                                                class="text-danger">*</span></label>
+                                    <input type="date" id="newEmiratesIdValidity" required name="newEmiratesIdValidity"
+                                           class="form-control">
+
+                                </div>
+
+                                <div class="col-12 col-md-6 col-lg-6 mb-3">
+                                    <label for="newEmailId" class="form-label">Email ID<span
+                                                class="text-danger">*</span></label>
+                                    <input type="email" id="newEmailId" name="newEmailId" required class="form-control">
+                                    <span id="newEmailError" class="text-danger"
+                                          style="display: none;font-family: 'Arial';font-size: 14px;color: #c02323">Please enter a valid
+                                Email Address.</span>
+
+                                </div>
+
+                                <div class="col-12 col-md-12 col-lg-6 mb-3">
+                                    <label for="newMobileId" class="form-label">Mobile Number <span
+                                                class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">+971</span>
+                                        <input type="tel" id="newMobileId" name="newMobileId" class="form-control"
+                                               required></div>
+                                    <small id="newMobileError" class="text-danger"
+                                           style="display: none;font-family: 'Arial';font-size: 14px;color: #c02323">Please
+                                        enter a
+                                        valid
+                                        Mobile number.</small>
+
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="mt-5 ms-3">
+                        <h2 class="font-normal"
+                            style="display: flex; justify-content: space-between; color:  #c02323">
+                            <span>Bank Account Details</span>
+                            <span>تفاصيل الحساب البنكي</span>
+                        </h2>
+                        <div class="mt-3">
+                            <div class="row">
+                                <div class="col-sm-6 mb-3">
+                                    <label for="bankerName" class="form-label">Banker Name<span
+                                                class="text-danger">*</span></label>
+                                    <input type="text" id="bankerName" required name="bankerName"
+                                           class="form-control"
+                                           oninput="this.value = this.value.replace(/[^A-Za-z\s]/g, '')">
+                                </div>
+                                <div class="col-sm-6 mb-3">
+                                    <label for="branchLocation" class="form-label">Branch Location<span
+                                                class="text-danger">*</span></label>
+                                    <input type="text" id="branchLocation" required name="branchLocation"
+                                           class="form-control">
+                                    <!--                                <div class="error" id="NationalityError1"></div>-->
+                                </div>
+
+                                <div class="col-sm-6 mb-3">
+                                    <label for="accountNumber" class="form-label">Account Number<span
+                                                class="text-danger">*</span></label>
+                                    <input type="text" id="accountNumber" name="accountNumber" required
+                                           class="form-control"
+                                           oninput="this.value = this.value.replace(/[^0-9]/g, '')" maxlength="12"
+                                           minlength="12">
+                                    <div class="error text-danger" id="accountNumberError"></div>
+                                </div>
+                                <div class="col-sm-6 mb-3">
+                                    <label for="businessVolume" class="form-label">Current Business Volume (AED (In
+                                        Million Format))<span
+                                                class="text-danger">*</span></label>
+                                    <select id="businessVolume" name="businessVolume" class="form-control">
+                                        <option value="">Select Option</option>
+                                        <option value="Below 50K">Below 50K</option>
+                                        <option value="50K-100K">50K-100K</option>
+                                        <option value="100K-300K">100K-300K</option>
+                                        <option value="300K-500K">300K-500K</option>
+                                        <option value="500K and Above">500K and Above</option>
+                                    </select>
+                                    <div id="businessVolumeError"></div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-5 ms-3">
+                        <h2 class="font-normal"
+                            style="display: flex; justify-content: space-between; color:  #c02323">
+                            <span>Other Details</span>
+                            <span>تفاصيل أخرى</span>
+                        </h2>
+                        <div class="row mt-3">
+                            <div class="col-sm-6 mb-3 col-md-12 col-lg-6">
+                                <label for="iataAccredited" class="form-label">Agency IATA Accredited <span
+                                            class="text-danger">*</span></label>
+                                <select name="iataAccredited" id="iataAccredited" required class="form-control"
+                                        onchange="readableFile()">
+                                    <option value="No">No</option>
+                                    <option value="Yes">Yes</option>
+                                </select>
+                            </div>
+
+                            <div class="col-sm-6 col-md-12 mb-3 col-lg-6">
+                                <label for="iataAccreditedFile" class="form-label">Upload Agency IATA
+                                    Accredited Image </label>
+                                <input type="file" id="iataAccreditedFile" name="iataAccreditedFile" disabled
+                                       accept=".png, .jpg, .jpeg, .pdf"
+                                       class="form-control input-file">
+                            </div>
+                            <div class="col-12 col-sm-6 mb-3">
+                                <input class="form-check-input" type="checkbox" value="" id="showFormCheckbox">
+                                <label class="form-check-label" for="showFormCheckbox" style="color: #c02323">
+                                    Are you Referred by the TDO DXB Staff?
+                                </label>
+                            </div>
+                        </div>
+                        <div id="myForm" class="mt-3" style="display: none;">
+                            <form>
+                                <div class="row">
+                                    <!-- Add your form fields here -->
+                                    <div class="mb-3 col-sm-5">
+                                        <label for="staffId" class="form-label">Staff Id</label>
+                                        <input type="text" class="form-control" id="staffId" name="staffId">
+                                    </div>
+                                    <div class="mb-3 col-sm-5">
+                                        <label for="staffName" class="form-label ">Staff Name</label>
+                                        <input type="text" class="form-control" id="staffName" name="staffName"
+                                               disabled>
+                                    </div>
+                                    <div class="mb-3 col-sm-2">
+                                        <button type="button" class="btn btn-danger mt-5 w-100" id="verify_staff_id" onclick="getStaff_id()"
+                                                style="height: 45%;">Verify Staff Id
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-end">
+                <button type="button" class="btn btn-secondary prev-step mt-5" style="width: 150px">Previous
+                </button>
+                <button type="button" class="btn btn-danger mt-5 ms-2" style="margin-left: 10px; width: 120px;"
+                        onclick="OpenModal()">Next
+                </button>
+            </div>
+        </div>
+    </form>
+    <div class="modal fade" id="TCModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel" style="color: #c02323">Terms And Conditions</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad aliquid animi aspernatur aut culpa
+                    deleniti distinctio, dolor laudantium modi nesciunt nobis quam repellat tenetur. Atque doloremque
+                    explicabo ratione. A, ad aliquid commodi consequuntur deleniti deserunt dolorum eveniet iste odio
+                    quo similique totam vel veniam. Ab adipisci aliquam aliquid cum cumque, cupiditate dolor eligendi
+                    iste iusto molestias, odio omnis praesentium quae quos voluptas? Aliquam atque dignissimos dolore
+                    eaque earum eum facere inventore ipsum maxime natus qui quidem repudiandae temporibus, voluptas
+                    voluptates? Accusantium ad aperiam autem consectetur cum cupiditate doloremque earum eligendi error
+                    esse ex, fuga iusto, laborum modi natus nemo neque nihil, obcaecati quasi qui quidem quos
+                    repellendus sint tempora totam unde voluptas voluptatum. Accusamus delectus dolore dolores facilis
+                    harum, unde? Alias at consequuntur culpa explicabo hic illo iusto laudantium, nisi porro
+                    praesentium, quidem quod suscipit tenetur vel voluptatem. Accusantium aliquam assumenda blanditiis
+                    consequuntur dicta dolorum eaque et eum ex facilis fugit ipsa laborum minus nam natus necessitatibus
+                    nostrum officia omnis perferendis perspiciatis, quasi sunt temporibus veritatis vero voluptates!
+                    Harum nostrum suscipit velit? Aperiam at beatae consequatur corporis cum deleniti doloremque enim
+                    excepturi, explicabo facere fuga harum ipsam ipsum magnam neque nulla quae quibusdam reiciendis
+                    saepe sed similique sint sunt. Commodi?
+                    <div class="col-12 col-sm-6 mb-2 mt-2">
+                        <input class="form-check-input" type="checkbox" onchange="showButton()" value="" id="term">
+                        <label class="form-check-label ms-2" style="color: #c02323" for="term">
+                            <b>I Agree To the Terms and Condition</b>
+                        </label>
+                        <button type="button" onclick="allDetails()" id="submitButton" class="btn btn-danger mt-3"
+                                style="display: none">Submit
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include('../partials/footer.ejs') %>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.21.0/jquery.validate.min.js"
+        integrity="sha512-KFHXdr2oObHKI9w4Hv1XPKc898mE4kgYx58oqsc/JqqdLMDI4YjOLzom+EMlW8HFUd0QfjfAvxSL6sEq/a42fQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+<script>
+
+    async function getStaff_id() {
+        try {
+            const staff_id = document.getElementById("staffId").value;
+            console.log(staff_id);
+
+            let url = "/Verify-Staff/" + staff_id;
+            console.log(url);
+
+            let response = await fetch(url, {
+                headers: { "Content-Type": "application/json" }
+            });
+
+            response = await response.json();
+            console.log(response);
+
+            if (response.warning) {
+                Swal.fire({
+                    title: "OOPS!",
+                    text: response.message,
+                    icon: "warning"
+                });
+            } else if (response.message === 'success') {
+                // Disable the input fields after success
+                document.getElementById("staffId").disabled = true;
+                document.getElementById("verify_staff_id").disabled = true;
+
+                // Retrieve and assign staff name
+                const staff_n = response.data[0];
+                console.log(staff_n);
+
+                const staff_name = staff_n['first_name'] + ' ' + staff_n['last_name'];
+                document.getElementById("staffName").value = staff_name;
+            }
+
+        } catch (e) {
+            // Handle any errors during the fetch call or data processing
+            Swal.fire({
+                title: "OOPS!",
+                text: response.message,
+                icon: "error"
+            });
+            console.error("Error:", e);
+        }
+    }
+
+
+    function showButton() {
+        let term = document.getElementById("term").checked;
+        if (term === true) {
+            document.getElementById("submitButton").style.display = "block"
+        } else {
+            document.getElementById("submitButton").style.display = "none"
+        }
+    }
+
+    function OpenModal() {
+        const businessVolume = document.getElementById('businessVolume').value;
+        if (businessVolume === "") {
+            return $('#businessVolumeError').text('Please select an Business Volume.')
+                .css({
+                    'color': '#c02323',
+                    'font-family': 'Arial',
+                    'font-size': '14px'
+                });
+
+        } else {
+            $('#EmiratesError').text('');
+        }
+        if ($("#multi-step-form").valid()) {
+            $("#TCModal").modal("show")
+        }
+    }
+
+    function validateAccountNumber() {
+        var accountNumberInput = document.getElementById('accountNumber');
+        var accountNumberError = document.getElementById('accountNumberError');
+
+        if (accountNumberInput.value.length < 12) {
+            event.preventDefault();  // Prevent form submission
+            return accountNumberError.textContent = "Account number must be 12 digits long.";
+        } else {
+            accountNumberError.textContent = ""; // Clear error message if valid
+        }
+    }
+
+    function validateTradeLicense() {
+        var tradeLicenseId = document.getElementById('tradeLicense').value;
+        var errorDiv = document.getElementById('tradeLicenseError');
+
+        // Check if the input is numeric and has exactly 10 digits
+        var isNumeric = /^\d{10}$/.test(tradeLicenseId);
+
+        if (tradeLicenseId.length > 0 && !isNumeric) {
+            errorDiv.textContent = 'Trade License Number must be exactly 10 digits long and numeric.';
+        } else {
+            errorDiv.textContent = ''; // Clear the error message when valid
+        }
+    }
+
+
+    function validatePassportNumber(input) {
+        // Replace any non-uppercase letters or digits
+        input.value = input.value.replace(/[^A-Z0-9]/g, '');
+
+        // Trim the value if it's more than 9 characters
+        if (input.value.length > 9) {
+            input.value = input.value.slice(0, 9);
+        }
+    }
+
+    $(document).ready(function () {
+        $('#showDirector2').on('change', function () {
+            if ($(this).is(':checked')) {
+                $('#directorForm').slideDown(); // Show the form
+            } else {
+                $('#directorForm').slideUp(); // Hide the form
+                document.getElementById("mobileId2").value = ''
+            }
+        });
+    });
+
+    // ________________________________________________________________
+    function validateEmail(email, emailId) {
+        const emailInput = email;
+        const emailError = emailId;
+
+        const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+        if (emailPattern.test(emailInput)) {
+            document.getElementById(emailError).style.display = 'none';
+            document.getElementById(emailError).classList.remove('is-invalid');
+            document.getElementById(emailError).classList.add('is-valid');
+
+            return emailPattern.test(email);
+        } else {
+            document.getElementById(emailError).style.display = 'block';
+            document.getElementById(emailError).classList.remove('is-valid');
+            document.getElementById(emailError).classList.add('is-invalid');
+
+            return emailPattern.test(email);
+        }
+
+    }
+
+    function validateMobileNumber(mobile, errorId) {
+
+        const mobileInput = mobile;
+        const mobileError = errorId;
+        // console.log(mobileInput, mobileError)
+
+        // Regular expression for Dubai (UAE) mobile numbers
+        const regex = /(50|52|54|55|56|58)[0-9]{7}$/;
+
+        // Test the input value against the regular expression
+        if (regex.test(mobileInput)) {
+            document.getElementById(mobileError).style.display = 'none';
+            document.getElementById(mobileError).classList.remove('is-invalid');
+            document.getElementById(mobileError).classList.add('is-valid');
+
+            return true;
+        } else {
+            document.getElementById(mobileError).style.display = 'block';
+            document.getElementById(mobileError).classList.remove('is-valid');
+            document.getElementById(mobileError).classList.add('is-invalid');
+
+            return false;
+        }
+    }
+
+    // ________________________________________________________________
+    $(document).ready(function () {
+        $('#showFormCheckbox').on('change', function () {
+            if ($(this).is(':checked')) {
+                $('#myForm').slideDown(); // Show the form
+            } else {
+                $('#myForm').slideUp(); // Hide the form
+            }
+        });
+    });
+
+    // ________________________________________________________________
+    document.getElementById("Director 1").addEventListener('click', function () {
+        const savedDetails = JSON.parse(localStorage.getItem('Management_Details'));
+        document.getElementById("headingId").innerHTML = "Director 1 Details"
+
+        document.getElementById("newNamePassport").value = savedDetails.DirnamePassport_1;
+        document.getElementById("newNamePassport").readOnly = true;
+
+        document.getElementById("newNationality").value = savedDetails.DirNationality_1;
+        document.getElementById("newNationality").readOnly = true;
+
+        document.getElementById("newPassportNumber").value = savedDetails.DirPassportNumber_1;
+        document.getElementById("newPassportNumber").readOnly = true;
+
+        document.getElementById("newPassportCountry").value = savedDetails.DirPassportCountry_1;
+        document.getElementById("newPassportCountry").readOnly = true;
+
+        document.getElementById("newPassportCountryFile").disabled = true;
+
+        document.getElementById("newPassportExpiryDate").value = savedDetails.DirPassportExpiryDate_1;
+        document.getElementById("newPassportExpiryDate").readOnly = true;
+
+        document.getElementById("newEmiratesId").value = savedDetails.DirEmiratesId_1;
+        document.getElementById("newEmiratesId").readOnly = true;
+
+        document.getElementById("newEmiratesIdFile").disabled = true;
+
+        document.getElementById("newEmiratesIdValidity").value = savedDetails.DirEmiratesIdValidity_1;
+        document.getElementById("newEmiratesIdValidity").readOnly = true;
+
+        document.getElementById("newEmailId").value = savedDetails.DirEmailId_1;
+        document.getElementById("newEmailId").readOnly = true;
+
+        document.getElementById("newMobileId").value = savedDetails.DirMobileId_1;
+        document.getElementById("newMobileId").readOnly = true;
+
+    });
+
+
+    document.getElementById("New Signatory").addEventListener('click', function () {
+        document.getElementById("headingId").innerHTML = "Authorised Signatory Details"
+
+        document.getElementById("newNamePassport").value = "";
+        document.getElementById("newNamePassport").readOnly = false;
+
+        document.getElementById("newNationality").value = "";
+        document.getElementById("newNationality").readOnly = false;
+
+        document.getElementById("newPassportNumber").value = "";
+        document.getElementById("newPassportNumber").readOnly = false;
+
+        document.getElementById("newPassportCountry").value = "";
+        document.getElementById("newPassportCountry").readOnly = false;
+
+        // document.getElementById("newPassportCountryFile").value = "";
+        document.getElementById("newPassportCountryFile").disabled = false;
+        document.getElementById("newEmiratesIdFile").disabled = false;
+
+        document.getElementById("newPassportExpiryDate").value = "";
+        document.getElementById("newPassportExpiryDate").readOnly = false;
+
+        document.getElementById("newEmiratesId").value = "";
+        document.getElementById("newEmiratesId").readOnly = false;
+
+
+        document.getElementById("newEmiratesIdValidity").readOnly = false;
+
+        document.getElementById("newEmailId").value = "";
+        document.getElementById("newEmailId").readOnly = false;
+
+        document.getElementById("newMobileId").value = "";
+        document.getElementById("newMobileId").readOnly = false;
+
+
+    })
+
+    function preFillDirectorData() {
+        const savedDetails = JSON.parse(localStorage.getItem('Management_Details'));
+        document.getElementById("headingId").innerHTML = "Director 1 Details"
+
+        document.getElementById("newNamePassport").value = savedDetails.DirnamePassport_1;
+        document.getElementById("newNamePassport").readOnly = true;
+
+        document.getElementById("newNationality").value = savedDetails.DirNationality_1;
+        document.getElementById("newNationality").readOnly = true;
+
+        document.getElementById("newPassportNumber").value = savedDetails.DirPassportNumber_1;
+        document.getElementById("newPassportNumber").readOnly = true;
+
+        document.getElementById("newPassportCountry").value = savedDetails.DirPassportCountry_1;
+        document.getElementById("newPassportCountry").readOnly = true;
+
+        document.getElementById("newPassportCountryFile").disabled = true;
+
+        document.getElementById("newPassportExpiryDate").value = savedDetails.DirPassportExpiryDate_1;
+        document.getElementById("newPassportExpiryDate").readOnly = true;
+
+        document.getElementById("newEmiratesId").value = savedDetails.DirEmiratesId_1;
+        document.getElementById("newEmiratesId").readOnly = true;
+
+        document.getElementById("newEmiratesIdFile").disabled = true;
+
+        document.getElementById("newEmiratesIdValidity").value = savedDetails.DirEmiratesIdValidity_1;
+        document.getElementById("newEmiratesIdValidity").readOnly = true;
+
+        document.getElementById("newEmailId").value = savedDetails.DirEmailId_1;
+        document.getElementById("newEmailId").readOnly = true;
+
+        document.getElementById("newMobileId").value = savedDetails.DirMobileId_1;
+        document.getElementById("newMobileId").readOnly = true;
+
+    }
+
+    // ________________________________________________________________
+    function readableFile() {
+        const iataAccredited = document.getElementById('iataAccredited').value;
+        const iataAccreditedFile = document.getElementById('iataAccreditedFile');
+
+        if (iataAccredited === 'Yes') {
+            iataAccreditedFile.disabled = false;
+            iataAccreditedFile.required = true;
+        } else {
+            iataAccreditedFile.disabled = true;
+            iataAccreditedFile.required = false;
+            iataAccreditedFile.value = '';
+        }
+    }
+
+    // ________________________________________________________________
+    async function allDetails() {
+        try {
+            var director_2value;
+            const staffName = document.getElementById("staffName").value
+            const staffId = document.getElementById("staffId").value
+            const newMobileId = document.getElementById("newMobileId").value
+            const newEmail = document.getElementById("newEmailId").value
+            const director_2 = document.getElementById("showDirector2").checked;
+            if (director_2 === true) {
+                director_2value = document.getElementById("showDirector2").value;
+                // console.log(director_2value);
+            } else {
+                director_2value = "false"
+            }
+            // console.log(director_2value)
+            let form = document.getElementById('multi-step-form')
+            let formData = new FormData(form)
+            formData.append("staffName", staffName)
+            formData.append("staffId", staffId)
+            // formData.append("director_2", director_2)
+            formData.append("director_2", director_2value);
+
+            if ($("#multi-step-form").valid()) {
+                if (!validateMobileNumber(newMobileId, 'newMobileError')) {
+                    return; // Stop if validation fails
+                }
+                if (!validateEmail(newEmail, 'newEmailError')) {
+                    return; // Stop if validation fails
+                }
+                document.getElementById("submitButton").disabled = true;
+                // let ip = 'http://192.168.1.20:4000'
+                // let url = ip + "/add_agents";
+                let url = "/add_agents";
+                let response = await fetch(url, {
+                    method: "POST",
+                    body: formData  // Convert to JSON string
+                });
+                let result = await response.json();
+                // console.log(result)
+                if (result.error) {
+                    Swal.fire({
+                        title: "OOPS!",
+                        text: result.message,
+                        icon: "question"
+                    });
+                    document.getElementById("submitButton").disabled = false;
+                } else {
+                    Swal.fire({
+                        title: "Success",
+                        text: result.message,
+                        icon: "success"
+                    });
+                    const data = {
+                        id: result.id,
+                    };
+                    localStorage.setItem('id and Mobile OTP', JSON.stringify(data));
+                    // console.log(data)
+                    document.getElementById("multi-step-form").reset()
+                    setTimeout("window.location.href='/verify-otp';", 3000)
+                }
+
+            }
+
+        } catch (e) {
+            Swal.fire({
+                title: "OOPS!",
+                text: e.message,
+                icon: "question"
+            });
+        }
+    }
+
+    // ________________________________________________________________
+    $("#multi-step-form").on("submit", function (event) {
+        event.preventDefault();
+        allDetails();
+    });
+
+    var currentStep = 1;
+    var updateProgressBar;
+
+    function displayStep(stepNumber) {
+        localStorage.removeItem('Establishment_Details');
+        localStorage.removeItem('Management_Details');
+
+        // Check if the form is valid
+        if ($("#multi-step-form").valid()) {
+            if (stepNumber === 1) {
+                const emirates = document.getElementById('emirates').value;
+                const natureOfBusiness = document.getElementById('natureOfBusiness').value;
+                if (emirates === "") {
+                    return $('#EmiratesError').text('Please select an emirate.')
+                        .css({
+                            'color': '#c02323',
+                            'font-family': 'Arial',
+                            'font-size': '14px'
+                        });
+                } else {
+                    $('#EmiratesError').text('');
+                }
+
+                if (natureOfBusiness === "") {
+                    return $('#natureOfBusinessError').text('Please select a Nature of Business.').css({
+                        'color': '#c02323',
+                        'font-family': 'Arial',
+                        'font-size': '14px'
+                    });
+                } else {
+                    $('#natureOfBusinessError').text('');
+                }
+
+                const email = document.getElementById('email').value;
+                const MobileNo = document.getElementById('MobileNo').value;
+
+                // Validate mobile number
+                if (!validateMobileNumber(MobileNo, 'mobileError')) {
+                    return; // Stop if validation fails
+                }
+                // Validate email
+                if (!validateEmail(email, 'emailError')) {
+                    return;
+                }
+            }
+
+            // Handling step 2
+            if (stepNumber === 2) {
+                // Passport Number
+                const passport_director_1 = document.getElementById("PassportNumber1").value;
+                const passportPattern = /^[a-zA-Z0-9]{6,9}$/;
+                if (!passportPattern.test(passport_director_1)) {
+                    return $('#PassportNumberError1').text('Please Correct Passport number.')
+                        .css({
+                            'color': '#c02323',
+                            'font-family': 'Arial',
+                            'font-size': '14px'
+                        });
+                } else {
+                    $('#PassportNumberError1').text('');
+                }
+
+                // Select Passport Country
+                const PassportCountry = document.getElementById('PassportCountry1').value;
+                if (PassportCountry === "") {
+                    return $('#PassportCountryError1').text('Please select a Passport Country.').css('color', '#c02323');
+                } else {
+                    $('#PassportCountryError1').text('');
+                }
+
+                // Mobile and Email
+                const DirMobileId_1 = document.getElementById("mobileId1").value;
+                const DirEmailId_1 = document.getElementById("emailId1").value;
+
+                if (!validateMobileNumber(DirMobileId_1, 'mobileError1')) {
+                    return;
+                }
+                if (!validateEmail(DirEmailId_1, 'emailErrorId1')) {
+                    return;
+                }
+
+                // _________________________________________________________________________
+                const director_details_2 = document.getElementById("showDirector2").checked;
+                if (director_details_2) {
+
+                    $('#PassportCountryFile2, #namePassport2,#Nationality2, #PassportNumber2, #PassportCountry2, #PassportExpiryDate2, #EmiratesId2, #EmiratesIdFile2, #EmiratesIdValidity2, #emailId2, #mobileId2').attr('required', true);
+                    const DirMobileId_2 = document.getElementById("mobileId2").value;
+                    const DirEmailId_2 = document.getElementById("emailId2").value;
+
+                    if (!validateMobileNumber(DirMobileId_2, 'mobileError2')) {
+                        return;
+                    }
+                    if (!validateEmail(DirEmailId_2, 'emailError2')) {
+                        return;
+                    }
+                    const passport_director_2 = document.getElementById("PassportNumber2").value;
+                    if (!passportPattern.test(passport_director_2)) {
+                        $('#PassportNumberError2').text('Please Correct Passport number.')
+                            .css({
+                                'color': '#c02323',
+                                'font-family': 'Arial',
+                                'font-size': '14px'
+                            });
+                        return;
+                    } else {
+                        $('#PassportNumberError2').text('');
+                    }
+
+                    const PassportCountry2 = document.getElementById('PassportCountry2').value;
+                    if (PassportCountry2 === "") {
+                        $('#PassportCountryError2').text('Please select a Passport Country.').css('color', '#c02323');
+                        return;
+                    } else {
+                        $('#PassportCountryError2').text('');
+                    }
+
+
+                } else {
+                    $('#PassportCountryFile2, #namePassport2,#Nationality2, #PassportNumber2, #PassportCountry2, #PassportExpiryDate2, #EmiratesId2, #EmiratesIdFile2, #EmiratesIdValidity2, #emailId2, #mobileId2').removeAttr('required');
+                    // Clear the fields
+                    $('#PassportCountryFile2').val('');
+                    $('#namePassport2').val('');
+                    $('#Nationality2').val('');
+                    $('#PassportNumber2').val('');
+                    $('#PassportCountry2').val('');
+                    $('#PassportExpiryDate2').val('');
+                    $('#EmiratesId2').val('');
+                    $('#EmiratesIdFile2').val('');
+                    $('#EmiratesIdValidity2').val('');
+                    $('#emailId2').val('');
+                    $('#mobileId2').val('');
+                }
+
+                const Management_Details = {
+                    DirnamePassport_1: document.getElementById("namePassport1").value,
+                    DirnamePassport_2: document.getElementById("namePassport2").value,
+                    DirNationality_1: document.getElementById("Nationality1").value,
+                    DirNationality_2: document.getElementById("Nationality2").value,
+                    DirPassportNumber_1: document.getElementById("PassportNumber1").value,
+                    DirPassportNumber_2: document.getElementById("PassportNumber2").value,
+                    DirPassportCountry_1: document.getElementById("PassportCountry1").value,
+                    DirPassportCountry_2: document.getElementById("PassportCountry2").value,
+                    DirPassportCountryFile_1: document.getElementById("PassportCountryFile1").files,
+                    DirPassportCountryFile_2: document.getElementById("PassportCountryFile2").files,
+                    DirEmiratesIdFile_1: document.getElementById("EmiratesIdFile1").files,
+                    DirEmiratesIdFile_2: document.getElementById("EmiratesIdFile2").files,
+                    DirPassportExpiryDate_1: document.getElementById("PassportExpiryDate1").value,
+                    DirPassportExpiryDate_2: document.getElementById("PassportExpiryDate2").value,
+                    DirEmiratesId_1: document.getElementById("EmiratesId1").value,
+                    DirEmiratesId_2: document.getElementById("EmiratesId2").value,
+                    DirEmiratesIdValidity_1: document.getElementById("EmiratesIdValidity1").value,
+                    DirEmiratesIdValidity_2: document.getElementById("EmiratesIdValidity2").value,
+                    DirEmailId_1: document.getElementById("emailId1").value,
+                    DirEmailId_2: document.getElementById("emailId2").value,
+                    DirMobileId_1: document.getElementById("mobileId1").value,
+                    DirMobileId_2: document.getElementById("mobileId2").value,
+                }
+                localStorage.setItem('Management_Details', JSON.stringify(Management_Details));
+                document.getElementById('new-signatory-form').style.display = 'block';
+            }
+            // ___________________________________________________________________________________________
+            goToNextStep(stepNumber);
+            preFillDirectorData();
+        } else {
+            // Custom validation for required fields
+            const form = document.getElementById("multi-step-form");
+            let isValid = true;
+            const requiredFields = form.querySelectorAll('[required]');
+
+            for (let field of requiredFields) {
+                if (!field.value.trim()) {
+                    isValid = false;
+                    field.focus();
+                    break;
+                }
+            }
+
+            if (!isValid) {
+
+                // Show an error message or handle invalid fields if needed
+                cosnole.log("Please fill out all required fields.");
+            }
+        }
+    }
+
+
+    // Function to handle step transitions
+    function goToNextStep(stepNumber) {
+        if (stepNumber >= 1 && stepNumber < 3) {
+            $(".step-" + stepNumber).show();
+            currentStep = stepNumber;
+
+            if (currentStep < 3) {
+
+                // Animate current step out
+                $(".step-" + currentStep).addClass("animate__animated animate__fadeOutLeft");
+                currentStep++;
+
+                setTimeout(function () {
+                    // Hide all steps and remove animations
+                    $(".step").removeClass("animate__animated animate__fadeOutLeft").hide();
+                    // Show the next step with animation
+                    $(".step-" + currentStep).show().addClass("animate__animated animate__fadeInRight");
+                    updateProgressBar();
+                }, 500);
+            }
+        }
+    }
+
+    // Function to add 6 months to the current date and return in YYYY-MM-DD format
+    function getMinDateSixMonthsFromToday() {
+        var today = new Date();
+        today.setMonth(today.getMonth() + 6);
+        return today.toISOString().split('T')[0];
+    }
+
+    // Get the date 6 months from today
+    const minDate = getMinDateSixMonthsFromToday();
+
+    // Set the min attribute to the date 6 months from today
+    document.getElementById('PassportExpiryDate1').setAttribute('min', minDate);
+    document.getElementById('PassportExpiryDate2').setAttribute('min', minDate);
+    document.getElementById('EmiratesIdValidity1').setAttribute('min', minDate);
+    document.getElementById('EmiratesIdValidity2').setAttribute('min', minDate);
+    document.getElementById('newPassportExpiryDate').setAttribute('min', minDate);
+    document.getElementById('newEmiratesIdValidity').setAttribute('min', minDate);
+
+
+    $(document).ready(function () {
+        $('#multi-step-form').find('.step').slice(1).hide();
+
+
+        $(".prev-step").click(function () {
+            if (currentStep > 1 && currentStep <= 3) {
+                $(".step-" + currentStep).addClass("animate__animated animate__fadeOutRight");
+                currentStep--;
+                setTimeout(function () {
+                    $(".step").removeClass("animate__animated animate__fadeOutRight").hide();
+                    $(".step-" + currentStep).show().addClass("animate__animated animate__fadeInLeft");
+                    updateProgressBar();
+                }, 500);
+            }
+        });
+
+        updateProgressBar = function () {
+            var progressPercentage = ((currentStep - 1) / 2) * 100;
+            $(".progress-bar").css("width", progressPercentage + "%");
+        }
+    });
+
+
+</script>
+
+</body>
+
+
+</body>
+</html>
+
+

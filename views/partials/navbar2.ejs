@@ -1,0 +1,188 @@
+<div class="nav-header">
+    <a href="/agent-dashboard" class="brand-logo">
+        <img src="/assets/img/TDO_logo1.png" class="logo1 ms-4 mt-3 ml-3" alt="Logo" width="150px" id="logo"
+             height="70">
+    </a>
+    <div class="nav-control">
+        <div class="hamburger mt-3" id="hamburger" style="color: black">
+            <span class="line"></span>
+            <span class="line"></span>
+            <span class="line"></span>
+        </div>
+    </div>
+</div>
+<style>
+    #logo {
+        transition: width 0.3s ease;
+        max-width: 100%; /* Ensure logo doesn't exceed container width */
+    }
+
+    .hamburger .line {
+        display: block;
+        width: 30px;
+        height: 3px;
+        background-color: black;
+        margin: 5px 0;
+        transition: background-color 0.3s ease;
+
+    }
+
+    @media (max-width: 768px) {
+        /* Adjust as needed */
+        #logo {
+            width: 110px; /* Set smaller size for smaller screens */
+        }
+    }
+</style>
+
+
+<header class="header">
+    <div class="header-content">
+        <nav class="navbar navbar-expand">
+            <div class="collapse navbar-collapse justify-content-between">
+                <div class="header-left mt-4">
+                    <h2 id="myHeading"></h2>
+                </div>
+                <ul class="navbar-nav header-right">
+                    <!-- Agent Email and Wallet-->
+
+                    <div class="header-info mt-3 dropdown">
+                        <div class="text-end" style="cursor: pointer;" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-solid fa-wallet me-1" style="width: 10px; color: #c02323;"></i>
+                            <span style="color: black;" id="wal_a_m" class="fs-16">0</span>
+                        </div>
+                        <span class="fs-16 font-w600" style="color: black;"><%= agentEmail %></span>
+
+                        <ul class="dropdown-menu dropdown-menu-end mt-3">
+                            <li>
+                                <a class="dropdown-item d-flex justify-content-between align-items-center" href="#">
+                                    <span>
+                                        <i class="fa-solid fa-money-check me-1" style="color: #c02323;"></i>Credited Amount:
+                                    </span>
+                                    <span id="walletCreditBalance" class="me-1">0</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item d-flex justify-content-between align-items-center" href="#">
+                                    <span>
+                                        <i class="fa-solid fa-money-check me-1" style="color: #c02323;"></i>Debited Amount:
+                                    </span>
+                                    <span id="walletDebitBalance" class="me-1">0</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item d-flex justify-content-between align-items-center" href="#">
+                                    <span>
+                                        <i class="fa-solid fa-money-check me-1" style="color: #c02323;"></i>Current Balance:
+                                    </span>
+                                    <span id="walletBalance" class="me-1">0</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!--  Logo and navbar-->
+                    <div class="header-info dropdown">
+                        <a class="nav-link" href="javascript:void(0);" role="button" data-bs-toggle="dropdown">
+                            <img src="" width="100" alt="" height="50" class="mt-2" id="demo_avatar">
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end mt-3">
+                            <li>
+
+                                <h5 class="ms-2 me-2" style="color: black;font-size: 15px;text-align: center"><i
+                                            class="fa-solid fa-circle-user me-2"
+                                            style="width: 10px; color: #c02323"></i><%= userType %></h5>
+                                <!--                                <h5 class="ms-2 me-2" style="color: black;font-size: 15px;text-align: right">Jasmanpreet Kaur</h5>-->
+                                <hr>
+                            </li>
+                            <% if (userType === "Co-Admin" || userType === "Travel agent" || userType === "Sub Admin" || userType === "Limited User") { %>
+                                <li>
+                                    <a href="/agent-profile" class="dropdown-item ai-icon">
+                                        <svg id="icon-user1" xmlns="http://www.w3.org/2000/svg" class="text-primary"
+                                             width="18"
+                                             height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                             stroke-width="2"
+                                             stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                            <circle cx="12" cy="7" r="4"></circle>
+                                        </svg>
+                                        <span class="ms-2">View Profile </span>
+                                    </a>
+                                </li>
+                            <% } %>
+
+                            <% if (userType === "Co-Admin" || userType === "Travel agent" || userType === "Sub Admin" || userType === "Limited User") { %>
+                                <li>
+                                    <a href="/changePassword" class="dropdown-item ai-icon">
+                                        <i class="fa-solid fa-lock" style="width: 10px; color: #c02323"></i>
+                                        <span class="ms-3">Change Password</span>
+                                    </a>
+                                </li>
+                            <% } %>
+
+                            <% if (userType === "Co-Admin" || userType === "Travel agent") { %>
+                                <li>
+                                    <a href="/manage-subUser" class="dropdown-item ai-icon">
+                                        <i class="fa-solid fa-user" style="width: 10px; color: #c02323"></i>
+                                        <span class="ms-3">Manage Sub-User</span>
+                                    </a>
+                                </li>
+                            <% } %>
+
+                            <li>
+                                <a href="#" onclick="logout()" class="dropdown-item ai-icon">
+                                    <svg id="icon-logout" xmlns="http://www.w3.org/2000/svg" style="color: #c02323"
+                                         width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                         stroke="currentColor"
+                                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                        <polyline points="16 17 21 12 16 7"></polyline>
+                                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                                    </svg>
+                                    <span class="ms-2">Logout </span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </div>
+
+                </ul>
+            </div>
+        </nav>
+    </div>
+</header>
+
+
+<script>
+
+    function logout() {
+        Swal.fire({
+            title: "Are you sure?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Logout"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "/logout"
+            }
+        });
+    }
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const hamburger = document.getElementById('hamburger');
+        const logo = document.getElementById('logo');
+
+        hamburger.addEventListener('click', function () {
+            if (logo.style.width === '110px') {
+                logo.style.width = '200px';
+            } else {
+                logo.style.width = '110px';
+            }
+        });
+    });
+
+
+</script>

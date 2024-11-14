@@ -1,0 +1,675 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>TDO DXB | Welcome to Agent Dashboard</title>
+    <%- include('../partials/header2') %>
+</head>
+<body>
+<!--Preloader-->
+<div id="preloader">
+    <div class="loader">
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--text"></div>
+    </div>
+</div>
+<div id="main-wrapper">
+    <!--    Navbar-->
+    <%- include('../partials/navbar2') %>
+    <!--    Sidebar-->
+    <%- include('../partials/sidebar2') %>
+    <!--Form-->
+    <div class="content-body default-height">
+        <div class="container-fluid">
+            <div class="row page-titles">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item active"><a href="javascript:void(0)">Agent Profile</a></li>
+                </ol>
+            </div>
+            <!-- row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="profile card card-body px-3 pt-3 pb-0">
+                        <div class="profile-head">
+                            <div class="photo-content">
+                                <div class="cover-photo">
+                                    <img src="/assets2/images/profile/profile_dubai.png" class="w-100"
+                                         style="height: 300px" alt="">
+                                </div>
+                            </div>
+                            <div class="profile-info">
+                                <div class="profile-name px-3 pt-1">
+                                    <!--                                    <div class="profile-photo" style="background-color: red">-->
+                                    <img id="profile-logo" src="/assets2/images/demo_avatar.png"
+                                         class="img-fluid" style="width: 170px;height: 50px;"
+                                         alt="Profile Logo">
+                                    <!--                                    </div>-->
+                                </div>
+
+                                <div class="profile-details">
+                                    <div class="profile-name px-3 pt-2 col-md-4 col-sm-6 col-12">
+                                        <h4 class="text-primary mb-0" id="name"></h4>
+                                        <p>Agent</p>
+                                    </div>
+                                    <div class="profile-email px-2 pt-2 col-md-5 col-sm-6 col-12">
+                                        <h4 class="text-primary text-muted mb-0" id="email"></h4>
+                                        <p>Email</p>
+                                    </div>
+                                    <div class="dropdown ms-auto">
+                                        <a href="#" class="btn btn-primary dark sharp" data-bs-toggle="dropdown"
+                                           aria-expanded="true">
+                                            <!--                                            <svg xmlns="http://www.w3.org/2000/svg"-->
+                                            <!--                                                 xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="18px"-->
+                                            <!--                                                 viewBox="0 0 24 24" version="1.1">-->
+                                            <!--                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">-->
+                                            <!--                                                    <rect x="0" y="0" width="24" height="24"></rect>-->
+                                            <!--                                                    <circle fill="#ffffff" cx="5" cy="12" r="2"></circle>-->
+                                            <!--                                                    <circle fill="#ffffff" cx="12" cy="12" r="2"></circle>-->
+                                            <!--                                                    <circle fill="#ffffff" cx="19" cy="12" r="2"></circle>-->
+                                            <!--                                                </g>-->
+                                            <!--                                            </svg>-->
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                 stroke-linecap="round" stroke-linejoin="round"
+                                                 class="feather feather-camera">
+                                                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                                                <circle cx="12" cy="13" r="4"></circle>
+                                            </svg>
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li class="dropdown-item">
+                                                <a href="javascript:void(0);" data-bs-toggle="modal"
+                                                   data-bs-target="#basicModal">
+                                                    <i class="fa fa-user-circle text-primary me-2"></i> Upload Profile
+                                                    Logo
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="profile-statistics mb-5">
+                                        <h3 class="text-primary">Establishment Details</h3>
+                                    </div>
+                                    <hr>
+                                    <div class="profile-details mt-4">
+                                        <div class="row mb-2">
+                                            <div class="col-sm-4 col-12">
+                                                <p class="text-muted mb-0 fs-12">Name of Establishment</p>
+                                                <h4 class="mt-0" id="name_establishment">Name of Establishment</h4>
+                                            </div>
+
+                                            <div class="col-sm-4 col-12">
+                                                <p class="text-muted mb-0 fs-12">Trade License</p>
+                                                <h4 class="mt-0" id="trade_license">Trade License</h4>
+                                            </div>
+                                            <div class="col-sm-4 col-12">
+                                                <p class="text-muted mb-0 fs-12">Address</p>
+                                                <h4 class="mt-0" id="address">Address</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="profile-details mt-4">
+                                        <div class="row mb-2">
+                                            <div class="col-sm-4 col-12">
+                                                <p class="text-muted mb-0 fs-12">Area</p>
+                                                <h4 class="mt-0" id="area">Area</h4>
+                                            </div>
+                                            <div class="col-sm-4 col-12">
+                                                <p class="text-muted mb-0 fs-12">Nature of Business</p>
+                                                <h4 class="mt-0" id="nature_business">Nature of Business</h4>
+                                            </div>
+                                            <div class="col-sm-4 col-12">
+                                                <p class="text-muted mb-0 fs-12">Emirates</p>
+                                                <h4 class="mt-0" id="Emirates">Emirates</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="profile-details mt-4">
+                                        <div class="row mb-2">
+                                            <div class="col-sm-4 col-12">
+                                                <p class="text-muted mb-0 fs-12">Email</p>
+                                                <h4 class="mt-0" id="agent_email">Email</h4>
+                                            </div>
+                                            <div class="col-sm-4 col-12">
+                                                <p class="text-muted mb-0 fs-12">Mobile No</p>
+                                                <h4 class="mt-0" id="agent_mobile">Mobile No</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-12">
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="profile-statistics mb-5">
+                                        <h3 class="text-primary">Director 1 Details</h3>
+                                    </div>
+                                    <hr>
+                                    <div class="profile-details mt-4">
+                                        <div class="row mb-2">
+                                            <div class="col-sm-4 col-5">
+                                                <p class="text-muted mb-0 fs-12">Name as per Passport</p>
+                                                <h4 class="mt-0" id="name_passport_director_1"></h4>
+                                            </div>
+
+                                            <div class="col-sm-4 col-5">
+                                                <p class="text-muted mb-0 fs-12">Nationality</p>
+                                                <h4 class="mt-0" id="nationality_director_1"></h4>
+                                            </div>
+                                            <div class="col-sm-4 col-5">
+                                                <p class="text-muted mb-0 fs-12">Passport Number</p>
+                                                <h4 class="mt-0" id="passport_number_director_1"></h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="profile-details mt-4">
+                                        <div class="row mb-2">
+                                            <div class="col-sm-4 col-5">
+                                                <p class="text-muted mb-0 fs-12">Passport Issuing Country</p>
+                                                <h4 class="mt-0" id="passport_issue_country_director_1"></h4>
+                                            </div>
+                                            <div class="col-sm-4 col-5">
+                                                <p class="text-muted mb-0 fs-12">Passport Expiry Date</p>
+                                                <h4 class="mt-0" id="passport_expiry_date_director_1"></h4>
+                                            </div>
+                                            <div class="col-sm-4 col-5">
+                                                <p class="text-muted mb-0 fs-12">Emirates ID</p>
+                                                <h4 class="mt-0" id="Emirates_id_director_1"></h4>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="profile-details mt-4">
+                                        <div class="row mb-2">
+
+                                            <div class="col-sm-4 col-5">
+                                                <p class="text-muted mb-0 fs-12">Emirates Id Validity</p>
+                                                <h4 class="mt-0" id="emirates_id_validity_director_1"></h4>
+                                            </div>
+
+                                            <div class="col-sm-4 col-5">
+                                                <p class="text-muted mb-0 fs-12">Email</p>
+                                                <h4 class="mt-0" id="email_director_1"></h4>
+                                            </div>
+                                            <div class="col-sm-4 col-5">
+                                                <p class="text-muted mb-0 fs-12">Mobile No</p>
+                                                <h4 class="mt-0" id="mobile_director_1"></h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-12" style="display: none" id="director_2">
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="profile-statistics mb-5">
+                                            <h3 class="text-primary">Director 2 Details</h3>
+                                        </div>
+                                        <hr>
+                                        <div class="profile-details mt-4">
+                                            <div class="row mb-2">
+                                                <div class="col-sm-4 col-5">
+                                                    <p class="text-muted mb-0 fs-12">Name as per Passport</p>
+                                                    <h4 class="mt-0" id="name_passport_director_2"></h4>
+                                                </div>
+
+                                                <div class="col-sm-4 col-5">
+                                                    <p class="text-muted mb-0 fs-12">Nationality</p>
+                                                    <h4 class="mt-0" id="nationality_director_2"></h4>
+                                                </div>
+                                                <div class="col-sm-4 col-5">
+                                                    <p class="text-muted mb-0 fs-12">Passport Number</p>
+                                                    <h4 class="mt-0" id="passport_number_director_2"></h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="profile-details mt-4">
+                                            <div class="row mb-2">
+                                                <div class="col-sm-4 col-5">
+                                                    <p class="text-muted mb-0 fs-12">Passport Issuing Country</p>
+                                                    <h4 class="mt-0" id="passport_issue_country_director_2"></h4>
+                                                </div>
+                                                <div class="col-sm-4 col-5">
+                                                    <p class="text-muted mb-0 fs-12">Passport Expiry Date</p>
+                                                    <h4 class="mt-0" id="passport_expiry_date_director_2"></h4>
+                                                </div>
+                                                <div class="col-sm-4 col-5">
+                                                    <p class="text-muted mb-0 fs-12">Emirates ID</p>
+                                                    <h4 class="mt-0" id="Emirates_id_director_2"></h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="profile-details mt-4">
+                                            <div class="row mb-2">
+                                                <div class="col-sm-4 col-5">
+                                                    <p class="text-muted mb-0 fs-12">Emirates Id Validity</p>
+                                                    <h4 class="mt-0" id="emirates_id_validity_director_2"></h4>
+                                                </div>
+                                                <div class="col-sm-4 col-5">
+                                                    <p class="text-muted mb-0 fs-12">Email</p>
+                                                    <h4 class="mt-0" id="email_director_2"></h4>
+                                                </div>
+                                                <div class="col-sm-4 col-5">
+                                                    <p class="text-muted mb-0 fs-12">Mobile No</p>
+                                                    <h4 class="mt-0" id="mobile_director_2"></h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-12">
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="profile-statistics mb-5">
+                                            <h3 class="text-primary">Signatory Details</h3>
+                                        </div>
+                                        <hr>
+                                        <div class="profile-details mt-4">
+                                            <div class="row mb-2">
+                                                <div class="col-sm-4 col-5">
+                                                    <p class="text-muted mb-0 fs-12">Name as per Passport</p>
+                                                    <h4 class="mt-0" id="name_passport_new_signatory"></h4>
+                                                </div>
+
+                                                <div class="col-sm-4 col-5">
+                                                    <p class="text-muted mb-0 fs-12">Nationality</p>
+                                                    <h4 class="mt-0" id="nationality_new_signatory"></h4>
+                                                </div>
+                                                <div class="col-sm-4 col-5">
+                                                    <p class="text-muted mb-0 fs-12">Passport Number</p>
+                                                    <h4 class="mt-0" id="passport_number_new_signatory"></h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="profile-details mt-4">
+                                            <div class="row mb-2">
+                                                <div class="col-sm-4 col-5">
+                                                    <p class="text-muted mb-0 fs-12">Passport Issuing Country</p>
+                                                    <h4 class="mt-0" id="passport_issue_country_new_signatory"></h4>
+                                                </div>
+
+                                                <div class="col-sm-4 col-5">
+                                                    <p class="text-muted mb-0 fs-12">Passport Expiry Date</p>
+                                                    <h4 class="mt-0" id="passport_expiry_date_new_signatory"></h4>
+                                                </div>
+                                                <div class="col-sm-4 col-5">
+                                                    <p class="text-muted mb-0 fs-12">Emirates ID</p>
+                                                    <h4 class="mt-0" id="Emirates_id_new_signatory"></h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="profile-details mt-4">
+                                            <div class="row mb-2">
+                                                <div class="col-sm-4 col-5">
+                                                    <p class="text-muted mb-0 fs-12">Emirates Id Validity</p>
+                                                    <h4 class="mt-0" id="emirates_id_validity_new_signatory"></h4>
+                                                </div>
+                                                <div class="col-sm-4 col-5">
+                                                    <p class="text-muted mb-0 fs-12">Email</p>
+                                                    <h4 class="mt-0" id="email_new_signatory"></h4>
+                                                </div>
+                                                <div class="col-sm-4 col-5">
+                                                    <p class="text-muted mb-0 fs-12">Mobile No</p>
+                                                    <h4 class="mt-0" id="mobile_new_signatory"></h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-12">
+                            <div class="row">
+                                <div class="col-xl-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="profile-statistics mb-5">
+                                                <h3 class="text-primary">Bank Details</h3>
+                                            </div>
+                                            <hr>
+                                            <div class="profile-details mt-4">
+                                                <div class="row mb-2">
+                                                    <div class="col-sm-6 col-5">
+                                                        <p class="text-muted mb-0 fs-12">Banker Name</p>
+                                                        <h4 class="mt-0" id="bank_name"></h4>
+                                                    </div>
+
+                                                    <div class="col-sm-6 col-5">
+                                                        <p class="text-muted mb-0 fs-12">Branch Location</p>
+                                                        <h4 class="mt-0" id="branch_location"></h4>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="profile-details mt-4">
+                                                <div class="row mb-2">
+                                                    <div class="col-sm-6 col-5">
+                                                        <p class="text-muted mb-0 fs-12">Account Number</p>
+                                                        <h4 class="mt-0" id="account_number"></h4>
+                                                    </div>
+                                                    <div class="col-sm-6 col-5">
+                                                        <p class="text-muted mb-0 fs-12">Current Business Volume(AED (In
+                                                            Million Format))</p>
+                                                        <h4 class="mt-0" id="businessVolume"></h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-12">
+                            <div class="row">
+                                <div class="col-xl-12">
+                                    <div class="card">
+                                        <div class="card-body" id="otherDetail" style="display: none">
+                                            <div class="profile-statistics mb-5">
+                                                <h3 class="text-primary">Other Details</h3>
+                                            </div>
+                                            <hr>
+                                            <div class="profile-details mt-4">
+                                                <div class="row mb-2">
+                                                    <div class="col-sm-4 col-5">
+                                                        <p class="text-muted mb-0 fs-12">Agency IATA Accredited</p>
+                                                        <h4 class="mt-0" id="agency_iata"></h4>
+                                                    </div>
+                                                    <div class="col-sm-4 col-5">
+                                                        <p class="text-muted mb-0 fs-12">Staff Name</p>
+                                                        <h4 class="mt-0" id="staff_name"></h4>
+                                                    </div>
+                                                    <div class="col-sm-4 col-5">
+                                                        <p class="text-muted mb-0 fs-12">Staff Id</p>
+                                                        <h4 class="mt-0" id="staff_id"></h4>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="basicModal">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Select Agent Profile Logo</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Form for file upload -->
+                        <form id="uploadForm" enctype="multipart/form-data">
+                            <div class="mb-3">
+                                <label for="profileLogo" class="form-label">Profile Logo(File size must be less
+                                    than 2MB)</label>
+                                <input type="file" class="form-control" accept=".png, .jpg, .jpeg" id="profileLogo"
+                                       name="profileLogo" required>
+                                <div id="fileSizeError" style="color: #c02323; display: none;">File size must be less
+                                    than 2MB.
+                                </div>
+                            </div>
+                            <!-- Additional fields can be added here if needed -->
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-primary dark" data-bs-dismiss="modal">Close
+                        </button>
+                        <button type="button" class="btn btn-primary" id="submitUpload">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--    Footer-->
+
+    </div>
+    <%- include('../partials/footer2') %>
+</div>
+</body>
+<script>
+    // document.getElementById('profileLogo').addEventListener('change', function () {
+    //     var file = this.files[0];
+    //     if (file) {
+    //         var maxSize = 2 * 1024 * 1024; // 2MB in bytes
+    //         if (file.size > maxSize) {
+    //             document.getElementById('fileSizeError').style.display = 'block';
+    //             this.value = '';
+    //         } else {
+    //             document.getElementById('fileSizeError').style.display = 'none';
+    //         }
+    //     }
+    // });
+
+    document.getElementById('profileLogo').addEventListener('change', function () {
+        var file = this.files[0];
+        var maxSize = 2 * 1024 * 1024; // 2MB in bytes
+        var maxWidth = 271;
+        var maxHeight = 72;
+        // var minWidth = 1600;
+        // var minHeight = 500;
+
+        if (file) {
+            // Check the file size first
+            if (file.size > maxSize) {
+                document.getElementById('fileSizeError').textContent = 'File size must be less than 2MB.';
+                document.getElementById('fileSizeError').style.display = 'block';
+                this.value = ''; // Clear the input if the file is too large
+                return;
+            } else {
+                document.getElementById('fileSizeError').style.display = 'none';
+            }
+
+            // Check the file dimensions
+            var img = new Image();
+            img.onload = function () {
+                // if (img.width > maxWidth || img.height > maxHeight || img.width < minWidth || img.height < minHeight) {
+                if (img.width > maxWidth || img.height > maxHeight) {
+
+                    // document.getElementById('fileSizeError').textContent = `Image dimensions must be between ${minWidth}x${minHeight}px and ${maxWidth}x${maxHeight}px.`;
+                    document.getElementById('fileSizeError').textContent = `Image dimensions must be ${maxWidth}x${maxHeight}px.`;
+                    document.getElementById('fileSizeError').style.display = 'block';
+                    document.getElementById('profileLogo').value = ''; // Clear the input if dimensions don't match
+                } else {
+
+                    document.getElementById('fileSizeError').style.display = 'none';
+                }
+            };
+            img.src = URL.createObjectURL(file); // Create a temporary URL for the image
+        }
+    });
+
+    document.getElementById('submitUpload').addEventListener('click', async function () {
+        try {
+            if ($("#uploadForm").valid()) {
+                var form = document.getElementById('uploadForm');
+                var formData = new FormData(form);
+                let url = "/upload-profile-logo";
+                let response = await fetch(url, {
+                    method: "POST",
+                    body: formData
+                });
+                let result = await response.json();
+                // console.log(result);
+                if (result.error) {
+                    Swal.fire({
+                        title: "OOPS!",
+                        text: result.message,
+                        icon: "question"
+                    });
+                } else {
+                    view_agent_profile()
+                    logo()
+                    Swal.fire({
+                        title: "Success",
+                        text: result.message,
+                        icon: "success"
+                    });
+                    document.getElementById("uploadForm").reset()
+                    // Optionally, close the modal after successful upload
+                    var modalElement = document.getElementById('basicModal');
+                    var modal = bootstrap.Modal.getInstance(modalElement);
+                    modal.hide();
+                    // window.location.reload()
+                }
+            }
+        } catch (e) {
+            Swal.fire({
+                title: "OOPS!",
+                text: e.message,
+                icon: "question"
+            });
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', (event) => {
+        view_agent_profile();
+    });
+
+    async function view_agent_profile() {
+        try {
+            // let ip = 'http://192.168.29.210:4000';
+            // let url = ip + "/getAgentData";
+            let url = "/getAgentData";
+            let response = await fetch(url);
+            response = await response.json();
+            const agent_data = response.data[0]
+            document.getElementById("name").textContent = agent_data.establishment_name
+            document.getElementById("email").textContent = agent_data.email
+            // Assuming agent_data is already defined and contains the necessary information
+            if (agent_data.logo && agent_data.logo !== "") {
+                document.getElementById('profile-logo').src = agent_data.logo;
+            } else {
+                document.getElementById('profile-logo').src = "/assets2/images/demo_avatar.png"; // Fallback to static image
+            }
+
+            set_data(agent_data)
+        } catch (e) {
+            Swal.fire({
+                title: "OOPS!",
+                text: e.message,
+                icon: "question"
+            });
+        }
+    }
+
+    async function set_data(agent_data) {
+        // Establishment Details
+        document.getElementById("name_establishment").textContent = agent_data.establishment_name
+        document.getElementById("trade_license").textContent = agent_data.company_trade_license
+        document.getElementById("address").textContent = agent_data.address
+        document.getElementById("area").textContent = agent_data.area
+        document.getElementById("nature_business").textContent = agent_data.nature_of_business
+        document.getElementById("Emirates").textContent = agent_data.emirates
+        document.getElementById("agent_email").textContent = agent_data.email
+        document.getElementById("agent_mobile").textContent = agent_data.mobile
+
+        //     Director 1 Details
+        document.getElementById("name_passport_director_1").textContent = agent_data.director1_name
+        document.getElementById("nationality_director_1").textContent = agent_data.director1_nationality
+        document.getElementById("passport_number_director_1").textContent = agent_data.director1_passport_number
+        document.getElementById("passport_issue_country_director_1").textContent = agent_data.director1_passport_issuing_country
+        document.getElementById("passport_expiry_date_director_1").textContent = agent_data.director1_passport_expiry
+        document.getElementById("Emirates_id_director_1").textContent = agent_data.director1_emirates_id
+        document.getElementById("emirates_id_validity_director_1").textContent = agent_data.director1_emirates_id_expiry
+        document.getElementById("email_director_1").textContent = agent_data.director1_email
+        document.getElementById("mobile_director_1").textContent = agent_data.director1_mobile
+
+        //     Director 2 Details
+        const allFieldsPresent = agent_data.director2_name && agent_data.director2_nationality &&
+            agent_data.director2_passport_number && agent_data.director2_passport_issuing_country &&
+            agent_data.director2_passport_expiry && agent_data.director2_emirates_id &&
+            agent_data.director2_emirates_id_expiry && agent_data.director2_email &&
+            agent_data.director2_mobile;
+        if (allFieldsPresent) {
+            document.getElementById("director_2").style.display = 'block'
+            document.getElementById("name_passport_director_2").textContent = agent_data.director2_name
+            document.getElementById("nationality_director_2").textContent = agent_data.director2_nationality
+            document.getElementById("passport_number_director_2").textContent = agent_data.director2_passport_number
+            document.getElementById("passport_issue_country_director_2").textContent = agent_data.director2_passport_issuing_country
+            document.getElementById("passport_expiry_date_director_2").textContent = agent_data.director2_passport_expiry
+            document.getElementById("Emirates_id_director_2").textContent = agent_data.director2_emirates_id
+            document.getElementById("emirates_id_validity_director_2").textContent = agent_data.director2_emirates_id_expiry
+            document.getElementById("email_director_2").textContent = agent_data.director2_email
+            if (agent_data.director2_mobile === '971') {
+                document.getElementById("mobile_director_2").textContent = ''
+            } else {
+                document.getElementById("mobile_director_2").textContent = agent_data.director2_mobile
+            }
+        }
+
+
+        //     New Signatory Details
+        document.getElementById("name_passport_new_signatory").textContent = agent_data.authorized_person_name
+        document.getElementById("nationality_new_signatory").textContent = agent_data.authorized_person_nationality
+        document.getElementById("passport_number_new_signatory").textContent = agent_data.authorized_person_passport_number
+        document.getElementById("passport_issue_country_new_signatory").textContent = agent_data.authorized_person_passport_issuing_country
+        document.getElementById("passport_expiry_date_new_signatory").textContent = agent_data.authorized_person_passport_expiry
+        document.getElementById("Emirates_id_new_signatory").textContent = agent_data.authorized_person_emirates_id
+        document.getElementById("emirates_id_validity_new_signatory").textContent = agent_data.authorized_person_emirates_id_expiry
+        document.getElementById("email_new_signatory").textContent = agent_data.authorized_person_email
+        document.getElementById("mobile_new_signatory").textContent = agent_data.authorized_person_mobile
+
+        //     Bank Details
+        document.getElementById("bank_name").textContent = agent_data.banker_name
+        document.getElementById("branch_location").textContent = agent_data.branch_location
+        document.getElementById("account_number").textContent = agent_data.account_number
+        document.getElementById("businessVolume").textContent = agent_data.current_business_volume
+
+        //  Bank Details
+        const otherDetail = agent_data.iata_accredited && agent_data.assisted_by &&
+            agent_data.assisted_by_details;
+        if (otherDetail) {
+            document.getElementById("otherDetail").style.display = 'block'
+            document.getElementById("agency_iata").textContent = agent_data.iata_accredited
+
+            document.getElementById("staff_name").textContent = agent_data.assisted_by
+            document.getElementById("staff_id").textContent = agent_data.assisted_by_details
+        }
+    }
+
+</script>
+</html>

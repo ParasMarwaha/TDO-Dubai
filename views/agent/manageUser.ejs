@@ -1,0 +1,463 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>TDO DXB :: Manage Users</title>
+    <%- include('../partials/header2') %>
+    <style>
+        .paginate_button.previous  {
+            /*font-size: 12px !important;*/
+            width: 85px !important;
+        }
+    </style>
+</head>
+<body onload="readUsers()">
+<div id="preloader">
+    <div class="loader">
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--text"></div>
+    </div>
+</div>
+<div id="main-wrapper">
+    <%- include('../partials/navbar2') %>
+    <%- include('../partials/sidebar2') %>
+    <div class=" content-body default-height">
+        <div class="container-fluid">
+            <div class="row page-titles">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item active me-2"><a href="javascript:void(0)">Manage Users</a></li>
+                </ol>
+            </div>
+            <!-- row -->
+            <div class="row">
+                <div class="col-12 d-flex justify-content-end">
+
+                    <button type="button" class="btn btn-outline-primary w-10 mb-2" data-bs-toggle="modal"
+                            data-bs-target=".bd-example-modal-lg"><i class="fa-solid fa-plus me-2"></i>Manage Users
+                    </button>
+
+                </div>
+                <div class="col-12 col-lg-12 mt-5">
+                    <div class="card">
+                        <div class="card-body">
+                            <!--                            <h3 class="mb-4 mt-5">View Wallet Requests</h3>-->
+                            <div class="table-responsive">
+                                <table id="user" class="display table-light" style="min-width: 845px">
+                                    <thead class="text-bg-primary">
+                                    <tr>
+<!--                                        <th style="color:#fff;">#</th>-->
+                                        <th style="color:#fff;">Name</th>
+                                        <th style="color:#fff;">Mobile No.</th>
+                                        <th style="color:#fff;">Email Id</th>
+                                        <th style="color:#fff;">User Type</th>
+                                        <th style="color:#fff;">Location</th>
+                                        <th style="color:#fff;">Status</th>
+<!--                                        <th style="color:#fff;">Last Login</th>-->
+                                        <th style="color:#fff;">Active/In-Active </th>
+                                        <th style="color:#fff;">Reset Password</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="userData"></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="basicModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add new User</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form class="form-valide-with-icon needs-validation mt-4" novalidate id="addUserForm">
+                        <div class="row">
+                            <div class="mb-3 col-md-6 col-12">
+                                <label for="firstName" class="fs-7" style="color:#c02323;">First Name <span style="color:#c02323;">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fa-solid fa-file-signature"></i></span>
+                                    <input type="text" id="firstName" name="firstName" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="mb-3 col-md-6 col-12">
+                                <label for="lastName" class="fs-7" style="color:#c02323;"> Last Name <span style="color:#c02323;">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fa-solid fa-file-signature"></i></span>
+                                    <input type="text" id="lastName" name="lastName" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="mb-3 col-md-6 col-12">
+                                <label for="mobile" class="fs-7" style="color:#c02323;">Mobile No.</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                    <i class="fa-solid fa-mobile"></i></span>
+                                    <input type="text" id="mobile" name="mobile" class="form-control"
+                                           required data-rule-number="true" maxlength="9" minlength="9"
+                                           oninput="validateMobileNumber(this.value, 'mobileError')">
+                                </div>
+                                <div id="mobileError" class="invalid-feedback" style="display: none; color: red;">
+                                    Please enter a valid Dubai mobile number.
+                                </div>
+                            </div>
+
+                            <div class="mb-3 col-md-6 col-12">
+                                <label for="email" class="fs-7" style="color:#c02323;">Email Id</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                    <i class="fa-solid fa-envelope"></i></span>
+                                    <input type="text" id="email" name="email" class="form-control" required
+                                           oninput="validateEmail(this.value, 'emailError')">
+                                </div>
+                                <div id="emailError" class="invalid-feedback" style="display: none; color: red;">
+                                    Please enter a valid email address.
+                                </div>
+                            </div>
+
+                            <div class="mb-3 col-md-12 col-12">
+                                <label for="userType" class="fs-7" style="color:#c02323;">User Type</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fa-solid fa-house"></i>
+                                    </span>
+                                    <select name="userType" id="userType" class="form-control" required>
+                                        <option value="">Select Option</option>
+                                        <option value="Co-Admin">Co-Admin</option>
+                                        <option value="Sub Admin">Sub Admin</option>
+                                        <option value="Limited User">Limited User</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 col-md-12 col-12">
+                                <label for="location" class="fs-7" style="color:#c02323;">Location</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fa-solid fa-address-book"></i></span>
+                                    <input type="text" id="location" name="location" class="form-control"
+                                           required>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-primary light" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="addUser()">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <%- include('../partials/footer2') %>
+</div>
+
+<script>
+    function validateEmail(emailInput, errorId) {
+        const emailError = document.getElementById(errorId);
+
+        // Regular expression for validating email
+        const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+        // Test the input value against the regular expression
+        if (emailPattern.test(emailInput)) {
+            emailError.style.display = 'none';
+            emailError.classList.remove('is-invalid');
+            emailError.classList.add('is-valid');
+            return true;
+        } else {
+            emailError.style.display = 'block';
+            emailError.classList.remove('is-valid');
+            emailError.classList.add('is-invalid');
+            return false;
+        }
+    }
+
+    function validateMobileNumber(mobileInput, errorId) {
+        const mobileError = document.getElementById(errorId);
+
+        // Regular expression for Dubai (UAE) mobile numbers
+        const regex = /^(50|52|54|55|56|58)[0-9]{7}$/;
+
+        // Test the input value against the regular expression
+        if (regex.test(mobileInput)) {
+            mobileError.style.display = 'none';
+            mobileError.classList.remove('is-invalid');
+            mobileError.classList.add('is-valid');
+            return true;
+        } else {
+            mobileError.style.display = 'block';
+            mobileError.classList.remove('is-valid');
+            mobileError.classList.add('is-invalid');
+            return false;
+        }
+    }
+
+    async function addUser() {
+        try {
+            let form = document.getElementById('addUserForm');
+            if ($("#addUserForm").valid()) {
+                let formData = new FormData(form);
+
+                // Submit the form via Fetch API
+                let url = "/user-action";
+                let response = await fetch(url, {
+                    method: "POST",
+                    body: formData
+                });
+
+                let result = await response.json();
+                console.log(result);
+
+                // Handle server response
+                if (result.error) {
+                    Swal.fire({
+                        title: "OOPS!",
+                        text: result.message,
+                        icon: "error"
+                    });
+                } else if (result.warning) {
+                    Swal.fire({
+                        title: "OOPS!",
+                        text: result.message,
+                        icon: "warning"
+                    });
+                } else {
+                    // Success case
+                    Swal.fire({
+                        title: "Success",
+                        text: result.message,
+                        icon: "success"
+                    }).then(() => {
+                        // Reset the form
+                        readUsers()
+                        document.getElementById("addUserForm").reset();
+
+                        // Close the modal
+                        var modalElement = document.getElementById('basicModal');
+                        var modal = bootstrap.Modal.getInstance(modalElement);
+                        modal.hide();
+
+                    });
+                }
+            }
+        } catch (e) {
+            Swal.fire({
+                title: "OOPS!",
+                text: e.message,
+                icon: "question"
+            });
+        }
+    }
+
+    async function readUsers() {
+        try {
+            const url = "/read-users";
+            const response = await fetch(url);
+            const result = await response.json();
+
+            // Check for errors or warnings
+            if (result.error || result.warning) {
+                const icon = result.error ? 'error' : 'warning';
+                Swal.fire({
+                    title: "OOPS!",
+                    text: result.message,
+                    icon: icon
+                });
+            } else {
+                const data = result.data;
+
+                // Destroy the existing DataTable instance if it exists
+                if ($.fn.DataTable.isDataTable('#user')) {
+                    $('#user').DataTable().destroy();
+                }
+
+                let html = '';
+
+                data.forEach((user, index) => {
+                    // Determine action button color, text, and icon based on status
+                    const actionColor = user.status === 'active' ? "#e75252" : "rgba(12,157,19,0.87)";
+                    const actionText = user.status === 'active' ? 'In-Active' : 'Active';
+                    const actionIcon = user.status === 'active'
+                        ? '<i class="fa-solid fa-trash"></i>'
+                        : '<i class="fa-solid fa-check"></i>';
+
+                    html += `
+                    <tr>
+                        <td style="color: black">${user.firstName} ${user.lastName}</td>
+                        <td style="color: black">${user.mobileNo}</td>
+                        <td style="color: black">${user.email}</td>
+                        <td style="color: black">${user.type}</td>
+                        <td style="color: black">${user.location}</td>
+                        <td style="color: black">${user.status || ''}</td>
+
+                        <td style="text-align: center">
+                            <button class="btn btn-sm" style="background-color: ${actionColor}; color: white;" onclick="actionUser(${user.id}, '${user.status}')">
+                                ${actionIcon}
+                            </button>
+                        </td>
+<td style="text-align: center">
+                            <button class="btn btn-sm" style="background-color: orange; color: white;" onclick="resetPassword(${user.id})">
+    <i class="fa-solid fa-key"></i>
+</button>
+
+                        </td>
+                    </tr>`;
+                });
+
+                // Insert the generated rows into the table body
+                document.getElementById("userData").innerHTML = html;
+
+                // Reinitialize the DataTable with the new data
+                $('#user').DataTable();
+            }
+        } catch (e) {
+            Swal.fire({
+                title: "OOPS!",
+                text: e.message,
+                icon: "error"
+            });
+        }
+    }
+
+    function actionUser(userId, currentStatus) {
+        // console.log("Toggle status for user with ID:", userId);
+        try {
+            // Dynamically set the confirmation message based on the current status
+            const actionText = currentStatus === 'active' ? 'Deactivate' : 'activate';
+            const actionConfirmText = currentStatus === 'active' ? 'Yes, Deactivate it!' : 'Yes, Activate it!';
+            const actionMessage = currentStatus === 'active' ? 'Are you sure you want to Deactivate this user?' : 'Are you sure you want to Activate this user?';
+
+            Swal.fire({
+                title: actionMessage,
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: actionConfirmText
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    // API URL to update the status (replace with actual URL)
+                    let url = `/user-status/${userId}`;
+                    console.log(url);
+
+                    let response = await fetch(url, {
+                        method: "POST", // Assuming you're using POST to update the status
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ status: currentStatus === 'active' ? 'inactive' : 'active' }) // Toggle the status
+                    });
+
+                    response = await response.json();
+                    console.log(response);
+
+                    if (response.error) {
+                        Swal.fire({
+                            title: "OOPS!",
+                            text: response.message,
+                            icon: "error"
+                        });
+                    } else if (response.warning) {
+                        Swal.fire({
+                            title: "OOPS!",
+                            text: response.message,
+                            icon: "warning"
+                        });
+
+                    } else {
+                        readUsers(); // Refresh the user list after the status change
+                        Swal.fire({
+                            title: "Success!",
+                            text: `User has been ${currentStatus === 'active' ? 'deactivated' : 'activated'}.`,
+                            icon: "success"
+                        });
+                    }
+                }
+            });
+        } catch (e) {
+            Swal.fire({
+                title: "OOPS!",
+                text: e.message,
+                icon: "error"
+            });
+        }
+    }
+
+    function resetPassword(userId){
+        try{
+            Swal.fire({
+                title: "Proceed with Password Reset?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, Reset Password !"
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    // API URL to update the status (replace with actual URL)
+                    let url = `/user-resetPassword/${userId}`;
+                    console.log(url);
+
+                    let response = await fetch(url, {
+                        method: "POST", // Assuming you're using POST to update the status
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+
+                    });
+
+                    response = await response.json();
+                    console.log(response);
+
+                    if (response.error) {
+                        Swal.fire({
+                            title: "OOPS!",
+                            text: response.message,
+                            icon: "error"
+                        });
+                    } else if (response.warning) {
+                        Swal.fire({
+                            title: "OOPS!",
+                            text: response.message,
+                            icon: "warning"
+                        });
+
+                    } else {
+                        Swal.fire({
+                            title: "Success!",
+                            text: response.message,
+                            icon: "success"
+                        });
+                    }
+                }
+            });
+        }catch (e) {
+            Swal.fire({
+                title: "OOPS!",
+                text: e.message,
+                icon: "error"
+            });
+        }
+    }
+
+
+
+
+</script>
+
+</body>
+</html>

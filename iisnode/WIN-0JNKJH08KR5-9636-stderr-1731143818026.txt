@@ -1,0 +1,16 @@
+Application has thrown an uncaught exception and is terminated:
+C:\TDO\Dubai\tdo-dubai-phase-1\services\flights\flights.services.js:128
+flightsServices.addFlightBookingData = async (connection,agentId,total_no_of_pax, totalAdult, totalChild, totalInfant, pnr, booking_date_time, response_json, total_base_fare, total_tax, total_gross_fare, total_net_fare, pnr) => {
+                                                                                                                                                                                                                            ^^^
+
+SyntaxError: Duplicate parameter name not allowed in this context
+    at wrapSafe (node:internal/modules/cjs/loader:1281:20)
+    at Module._compile (node:internal/modules/cjs/loader:1321:27)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1416:10)
+    at Module.load (node:internal/modules/cjs/loader:1208:32)
+    at Module._load (node:internal/modules/cjs/loader:1024:12)
+    at Module.require (node:internal/modules/cjs/loader:1233:19)
+    at require (node:internal/modules/helpers:179:18)
+    at Object.<anonymous> (C:\TDO\Dubai\tdo-dubai-phase-1\controllers\flights\flightController.js:8:24)
+    at Module._compile (node:internal/modules/cjs/loader:1358:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1416:10)

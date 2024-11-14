@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <%- include('../partials/header2') %>
+    <title>Payment Success</title>
+</head>
+<body onload="updateStatus()">
+<input type="hidden" id="amount" name="amount"/>
+<input type="hidden" id="payment_option" name="payment_option"/>
+
+
+<div id="main-wrapper">
+    <%- include('../partials/navbar2') %>
+    <%- include('../partials/sidebar2') %>
+
+    <div class="header">
+        <div class="header-content">
+            <nav class="navbar navbar-expand">
+                <div class="collapse navbar-collapse justify-content-between">
+                    <div class="header-left">
+                        <div class="dashboard_bar">
+                            Payment Success
+                        </div>
+                    </div>
+                    <div class="header-right d-flex align-items-center">
+                        <div id="agEmailId" class="fs-6 fw-bold"
+                             style="word-break: break-all;text-align: right;width:40vw"></div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+
+    <!--**********************************
+        Content body start
+    ***********************************-->
+    <div class="content-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-sm-6 col-12 offset-lg-3 offset-sm-3 text-center" id="response">
+                    <img src="/images/Payment-Received.gif" class="img-fluid "/>
+                    <h4>Payment Successful</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <%- include('../partials/footer') %>
+
+</div>
+
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="loader">
+                    <div class="wait" style="color: white">Issuing Topup Please Wait</div>
+                    <div class="plane">
+                        <img src="https://zupimages.net/up/19/34/4820.gif" class="plane-img">
+                    </div>
+                    <div class="earth-wrapper">
+                        <div class="earth"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let timerInterval = '';
+    let storedFormData = sessionStorage.getItem("formData");
+    let parsedFormData;
+
+    if (storedFormData) {
+        parsedFormData = JSON.parse(storedFormData);
+        console.log(parsedFormData);
+        document.getElementById("amount").value = parsedFormData.amount;
+        document.getElementById("payment_option").value = parsedFormData.payment_option;
+    }
+
+    let updateStatus = () => {
+        let rs = `
+            <div class="loader">
+                <div class="wait" style="color: green">Payment Successful <br><br> Now Issuing Topup Amount Please Wait <br><br> Don't Close Window Please</div>
+                <div class="plane">
+                    <img src="https://zupimages.net/up/19/34/4820.gif" class="plane-img">
+                </div>
+                <div class="earth-wrapper">
+                    <div class="earth"></div>
+                </div>
+            </div>`;
+        document.getElementById("response").innerHTML = rs;
+
+        // Fetch values from hidden fields
+        var amount = document.getElementById("amount").value;
+        var payment_option = document.getElementById("payment_option").value;
+
+        var formData = new FormData();
+        formData.append("amount", amount);
+        formData.append("payment_option", payment_option);
+        if (parsedFormData) {
+            formData.append("processing_fee", parsedFormData.processing_fee);
+            formData.append("total_amount", parsedFormData.total_amount);
+            formData.append("payType", parsedFormData.payType);
+        }
+
+
+        fetch("/agentWalletTopUp", {
+            method: "POST",
+            body: formData
+        }).then(res => res.json())
+            .then(val => {
+                if (val.error === false) {
+                    Swal.fire({
+                        title: "Top Up Success",
+                        icon: "success",
+                        html: `<h2 style="color: green">${val.message}</h2> <br><br> Redirecting to Dashboard Page <b></b> milliseconds.`,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: () => {
+                            Swal.showLoading();
+                            const timer = Swal.getPopup().querySelector("b");
+                            timerInterval = setInterval(() => {
+                                timer.textContent = `${Swal.getTimerLeft()}`;
+                            }, 100);
+                        },
+                        willClose: () => {
+                            clearInterval(timerInterval);
+                        }
+                    }).then((result) => {
+                        if (result.dismiss === Swal.DismissReason.timer) {
+                            window.location.href = "/agent-dashboard";
+                        }
+                    });
+                } else {
+                    $('#staticBackdrop').modal('hide');
+                    Swal.fire({
+                        icon: 'error',
+                        title: "Error Occurred!!"
+                    });
+                }
+            }).catch(error => {
+            Swal.fire({
+                icon: 'error',
+                title: e.message
+            });
+        });
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+</html>

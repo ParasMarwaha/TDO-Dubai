@@ -1,0 +1,1 @@
+{"version":3,"file":"static/js/4616.73201ea4.chunk.js","mappings":"kNAAA,MAKA,EALwBA,KAEpBC,EAAAA,EAAAA,KAAAC,EAAAA,SAAA,G","sources":["views/dashboard/logs/DocumentHistory.js"],"sourcesContent":["const DocumentHistory = () => {\n  return (\n    <></>\n  )\n}\nexport default DocumentHistory;\n"],"names":["DocumentHistory","_jsx","_Fragment"],"sourceRoot":""}

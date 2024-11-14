@@ -1,0 +1,4159 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>TDO DXB | Welcome to Agent Dashboard</title>
+    <%- include('../partials/header2') %>
+    <!-- CSS Implementing Plugins -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/css/ion.rangeSlider.min.css"/>
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-material-ui@5.0.16/material-ui.min.css"
+          rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+
+    <link rel="stylesheet" href="/assets2/flights/flightSearch/css/theme.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/css/intlTelInput.css">
+    <style>
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .button-container > div {
+            flex: 0 0 calc(20% - 10px); /* Adjust as needed */
+            margin-bottom: 10px; /* Adjust as needed */
+            white-space: nowrap;
+
+        }
+
+
+        .seat-container {
+            position: relative;
+            display: inline-block;
+            white-space: nowrap; /* Prevents the seat divs from wrapping */
+        }
+
+
+
+
+        .seat-code {
+            position: absolute;
+            bottom: -20px; /* Adjust this value to add spacing */
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            color: #333;
+        }
+
+
+
+        /* Base for label styling */
+        [type="checkbox"]:not(:checked),
+        [type="checkbox"]:checked {
+            position: absolute;
+            left: 0;
+            opacity: 0.01;
+        }
+        [type="checkbox"]:not(:checked) + label,
+        [type="checkbox"]:checked + label {
+            position: relative;
+            padding-left: 2.3em;
+            font-size: 1.05em;
+            line-height: 1.7;
+            cursor: pointer;
+        }
+
+        /* checkbox aspect */
+        [type="checkbox"]:not(:checked) + label:before,
+        [type="checkbox"]:checked + label:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 1.4em;
+            height: 1.4em;
+            border: 1px solid #aaa;
+            background: #FFF;
+            border-radius: .2em;
+            box-shadow: inset 0 1px 3px rgba(0,0,0, .1), 0 0 0 rgba(203, 34, 237, .2);
+            -webkit-transition: all .275s;
+            transition: all .275s;
+        }
+
+        /* checked mark aspect */
+        [type="checkbox"]:not(:checked) + label:after,
+        [type="checkbox"]:checked + label:after {
+            content: '\2713';
+            position: absolute;
+            top: .525em;
+            left: .18em;
+            font-size: 1.375em;
+            color: red;
+            line-height: 0;
+            -webkit-transition: all .2s;
+            transition: all .2s;
+        }
+
+        /* checked mark aspect changes */
+        [type="checkbox"]:not(:checked) + label:after {
+            opacity: 0;
+            -webkit-transform: scale(0) rotate(45deg);
+            transform: scale(0) rotate(45deg);
+        }
+
+        [type="checkbox"]:checked + label:after {
+            opacity: 1;
+            -webkit-transform: scale(1) rotate(0);
+            transform: scale(1) rotate(0);
+        }
+
+        /* Disabled checkbox */
+        [type="checkbox"]:disabled:not(:checked) + label:before,
+        [type="checkbox"]:disabled:checked + label:before {
+            box-shadow: none;
+            border-color: #bbb;
+            background-color: #e9e9e9;
+        }
+
+        [type="checkbox"]:disabled:checked + label:after {
+            color: #777;
+        }
+
+        [type="checkbox"]:disabled + label {
+            color: #aaa;
+        }
+
+        /* Accessibility */
+        [type="checkbox"]:checked:focus + label:before,
+        [type="checkbox"]:not(:checked):focus + label:before {
+            box-shadow: inset 0 1px 3px rgba(0,0,0, .1), 0 0 0 6px rgba(203, 34, 237, .2);
+        }
+
+        .error {
+            color: red;
+        }
+
+        .icon-text-container {
+
+            justify-content: center;
+            align-items: flex-start;
+            margin-bottom: 10px; /* Optional: Add margin between each icon-text pair */
+        }
+
+        .col-lg-6.text-center {
+            padding: 20px;
+            display: flex;
+            text-align: center;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+        }
+
+
+        #timer-container {
+            z-index: 100;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #333;
+            text-align: center;
+            padding: 10px;
+            font-size: 2em;
+            color: #3498db;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            letter-spacing: 5px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        #timer-container:hover {
+            transform: scale(1.2);
+            color: #e74c3c;
+        }
+
+        .visible {
+            display: table-cell;
+        }
+
+        .table {
+            text-align: center;
+            width: 100%;
+        }
+
+        .th {
+            text-align: center;
+            background-color: #f4f4f4;
+        }
+        .icon {
+            font-size: 16px;
+            color: #007bff;
+        }
+
+
+
+        .ticket {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    max-width: 800px;
+    padding: 20px;
+    position: relative;
+}
+
+.headerr {
+    display: flex;
+    align-items: center;
+    border-bottom: 2px solid #007acc;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+}
+
+.logor {
+    height: 50px;
+    margin-right: 20px;
+}
+
+.h1r {
+    margin: 0;
+    color: #007acc;
+}
+
+.h2r {
+    border-bottom: 1px solid #007acc;
+    color: #007acc;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+}
+
+.sectionr {
+    margin-bottom: 20px;
+}
+
+.tabler {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.tabler .thr, .tabler .tdr {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.tabler .thr {
+    background-color: #007acc;
+    color: white;
+}
+
+.prer {
+    background: #f4f4f4;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    font-family: monospace;
+}
+    </style>
+
+</head>
+<body>
+<div id="preloader">
+    <div class="loader">
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--text"></div>
+    </div>
+</div>
+<div id="main-wrapper">
+    <%- include('../partials/navbar2') %>
+    <%- include('../partials/sidebar2') %>
+    <div class=" content-body default-height">
+        <%- include('../partials/OneWayFragment')%>
+    </div>
+
+
+
+    <script src="/assets2/flights/flightSearch/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <script src="/assets2/flights/flightSearch/js/components/hs.header.js"></script>
+    <script src="/assets2/flights/flightSearch/js/components/hs.unfold.js"></script>
+    <script src="/assets2/flights/flightSearch/js/components/hs.validation.js"></script>
+    <script src="/assets2/flights/flightSearch/js/components/hs.show-animation.js"></script>
+    <script src="/assets2/flights/flightSearch/js/components/hs.range-datepicker.js"></script>
+    <script src="/assets2/flights/flightSearch/js/components/hs.selectpicker.js"></script>
+    <script src="/assets2/flights/flightSearch/js/components/hs.range-slider.js"></script>
+    <script src="/assets2/flights/flightSearch/js/components/hs.go-to.js"></script>
+    <script src="/assets2/flights/flightSearch/js/components/hs.slick-carousel.js"></script>
+    <script src="/assets2/flights/flightSearch/js/components/hs.quantity-counter.js"></script>
+    <script src="/assets2/flights/flightSearch/js/components/hs.g-map.js"></script>
+    <script src="/assets2/flights/flightSearch/js/components/hs.modal-window.js"></script>
+    <script src="/assets2/vendor/global/global.min.js"></script>
+    <script src="/assets2/js/custom.min.js"></script>
+    <script src="/assets2/js/deznav-init.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.min.js"
+            integrity="sha512-frFP3ZxLshB4CErXkPVEXnd5ingvYYtYhE5qllGdZmcOlRKNEPbufyupfdSTNmoF5ICaQNO6SenXzOZvoGkiIA=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="/assets2/vendor/chartjs/chart.bundle.min.js"></script>
+    <script src="/assets2/vendor/bootstrap-datetimepicker/js/moment.js"></script>
+    <script src="/assets2/vendor/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput-jquery.min.js"></script>
+    <!-- Chart piety plugin files -->
+    <script src="/assets2/vendor/peity/jquery.peity.min.js"></script>
+
+    <!-- Apex Chart -->
+    <script src="/assets2/vendor/apexchart/apexchart.js"></script>
+
+    <!-- Dashboard 1 -->
+    <script src="/assets2/js/dashboard/dashboard-1.js"></script>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.21.0/jquery.validate.min.js"
+            integrity="sha512-KFHXdr2oObHKI9w4Hv1XPKc898mE4kgYx58oqsc/JqqdLMDI4YjOLzom+EMlW8HFUd0QfjfAvxSL6sEq/a42fQ=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="/assets2/flights/flightSearch/vendor/slick-carousel/slick/slick.js"></script>
+    <script src="/assets2/flights/flightSearch/vendor/gmaps/gmaps.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
+    <script src="/assets2/flights/flightSearch/vendor/custombox/dist/custombox.min.js"></script>
+    <script src="/assets2/flights/flightSearch/vendor/custombox/dist/custombox.legacy.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <!-- JS MyTravel -->
+
+</div>
+<!-- JS Plugins Init. -->
+<script>
+
+    $(`#mobile`).intlTelInput({
+        initialCountry: "in",
+        separateDialCode: true,
+        // utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/11.0.4/js/utils.js"
+    });
+    $(window).on('load', function () {
+        // initialization of HSMegaMenu component
+        $('.js-mega-menu').HSMegaMenu({
+            event: 'hover',
+            pageContainer: $('.container'),
+            breakpoint: 1199.98,
+            hideTimeOut: 0
+        });
+
+        // Page preloader
+        setTimeout(function () {
+            $('#jsPreloader').fadeOut(500)
+        }, 800);
+    });
+
+    $(document).on('ready', function () {
+        // initialization of header
+        $.HSCore.components.HSHeader.init($('#header'));
+
+        // initialization of google map
+        function initMap() {
+            $.HSCore.components.HSGMap.init('.js-g-map');
+        }
+
+        // initialization of unfold component
+        $.HSCore.components.HSUnfold.init($('[data-unfold-target]'));
+
+        // initialization of form validation
+        $.HSCore.components.HSValidation.init('.js-validate', {
+            rules: {
+                confirmPassword: {
+                    equalTo: '#signupPassword'
+                }
+            }
+        });
+
+        // initialization of show animations
+        $.HSCore.components.HSShowAnimation.init('.js-animation-link');
+
+        // initialization of forms
+        $.HSCore.components.HSFocusState.init();
+
+        // initialization of show animations
+        $.HSCore.components.HSShowAnimation.init('.js-animation-link');
+
+        // initialization of popups
+        $.HSCore.components.HSFancyBox.init('.js-fancybox');
+
+        // initialization of datepicker
+        $.HSCore.components.HSRangeDatepicker.init('.js-range-datepicker');
+
+        // initialization of select
+        $.HSCore.components.HSSelectPicker.init('.js-select');
+
+        // initialization of sticky blocks
+        $.HSCore.components.HSStickyBlock.init('.js-sticky-block');
+
+        // initialization of quantity counter
+        $.HSCore.components.HSQantityCounter.init('.js-quantity');
+
+        // initialization of slick carousel
+        $.HSCore.components.HSSlickCarousel.init('.js-slick-carousel');
+
+        // initialization of form validation
+        $.HSCore.components.HSValidation.init('.js-validate');
+
+        // initialization of go to
+        $.HSCore.components.HSGoTo.init('.js-go-to');
+
+        // initialization of HSScrollNav component
+        $.HSCore.components.HSScrollNav.init($('.js-scroll-nav'), {
+            duration: 700
+        });
+    });
+</script>
+
+<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCuY6I4hZQvxo5RqCH7kogGKzcrjetRKQI&amp;callback=initMap"
+        async defer></script>
+<script>
+
+    // function getCookie(name) {
+    //     const value = `; ${document.cookie}`;
+    //     const parts = value.split(`; ${name}=`);
+    //     if (parts.length === 2) return parts.pop().split(';').shift();
+    // }
+    //
+    // const parseJwt = (token) => {
+    //     try {
+    //         return JSON.parse(atob(token.split('.')[1]));
+    //     } catch (e) {
+    //         return null;
+    //     }
+    // };
+    //
+    // const jwtToken = getCookie('jwtToken');
+    // let myToken = parseJwt(jwtToken);
+    // console.log(myToken);
+    // console.log(myToken.JWT_CITY);
+
+
+
+    let adults = parseFloat(sessionStorage.getItem("adults"));
+    let child = parseFloat(sessionStorage.getItem("child"));
+    let infants = parseFloat(sessionStorage.getItem("infant"));
+    let total = 0;
+    let totalBasefare = 0;
+    let totalTax = 0;
+    let reissue = '';
+    let cancellation = '';
+    let passportRequired = '';
+    let passportLabel = '';
+    let adultBaseFare = 0.00;
+    let adultTax = 0.00;
+    let childBaseFare = 0.00;
+    let childTax = 0.00;
+    let infantBaseFare = 0.00;
+    let infantTax = 0.00;
+    let YQTax = 0.0;
+    let AdditionalTxnFeePub = 0.0;
+    let AdditionalTxnFeeOfrd = 0.0;
+    let OtherCharges = 0.0;
+    let Discount = 0.0;
+    let PublishedFare = 0.0;
+    let OfferedFare = 0.0;
+    let TdsOnCommission = 0.0;
+    let TdsOnPLB = 0.0;
+    let TdsOnIncentive = 0.0;
+    let ServiceFee = 0.0;
+    let lastTicketDate = '';
+    let source = '';
+    let destination = '';
+    let returnSource = '';
+    let returnDestination = '';
+    let res2 = '';
+    let res = '';
+    let mprice = 0;
+    let bprice = 0;
+    let totalmealprice = 0;
+    let totalbagprice = 0;
+    let totalmealpricereturn = 0;
+    let totalbagpricereturn = 0;
+    let total2 = 0;
+    let total1 = 0;
+    let ticketAdvisory = '';
+    let segmentArray = [];
+    let returnSegmentArray = [];
+    let meals = [];
+    let baggages = [];
+    let seatPrice = 0;
+    let fareClassificationValue = '';
+    let colorCode = '';
+    let arr = JSON.parse(<%- data %>);
+    let markup = parseFloat(<%= markup %>);
+    let platformFee = parseFloat(<%=platformFee%>);
+    let platformTax = parseFloat(<%=platformTax%>);
+    let traceId = '<%=traceId%>';
+
+    console.log(markup);
+    console.log(arr);
+
+    let segments = [];
+
+    let stopsInfo = '';
+
+    for(let i=0; i<arr.Segments.length; i++)
+    {
+
+        stopsInfo += 
+        
+        `<div class="row">
+            <h6 class="mb-1">Stop ${i+1}</h6>
+            <div class="d-flex justify-content-between align-items-center shadow">
+                <div class="d-flex align-items-center">
+                   <i class="fa-solid fa-plane-departure"></i>
+                    <div>
+                        <h6 class="font-weight-bold font-size-21 text-gray-5 mb-0">
+                            ${arr.Segments[i].OriginDestination.Departure}
+                        </h6>
+                       
+                    </div>
+                </div>
+                <div class="d-flex align-items-center">
+                  <h6 class="font-size-14 font-weight-bold text-gray-5 mb-0">
+                    <i class="fa-solid fa-clock"></i>
+                    ${arr.Segments[i].OriginDestination.TotalTime}
+                </h6>
+                
+                </div>
+                <div class="d-flex align-items-center">
+                     <i class="fa-solid fa-plane-arrival"></i>
+                    <div>
+                        <h6 class="font-weight-bold font-size-21 text-gray-5 mb-0">
+                            ${arr.Segments[i].OriginDestination.Arrival}
+                        </h6>
+                      
+                    </div>
+                </div>
+            </div>
+        </div>`;
+
+        let obj = {
+            "departure": `${arr.Segments[i].OriginDestination.Departure}`,
+            "arrival": `${arr.Segments[i].OriginDestination.Arrival}`,
+            "departureDateTime": `${arr.Segments[i].OriginDestination.DepartureDateTime}`,
+            "arrivalDateTime": `${arr.Segments[i].OriginDestination.ArrivalDateTime}`,
+            "flightNumber": `${arr.Segments[i].FlightNumber}`
+        }
+        segments.push(obj);
+    }
+
+    let   flights = [
+        
+        {
+            "departure": `${arr.OriginDestination.Departure}`,
+            "arrival": `${arr.OriginDestination.Arrival}`,
+            "departureDateTime": `${arr.OriginDestination.DepartureDateTime}`,
+            "BasicFare": arr.BasicFare,
+            "GrossFare": arr.GrossFare,
+            "segments": segments
+        }
+
+    ]
+
+
+
+    // document.getElementById("email").value = `${myToken.JWT_EMAIL}`;
+    // document.getElementById("mobile").value = `${myToken.JWT_PHONE}`;
+    // document.getElementById("address").value = `${myToken.JWT_ADDRESS}`;
+    // document.getElementById("city").value = `${myToken.JWT_CITY}`;
+
+    let stops = arr.Segments.length - 1;
+
+    if (arr.FareClassification !== undefined) {
+        fareClassificationValue = arr.FareClassification.Type;
+        colorCode = arr.FareClassification.Color;
+    } else {
+        colorCode = 'grey';
+        fareClassificationValue = "Normal";
+    }
+
+    let baseFare = ``;
+    let adCharges = '';
+
+    for (let j = 0; j < arr.Segments.length; j++) {
+        if (j === 0) {
+            source = arr.Segments[j].OriginDestination.Departure;
+        }
+        if (j === arr.Segments.length - 1) {
+            destination = arr.Segments[j].OriginDestination.Arrival;
+        }
+    }
+
+    if (arr.PenaltyCharges === undefined) {
+        reissue = "No Penalty";
+        cancellation = "No Penalty";
+        ticketAdvisory = arr.TicketAdvisory;
+    } else {
+        reissue = arr.PenaltyCharges?.ReissueCharge || "No Penalty";
+        cancellation = arr.PenaltyCharges?.CancellationCharge || "No Penalty";
+        ticketAdvisory = arr.TicketAdvisory;
+    }
+
+    if (arr.Ispassportdetailsblank || arr.IspassportNumberblanktopass) {
+        passportRequired = `required
+                                  data-msg="Please enter Passport Number"
+                                  data-error-class="u-has-error"
+                                  data-success-class="u-has-success" `;
+        passportLabel = `style = "display:block"`;
+    } else {
+        passportRequired = `style = "display:none"`;
+        passportLabel = `style = "display:none"`;
+    }
+
+    for (let i = 0; i < arr.FlightPricingInfo.PaxFareDetails.length; i++) {
+        if (arr.FlightPricingInfo.PaxFareDetails[i].PaxType === "ADT") {
+            baseFare += ` <li class="d-flex justify-content-between py-2">
+                                    <span class="font-weight-medium" style="font-size: 12px !important;">Adult:</span>
+                                    <span class="text-secondary" style="font-size: 12px !important;"> ${arr.FlightPricingInfo.PaxFareDetails[i].BasicFare.toFixed(2)} AED</span>
+                                </li>`;
+            total += parseFloat(arr.FlightPricingInfo.PaxFareDetails[i].BasicFare) + parseFloat(arr.FlightPricingInfo.PaxFareDetails[i].TotalTax);
+            totalBasefare += parseFloat(arr.FlightPricingInfo.PaxFareDetails[i].BasicFare.toFixed(2));
+            totalTax += parseFloat(arr.FlightPricingInfo.PaxFareDetails[i].TotalTax.toFixed(2));
+        }
+    }
+
+    totalTax += parseFloat(arr.AdditionalFare.serviceFee.GST.toFixed(2));
+
+    let pTax = (platformTax / 100) * platformFee;
+
+    console.log("pTax"+pTax.toFixed(2));
+    total += markup + platformFee + pTax + parseFloat(arr.AdditionalFare.serviceFee.GST);
+
+    baseFare += `<li class="d-flex justify-content-between py-2">
+                            <span style="font-size: 12px !important;">Total Base Fare:</span>
+                            <span class="text-secondary" style="font-size: 12px !important;">${totalBasefare} AED</span>
+                        </li>
+                        <li class="d-flex justify-content-between py-2">
+                            <span class="font-weight-medium" style="font-size: 12px !important;">Total Tax:</span>
+                            <span class="text-secondary" style="font-size: 12px !important;"> ${totalTax} AED</span>
+                        </li>
+                        <li class="d-flex justify-content-between py-2">
+                            <span class="font-weight-medium" style="font-size: 12px !important;">Admin Markup:</span>
+                            <span class="text-secondary" style="font-size: 12px !important;"> ${markup} AED</span>
+                        </li>
+                        <li class="d-flex justify-content-between py-2">
+                            <span class="font-weight-medium" style="font-size: 12px !important;">Platform Fee:</span>
+                            <span class="text-secondary" style="font-size: 12px !important;"> ${platformFee} AED</span>
+                        </li>
+                        <li class="d-flex justify-content-between py-2">
+                            <span class="font-weight-medium" style="font-size: 12px !important;">Platform Tax(%):</span>
+                            <span class="text-secondary" style="font-size: 12px !important;">${platformTax}</span>
+                        </li>`;
+
+    let mydetails = `
+    <div class="col-lg-6 border-end">
+        <div class="p-5">
+            <!-- Airline Logo -->
+            <div class="flex-content-center flex-column mb-3">
+                <a href="#" class="flex-content-center flex-column d-block">
+                    <img
+                        class="img-fluid rounded-xs"
+                        src="https://content.airhex.com/content/logos/airlines_${arr.ValidatingCarrier}_30_30_s.png"
+                        alt="Airline Logo"
+                    >
+                </a>
+            </div>
+
+            <!-- Flight Info -->
+            <a href="#" class="flex-content-center flex-column mb-1 text-dark font-weight-bold">
+                ${arr.SupplierName} ${arr.Segments[0].FlightNumber}
+            </a>
+
+            <div class="flex-content-center flex-column mb-3">
+                <h6 class="font-size-14 font-weight-bold text-gray-5 mb-0">
+                    ${arr.OriginDestination.TotalTime}
+                </h6>
+                <div class="width-60 border-top border-primary border-width-2 my-1"></div>
+                <div class="font-size-14 text-gray-1">${stops} Stops</div>
+            </div>
+
+            <!-- Departure and Arrival Information in One Line -->
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                   <i class="fa-solid fa-plane-departure"></i>
+                    <div>
+                        <h6 class="font-weight-bold font-size-21 text-gray-5 mb-0">
+                            ${arr.OriginDestination.Departure}
+                        </h6>
+                        <span class="font-size-14 font-weight-normal text-gray-1">${source}</span>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center">
+                     <i class="fa-solid fa-plane-arrival"></i>
+                    <div>
+                        <h6 class="font-weight-bold font-size-21 text-gray-5 mb-0">
+                            ${arr.OriginDestination.Arrival}
+                        </h6>
+                        <span class="font-size-14 font-weight-normal text-gray-1">${destination}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6 border-end p-3">
+        <h5 style="text-align: center">Flight Stops</h5>
+    ${stopsInfo}
+    </div>
+
+    <div class=" col-12 border-bottom">
+</div>
+    <!-- Flight Rules Table -->
+    <div class="col-12" id="fRules">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="th">
+                        <div class="icon-text">
+                            <i class="fa-solid fa-suitcase icon"></i> Baggage
+                        </div>
+                    </th>
+                    <th class="th">
+                        <div class="icon-text">
+                            <i class="fa-solid fa-suitcase icon"></i> Cabin Baggage
+                        </div>
+                    </th>
+                    <th class="th">
+                        <div class="icon-text">
+                            <i class="fa fa-refresh icon"></i> Reissue
+                        </div>
+                    </th>
+                    <th class="th">
+                        <div class="icon-text">
+                            <i class="fa fa-times icon"></i> Cancellation
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="td">${arr.Segments[0].Baggage.Weight} ${arr.Segments[0].Baggage.Unit}</td>
+                    <td class="td">${arr.Segments[0].CabinBaggage}</td>
+                    <td class="td">${reissue}</td>
+                    <td class="td">${cancellation}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+`;
+
+
+
+
+    let myAns = `
+<h3 class="font-weight-normal"><i class="fa fa-ticket" style="font-size:24px;color:red"></i> Ticket Information</h3>
+    <table class="table">
+<thead>
+<tr>
+<th>S.NO</th>
+<th>Title</th>
+<th>First Name</th>
+<th>Last Name</th>
+<th>Gender</th>
+<th>Date</th>
+<th>Nationality</th>
+<th ${passportLabel}>Passport Number</th>
+<th ${passportLabel}>Passport Expiry</th>
+<th ${passportLabel}>Passport Issue</th>
+<tr>
+</thead>
+<tbody>
+    `;
+
+    for (let i = 1; i <= adults; i++) {
+
+        myAns += `            <tr>
+<td><i class="fa fa-male" aria-hidden="true"></i> Adult${i}</td>
+<td>
+                                      <select class="form-control" id="adult${i}title" name="adult${i}title">
+                                        <option value="MR">MR.</option>
+                                      <option value="MRS">MRS.</option>
+                                      <option value="MS">MS.</option>
+</select>
+                     </td>
+
+<td>
+
+                                       <input type="text" class="form-control" id="adult${i}FirstName" name="adult${i}FirstName" placeholder="" aria-label="" required
+                                              data-msg="Please enter your first name."
+                                              data-error-class="u-has-error"
+                                              data-success-class="u-has-success">
+                       </td>
+
+<td>
+                                       <input type="text" class="form-control" id="adult${i}lastName" name="adult${i}lastName" placeholder="" aria-label="" required
+                                              data-msg="Please enter your last name."
+                                              data-error-class="u-has-error"
+                                              data-success-class="u-has-success">
+                                </td>
+
+
+  <td>
+
+                                    <select class="form-control" id="adult${i}gender" name="adult${i}gender" aria-label="test@gmail.com" required
+                                              data-msg="Please select your gender"
+                                              data-error-class="u-has-error"
+                                              data-success-class="u-has-success">
+<option value="">Select</option>
+<option value=1>Male</option>
+<option value=2>female</option>
+                                    </select>
+
+</td>
+
+<td>
+                                      <input type="text" class="form-control" id="adult${i}dob"  name="adult${i}dob" placeholder="" readonly aria-label="VBGF45679">
+</td>
+
+
+                    <td>
+                                     <input type="text" class="form-control" id="adult${i}nationality" value="IN" name="adult${i}nationality" placeholder="" aria-label="Nationality" required
+                                              data-msg="Nationality is Required"
+                                              data-error-class="u-has-error"
+                                              data-success-class="u-has-success" readonly/>
+                                    </select>
+                           </td>
+
+<td>
+                                     <input type="text" class="form-control" id="adult${i}passportno" name="adult${i}passportno" placeholder="VBGF45679" aria-label="VBGF45679" ${passportRequired}>
+  </td>
+
+
+<td>
+                                     <input type="text" class="form-control" id="adult${i}passportexpiry" name="adult${i}passportexpiry" placeholder="" aria-label="VBGF45679" ${passportRequired}>
+
+     </td>
+
+<td>
+
+                                     <input type="text" class="form-control" id="adult${i}passportissue" name="adult${i}passportissue" placeholder="VBGF45679" aria-label="VBGF45679" ${passportRequired}>
+
+</td>
+
+</tr>
+
+
+
+
+                        `;
+
+
+
+    }
+    for (let i = 1; i <= child; i++) {
+
+        myAns += `
+
+            <tr>
+
+<td><i class="fa fa-child" aria-hidden="true"></i> Child${i}</td>
+<td>
+                                      <select class="form-control" id="child${i}title" name="child${i}title">
+                                      <option value="MR">MR.</option>
+                                      <option value="MS">MS.</option>
+</select>
+                     </td>
+
+<td>
+
+                                       <input type="text" class="form-control" id="child${i}FirstName" name="child${i}FirstName" placeholder="" aria-label="" required
+                                              data-msg="Please enter your first name."
+                                              data-error-class="u-has-error"
+                                              data-success-class="u-has-success">
+                       </td>
+
+<td>
+                                       <input type="text" class="form-control" id="child${i}lastName" name="child${i}lastName" placeholder="" aria-label="" required
+                                              data-msg="Please enter your last name."
+                                              data-error-class="u-has-error"
+                                              data-success-class="u-has-success">
+                                </td>
+
+
+  <td>
+
+                                    <select class="form-control" id="child${i}gender" name="child${i}gender" aria-label="test@gmail.com" required
+                                              data-msg="Please select your gender"
+                                              data-error-class="u-has-error"
+                                              data-success-class="u-has-success">
+<option value="">Select</option>
+<option value=1>Male</option>
+<option value=2>female</option>
+                                    </select>
+
+</td>
+
+<td>
+                                      <input type="text" class="form-control" id="child${i}dob"  name="child${i}dob" placeholder="" readonly aria-label="VBGF45679">
+</td>
+
+
+                    <td>
+                                     <input type="text" class="form-control" id="child${i}nationality" value="IN" name="child${i}nationality" placeholder="" aria-label="Nationality" required
+                                              data-msg="Nationality is Required"
+                                              data-error-class="u-has-error"
+                                              data-success-class="u-has-success" readonly/>
+                                    </select>
+                           </td>
+
+<td>
+                                     <input type="text" class="form-control" id="child${i}passportno" name="child${i}passportno" placeholder="VBGF45679" aria-label="VBGF45679" ${passportRequired}>
+  </td>
+
+
+<td>
+                                     <input type="text" class="form-control" id="child${i}passportexpiry" name="child${i}passportexpiry" placeholder="" aria-label="VBGF45679" ${passportRequired}>
+
+     </td>
+
+<td>
+
+                                     <input type="text" class="form-control" id="child${i}passportissue" name="child${i}passportissue" placeholder="VBGF45679" aria-label="VBGF45679" ${passportRequired}>
+
+</td>
+
+</tr>
+                               <!-- End Input -->
+
+                               <!-- Input -->
+
+
+
+                               <!-- End Input -->
+
+
+                               <!-- Input -->
+
+
+
+                        `;
+
+
+
+
+    }
+
+    for (let i = 1; i <= infants; i++) {
+        myAns += `
+            <tr>
+<td><i class="fas fa-baby" aria-hidden="true"></i> Infant${i}</td>
+<td>
+                                      <select class="form-control" id="infant${i}title" name="infant${i}title">
+                                        <option value="MR">MR.</option>
+                                      <option value="MSTR">MSTR</option>
+                                      <option value="MS">MS.</option>
+</select>
+                     </td>
+
+<td>
+
+                                       <input type="text" class="form-control" id="infant${i}FirstName" name="infant${i}FirstName" placeholder="" aria-label="" required
+                                              data-msg="Please enter your first name."
+                                              data-error-class="u-has-error"
+                                              data-success-class="u-has-success">
+                       </td>
+
+<td>
+                                       <input type="text" class="form-control" id="infant${i}lastName" name="infant${i}lastName" placeholder="" aria-label="" required
+                                              data-msg="Please enter your last name."
+                                              data-error-class="u-has-error"
+                                              data-success-class="u-has-success">
+                                </td>
+
+
+  <td>
+
+                                    <select class="form-control" id="infant${i}gender" name="infant${i}gender" aria-label="test@gmail.com" required
+                                              data-msg="Please select your gender"
+                                              data-error-class="u-has-error"
+                                              data-success-class="u-has-success">
+<option value="">Select</option>
+<option value=1>Male</option>
+<option value=2>female</option>
+                                    </select>
+
+</td>
+
+<td>
+                                      <input type="text" class="form-control" id="infant${i}dob"  name="infant${i}dob" placeholder="" readonly aria-label="VBGF45679">
+</td>
+
+
+                    <td>
+                                     <input type="text" class="form-control" id="infant${i}nationality" value="IN" name="infant${i}nationality" placeholder="" aria-label="Nationality" required
+                                              data-msg="Nationality is Required"
+                                              data-error-class="u-has-error"
+                                              data-success-class="u-has-success" readonly/>
+                                    </select>
+                           </td>
+
+<td>
+                                     <input type="text" class="form-control" id="infant${i}passportno" name="infant${i}passportno" placeholder="VBGF45679" aria-label="VBGF45679" ${passportRequired}>
+  </td>
+
+
+<td>
+                                     <input type="text" class="form-control" id="infant${i}passportexpiry" name="infant${i}passportexpiry" placeholder="" aria-label="VBGF45679" ${passportRequired}>
+
+     </td>
+
+<td>
+
+                                     <input type="text" class="form-control" id="infant${i}passportissue" name="infant${i}passportissue" placeholder="VBGF45679" aria-label="VBGF45679" ${passportRequired}>
+
+</td>
+
+</tr>
+                               <!-- End Input -->
+
+                               <!-- Input -->
+
+
+
+                               <!-- End Input -->
+
+
+                               <!-- Input -->
+
+
+
+                        `;
+
+
+
+
+    }
+
+    myAns += `
+</tbody></table>
+<div class="col-sm-12 align-self-end">
+                                            <div class="text-right">
+                                                <button type="button" class="btn btn-primary btn-wide rounded-sm transition-3d-hover font-size-16 font-weight-bold py-3" onclick="details()">NEXT PAGE</button>
+                                            </div>
+                                        </div>`
+
+    document.getElementById("myAns").innerHTML = myAns;
+    function validateAdultAge(dateString, inputElement, picker,initialDate) {
+        const today = new Date();
+        const selectedDate = new Date(dateString);
+        const minDate = new Date(initialDate);
+        const age = today.getFullYear() - selectedDate.getFullYear();
+
+        if (selectedDate > today || age <= 12) {
+            Swal.fire({
+                title: "Wrong Age",
+                text: `Adult Age should be greater than equal to 12 years`,
+                icon: "error",
+                allowOutsideClick: false,
+                confirmButtonText: "Confirm",
+            });
+            picker.setStartDate(initialDate); // Reset to the initial value
+            $(inputElement).val(initialDate); // Reset the input field
+        } else {
+            $(inputElement).val(dateString);
+        }
+    }
+
+    function validateChildAge(dateString, inputElement, picker, initialDate) {
+        const today = new Date();
+        const selectedDate = new Date(dateString);
+        const minDate = new Date(initialDate);
+        const age = today.getFullYear() - selectedDate.getFullYear();
+
+        if (selectedDate > today || age < 2 || age > 12 || selectedDate < minDate) {
+            Swal.fire({
+                title: "Wrong Age",
+                text: `Child Age Should be greater than 2 years OR less then 12 years.`,
+                icon: "error",
+                allowOutsideClick: false,
+                confirmButtonText: "Confirm",
+            });
+            picker.setStartDate(initialDate); // Reset to the initial value
+            $(inputElement).val(initialDate); // Reset the input field
+        } else {
+            $(inputElement).val(dateString);
+        }
+    }
+
+    function validateInfantAge(dateString, inputElement, picker, initialDate) {
+        const today = new Date();
+        const selectedDate = new Date(dateString);
+        const minDate = new Date(initialDate);
+
+        const age = today.getFullYear() - selectedDate.getFullYear();
+
+        if (selectedDate > today || age > 2 || selectedDate < minDate) {
+            Swal.fire({
+                title: "Wrong Age",
+                text: `Infant Age should be less than or under 2 years`,
+                icon: "error",
+                allowOutsideClick: false,
+                confirmButtonText: "Confirm",
+            });
+            picker.setStartDate(initialDate); // Reset to the initial value
+            $(inputElement).val(initialDate); // Reset the input field
+        } else {
+            $(inputElement).val(dateString);
+        }
+    }
+
+    for (let i = 1; i <= adults; i++) {
+        const initialDate = moment().subtract(18, 'years').format('YYYY-MM-DD');
+        const datePicker = $(`#adult${i}dob`).daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true,
+            locale: {
+                format: 'YYYY-MM-DD'
+            },
+            startDate: initialDate,
+            autoUpdateInput: true,
+        });
+
+        datePicker.on('apply.daterangepicker', function (ev, picker) {
+            const selectedDate = picker.startDate.format('YYYY-MM-DD');
+            validateAdultAge(selectedDate, this, picker, initialDate);
+        });
+
+        datePicker.on('hide.daterangepicker', function (ev, picker) {
+            const selectedDate = picker.startDate.format('YYYY-MM-DD');
+            validateAdultAge(selectedDate, this, picker, initialDate);
+        });
+        $(`#adult${i}FirstName`).on('input', function() {
+            var inputValue = $(this).val();
+            var sanitizedValue = inputValue.replace(/[^\w-]|[\d]/g, '');  // Remove special characters and spaces
+            $(this).val(sanitizedValue); // Set the sanitized value back to the input field
+        });
+
+        $(`#adult${i}lastName`).on('input', function() {
+            var inputValue = $(this).val();
+            var sanitizedValue = inputValue.replace(/[^\w-]|[\d]/g, '');  // Remove special characters and spaces
+            $(this).val(sanitizedValue); // Set the sanitized value back to the input field
+        });
+    }
+
+    for (let i = 1; i <= child; i++) {
+        let travelDate = '<%=tdate%>';
+        const initialDate = moment(travelDate).subtract(12, 'years').add(2, 'days').format('YYYY-MM-DD');
+        const datePicker = $(`#child${i}dob`).daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true,
+            locale: {
+                format: 'YYYY-MM-DD'
+            },
+            startDate: initialDate,
+            autoUpdateInput: true,
+        });
+
+        datePicker.on('apply.daterangepicker', function (ev, picker) {
+            const selectedDate = picker.startDate.format('YYYY-MM-DD');
+            validateChildAge(selectedDate, this, picker, initialDate);
+        });
+
+        datePicker.on('hide.daterangepicker', function (ev, picker) {
+            const selectedDate = picker.startDate.format('YYYY-MM-DD');
+            validateChildAge(selectedDate, this, picker, initialDate);
+        });
+
+        $(`#child${i}FirstName`).on('input', function() {
+            var inputValue = $(this).val();
+            var sanitizedValue = inputValue.replace(/[^\w-]|[\d]/g, '');  // Remove special characters and spaces
+            $(this).val(sanitizedValue); // Set the sanitized value back to the input field
+        });
+
+        $(`#child${i}lastName`).on('input', function() {
+            var inputValue = $(this).val();
+            var sanitizedValue = inputValue.replace(/[^\w-]|[\d]/g, '');  // Remove special characters and spaces
+            $(this).val(sanitizedValue); // Set the sanitized value back to the input field
+        });
+    }
+
+    for (let i = 1; i <= infants; i++) {
+        let travelDate = '<%=tdate%>';
+        const initialDate = moment(travelDate).subtract(2, 'years').add(2, 'days').format('YYYY-MM-DD');
+        const datePicker = $(`#infant${i}dob`).daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true,
+            locale: {
+                format: 'YYYY-MM-DD'
+            },
+            startDate: initialDate,
+            autoUpdateInput: true,
+        });
+
+        datePicker.on('apply.daterangepicker', function (ev, picker) {
+            const selectedDate = picker.startDate.format('YYYY-MM-DD');
+            validateInfantAge(selectedDate, this, picker, initialDate);
+        });
+
+        datePicker.on('hide.daterangepicker', function (ev, picker) {
+            const selectedDate = picker.startDate.format('YYYY-MM-DD');
+            validateInfantAge(selectedDate, this, picker, initialDate);
+        });
+    }
+    document.getElementById("detailsf").innerHTML = mydetails;
+    document.getElementById("baseFare").innerHTML = baseFare;
+    total1 = total;
+    document.getElementById("total").innerHTML =  total.toFixed(2) + "AED";
+
+
+    function test() {
+        console.log("Mobile Code 1 Number:", $("#mobile_code1").intlTelInput("getSelectedCountryData").dialCode);
+    }
+
+    function details() {
+        res = '';
+        res2 = '';
+        if ($('#myForm').valid()) {
+            Swal.fire({
+                title: "Please Check all Information Before Proceed",
+                text: "Please check all filled information of Passengers",
+                icon: "warning",
+                allowOutsideClick: false,  // Disable outside click
+                showCancelButton: true,
+                confirmButtonText: "Confirm"
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    $('#staticBackdrop1').modal('show');
+
+                    let fd = new FormData();
+
+                    fd.append("traceId", sessionStorage.getItem("TraceId"));
+                    fd.append("flightKey", arr.FlightKey);
+                    fd.append("adult", adults);
+                    fd.append("child", child);
+                    fd.append("infant", infants);
+                    fd.append("flight", JSON.stringify(flights));
+                    try {
+                        res = await fetch("/flights/AirSell", {
+                            method: "POST",
+                            body: fd
+                        });
+
+                        res = await res.json();
+
+
+
+                        console.log(res);
+
+                        if (res.ResponseStatus === 1) {
+                            $('#staticBackdrop1').modal('hide');
+                            baseFare = '';
+                            total = 0;
+                            totalBasefare = 0;
+                            totalTax = 0;
+
+                            
+    for (let i = 0; i < res.response.Flights[0].FlightPricingInfo.PaxFareDetails.length; i++) {
+        if (res.response.Flights[0].FlightPricingInfo.PaxFareDetails[i].PaxType === "ADT") {
+            baseFare += ` <li class="d-flex justify-content-between py-2">
+                                    <span class="font-weight-medium" style="font-size: 12px !important;">Adult:</span>
+                                    <span class="text-secondary" style="font-size: 12px !important;">&#x20b9; ${res.response.Flights[0].FlightPricingInfo.PaxFareDetails[i].BasicFare.toFixed(2)}</span>
+                                </li>`;
+            total += parseFloat(res.response.Flights[0].FlightPricingInfo.PaxFareDetails[i].BasicFare) + parseFloat(res.response.Flights[0].FlightPricingInfo.PaxFareDetails[i].TotalTax);
+            totalBasefare += parseFloat(res.response.Flights[0].FlightPricingInfo.PaxFareDetails[i].BasicFare.toFixed(2));
+            totalTax += parseFloat(res.response.Flights[0].FlightPricingInfo.PaxFareDetails[i].TotalTax.toFixed(2));
+        }
+    }
+
+    totalTax += parseFloat(res.response.Flights[0].AdditionalFare.serviceFee.GST.toFixed(2));
+
+    let pTax = (platformTax / 100) * platformFee;
+
+    console.log("pTax"+pTax.toFixed(2));
+    total += markup + platformFee + pTax + parseFloat(res.response.Flights[0].AdditionalFare.serviceFee.GST);
+
+    baseFare += `<li class="d-flex justify-content-between py-2">
+                            <span style="font-size: 12px !important;">Total Base Fare:</span>
+                            <span class="text-secondary" style="font-size: 12px !important;">${totalBasefare} AED</span>
+                        </li>
+                        <li class="d-flex justify-content-between py-2">
+                            <span class="font-weight-medium" style="font-size: 12px !important;">Total Tax:</span>
+                            <span class="text-secondary" style="font-size: 12px !important;">${totalTax} AED</span>
+                        </li>
+                        <li class="d-flex justify-content-between py-2">
+                            <span class="font-weight-medium" style="font-size: 12px !important;">Admin Markup:</span>
+                            <span class="text-secondary" style="font-size: 12px !important;">${markup} AED</span>
+                        </li>
+                        <li class="d-flex justify-content-between py-2">
+                            <span class="font-weight-medium" style="font-size: 12px !important;">Platform Fee:</span>
+                            <span class="text-secondary" style="font-size: 12px !important;">${platformFee} AED</span>
+                        </li>
+                        <li class="d-flex justify-content-between py-2">
+                            <span class="font-weight-medium" style="font-size: 12px !important;">Platform Tax(%):</span>
+                            <span class="text-secondary" style="font-size: 12px !important;">${platformTax}</span>
+                        </li>`;
+
+                        document.getElementById("baseFare").innerHTML = baseFare;
+    total1 = total;
+    document.getElementById("total").innerHTML = total.toFixed(2) + "AED";
+
+    if (res.response.HoldAvailable === undefined) {
+                    document.getElementById("ticket").innerHTML = `<button class='btn btn-success' onclick='Ticket(${res.response.Flights[0].Ispassportdetailsblank}, ${res.response.HoldAvailable}, ${res.response.Isfarerevised})'>Ticket</button>`;
+                }
+                else {
+                    if (res.response.HoldAvailable === true) {
+                        document.getElementById("hold").innerHTML = `<button class='btn btn-warning' onclick='bookTicket()'>Hold</button>`;
+                        document.getElementById("ticket").innerHTML = `<button class='btn btn-success' onclick='Ticket(${res.response.Flights[0].Ispassportdetailsblank}, ${res.response.HoldAvailable}, ${res.response.Isfarerevised})'>Ticket</button>`;
+                    } else {
+                        document.getElementById("ticket").innerHTML = `<button class='btn btn-warning' onclick='Ticket(${res.response.Flights[0].Ispassportdetailsblank}, ${res.response.HoldAvailable}, ${res.response.Isfarerevised})'>Ticket</button>`;
+                    }
+                }
+    
+                if (res.response.Flights[0].Ispassportdetailsblank !== undefined) {
+                    if (res.response.Flights[0].Ispassportdetailsblank === false) {
+                        passportRequired = `required
+                                              data-msg="Please enter Passport Number"
+                                              data-error-class="u-has-error"
+                                              data-success-class="u-has-success" `;
+
+                        passportLabel = `class="visible"`;
+
+                        document.getElementById("pt").innerText = 'i.e Passport required at Book & Ticket';
+                    } 
+                    
+     else {
+                        passportRequired = `style = "display:none"`;
+                        passportLabel = `class="visible"`;
+                        document.getElementById("pt").innerText = 'i.e No Passport required at Book & Ticket';
+                    }
+                }
+
+                $("#myAns").hide();
+                $("#mydetails").show();
+                $("#timer-container").show();
+                let ans = `<form id="form11">
+<h3 class="font-weight-normal">Ticket Information</h3>
+    <table class="table">
+<thead>
+<tr>
+<th>S.NO</th>
+<th>Title</th>
+<th>First Name</th>
+<th>Last Name</th>
+<th>Gender</th>
+<th>Date</th>
+<th>Nationality</th>
+<th ${passportLabel}>Passport Number</th>
+<th ${passportLabel}>Passport Expiry</th>
+<th ${passportLabel}>Passport Issue</th>
+</tr>
+</thead>
+<tbody>
+`;
+                for (let i = 1; i <= adults; i++) {
+                    ans += `                  <tr>
+<td><i class="fa fa-male" aria-hidden="true"></i> Adult${i}</td>
+<td>
+    ${document.getElementById(`adult${i}title`).value}  </td>
+
+<td>${document.getElementById(`adult${i}FirstName`).value}</td>
+
+<td>${document.getElementById(`adult${i}lastName`).value} </td>
+
+
+  <td>${document.getElementById(`adult${i}gender`).value}</td>
+
+<td>${document.getElementById(`adult${i}dob`).value}</td>
+
+ <td> IN   </td>
+
+<td>
+                                     <input type="text" class="form-control" id="adult${i}${i}passportno" name="adult${i}${i}passportno" placeholder="VBGF45679" aria-label="VBGF45679" ${passportRequired}>
+  </td>
+
+
+<td>
+                                     <input type="text" class="form-control" id="adult${i}${i}passportexpiry" name="adult${i}${i}passportexpiry" placeholder="" aria-label="VBGF45679" ${passportRequired}>
+
+     </td>
+
+<td>
+
+                                     <input type="text" class="form-control" id="adult${i}${i}passportissue" name="adult${i}${i}passportissue" placeholder="VBGF45679" aria-label="VBGF45679" ${passportRequired}>
+
+</td>
+
+</tr>
+                               <!-- End Input -->
+
+                               <!-- Input -->
+
+
+
+                               <!-- End Input -->
+
+
+                               <!-- Input -->
+
+
+`;
+
+
+                }
+
+                for (let i = 1; i <= child; i++) {
+                    ans += `                  <tr>
+<td><i class="fa fa-child" aria-hidden="true"></i> Child${i}</td>
+<td>
+    ${document.getElementById(`child${i}title`).value}
+                     </td>
+
+<td>${document.getElementById(`child${i}FirstName`).value}</td>
+
+<td>${document.getElementById(`child${i}lastName`).value} </td>
+
+
+  <td>${document.getElementById(`child${i}gender`).value}</td>
+
+<td>${document.getElementById(`child${i}dob`).value}</td>
+
+ <td> IN   </td>
+
+<td>
+                                     <input type="text" class="form-control" id="child${i}${i}passportno" name="child${i}${i}passportno" placeholder="VBGF45679" aria-label="VBGF45679" ${passportRequired}>
+  </td>
+
+
+<td>
+                                     <input type="text" class="form-control" id="child${i}${i}passportexpiry" name="child${i}${i}passportexpiry" placeholder="" aria-label="VBGF45679" ${passportRequired}>
+
+     </td>
+
+<td>
+
+                                     <input type="text" class="form-control" id="child${i}${i}passportissue" name="child${i}${i}passportissue" placeholder="VBGF45679" aria-label="VBGF45679" ${passportRequired}>
+
+</td>
+
+</tr>
+                               <!-- End Input -->
+
+                               <!-- Input -->
+
+
+
+                               <!-- End Input -->
+
+
+                               <!-- Input -->
+
+
+`;
+
+
+                }
+
+
+                for (let i = 1; i <= infants; i++) {
+                    ans += `                  <tr>
+<td><i class="fas fa-baby" aria-hidden="true"></i> Infant${i}</td>
+<td>
+    ${document.getElementById(`infant${i}title`).value}
+                     </td>
+
+<td>${document.getElementById(`infant${i}FirstName`).value}</td>
+
+<td>${document.getElementById(`infant${i}lastName`).value} </td>
+
+
+  <td>${document.getElementById(`infant${i}gender`).value}</td>
+
+<td>${document.getElementById(`infant${i}dob`).value}</td>
+
+ <td> IN   </td>
+
+<td>
+                                     <input type="text" class="form-control" id="infant${i}${i}passportno" name="infant${i}${i}passportno" placeholder="VBGF45679" aria-label="VBGF45679" ${passportRequired}>
+  </td>
+
+
+<td>
+                                     <input type="text" class="form-control" id="infant${i}${i}passportexpiry" name="infant${i}${i}passportexpiry" placeholder="" aria-label="VBGF45679" ${passportRequired}>
+
+     </td>
+
+<td>
+
+                                     <input type="text" class="form-control" id="infant${i}${i}passportissue" name="infant${i}${i}passportissue" placeholder="VBGF45679" aria-label="VBGF45679" ${passportRequired}>
+
+</td>
+
+</tr>
+                               <!-- End Input -->
+
+                               <!-- Input -->
+
+
+
+                               <!-- End Input -->
+
+
+                               <!-- Input -->
+
+
+`;
+
+
+                }
+
+                ans += `
+</tbody></table>
+</form>`;
+                document.getElementById("mydetails").innerHTML = ans;
+
+                for (let i = 1; i <= adults; i++) {
+                    let travelDate ='<%=tdate%>';
+                    $(`#adult${i}${i}passportexpiry`).daterangepicker({
+                        singleDatePicker: true,
+                        showDropdowns: true,
+                        locale: {
+                            format: 'YYYY-MM-DD'
+                        },
+                        startDate : moment(travelDate).add(2, 'days').format('YYYY-MM-DD')
+                    });
+                    $(`#adult${i}${i}passportissue`).daterangepicker({
+                        singleDatePicker: true,
+                        showDropdowns: true,
+                        locale: {
+                            format: 'YYYY-MM-DD'
+                        }
+                    });
+
+                    $(`#adult${i}${i}passportno`).on('input', function() {
+                        var inputValue = $(this).val();
+                        var sanitizedValue = inputValue.replace(/[^\w\d]/g, '');  // Remove special characters and spaces
+                        $(this).val(sanitizedValue); // Set the sanitized value back to the input field
+                    });
+                }
+                for (let i = 1; i <= child; i++) {
+                    let travelDate = '<%=tdate%>';
+                    $(`#child${i}${i}passportexpiry`).daterangepicker({
+                        singleDatePicker: true,
+                        showDropdowns: true,
+                        locale: {
+                            format: 'YYYY-MM-DD'
+                        },
+                        startDate : moment(travelDate).add(2, 'days').format('YYYY-MM-DD')
+                    });
+                    $(`#child${i}${i}passportissue`).daterangepicker({
+                        singleDatePicker: true,
+                        showDropdowns: true,
+                        locale: {
+                            format: 'YYYY-MM-DD'
+                        }
+                    });
+
+                    $(`#child${i}${i}passportno`).on('input', function() {
+                        var inputValue = $(this).val();
+                        var sanitizedValue = inputValue.replace(/[^\w\d]/g, ''); // Remove special characters and spaces
+                        $(this).val(sanitizedValue); // Set the sanitized value back to the input field
+                    });
+                }
+                for (let i = 1; i <= infants; i++) {
+                    let travelDate = '<%=tdate%>';
+                    $(`#infant${i}${i}passportexpiry`).daterangepicker({
+                        singleDatePicker: true,
+                        showDropdowns: true,
+                        locale: {
+                            format: 'YYYY-MM-DD'
+                        },
+                        startDate : moment(travelDate).add(2, 'days').format('YYYY-MM-DD')
+                    });
+                    $(`#infant${i}${i}passportissue`).daterangepicker({
+                        singleDatePicker: true,
+                        showDropdowns: true,
+                        locale: {
+                            format: 'YYYY-MM-DD'
+                        }
+                    });
+
+                    $(`#infant${i}${i}passportno`).on('input', function() {
+                        var inputValue = $(this).val();
+                        var sanitizedValue = inputValue.replace(/[^\w\d]/g, '');  // Remove special characters and spaces
+                        $(this).val(sanitizedValue); // Set the sanitized value back to the input field
+                    });
+                }
+                $('#staticBackdrop1').modal('hide');
+
+                const timerDuration = 14;
+
+                countdownTimer(timerDuration);
+
+                        }
+                        else if(res.ResponseStatus === 14)
+                        {
+                            let timerInterval;
+                            Swal.fire({
+                                title: "Fetch Rule Related Message",
+                                icon : "warning",
+                                html:  `<h2 style="color: red">${res.response.Error.ErrorMessage}</h2> <br><br> Redirecting to Search Page <b></b> milliseconds.`,
+                                timer: 4000,
+                                timerProgressBar: true,
+                                allowOutsideClick: false,  // Disable outside click
+                                didOpen: () => {
+                                    Swal.showLoading();
+                                    const timer = Swal.getPopup().querySelector("b");
+                                    timerInterval = setInterval(() => {
+                                        timer.textContent = `${Swal.getTimerLeft()}`;
+                                    }, 100);
+                                },
+                                willClose: () => {
+                                    clearInterval(timerInterval);
+                                }
+                            }).then((result) => {
+                                /* Read more about handling dismissals below */
+                                if (result.dismiss === Swal.DismissReason.timer) {
+                                    window.location.href="/tdoFlight"
+                                }
+                            });
+                        }
+                        else
+                        {
+                            let timerInterval;
+                            Swal.fire({
+                                title: "Fetch Rule Related Message",
+                                icon : "warning",
+                                html:  `<h2 style="color: red">${res.response.Error.ErrorMessage}</h2> <br><br> Redirecting to Search Page <b></b> milliseconds.`,
+                                timer: 4000,
+                                allowOutsideClick: false,  // Disable outside click
+                                timerProgressBar: true,
+                                didOpen: () => {
+                                    Swal.showLoading();
+                                    const timer = Swal.getPopup().querySelector("b");
+                                    timerInterval = setInterval(() => {
+                                        timer.textContent = `${Swal.getTimerLeft()}`;
+                                    }, 100);
+                                },
+                                willClose: () => {
+                                    clearInterval(timerInterval);
+                                }
+                            }).then((result) => {
+                                /* Read more about handling dismissals below */
+                                if (result.dismiss === Swal.DismissReason.timer) {
+                                    window.location.href="/tdoFlight"
+                                }
+                            });
+                        }
+                    }
+                    catch (e) {
+                        Swal.fire({
+                            title: "Retry Again",
+                            text: `${e}`,
+                            icon: "error",
+                            allowOutsideClick: false,
+                            confirmButtonText: "Confirm"
+                        }).then(async (result) => {
+                            if (result.isConfirmed) {
+                                $('#staticBackdrop1').modal('hide');
+
+                                details();
+                            }
+                        });
+                    }
+
+                    // document.getElementById("fRules").innerHTML = a;
+
+
+                }
+            });
+
+        }
+
+
+    }
+
+    function setFareRules(index)
+    {
+        document.getElementById("ruleans").innerHTML =  res.response.FareRules[index].FareRuleDetail
+    }
+</script>
+
+<script>
+    function countdownTimer(minutes) {
+        let seconds = sessionStorage.getItem('timerSeconds') || minutes * 60;
+
+        function updateTimer() {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            document.getElementById('timer').innerText = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+        const timerInterval = setInterval(() => {
+            updateTimer();
+            if (seconds === 0) {
+                clearInterval(timerInterval);
+                document.getElementById('timer').innerText = "Timer completed!";
+                Swal.fire({
+                    title: "Booking Time Up",
+                    text: "Start Again Thank you!",
+                    allowOutsideClick: false,
+                    icon: "error",
+                    confirmButtonText: "Confirm"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "/searchFlight";
+                    }
+                });
+
+            } else {
+                seconds--;
+                // Store the updated timer value in sessionStorage
+                sessionStorage.setItem('timerSeconds', seconds);
+            }
+        }, 1000);
+
+        // Optionally, you may want to clear the stored timer value on page reload
+        window.addEventListener('beforeunload', () => {
+            sessionStorage.removeItem('timerSeconds');
+        });
+    }
+
+    async function bookTicket(ticket,isRefundable) {
+        try{
+            var currentDate = new Date();
+            // Get the current date and time
+            var currentYear = currentDate.getFullYear();
+            var currentMonth = currentDate.getMonth() + 1; // Months are zero-based, so add 1
+            var currentDay = currentDate.getDate();
+            var currentHour = currentDate.getHours();
+            var currentMinute = currentDate.getMinutes();
+            var currentSecond = currentDate.getSeconds();
+            let am_pm = '';
+            if (currentHour > 12)
+                am_pm = "PM"
+            else
+                am_pm = "AM"
+            let bookDT = `${currentYear + "/" + currentMonth + "/" + currentDay} ${currentHour + ':' + currentMinute + ":" + currentSecond}`
+            console.log(bookDT);
+
+
+            let passenger = [];
+            let passport = [];
+            if (ticket) {
+                if ($('#form11').valid()) {
+                    $('#staticBackdrop1').modal('show');
+                    for (let i = 1; i <= adults; i++) {
+
+                        let obj = await makePassengersHold(`adult${i}`,adultBaseFare, adultTax, meal, bag, null, ticket, i,1);
+
+                        let obj1 = await makePassportObjectHold(`adult${i}`,adultBaseFare, adultTax, meal, bag, null, ticket, i,1);
+
+                        passenger.push(obj);
+                        passport.push(obj1);
+                    }
+                    for (let i = 1; i <= child; i++) {
+
+
+                        let obj = await makePassengersHold(`child${i}`,childBaseFare, childTax, ticket, i,2);
+
+                        let obj1 = await makePassportObjectHold(`child${i}`,childBaseFare, childTax, ticket, i,2);
+
+                        passenger.push(obj);
+                        passport.push(obj1);
+                    }
+                    for (let i = 1; i <= infants; i++) {
+                        let obj = await makePassengersHold(`infant${i}`,infantBaseFare, infantTax, ticket, i,3);
+
+                        let obj1 = await makePassportObjectHold(`infant${i}`,infantBaseFare, infantTax, ticket, i,3);
+
+                        passenger.push(obj);
+                        passport.push(obj1);
+                    }
+
+                    let fd = new FormData();
+
+                    fd.append("traceId", sessionStorage.getItem("TraceId"));
+                    fd.append("ResultIndex", arr.ResultIndex);
+                    fd.append("Passengers", JSON.stringify(passenger));
+                    fd.append("totalPax", adults + child + infants);
+                    fd.append("totalAdult", adults);
+                    fd.append("totalChild", child);
+                    fd.append("totalInfant", infants);
+                    fd.append("stops", stops);
+                    fd.append("lastTicketDate", lastTicketDate);
+                    fd.append("passport", JSON.stringify(passport));
+                    fd.append("agentEmail", localStorage.getItem("agentEmail"));
+                    fd.append("bookDT", bookDT);
+                    fd.append("isRefundable", isRefundable);
+                    fd.append("trip", "departure");
+                    fd.append("tripType", "ONE_WAY");
+                    fd.append("ssrAmount", totalmealprice+totalbagprice);
+                    fd.append("markup",markup);
+                    fd.append("platformFee", platformFee);
+                    fd.append("platformTax", platformTax);
+
+
+                    let res = await fetch("/holdFlight", {
+                        method: "POST",
+                        body: fd
+                    });
+
+
+                    res = await res.json();
+
+                    console.log(res);
+
+                    if (res.ResponseStatus === 1) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: "Hold Successfully",
+                            allowOutsideClick: false
+                        }).then(() => {
+                            $('#staticBackdrop1').modal('hide');
+                            window.location.href = "/holdBookings";
+                        });
+                    } else if (res.ResponseStatus === 14) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: `${e}`,
+                            allowOutsideClick: false  // Disable outside click
+                        }).then(() => {
+                            $('#staticBackdrop1').modal('hide');
+
+                        });
+                    } else {
+
+                        Swal.fire({
+                            icon: 'error',
+                            title: `${res.response.Error.ErrorMessage}`,
+                            allowOutsideClick: false  // Disable outside click
+                        }).then(() => {
+                            $('#staticBackdrop1').modal('hide');
+                            window.location.href = '/searchFlight';
+                        });
+                    }
+                }
+            }
+            else
+            {
+                $('#staticBackdrop1').modal('show');
+                for (let a = 1; a <= adults; a++) {
+
+                    let obj = await makePassengersHold(`adult${a}`,adultBaseFare, adultTax, ticket, a,1);
+
+                    let obj1 = await makePassportObjectHold(`adult${a}`,adultBaseFare, adultTax, ticket, a,1);
+
+                    passenger.push(obj);
+                    passport.push(obj1);
+                }
+                for (let c = 1; c <= child; c++) {
+
+
+                    let obj = await makePassengersHold(`child${c}`,childBaseFare, childTax, ticket, c,2);
+
+                    let obj1 = await makePassportObjectHold(`child${c}`,childBaseFare, childTax, ticket, c,2);
+
+                    passenger.push(obj);
+                    passport.push(obj1);
+                }
+                for (let i = 1; i <= infants; i++) {
+                    let obj = await makePassengersHold(`infant${i}`,infantBaseFare, infantTax, ticket, i,3);
+
+                    let obj1 = await makePassportObjectHold(`infant${i}`,infantBaseFare, infantTax, ticket, i,3);
+
+                    passenger.push(obj);
+                    passport.push(obj1);
+                }
+
+                let fd = new FormData();
+
+                fd.append("traceId", sessionStorage.getItem("TraceId"));
+                fd.append("ResultIndex", arr.ResultIndex);
+                fd.append("Passengers", JSON.stringify(passenger));
+                fd.append("totalPax", adults + child + infants);
+                fd.append("totalAdult", adults);
+                fd.append("totalChild", child);
+                fd.append("totalInfant", infants);
+                fd.append("stops", stops);
+                fd.append("lastTicketDate", lastTicketDate);
+                fd.append("passport", JSON.stringify(passport));
+                fd.append("agentEmail", localStorage.getItem("agentEmail"));
+                fd.append("bookDT", bookDT);
+                fd.append("isRefundable", isRefundable);
+                fd.append("trip", "departure")
+                fd.append("tripType", "ONE_WAY");
+                fd.append("ssrAmount", totalmealprice+totalbagprice);
+                fd.append("markup",markup);
+                fd.append("platformFee", platformFee);
+                fd.append("platformTax", platformTax);
+
+                let res = await fetch("/holdFlight", {
+                    method: "POST",
+                    body: fd
+                });
+
+
+                res = await res.json();
+
+                console.log(res);
+
+                if (res.ResponseStatus === 1) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: "Hold Successfully",
+                        allowOutsideClick: false  // Disable outside click
+                    }).then(() => {
+                        $('#staticBackdrop1').modal('hide');
+                        window.location.href = "/holdBookings";
+                    });
+                } else if (res.ResponseStatus === 14) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: "Error Occurred!!",
+                        allowOutsideClick: false  // Disable outside click
+                    }).then(() => {
+                        $('#staticBackdrop1').modal('hide');
+
+                    });
+                }
+
+                else {
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: `${res.response.Error.ErrorMessage}`,
+                        allowOutsideClick: false  // Disable outside click
+                    }).then(() => {
+                        $('#staticBackdrop1').modal('hide');
+                        window.location.href = '/searchFlight';
+                    });
+                }
+            }
+
+            console.log(passenger);
+        }
+        catch (e) {
+            Swal.fire({
+                title: "Retry Again",
+                text: `${e}`,
+                icon: "error",
+                allowOutsideClick: false,
+                confirmButtonText: "Confirm"
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    $('#staticBackdrop1').modal('hide');
+
+                    details();
+                }
+            });
+        }
+
+    }
+
+    async function Ticket(ticket, hold, revised) {
+        try{
+
+            var currentDate = new Date();
+            // Get the current date and time
+            var currentYear = currentDate.getFullYear();
+            var currentMonth = currentDate.getMonth() + 1; // Months are zero-based, so add 1
+            var currentDay = currentDate.getDate();
+            var currentHour = currentDate.getHours();
+            var currentMinute = currentDate.getMinutes();
+            var currentSecond = currentDate.getSeconds();
+            let am_pm = '';
+            if (currentHour > 12)
+                am_pm = "PM"
+            else
+                am_pm = "AM"
+            let bookDT = `${currentYear + "/" + currentMonth + "/" + currentDay} ${currentHour + ':' + currentMinute + ":" + currentSecond}`
+            console.log(bookDT);
+
+            let passenger = [];
+            let passport = [];
+                if (ticket === false) {
+                    if ($('#form11').valid()) {
+                        $('#staticBackdrop1').modal('show');
+                        for (let i = 1; i <= adults; i++) {
+                            
+                            let obj =
+                            {
+      "paxType": "ADULT",
+      "profession": "string",
+      "title": document.getElementById(`adult${i}title`).value,
+      "firstName": document.getElementById(`adult${i}FirstName`).value,
+      "middleName": "B",
+      "lastName": document.getElementById(`adult${i}lastName`).value,
+      "frequentFlyNo": "string",
+      "mcoAmount": 0,
+      "markUp": 0,
+      "gender": "Male",
+      "dateOfBirth": `${document.getElementById(`adult${i}dob`).value}T00:00:00`,
+      "passportNo": document.getElementById(`adult1${i}passportno`).value,
+      "passportExpiry": `${document.getElementById(`adult1${i}passportexpiry`).value}T00:00:00`,
+      "passportIssueCountry": document.getElementById(`adult${i}nationality`).value,
+      "BaggageDetails": [],
+      "MealsDetails": [],
+      "SeatDetails": []
+    }
+
+                            let obj1 =
+                            {
+      "paxType": "ADULT",
+      "profession": "string",
+      "title": document.getElementById(`adult${i}title`).value,
+      "firstName": document.getElementById(`adult${i}FirstName`).value,
+      "middleName": "B",
+      "lastName": document.getElementById(`adult${i}lastName`).value,
+      "frequentFlyNo": "string",
+      "mcoAmount": 0,
+      "markUp": 0,
+      "gender": "Male",
+      "dateOfBirth": `${document.getElementById(`adult${i}dob`).value}T00:00:00`,
+      "passportNo": document.getElementById(`adult1${i}passportno`).value,
+      "passportExpiry": `${document.getElementById(`adult1${i}passportexpiry`).value}T00:00:00`,
+      "passportIssueCountry": document.getElementById(`adult${i}nationality`).value,
+      "BaggageDetails": [],
+      "MealsDetails": [],
+      "SeatDetails": []
+    }
+
+
+                            passenger.push(obj);
+                            passport.push(obj1);
+                        }
+                        for (let i = 1; i <= child; i++) {
+                           
+                            let obj =
+                            {
+      "paxType": "CHILD",
+      "profession": "string",
+      "title": document.getElementById(`child${i}title`).value,
+      "firstName": document.getElementById(`child${i}FirstName`).value,
+      "middleName": "B",
+      "lastName": document.getElementById(`child${i}lastName`).value,
+      "frequentFlyNo": "string",
+      "mcoAmount": 0,
+      "markUp": 0,
+      "gender": "Male",
+      "dateOfBirth": `${document.getElementById(`child${i}dob`).value}T00:00:00`,
+      "passportNo": document.getElementById(`child1${i}passportno`).value,
+      "passportExpiry": `${document.getElementById(`child1${i}passportexpiry`).value}T00:00:00`,
+      "passportIssueCountry": document.getElementById(`child${i}nationality`).value,
+      "BaggageDetails": [],
+      "MealsDetails": [],
+      "SeatDetails": []
+    }
+
+                            let obj1 =
+                            {
+      "paxType": "CHILD",
+      "profession": "string",
+      "title": document.getElementById(`child${i}title`).value,
+      "firstName": document.getElementById(`child${i}FirstName`).value,
+      "middleName": "B",
+      "lastName": document.getElementById(`child${i}lastName`).value,
+      "frequentFlyNo": "string",
+      "mcoAmount": 0,
+      "markUp": 0,
+      "gender": "Male",
+      "dateOfBirth": `${document.getElementById(`child${i}dob`).value}T00:00:00`,
+      "passportNo": document.getElementById(`child1${i}passportno`).value,
+      "passportExpiry": `${document.getElementById(`child1${i}passportexpiry`).value}T00:00:00`,
+      "passportIssueCountry": document.getElementById(`child${i}nationality`).value,
+      "BaggageDetails": [],
+      "MealsDetails": [],
+      "SeatDetails": []
+    }
+
+                            passenger.push(obj);
+                            passport.push(obj1);
+                        }
+                        for (let i = 1; i <= infants; i++) {
+                            let obj =
+                            {
+      "paxType": "INFANT",
+      "profession": "string",
+      "title": document.getElementById(`infant${i}title`).value,
+      "firstName": document.getElementById(`infant${i}FirstName`).value,
+      "middleName": "B",
+      "lastName": document.getElementById(`infant${i}lastName`).value,
+      "frequentFlyNo": "string",
+      "mcoAmount": 0,
+      "markUp": 0,
+      "gender": "Male",
+      "dateOfBirth": `${document.getElementById(`infant${i}dob`).value}T00:00:00`,
+      "passportNo": document.getElementById(`infant1${i}passportno`).value,
+      "passportExpiry": `${document.getElementById(`infant1${i}passportexpiry`).value}T00:00:00`,
+      "passportIssueCountry": document.getElementById(`infant${i}nationality`).value,
+      "BaggageDetails": [],
+      "MealsDetails": [],
+      "SeatDetails": []
+    }
+                            let obj1 =
+                            {
+      "paxType": "INFANT",
+      "profession": "string",
+      "title": document.getElementById(`infant${i}title`).value,
+      "firstName": document.getElementById(`infant${i}FirstName`).value,
+      "middleName": "B",
+      "lastName": document.getElementById(`infant${i}lastName`).value,
+      "frequentFlyNo": "string",
+      "mcoAmount": 0,
+      "markUp": 0,
+      "gender": "Male",
+      "dateOfBirth": `${document.getElementById(`infant${i}dob`).value}T00:00:00`,
+      "passportNo": document.getElementById(`infant1${i}passportno`).value,
+      "passportExpiry": `${document.getElementById(`infant1${i}passportexpiry`).value}T00:00:00`,
+      "passportIssueCountry": document.getElementById(`infant${i}nationality`).value,
+      "BaggageDetails": [],
+      "MealsDetails": [],
+      "SeatDetails": []
+    }
+
+                            passenger.push(obj);
+                            passport.push(obj1);
+                        }
+
+                        let fd = new FormData();
+
+                        fd.append("traceId", sessionStorage.getItem("TraceId"));
+                        fd.append("sellKey", res.response.SellKey);
+                        fd.append("passengers", JSON.stringify(passenger));
+                        fd.append("mobile",document.getElementById(`mobile`).value);
+                        fd.append("hold", hold);
+                        fd.append("revised", revised);
+                        fd.append("email",document.getElementById(`email`).value);
+                        fd.append("flight", JSON.stringify(flights))
+                        fd.append("totalPax", adults + child + infants);
+                        fd.append("totalAdult", adults);
+                        fd.append("totalChild", child);
+                        fd.append("totalInfant", infants);
+                        fd.append("passport", JSON.stringify(passport));
+                        fd.append("flightType", 'lccWithPass');
+                        fd.append("total",total);
+                        fd.append("agentEmail", localStorage.getItem("agentEmail"));
+                        fd.append("bookDT", bookDT);
+                        fd.append("tripType", "ONE_WAY");
+                        fd.append("trip", "departure");
+                        fd.append("ssrAmount", totalmealprice+totalbagprice);
+                        fd.append("markup",markup);
+                        fd.append("platformFee", platformFee);
+                        fd.append("platformTax", platformTax);
+
+                        let res1 = await fetch("/flights/ticket", {
+                            method: "POST",
+                            body: fd
+                        });
+
+                         res1 = await res1.json();
+
+                      console.log(res1);
+
+                      if(res1.response.ResponseStatusType.Success === true)
+                      {
+                        // Populate the ticket with JSON data
+    document.getElementById('airlineLogo').src = res1.response.Flights[0].Segments[0].AirlineLogoURL;
+    document.getElementById('passengerName').textContent = `${res1.response.Passengers[0].Title} ${res1.response.Passengers[0].FirstName} ${res1.response.Passengers[0].MiddleName} ${res1.response.Passengers[0].LastName}`;
+    document.getElementById('passengerGender').textContent = res1.response.Passengers[0].Gender;
+    document.getElementById('passengerDOB').textContent = new Date(res1.response.Passengers[0].DateOfBirth).toLocaleDateString();
+    document.getElementById('passportNumber').textContent = res1.response.Passengers[0].PassportDetail.PassportNo;
+    document.getElementById('passportExpiry').textContent = new Date(res1.response.Passengers[0].PassportDetail.PassportExpiry).toLocaleDateString();
+    document.getElementById('baggageAllowance').textContent = `${res1.response.Flights[0].Segments[0].Baggage.Weight} ${res1.response.Flights[0].Segments[0].Baggage.Unit} checked + ${res1.response.Flights[0].Segments[0].CabinBaggage}`;
+    
+    document.getElementById('carrier').textContent = res1.response.Flights[0].ValidatingCarrier;
+    document.getElementById('flightNumber').textContent = res1.response.Flights[0].Segments[0].FlightNumber;
+    document.getElementById('fareType').textContent = res1.response.Flights[0].FareName;
+    document.getElementById('seatStatus').textContent = res1.response.Flights[0].Segments[0].SeatRemaining;
+
+    document.getElementById('departureInfo').innerHTML = `<p><strong>From:</strong> ${res1.response.Flights[0].OriginDestination.Departure} (${res1.response.Flights[0].OriginDestination.Departure}), Terminal ${res1.response.Flights[0].Segments[0].DepartureTerminal}</p><p><strong>Date & Time:</strong> ${new Date(res1.response.Flights[0].OriginDestination.DepartureDateTime).toLocaleString()}</p>`;
+    document.getElementById('arrivalInfo').innerHTML = `<p><strong>To:</strong> ${res1.response.Flights[0].OriginDestination.Arrival} (${res1.response.Flights[0].OriginDestination.Arrival}), Terminal ${res1.response.Flights[0].Segments[0].ArrivalTerminal}</p><p><strong>Date & Time:</strong> ${new Date(res1.response.Flights[0].OriginDestination.ArrivalDateTime).toLocaleString()}</p><p><strong>Duration:</strong> ${res1.response.Flights[0].OriginDestination.TotalTime}</p>`;
+
+    document.getElementById('basicFare').textContent = res1.response.Flights[0].BasicFare;
+    document.getElementById('totalTax').textContent = res1.response.Flights[0].TotalTax;
+    document.getElementById('totalFare').textContent = res1.response.Flights[0].TotalFare;
+    document.getElementById('netAmount').textContent = res1.response.Flights[0].NetAmount;
+    document.getElementById('grossFare').textContent = res1.response.Flights[0].GrossFare;
+
+    document.getElementById('airlinePNR').textContent = res1.response.Flights[0].AirlinePNR;
+    document.getElementById('trvlnxtPNR').textContent = res1.response.TrvlnxtPNR;
+    document.getElementById('orderId').textContent = res1.response.OrderId;
+    document.getElementById('holdDate').textContent = new Date(res1.response.HoldDate).toLocaleString();
+
+    document.getElementById('barcode').textContent = res1.response.Passengers[0].BarCodes[0].BarCodeString;
+
+    $('#rulepop').modal('show');
+                      }
+
+                    }
+                }
+                else {
+                    $('#staticBackdrop1').modal('show');
+                    for (let i = 1; i <= adults; i++) {
+                            
+                            let obj =
+                            {
+      "paxType": "ADULT",
+      "profession": "string",
+      "title": document.getElementById(`adult${i}title`).value,
+      "firstName": document.getElementById(`adult${i}FirstName`).value,
+      "middleName": "B",
+      "lastName": document.getElementById(`adult${i}lastName`).value,
+      "frequentFlyNo": "string",
+      "mcoAmount": 0,
+      "markUp": 0,
+      "gender": "Male",
+      "dateOfBirth": `${document.getElementById(`adult${i}dob`).value}T00:00:00`,
+      "BaggageDetails": [],
+      "MealsDetails": [],
+      "SeatDetails": []
+    }
+
+                            let obj1 =
+                            {
+      "paxType": "ADULT",
+      "profession": "string",
+      "title": document.getElementById(`adult${i}title`).value,
+      "firstName": document.getElementById(`adult${i}FirstName`).value,
+      "middleName": "B",
+      "lastName": document.getElementById(`adult${i}lastName`).value,
+      "frequentFlyNo": "string",
+      "mcoAmount": 0,
+      "markUp": 0,
+      "gender": "Male",
+      "dateOfBirth": `${document.getElementById(`adult${i}dob`).value}T00:00:00`,
+      "passportNo": null,
+      "passportExpiry": null,
+      "passportIssueCountry": null,
+      "BaggageDetails": [],
+      "MealsDetails": [],
+      "SeatDetails": []
+    }
+
+
+                            passenger.push(obj);
+                            passport.push(obj1);
+                        }
+                        for (let i = 1; i <= child; i++) {
+                           
+                            let obj =
+                            {
+      "paxType": "CHILD",
+      "profession": "string",
+      "title": document.getElementById(`child${i}title`).value,
+      "firstName": document.getElementById(`child${i}FirstName`).value,
+      "middleName": "B",
+      "lastName": document.getElementById(`child${i}lastName`).value,
+      "frequentFlyNo": "string",
+      "mcoAmount": 0,
+      "markUp": 0,
+      "gender": "Male",
+      "dateOfBirth": `${document.getElementById(`child${i}dob`).value}T00:00:00`,
+      "BaggageDetails": [],
+      "MealsDetails": [],
+      "SeatDetails": []
+    }
+
+                            let obj1 =
+                            {
+      "paxType": "CHILD",
+      "profession": "string",
+      "title": document.getElementById(`child${i}title`).value,
+      "firstName": document.getElementById(`child${i}FirstName`).value,
+      "middleName": "B",
+      "lastName": document.getElementById(`child${i}lastName`).value,
+      "frequentFlyNo": "string",
+      "mcoAmount": 0,
+      "markUp": 0,
+      "gender": "Male",
+      "dateOfBirth": `${document.getElementById(`child${i}dob`).value}T00:00:00`,
+      "passportNo": null,
+      "passportExpiry": null,
+      "passportIssueCountry": null,
+      "BaggageDetails": [],
+      "MealsDetails": [],
+      "SeatDetails": []
+    }
+
+                            passenger.push(obj);
+                            passport.push(obj1);
+                        }
+                        for (let i = 1; i <= infants; i++) {
+                            let obj =
+                            {
+      "paxType": "INFANT",
+      "profession": "string",
+      "title": document.getElementById(`infant${i}title`).value,
+      "firstName": document.getElementById(`infant${i}FirstName`).value,
+      "middleName": "B",
+      "lastName": document.getElementById(`infant${i}lastName`).value,
+      "frequentFlyNo": "string",
+      "mcoAmount": 0,
+      "markUp": 0,
+      "gender": "Male",
+      "dateOfBirth": `${document.getElementById(`infant${i}dob`).value}T00:00:00`,
+      "BaggageDetails": [],
+      "MealsDetails": [],
+      "SeatDetails": []
+    }
+                            let obj1 =
+                            {
+      "paxType": "INFANT",
+      "profession": "string",
+      "title": document.getElementById(`infant${i}title`).value,
+      "firstName": document.getElementById(`infant${i}FirstName`).value,
+      "middleName": "B",
+      "lastName": document.getElementById(`infant${i}lastName`).value,
+      "frequentFlyNo": "string",
+      "mcoAmount": 0,
+      "markUp": 0,
+      "gender": "Male",
+      "dateOfBirth": `${document.getElementById(`infant${i}dob`).value}T00:00:00`,
+      "passportNo": null,
+      "passportExpiry": null,
+      "passportIssueCountry": null,
+      "BaggageDetails": [],
+      "MealsDetails": [],
+      "SeatDetails": []
+    }
+
+                            passenger.push(obj);
+                            passport.push(obj1);
+                        }
+
+                    let fd = new FormData();
+
+                    fd.append("traceId", sessionStorage.getItem("TraceId"));
+                    fd.append("ResultIndex", arr.ResultIndex);
+                    fd.append("Passengers", JSON.stringify(passenger));
+                    fd.append("otherData", JSON.stringify(otherData))
+                    fd.append("totalPax", adults + child + infants);
+                    fd.append("totalAdult", adults);
+                    fd.append("totalChild", child);
+                    fd.append("totalInfant", infants);
+                    fd.append("stops", stops);
+                    fd.append("price", price);
+                    fd.append("passport", JSON.stringify(passport));
+                    fd.append("flightType", 'lccWithoutPass');
+                    fd.append("total",total);
+                    fd.append("agentEmail", localStorage.getItem("agentEmail"));
+                    fd.append("bookDT", bookDT);
+                    fd.append("lastTicketDate", lastTicketDate);
+                    fd.append("isRefundable", isRefundable);
+                    fd.append("tripType", "ONE_WAY");
+                    fd.append("trip", "departure");
+                    fd.append("ssrAmount", totalmealprice+totalbagprice);
+                    fd.append("markup",markup);
+                    fd.append("platformFee", platformFee);
+                    fd.append("platformTax", platformTax);
+                    let res = await fetch("/goToCheckout", {
+                        method: "POST",
+                        body: fd
+                    });
+
+
+                    if(res.ok)
+                    {
+                        window.location.href = '/flightCheckout';
+                    }
+                    else
+                    {
+                        alert("problem")
+                    }
+                    // let res = await fetch("/ticket", {
+                    //     method: "POST",
+                    //     body: fd
+                    // });
+                    //
+                    //
+                    // res = await res.json();
+                    //
+                    // console.log(res);
+                    //
+                    // if (res.ResponseStatus === 1) {
+                    //     Swal.fire({
+                    //         icon: 'success',
+                    //         title: "Ticket Successfully"
+                    //     }).then(() => {
+                    //         sessionStorage.setItem("ticket", JSON.stringify(res));
+                    //         $('#staticBackdrop1').modal('hide');
+                    //         window.location.href="/agent/view-ticket-details/"+res.bookingId;
+                    //     });
+                    // } else if (res.ResponseStatus === 14) {
+                    //     Swal.fire({
+                    //         icon: 'error',
+                    //         title: "Error Occurred!!"
+                    //     }).then(() => {
+                    //         $('#staticBackdrop1').modal('hide');
+                    //
+                    //     });
+                    // } else {
+                    //
+                    //     Swal.fire({
+                    //         icon: 'error',
+                    //         title: `${res.response.Error.ErrorMessage}`
+                    //     }).then(() => {
+                    //         $('#staticBackdrop1').modal('hide');
+                    //         window.location.href = '/searchFlight';
+                    //     });
+                    // }
+                }
+            
+         
+            console.log(passenger);
+
+        }
+        catch (e) {
+            console.log(e)
+            Swal.fire({
+                title: "Retry Again",
+                text: `${e}`,
+                icon: "error",
+                allowOutsideClick: false,
+                confirmButtonText: "Confirm"
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    $('#staticBackdrop1').modal('hide');
+
+                    details();
+                }
+            });
+        }
+
+    }
+
+    async function makePassengers(prefix, baseFare, tax, ticket, hold, i, paxType)
+    {
+
+        let meal = [];
+        let bag = [];
+        let ans = document.getElementById(`${prefix}m`);
+        let c1 = '';
+        let ans1 = '';
+        let checkbox = document.getElementById(`${prefix}b`);
+        if (checkbox) {
+            ans1 = checkbox.checked;
+            // Continue with your code here
+        }
+        else
+        {
+            bag = null
+        }
+
+        if(ans)
+        {
+            c1 = ans.checked;
+        }
+        else
+        {
+            meal = null
+        }
+
+        if(c1)
+        {
+            let mealval = document.getElementById(`${prefix}meal`).value;
+            if ('MealDynamic' in res2.response)
+            {
+                if(mealval !== 'null' && (parseFloat(mealval) >= 0 || parseFloat(mealval) < res2.response.MealDynamic[0].length))
+                {
+                    meal = res2.response.Meal[mealval]
+
+                }
+                else
+                {
+                    meal = null;
+                }
+            }
+            else
+            {
+                if(mealval !== 'null' && (parseFloat(mealval) >= 0 || parseFloat(mealval) < res2.response.Meal.length))
+                {
+                    meal = res2.response.Meal[mealval];
+
+                }
+                else
+                {
+                    meal = null;
+                }
+            }
+        }
+        else {
+            meal = null;
+        }
+
+        let obj =      {
+            "Title": document.getElementById(`${prefix}title`).value,
+            "FirstName": document.getElementById(`${prefix}FirstName`).value,
+            "LastName": document.getElementById(`${prefix}lastName`).value,
+            "PaxType": paxType,
+            "DateOfBirth": `${document.getElementById(`${prefix}dob`).value}T00:00:00`,
+            "Gender": document.getElementById(`${prefix}gender`).value,
+            "AddressLine1": document.getElementById(`address`).value,
+            "Fare": {
+                "BaseFare": baseFare,
+                "Tax": tax,
+                "YQTax": YQTax,
+                "AdditionalTxnFeePub": AdditionalTxnFeePub,
+                "AdditionalTxnFeeOfrd": AdditionalTxnFeeOfrd,
+                "OtherCharges": OtherCharges
+            },
+            "City": document.getElementById(`city`).value,
+            "CountryCode": document.getElementById(`${prefix}nationality`).value,
+            "CellCountryCode": "+91",
+            "ContactNo": document.getElementById(`mobile`).value,
+            "Nationality": document.getElementById(`${prefix}nationality`).value,
+            "Email": document.getElementById(`email`).value,
+            "IsLeadPax": true,
+            "FFAirlineCode": `${arr.Segments[0][0].Airline.AirlineCode}`,
+            "FFNumber": `${arr.Segments[0][0].Airline.FlightNumber}`,
+            "Baggage": bag,
+            "Meal": meal,
+            "SeatDynamic": null,
+        }
+
+        const getPassportDetails = (index, type) => {
+            return {
+                "PassportNo": document.getElementById(`${type}${index}passportno`).value,
+                "PassportExpiry": `${document.getElementById(`${type}${index}passportexpiry`).value}T00:00:00`,
+                "PassportIssueDate": `${document.getElementById(`${type}${index}passportissue`).value}T00:00:00`,
+                "PassportIssueCountryCode": document.getElementById(`${type}nationality`).value,
+            };
+        };
+
+
+        if (ticket && hold) {
+            obj = { ...obj, ...getPassportDetails(i, `${prefix}`) };
+
+
+        }
+        else if(hold)
+        {
+            obj = { ...obj, ...getPassportDetails(i, `${prefix}`) };
+
+        }
+        else if(ticket)
+        {
+            obj = { ...obj, ...getPassportDetails(i, `${prefix}`) };
+
+        }
+        return obj;
+    }
+
+    async function makePassportObject(prefix, baseFare, tax, ticket, hold, i, paxType)
+    {
+
+        let meal = [];
+        let bag = [];
+        let ans = document.getElementById(`${prefix}m`);
+        let c1 = '';
+        let ans1 = '';
+        let checkbox = document.getElementById(`${prefix}b`);
+        if (checkbox) {
+            ans1 = checkbox.checked;
+            // Continue with your code here
+        }
+        else
+        {
+            bag = null
+        }
+
+        if(ans)
+        {
+            c1 = ans.checked;
+        }
+        else
+        {
+            meal = null
+        }
+
+        if(c1)
+        {
+            let mealval = document.getElementById(`${prefix}meal`).value;
+            if ('MealDynamic' in res2.response)
+            {
+                if(mealval !== 'null' && (parseFloat(mealval) >= 0 || parseFloat(mealval) < res2.response.MealDynamic[0].length))
+                {
+                    meal = res2.response.Meal[mealval]
+
+                }
+                else
+                {
+                    meal = null;
+                }
+            }
+            else
+            {
+                if(mealval !== 'null' && (parseFloat(mealval) >= 0 || parseFloat(mealval) < res2.response.Meal.length))
+                {
+                    meal = res2.response.Meal[mealval];
+
+                }
+                else
+                {
+                    meal = null;
+                }
+            }
+        }
+        else {
+            meal = null;
+        }
+        let obj =      {
+            "Title": document.getElementById(`${prefix}title`).value,
+            "FirstName": document.getElementById(`${prefix}FirstName`).value,
+            "LastName": document.getElementById(`${prefix}lastName`).value,
+            "PaxType": paxType,
+            "DateOfBirth": `${document.getElementById(`${prefix}dob`).value}T00:00:00`,
+            "Gender": document.getElementById(`${prefix}gender`).value,
+            "AddressLine1": document.getElementById(`address`).value,
+            "Fare": {
+                "BaseFare": baseFare,
+                "Tax": tax,
+                "YQTax": YQTax,
+                "AdditionalTxnFeePub": AdditionalTxnFeePub,
+                "AdditionalTxnFeeOfrd": AdditionalTxnFeeOfrd,
+                "OtherCharges": OtherCharges
+            },
+            "City": document.getElementById(`city`).value,
+            "CountryCode": document.getElementById(`${prefix}nationality`).value,
+            "CellCountryCode": "+91",
+            "ContactNo": document.getElementById(`mobile`).value,
+            "Nationality": document.getElementById(`${prefix}nationality`).value,
+            "Email": document.getElementById(`email`).value,
+            "IsLeadPax": true,
+            "FFAirlineCode": `${arr.Segments[0][0].Airline.AirlineCode}`,
+            "FFNumber": `${arr.Segments[0][0].Airline.FlightNumber}`,
+            "Baggage": bag,
+            "Meal": meal,
+            "SeatDynamic": null,
+        }
+
+        const getPassportDetails = (index, type) => {
+            return {
+                "PassportNo": document.getElementById(`${type}${index}passportno`).value,
+                "PassportExpiry": `${document.getElementById(`${type}${index}passportexpiry`).value}T00:00:00`,
+                "PassportIssueDate": `${document.getElementById(`${type}${index}passportissue`).value}T00:00:00`,
+                "PassportIssueCountryCode": document.getElementById(`${type}nationality`).value,
+            };
+        };
+
+        const getPassportDetailsNull = (index, type) => {
+            return {
+                "PassportNo": "null",
+                "PassportExpiry": "null",
+                "PassportIssueDate": "null",
+                "PassportIssueCountryCode": "null",
+            };
+        };
+        if (ticket && hold) {
+            obj = { ...obj, ...getPassportDetails(i, `${prefix}`) };
+        }
+        else if(hold)
+        {
+            obj = { ...obj, ...getPassportDetails(i, `${prefix}`) };
+        }
+        else if(ticket)
+        {
+            obj = { ...obj, ...getPassportDetailsNull(i, `${prefix}`) };
+        }
+        else
+        {
+            obj = { ...obj, ...getPassportDetailsNull(i, `${prefix}`) };
+        }
+        return obj;
+    }
+
+    async function makePassengersHold(prefix, baseFare, tax, hold, i, paxType)
+    {
+
+        let meal = [];
+        let bag = [];
+        let ans = document.getElementById(`${prefix}m`);
+        let c1 = '';
+        let ans1 = '';
+        let checkbox = document.getElementById(`${prefix}b`);
+        if (checkbox) {
+            ans1 = checkbox.checked;
+            // Continue with your code here
+        }
+        else
+        {
+            bag = null
+        }
+
+        if(ans)
+        {
+            c1 = ans.checked;
+        }
+        else
+        {
+            meal = null
+        }
+
+        if(c1)
+        {
+            let mealval = document.getElementById(`${prefix}meal`).value;
+            if ('MealDynamic' in res2.response)
+            {
+                if(mealval !== 'null' && (parseFloat(mealval) >= 0 || parseFloat(mealval) < res2.response.MealDynamic[0].length))
+                {
+                    meal = res2.response.Meal[mealval]
+
+                }
+                else
+                {
+                    meal = null;
+                }
+            }
+            else
+            {
+                if(mealval !== 'null' && (parseFloat(mealval) >= 0 || parseFloat(mealval) < res2.response.Meal.length))
+                {
+                    meal = res2.response.Meal[mealval];
+
+                }
+                else
+                {
+                    meal = null;
+                }
+            }
+        }
+        else {
+            meal = null;
+        }
+        let obj =      {
+            "Title": document.getElementById(`${prefix}title`).value,
+            "FirstName": document.getElementById(`${prefix}FirstName`).value,
+            "LastName": document.getElementById(`${prefix}lastName`).value,
+            "PaxType": paxType,
+            "DateOfBirth": `${document.getElementById(`${prefix}dob`).value}T00:00:00`,
+            "Gender": document.getElementById(`${prefix}gender`).value,
+            "AddressLine1": document.getElementById(`address`).value,
+            "Fare": {
+                "BaseFare": baseFare,
+                "Tax": tax,
+                "YQTax": YQTax,
+                "AdditionalTxnFeePub": AdditionalTxnFeePub,
+                "AdditionalTxnFeeOfrd": AdditionalTxnFeeOfrd,
+                "OtherCharges": OtherCharges
+            },
+            "City": document.getElementById(`city`).value,
+            "CountryCode": document.getElementById(`${prefix}nationality`).value,
+            "CellCountryCode": "+91",
+            "ContactNo": document.getElementById(`mobile`).value,
+            "Nationality": document.getElementById(`${prefix}nationality`).value,
+            "Email": document.getElementById(`email`).value,
+            "IsLeadPax": true,
+            "FFAirlineCode": `${arr.Segments[0][0].Airline.AirlineCode}`,
+            "FFNumber": `${arr.Segments[0][0].Airline.FlightNumber}`,
+            "Baggage": bag,
+            "Meal": meal,
+            "SeatDynamic": null,
+        }
+
+        const getPassportDetails = (index, type) => {
+            return {
+                "PassportNo": document.getElementById(`${type}${index}passportno`).value,
+                "PassportExpiry": `${document.getElementById(`${type}${index}passportexpiry`).value}T00:00:00`,
+                "PassportIssueDate": `${document.getElementById(`${type}${index}passportissue`).value}T00:00:00`,
+                "PassportIssueCountryCode": document.getElementById(`${type}nationality`).value,
+            };
+        };
+
+
+
+        if (hold) {
+            obj = { ...obj, ...getPassportDetails(i, `${prefix}`) };
+        }
+
+        return obj;
+    }
+
+    async function makePassportObjectHold(prefix, baseFare, tax, hold, i, paxType)
+    {
+
+        let meal = [];
+        let bag = [];
+        let ans = document.getElementById(`${prefix}m`);
+        let c1 = '';
+        let ans1 = '';
+        let checkbox = document.getElementById(`${prefix}b`);
+        if (checkbox) {
+            ans1 = checkbox.checked;
+            // Continue with your code here
+        }
+        else
+        {
+            bag = null
+        }
+
+        if(ans)
+        {
+            c1 = ans.checked;
+        }
+        else
+        {
+            meal = null
+        }
+
+        if(c1)
+        {
+            let mealval = document.getElementById(`${prefix}meal`).value;
+            if ('MealDynamic' in res2.response)
+            {
+                if(mealval !== 'null' && (parseFloat(mealval) >= 0 || parseFloat(mealval) < res2.response.MealDynamic[0].length))
+                {
+                    meal = res2.response.Meal[mealval]
+
+                }
+                else
+                {
+                    meal = null;
+                }
+            }
+            else
+            {
+                if(mealval !== 'null' && (parseFloat(mealval) >= 0 || parseFloat(mealval) < res2.response.Meal.length))
+                {
+                    meal = res2.response.Meal[mealval];
+
+                }
+                else
+                {
+                    meal = null;
+                }
+            }
+        }
+        else {
+            meal = null;
+        }
+        let obj =      {
+            "Title": document.getElementById(`${prefix}title`).value,
+            "FirstName": document.getElementById(`${prefix}FirstName`).value,
+            "LastName": document.getElementById(`${prefix}lastName`).value,
+            "PaxType": paxType,
+            "DateOfBirth": `${document.getElementById(`${prefix}dob`).value}T00:00:00`,
+            "Gender": document.getElementById(`${prefix}gender`).value,
+            "AddressLine1": document.getElementById(`address`).value,
+            "Fare": {
+                "BaseFare": baseFare,
+                "Tax": tax,
+                "YQTax": YQTax,
+                "AdditionalTxnFeePub": AdditionalTxnFeePub,
+                "AdditionalTxnFeeOfrd": AdditionalTxnFeeOfrd,
+                "OtherCharges": OtherCharges
+            },
+            "City": document.getElementById(`city`).value,
+            "CountryCode": document.getElementById(`${prefix}nationality`).value,
+            "CellCountryCode": "+91",
+            "ContactNo": document.getElementById(`mobile`).value,
+            "Nationality": document.getElementById(`${prefix}nationality`).value,
+            "Email": document.getElementById(`email`).value,
+            "IsLeadPax": true,
+            "FFAirlineCode": `${arr.Segments[0][0].Airline.AirlineCode}`,
+            "FFNumber": `${arr.Segments[0][0].Airline.FlightNumber}`,
+            "Baggage": bag,
+            "Meal": meal,
+            "SeatDynamic": null,
+        }
+
+        const getPassportDetails = (index, type) => {
+            return {
+                "PassportNo": document.getElementById(`${type}${index}passportno`).value,
+                "PassportExpiry": `${document.getElementById(`${type}${index}passportexpiry`).value}T00:00:00`,
+                "PassportIssueDate": `${document.getElementById(`${type}${index}passportissue`).value}T00:00:00`,
+                "PassportIssueCountryCode": document.getElementById(`${type}nationality`).value,
+            };
+        };
+
+        const getPassportDetailsNull = (index, type) => {
+            return {
+                "PassportNo": "null",
+                "PassportExpiry": "null",
+                "PassportIssueDate": "null",
+                "PassportIssueCountryCode": "null",
+            };
+        };
+        if (ticket && hold) {
+            obj = { ...obj, ...getPassportDetails(i, `${prefix}`) };
+        }
+        else if(hold)
+        {
+            obj = { ...obj, ...getPassportDetails(i, `${prefix}`) };
+        }
+        else if(ticket)
+        {
+            obj = { ...obj, ...getPassportDetailsNull(i, `${prefix}`) };
+        }
+        else
+        {
+            obj = { ...obj, ...getPassportDetailsNull(i, `${prefix}`) };
+        }
+        return obj;
+    }
+
+
+    function samevalue(value)
+    {
+
+        if(value.checked)
+        {
+            document.getElementById(`${value.id}email`).value = document.getElementById("adult1email").value;
+
+            document.getElementById(`mobile_${value.id}`).value = document.getElementById("mobile_adult1").value;
+
+        }
+        else
+        {
+            document.getElementById(`${value.id}email`).value = '';
+            document.getElementById(`mobile_${value.id}`).value = '';
+        }
+    }
+
+    function showhide(a,userType,s)
+    {
+        let ans =   '';
+
+        if(userType === 'adult')
+        {
+            ans =   document.getElementById(`adult${a}m${s}`).checked;
+        }
+        else if(userType === 'child')
+        {
+            ans =   document.getElementById(`child${a}m${s}`).checked;
+        }
+
+        else if(userType === 'infant')
+        {
+            ans =   document.getElementById(`infant${a}m`).checked;
+        }
+
+        if(ans) {
+            if (userType === 'adult') {
+                document.getElementById(`adult${a}meal${s}`).style.display = "block";
+
+            } else if (userType === 'child') {
+                document.getElementById(`child${a}meal${s}`).style.display = "block";
+
+            } else if (userType === 'infant') {
+                document.getElementById(`infant${a}meal`).style.display = "block";
+
+            }
+        }
+
+        else
+        {
+            if (userType === 'adult') {
+                let index = meals.findIndex(p => p.identifier === `adult${a}meal${s}`);
+                if (index !== -1) {
+                    meals.splice(index, 1);
+                }
+
+                document.getElementById(`adult${a}meal${s}`).style.display = "none";
+                document.getElementById(`adult${a}meal${s}`).selectedIndex = 0;
+                document.getElementById(`adult${a}mealprice${s}`).innerHTML = 0;
+                // totalmealprice+= mprice;
+                //
+                let totalMeal = calculateTotalPrice();
+                document.getElementById(`totalmealprice`).innerHTML = totalMeal;
+                total = total1 + totalmealprice + totalmealpricereturn + totalbagprice + totalbagpricereturn + seatPrice;
+                document.getElementById(`total`).innerHTML = total;
+
+            } else if (userType === 'child') {
+                let index = meals.findIndex(p => p.identifier === `child${a}meal${s}`);
+                if (index !== -1) {
+                    meals.splice(index, 1);
+                }
+                document.getElementById(`child${a}meal${s}`).style.display = "none";
+                document.getElementById(`child${a}meal${s}`).selectedIndex = 0;
+                document.getElementById(`child${a}mealprice${s}`).innerHTML = 0;
+                // totalmealprice+= mprice;
+                //
+                let totalMeal = calculateTotalPrice();
+                document.getElementById(`totalmealprice`).innerHTML = totalMeal;
+                total = total1 + totalmealprice + totalmealpricereturn + totalbagprice + totalbagpricereturn + seatPrice;
+                document.getElementById(`total`).innerHTML = total;
+
+            } else if (userType === 'infant') {
+                document.getElementById(`infant${a}meal`).style.display = "none";
+
+            }
+        }
+        showAdCharges();
+    }
+
+    function showhidereturn(a,userType,s)
+    {
+        let ans =   '';
+
+        if(userType === 'adult')
+        {
+            ans =   document.getElementById(`adult${a}m${s}return`).checked;
+        }
+        else if(userType === 'child')
+        {
+            ans =   document.getElementById(`child${a}m${s}return`).checked;
+        }
+
+        else if(userType === 'infant')
+        {
+            ans =   document.getElementById(`infant${a}m`).checked;
+        }
+
+        if(ans) {
+            if (userType === 'adult') {
+                document.getElementById(`adult${a}meal${s}return`).style.display = "block";
+
+            } else if (userType === 'child') {
+                document.getElementById(`child${a}meal${s}return`).style.display = "block";
+
+            } else if (userType === 'infant') {
+                document.getElementById(`infant${a}meal`).style.display = "block";
+
+            }
+        }
+
+        else
+        {
+            if (userType === 'adult') {
+                let index = meals.findIndex(p => p.identifier === `adult${a}meal${s}return`);
+                if (index !== -1) {
+                    meals.splice(index, 1);
+                }
+
+                document.getElementById(`adult${a}meal${s}return`).style.display = "none";
+                document.getElementById(`adult${a}meal${s}return`).selectedIndex = 0;
+                document.getElementById(`adult${a}mealprice${s}return`).innerHTML = 0;
+
+                let totalMealReturn = calculateTotalPriceReturn();
+                document.getElementById(`totalmealpricereturn`).innerHTML = totalMealReturn;
+                total = total1 + totalmealprice + totalmealpricereturn + totalbagprice + totalbagpricereturn + seatPrice;
+                document.getElementById(`total`).innerHTML = total;
+
+            } else if (userType === 'child') {
+                let index = meals.findIndex(p => p.identifier === `child${a}meal${s}return`);
+                if (index !== -1) {
+                    meals.splice(index, 1);
+                }
+                document.getElementById(`child${a}meal${s}return`).style.display = "none";
+                document.getElementById(`child${a}meal${s}return`).selectedIndex = 0;
+                document.getElementById(`child${a}mealprice${s}return`).innerHTML = 0;
+                // totalmealprice+= mprice;
+                //
+                let totalMealReturn = calculateTotalPriceReturn();
+                document.getElementById(`totalmealpricereturn`).innerHTML = totalMealReturn;
+                total = total1 + totalmealprice + totalmealpricereturn + totalbagprice + totalbagpricereturn + seatPrice;
+                document.getElementById(`total`).innerHTML = total;
+
+            } else if (userType === 'infant') {
+                document.getElementById(`infant${a}meal`).style.display = "none";
+
+            }
+        }
+        showAdCharges();
+    }
+
+    function showhidebreturn(a,userType,s)
+    {
+        let ans =   '';
+
+        if(userType === 'adult')
+        {
+            ans =   document.getElementById(`adult${a}b${s}return`).checked;
+        }
+        else if(userType === 'child')
+        {
+            ans =   document.getElementById(`child${a}b${s}return`).checked;
+        }
+
+        else if(userType === 'infant')
+        {
+            ans =   document.getElementById(`infant${a}b`).checked;
+        }
+
+        if(ans) {
+            if (userType === 'adult') {
+                document.getElementById(`adult${a}bag${s}return`).style.display = "block";
+
+            } else if (userType === 'child') {
+                document.getElementById(`child${a}bag${s}return`).style.display = "block";
+
+            } else if (userType === 'infant') {
+                document.getElementById(`infant${a}bag`).style.display = "block";
+
+            }
+        }
+
+        else
+        {
+            if (userType === 'adult') {
+                let index = baggages.findIndex(p => p.identifier === `adult${a}bag${s}return`);
+                if (index !== -1) {
+                    baggages.splice(index, 1);
+                }
+
+                document.getElementById(`adult${a}bag${s}return`).style.display = "none";
+                document.getElementById(`adult${a}bag${s}return`).selectedIndex = 0;
+                document.getElementById(`adult${a}bagprice${s}return`).innerHTML = 0;
+                // totalmealprice+= mprice;
+                //
+                let totalBag = calculateTotalBaggagePriceReturn();
+                document.getElementById(`rtotalbagpricereturn`).innerHTML = totalBag;
+                total = total1 + totalmealprice + totalmealpricereturn + totalbagprice +totalbagpricereturn;
+                document.getElementById(`total`).innerHTML = total;
+
+            } else if (userType === 'child') {
+                let index = meals.findIndex(p => p.identifier === `child${a}bag${s}return`);
+                if (index !== -1) {
+                    baggages.splice(index, 1);
+                }
+                document.getElementById(`child${a}bag${s}return`).style.display = "none";
+                document.getElementById(`child${a}bag${s}return`).selectedIndex = 0;
+                document.getElementById(`child${a}bagprice${s}return`).innerHTML = 0;
+                // totalmealprice+= mprice;
+                //
+                let totalBagReturn = calculateTotalBaggagePriceReturn();
+                document.getElementById(`rtotalbagpricereturn`).innerHTML = totalBagReturn;
+                total = total1 + totalmealprice + totalmealpricereturn + totalbagprice + totalbagpricereturn + seatPrice;
+                document.getElementById(`total`).innerHTML = total;
+
+            } else if (userType === 'infant') {
+                document.getElementById(`infant${a}meal`).style.display = "none";
+
+            }
+        }
+        showAdCharges();
+    }
+
+    function nonShowhide(a,userType,)
+    {
+        let ans =   '';
+
+        if(userType === 'adult')
+        {
+            ans =   document.getElementById(`adult${a}m`).checked;
+        }
+        else if(userType === 'child')
+        {
+            ans =   document.getElementById(`child${a}m`).checked;
+        }
+
+        else if(userType === 'infant')
+        {
+            ans =   document.getElementById(`infant${a}m`).checked;
+        }
+
+        if(ans)
+        {
+            if(userType === 'adult')
+            {
+                document.getElementById(`adult${a}meal`).style.display = "block";
+
+            }
+            else if(userType === 'child')
+            {
+                document.getElementById(`child${a}meal`).style.display = "block";
+
+            }
+
+            else if(userType === 'infant')
+            {
+                document.getElementById(`infant${a}meal`).style.display = "block";
+
+            }
+
+        }
+        else
+        {
+
+            if(userType === 'adult')
+            {
+                document.getElementById(`adult${a}meal`).style.display = "none";
+
+            }
+            else if(userType === 'child')
+            {
+                document.getElementById(`child${a}meal`).style.display = "none";
+
+            }
+
+            else if(userType === 'infant')
+            {
+                document.getElementById(`infant${a}meal`).style.display = "none";
+
+            }
+        }
+
+    }
+
+    function mealPrice(a, b, userType,s) {
+
+        if (b !== 'null') {
+            if (res2.response.MealDynamic[0][b].Description !== 1) {
+                let prefix = userType === 'adult' ? 'adult' : userType === 'child' ? 'child' : 'infant';
+                let ans = document.getElementById(`${prefix}${a}m${s}`).checked;
+
+                if (ans) {
+                    document.getElementById(`${prefix}${a}meal${s}`).style.display = "block";
+                    let mprice = 0;
+                    if (b !== 'null') {
+                        mprice = res2.response.MealDynamic[0][b].Price;
+                        console.log(mprice);
+                    } else {
+                        mprice = 0;
+                    }
+                    let existingIndex = meals.findIndex(p => p.identifier === `${prefix}${a}meal${s}`);
+                    if (existingIndex === -1) {
+                        meals.push({
+                                "type" : 'departure',
+                                "userType" : userType,
+                                "identifier": `${prefix}${a}meal${s}`,
+                                "price": mprice,
+                                "myobject": res2.response.MealDynamic[0][b]
+                            }
+                        );
+                    } else {
+                        // Update the price if the person is already selected
+                        meals[existingIndex].price = mprice;
+                        meals[existingIndex].myobject = res2.response.MealDynamic[0][b];
+                    }
+
+                    console.log(meals);
+                    document.getElementById(`${prefix}${a}mealprice${s}`).innerHTML = mprice;
+                    // totalmealprice+= mprice;
+                    //
+                    let totalMeal = calculateTotalPrice();
+                    document.getElementById(`totalmealprice`).innerHTML = totalMeal;
+                    total = total1 + totalmealprice + totalmealpricereturn + totalbagprice + totalbagpricereturn + seatPrice;
+                    document.getElementById(`total`).innerHTML = total;
+
+                }
+
+
+            }
+            else if(res2.response.MealDynamic[0][b].Description === 1)
+            {
+
+                meals.push({ "type" : 'departure',
+                        "userType" : userType,
+                        "identifier": `${prefix}${a}meal${s}`,
+                        "price": 0,
+                        "myobject": res2.response.MealDynamic[0][b]
+                    }
+                );
+
+            }
+        }
+        showAdCharges();
+    }
+
+    function mealPriceb(a, b, userType,s) {
+
+        if (b !== 'null') {
+            if (res2.response.Baggage[0][b].Description !== 1) {
+                let prefix = userType === 'adult' ? 'adult' : userType === 'child' ? 'child' : 'infant';
+                let ans = document.getElementById(`${prefix}${a}b${s}`).checked;
+
+                if (ans) {
+                    document.getElementById(`${prefix}${a}bag${s}`).style.display = "block";
+                    let mprice = 0;
+                    if (b !== 'null') {
+                        mprice = res2.response.Baggage[0][b].Price;
+                        console.log(mprice);
+                    } else {
+                        mprice = 0;
+                    }
+                    let existingIndex = baggages.findIndex(p => p.identifier === `${prefix}${a}bag${s}`);
+                    if (existingIndex === -1) {
+                        baggages.push({
+                                "type" : 'departure',
+                                "userType" : userType,
+                                "identifier": `${prefix}${a}bag${s}`,
+                                "price": mprice,
+                                "myobject": res2.response.Baggage[0][b]
+                            }
+                        );
+                    } else {
+                        // Update the price if the person is already selected
+                        baggages[existingIndex].price = mprice;
+                        baggages[existingIndex].myobject = res2.response.Baggage[0][b];
+                    }
+
+                    console.log(meals);
+                    document.getElementById(`${prefix}${a}bagprice${s}`).innerHTML = mprice;
+                    // totalmealprice+= mprice;
+                    //
+                    let totalBag = calculateTotalBaggagePrice();
+                    document.getElementById(`totalbagprice`).innerHTML = totalBag;
+                    total = total1 + totalmealprice + totalmealpricereturn + totalbagprice + totalbagpricereturn + seatPrice;
+                    document.getElementById(`total`).innerHTML = total;
+
+                }
+
+
+            }
+            else if(res2.response.baggage[0][b].Description === 1)
+            {
+
+                baggages.push({ "type" : 'departure',
+                        "userType" : userType,
+                        "identifier": `${prefix}${a}bag${s}`,
+                        "price": 0,
+                        "myobject": res2.response.Baggage[0][b]
+                    }
+                );
+
+            }
+        }
+        showAdCharges();
+    }
+
+
+
+
+    function mealPricereturn(a, b, userType,s) {
+
+        if (b !== 'null') {
+            if (res2.response.MealDynamic[1][b].Description !== 1) {
+                let prefix = userType === 'adult' ? 'adult' : userType === 'child' ? 'child' : 'infant';
+                let ans = document.getElementById(`${prefix}${a}m${s}return`).checked;
+
+                if (ans) {
+                    document.getElementById(`${prefix}${a}meal${s}return`).style.display = "block";
+                    let mprice = 0;
+                    if (b !== 'null') {
+                        mprice = res2.response.MealDynamic[1][b].Price;
+                        console.log(mprice);
+                    } else {
+                        mprice = 0;
+                    }
+                    let existingIndex = meals.findIndex(p => p.identifier === `${prefix}${a}meal${s}return`);
+                    if (existingIndex === -1) {
+                        meals.push({
+                                "type" : 'return',
+                                "userType" : userType,
+                                "identifier": `${prefix}${a}meal${s}return`,
+                                "price": mprice,
+                                "myobject": res2.response.MealDynamic[1][b]
+                            }
+                        );
+                    } else {
+                        // Update the price if the person is already selected
+                        meals[existingIndex].price = mprice;
+                    }
+
+                    console.log(meals);
+                    document.getElementById(`${prefix}${a}mealprice${s}return`).innerHTML = mprice;
+                    // totalmealprice+= mprice;
+                    //
+                    let totalMeal = calculateTotalPriceReturn();
+                    document.getElementById(`totalmealpricereturn`).innerHTML = totalMeal;
+                    total = total1 + totalmealprice + totalmealpricereturn + totalbagprice + totalbagpricereturn + seatPrice;
+                    document.getElementById(`total`).innerHTML = total;
+
+                }
+
+
+            }
+            else if(res2.response.MealDynamic[1][b].Description === 1)
+            {
+
+                meals.push({
+                        "type" : 'return',
+                        "userType" : userType,
+                        "identifier": `${prefix}${a}meal${s}return`,
+                        "price": 0,
+                        "myobject": res2.response.MealDynamic[1][b]
+                    }
+                );
+
+            }
+        }
+        showAdCharges();
+    }
+
+    function mealPricebreturn(a, b, userType,s) {
+
+        if (b !== 'null') {
+            if (res2.response.Baggage[1][b].Description !== 1) {
+                let prefix = userType === 'adult' ? 'adult' : userType === 'child' ? 'child' : 'infant';
+                let ans = document.getElementById(`${prefix}${a}b${s}return`).checked;
+
+                if (ans) {
+                    document.getElementById(`${prefix}${a}bag${s}return`).style.display = "block";
+                    let mprice = 0;
+                    if (b !== 'null') {
+                        mprice = res2.response.Baggage[1][b].Price;
+                        console.log(mprice);
+                    } else {
+                        mprice = 0;
+                    }
+                    let existingIndex = baggages.findIndex(p => p.identifier === `${prefix}${a}bag${s}return`);
+                    if (existingIndex === -1) {
+                        baggages.push({
+                                "type" : 'return',
+                                "userType" : userType,
+                                "identifier": `${prefix}${a}bag${s}return`,
+                                "price": mprice,
+                                "myobject": res2.response.Baggage[1][b]
+                            }
+                        );
+                    } else {
+                        // Update the price if the person is already selected
+                        baggages[existingIndex].price = mprice;
+                    }
+
+                    console.log(meals);
+                    document.getElementById(`${prefix}${a}bagprice${s}return`).innerHTML = mprice;
+                    // totalmealprice+= mprice;
+                    //
+                    let totalBag = calculateTotalBaggagePriceReturn();
+                    document.getElementById(`rtotalbagpricereturn`).innerHTML = totalBag;
+                    total = total1 + totalmealprice + totalmealpricereturn + totalbagprice + totalbagpricereturn + seatPrice;
+                    document.getElementById(`total`).innerHTML = total;
+
+                }
+
+
+            }
+            else if(res2.response.Baggage[1][b].Description === 1)
+            {
+
+                baggages.push({
+                        "type" : 'return',
+                        "userType" : userType,
+                        "identifier": `${prefix}${a}bag${s}return`,
+                        "price": 0,
+                        "myobject": res2.response.Baggage[1][b]
+                    }
+                );
+
+            }
+        }
+        showAdCharges();
+    }
+
+
+
+    function calculateTotalPrice() {
+        // Filter the meals array to include only entries with the type "return"
+        const returnMeals = meals.filter(person => person.type === 'departure');
+
+        // Initialize totalmealpricereturn
+        totalmealprice = 0;
+
+        // Sum up the prices of return meals
+        returnMeals.forEach(person => {
+            totalmealprice += person.price;
+        });
+
+        return totalmealprice;
+    }
+
+    function calculateTotalPriceReturn() {
+        // Filter the meals array to include only entries with the type "return"
+        const returnMeals = meals.filter(person => person.type === 'return');
+
+        // Initialize totalmealpricereturn
+        totalmealpricereturn = 0;
+
+        // Sum up the prices of return meals
+        returnMeals.forEach(person => {
+            totalmealpricereturn += person.price;
+        });
+
+        return totalmealpricereturn;
+    }
+
+
+
+    function showhideb(a,userType,s)
+    {
+        let ans =   '';
+
+        if(userType === 'adult')
+        {
+            ans =   document.getElementById(`adult${a}b${s}`).checked;
+        }
+        else if(userType === 'child')
+        {
+            ans =   document.getElementById(`child${a}b${s}`).checked;
+        }
+
+        else if(userType === 'infant')
+        {
+            ans =   document.getElementById(`infant${a}m`).checked;
+        }
+
+        if(ans) {
+            if (userType === 'adult') {
+                document.getElementById(`adult${a}bag${s}`).style.display = "block";
+
+            } else if (userType === 'child') {
+                document.getElementById(`child${a}bag${s}`).style.display = "block";
+
+            } else if (userType === 'infant') {
+                document.getElementById(`infant${a}bag`).style.display = "block";
+
+            }
+        }
+
+        else
+        {
+            if (userType === 'adult') {
+                let index = baggages.findIndex(p => p.identifier === `adult${a}bag${s}`);
+                if (index !== -1) {
+                    baggages.splice(index, 1);
+                }
+
+                document.getElementById(`adult${a}bag${s}`).style.display = "none";
+                document.getElementById(`adult${a}bag${s}`).selectedIndex = 0;
+                document.getElementById(`adult${a}bagprice${s}`).innerHTML = 0;
+                // totalmealprice+= mprice;
+                //
+                let totalBag = calculateTotalBaggagePrice();
+                document.getElementById(`totalbagprice`).innerHTML = totalBag;
+                total = total1 + totalmealprice + totalmealpricereturn + totalbagprice + totalbagpricereturn + seatPrice;
+                document.getElementById(`total`).innerHTML = total;
+
+            } else if (userType === 'child') {
+                let index = baggages.findIndex(p => p.identifier === `child${a}bag${s}`);
+                if (index !== -1) {
+                    baggages.splice(index, 1);
+                }
+                document.getElementById(`child${a}bag${s}`).style.display = "none";
+                document.getElementById(`child${a}bag${s}`).selectedIndex = 0;
+                document.getElementById(`child${a}bagprice${s}`).innerHTML = 0;
+                // totalmealprice+= mprice;
+                //
+                let totalBag = calculateTotalBaggagePrice();
+                document.getElementById(`totalbagprice`).innerHTML = totalBag;
+                total = total1 + totalmealprice + totalmealpricereturn + totalbagprice + totalbagpricereturn + seatPrice;
+                document.getElementById(`total`).innerHTML = total;
+
+            } else if (userType === 'infant') {
+                document.getElementById(`infant${a}meal`).style.display = "none";
+
+            }
+        }
+
+        showAdCharges();
+    }
+
+
+    function calculateTotalBaggagePrice() {
+        // Filter the baggages array to include only entries with the type "return"
+        const returnBaggages = baggages.filter(person => person.type === 'departure');
+
+        // Initialize totalbagprice
+        totalbagprice = 0;
+
+        // Sum up the prices of return baggages
+        returnBaggages.forEach(person => {
+            totalbagprice += person.price;
+        });
+
+        return totalbagprice;
+    }
+
+    function calculateTotalSeatPriceSegment(segmentIndex) {
+        // Filter the baggages array to include only entries with the type "return"
+        const seats = selectedSeats.filter(person => person.segmentIndex === segmentIndex);
+
+        // Initialize totalbagprice
+        let seatsPrice = 0;
+
+        // Sum up the prices of return baggages
+        seats.forEach(person => {
+            seatsPrice += person.seatPrice;
+        });
+
+        return seatsPrice;
+    }
+
+    function calculateTotalBaggagePriceReturn() {
+        // Filter the baggages array to include only entries with the type "return"
+        const returnBaggages = baggages.filter(person => person.type === 'return');
+
+        // Initialize totalbagprice
+        totalbagpricereturn = 0;
+
+        // Sum up the prices of return baggages
+        returnBaggages.forEach(person => {
+            totalbagpricereturn += person.price;
+        });
+
+        return totalbagpricereturn;
+    }
+
+    function showAdCharges()
+    {
+        let mealans = "";
+        const meal = meals.filter(person => person.type === 'departure');
+        const mealreturn = meals.filter(person => person.type === 'return');
+
+        const bag = baggages.filter(person => person.type === 'departure');
+        const bagreturn = baggages.filter(person => person.type === 'return');
+
+        let mealprice = 0;
+        let mealpricereturn = 0;
+
+        let bagprice = 0;
+        let bagpricereturn = 0;
+        seatPrice = 0;
+
+
+        meal.forEach(person => {
+            mealprice += person.price;
+        });
+
+        selectedSeats.forEach(person => {
+            seatPrice+= person.seatPrice;
+        });
+
+        mealreturn.forEach(person => {
+            mealpricereturn += person.price;
+        });
+
+        bag.forEach(person => {
+            bagprice += person.price;
+        });
+
+        bagreturn.forEach(person => {
+            bagpricereturn += person.price;
+        });
+
+        if(mealprice !== 0)
+        {
+            mealans+=`<li class="d-flex justify-content-between py-2">
+                                            <span class="font-weight-medium"><i class="fa-solid fa-utensils"></i> Meal Departure:</span>
+                                            <span class="text-secondary">&#x20b9; ${mealprice}</span>
+                                        </li>`;
+        }
+
+        if(mealpricereturn !== 0)
+        {
+            mealans+=`<li class="d-flex justify-content-between py-2">
+                                            <span class="font-weight-medium"><i class="fa-solid fa-utensils"></i> Meal Return:</span>
+                                            <span class="text-secondary">&#x20b9; ${mealpricereturn}</span>
+                                        </li>`;
+        }
+
+        if(bagprice !== 0)
+        {
+            mealans+=`<li class="d-flex justify-content-between py-2">
+                                            <span class="font-weight-medium"><i class='fas fa-shopping-bag'></i> Bag Departure:</span>
+                                            <span class="text-secondary">&#x20b9; ${bagprice}</span>
+                                        </li>`;
+        }
+
+        if(bagpricereturn !== 0)
+        {
+            mealans+=`<li class="d-flex justify-content-between py-2">
+                                            <span class="font-weight-medium"><i class='fas fa-shopping-bag'></i> Bag Return:</span>
+                                            <span class="text-secondary">&#x20b9; ${bagpricereturn}</span>
+                                        </li>`;
+        }
+
+        if(seatPrice !== 0)
+        {
+            mealans+=`<li class="d-flex justify-content-between py-2">
+                                            <span class="font-weight-medium"><i class='fas fa-shopping-bag'></i>Seat Price:</span>
+                                            <span class="text-secondary">&#x20b9; ${seatPrice}</span>
+                                        </li>`;
+        }
+
+        document.getElementById("adCharges").innerHTML = mealans;
+
+    }
+
+    function makePersonObjectWithPassport(prefix,i)
+    {
+        let obj =
+            {
+                "Title": document.getElementById(`${prefix}${i}title`).value,
+                "FirstName": document.getElementById(`${prefix}${i}FirstName`).value,
+                "LastName": document.getElementById(`${prefix}${i}lastName`).value,
+                "PaxType": 1,
+                "DateOfBirth": `${document.getElementById(`${prefix}${i}dob`).value}T00:00:00`,
+                "PassportNo": document.getElementById(`${prefix}1${i}passportno`).value,
+                "PassportExpiry": `${document.getElementById(`${prefix}1${i}passportexpiry`).value}T00:00:00`,
+                "PassportIssueDate": `${document.getElementById(`${prefix}1${i}passportissue`).value}T00:00:00`,
+                "PassportIssueCountryCode": document.getElementById(`${prefix}${i}nationality`).value,
+                "Gender": document.getElementById(`${prefix}${i}gender`).value,
+                "AddressLine1": document.getElementById(`address`).value,
+                "Fare": {
+                    "BaseFare": adultBaseFare,
+                    "Tax": adultTax,
+                    "YQTax": YQTax,
+                    "AdditionalTxnFeePub": AdditionalTxnFeePub,
+                    "AdditionalTxnFeeOfrd": AdditionalTxnFeeOfrd,
+                    "OtherCharges": OtherCharges,
+                    "Discount": Discount,
+                    "PublishedFare": PublishedFare,
+                    "OfferedFare": OfferedFare,
+                    "TdsOnCommission": TdsOnCommission,
+                    "TdsOnPLB": TdsOnPLB,
+                    "TdsOnIncentive": TdsOnIncentive,
+                    "ServiceFee": ServiceFee
+                },
+                "City": document.getElementById(`city`).value,
+                "CountryCode": document.getElementById(`${prefix}${i}nationality`).value,
+                "CellCountryCode": "+91",
+                "ContactNo": document.getElementById(`mobile`).value,
+                "Meal" : meal,
+                "Nationality": document.getElementById(`${prefix}${i}nationality`).value,
+                "Email": document.getElementById(`email`).value,
+                "IsLeadPax": true,
+                "FFAirlineCode": `${arr.Segments[0][0].Airline.AirlineCode}`,
+                "FFNumber": `${arr.Segments[0][0].Airline.FlightNumber}`
+            }
+    }
+
+    function makePersonObject(prefix,i)
+    {
+        let obj =
+            {
+                "Title": document.getElementById(`${prefix}${i}title`).value,
+                "FirstName": document.getElementById(`${prefix}${i}FirstName`).value,
+                "LastName": document.getElementById(`${prefix}${i}lastName`).value,
+                "PaxType": 1,
+                "DateOfBirth": `${document.getElementById(`${prefix}${i}dob`).value}T00:00:00`,
+                "PassportNo": document.getElementById(`${prefix}1${i}passportno`).value,
+                "PassportExpiry": `${document.getElementById(`${prefix}1${i}passportexpiry`).value}T00:00:00`,
+                "PassportIssueDate": `${document.getElementById(`${prefix}1${i}passportissue`).value}T00:00:00`,
+                "PassportIssueCountryCode": document.getElementById(`${prefix}${i}nationality`).value,
+                "Gender": document.getElementById(`${prefix}${i}gender`).value,
+                "AddressLine1": document.getElementById(`address`).value,
+                "Fare": {
+                    "BaseFare": adultBaseFare,
+                    "Tax": adultTax,
+                    "YQTax": YQTax,
+                    "AdditionalTxnFeePub": AdditionalTxnFeePub,
+                    "AdditionalTxnFeeOfrd": AdditionalTxnFeeOfrd,
+                    "OtherCharges": OtherCharges,
+                    "Discount": Discount,
+                    "PublishedFare": PublishedFare,
+                    "OfferedFare": OfferedFare,
+                    "TdsOnCommission": TdsOnCommission,
+                    "TdsOnPLB": TdsOnPLB,
+                    "TdsOnIncentive": TdsOnIncentive,
+                    "ServiceFee": ServiceFee
+                },
+                "City": document.getElementById(`city`).value,
+                "CountryCode": document.getElementById(`${prefix}${i}nationality`).value,
+                "CellCountryCode": "+91",
+                "ContactNo": document.getElementById(`mobile`).value,
+                "Meal" : meal,
+                "Nationality": document.getElementById(`${prefix}${i}nationality`).value,
+                "Email": document.getElementById(`email`).value,
+                "IsLeadPax": true,
+                "FFAirlineCode": `${arr.Segments[0][0].Airline.AirlineCode}`,
+                "FFNumber": `${arr.Segments[0][0].Airline.FlightNumber}`
+            }
+    }
+
+
+
+
+    const SeatType = {
+        NotSet: 0,
+        Window: 1,
+        Aisle: 2,
+        Middle: 3,
+        WindowRecline: 4,
+        WindowWing: 5,
+        WindowExitRow: 6,
+        WindowReclineWing: 7,
+        WindowReclineExitRow: 8,
+        WindowWingExitRow: 9,
+        AisleRecline: 10,
+        AisleWing: 11,
+        AisleExitRow: 12,
+        AisleReclineWing: 13,
+        AisleReclineExitRow: 14,
+        AisleWingExitRow: 15,
+        MiddleRecline: 16,
+        MiddleWing: 17,
+        MiddleExitRow: 18,
+        MiddleReclineWing: 19,
+        MiddleReclineExitRow: 20,
+        MiddleWingExitRow: 21,
+        WindowReclineWingExitRow: 22,
+        AisleReclineWingExitRow: 23,
+        MiddleReclineWingExitRow: 24,
+        WindowBulkhead: 25,
+        WindowQuiet: 26,
+        WindowBulkheadQuiet: 27,
+        MiddleBulkhead: 28,
+        MiddleQuiet: 29,
+        MiddleBulkheadQuiet: 30,
+        AisleBulkhead: 31,
+        AisleQuiet: 32,
+        AisleBulkheadQuiet: 33,
+        CentreAisle: 34,
+        CentreMiddle: 35,
+        CentreAisleBulkhead: 36,
+        CentreAisleQuiet: 37,
+        CentreAisleBulkheadQuiet: 38,
+        CentreMiddleBulkhead: 39,
+        CentreMiddleQuiet: 40,
+        CentreMiddleBulkheadQuiet: 41,
+        WindowBulkheadWing: 42,
+        WindowBulkheadExitRow: 43,
+        MiddleBulkheadWing: 44,
+        MiddleBulkheadExitRow: 45,
+        AisleBulkheadWing: 46,
+        AisleBulkheadExitRow: 47,
+    };
+    function getSeatTypeByCode(code) {
+        for (const type in SeatType) {
+            if (SeatType[type] === code) {
+                return type;
+            }
+        }
+        return null; // Return null if code is not found
+    }
+    function makeSeats(index)
+    {
+        let obj = JSON.parse(JSON.stringify(res2.response.SeatDynamic[0].SegmentSeat[index]));
+        console.log(obj);
+        let ans = ``;
+
+
+        let priceLegends = ``;
+
+        let priceColorMap = {};
+        let totalSeatPrice = 0;
+
+// Iterate over the selected seats to calculate the total seat prices for the segment index
+        for (let seat of selectedSeats) {
+            if (seat.segmentIndex === index) {
+                totalSeatPrice += seat.seatPrice;
+            }
+        }
+        let paxDetails = `
+<img src="https://content.airhex.com/content/logos/airlines_${obj.RowSeats[0].Seats[0].AirlineCode}_50_50_s.png">
+<span>${obj.RowSeats[0].Seats[0].Origin} - ${obj.RowSeats[0].Seats[0].Destination}</span>
+<input type="text" id="tableEventShifter" readonly hidden="">
+<h6 style="color:red">i.e Please click on a Pax in order to select the Seats </h6>
+<table class="table"  id="myTable">
+<thead>
+<tr>
+<th>Pax</th>
+<th>Seat Number</th>
+<th>Price</th>
+</tr>
+</thead>
+<tbody>
+`;
+
+        for (let a = 1; a <= adults; a++) {
+            let paxId = `adult${a}seat${index}`;
+            let matchingSeat = selectedSeats.find(seat => seat.pax === paxId);
+            let seatNo = matchingSeat ? matchingSeat.seatNo : '--';
+            let seatPrice = matchingSeat ? `INR ${matchingSeat.seatPrice}` : 'INR 0';
+
+            paxDetails += `
+<tr  id="adult${a}seat">
+    <td id="adult"> Adult${a}</td>
+    <td id="${paxId}seatNo">${seatNo}</td>
+    <td id="${paxId}seatPrice">${seatPrice}</td>
+</tr>
+`;
+        }
+
+        for (let c = 1; c <= child; c++) {
+            let paxId = `child${c}seat${index}`;
+            let matchingSeat = selectedSeats.find(seat => seat.pax === paxId);
+            let seatNo = matchingSeat ? matchingSeat.seatNo : '--';
+            let seatPrice = matchingSeat ? `INR ${matchingSeat.seatPrice}` : 'INR 0';
+
+            paxDetails += `
+<tr id="child${c}seat">
+    <td id="child"> Child${c}</td>
+    <td id="${paxId}seatNo">${seatNo}</td>
+    <td id="${paxId}seatPrice">${seatPrice}</td>
+</tr>
+`;
+        }
+
+        paxDetails += `
+<tfoot>
+<td colspan="3" id="totalseatprice">Total Price INR ${totalSeatPrice}</td>
+</tfoot>
+</tbody></table>`;
+// Extract unique prices from seat objects
+        document.getElementById("paxDetails").innerHTML = paxDetails;
+
+        let uniquePrices = [];
+        for (let i = 1; i < obj.RowSeats.length; i++) {
+            for (let seat of obj.RowSeats[i].Seats) {
+                if (seat.Code !== 'Blank' && !uniquePrices.includes(seat.Price)) {
+                    uniquePrices.push(seat.Price);
+                }
+            }
+        }
+
+        uniquePrices.sort((a, b) => a - b);
+
+        // Generate unique colors for each price and create price legends
+        uniquePrices.forEach((price, index) => {
+            // Generate random color (avoiding white)
+            let color = generateRandomColor();
+            priceColorMap[price] = color;
+            priceLegends += `<div style="display: flex; align-items: center;">
+                            <div style="width: 20px; height: 20px; background-color: ${color}; margin-right: 5px;"></div>
+                            <span>${price}</span>
+                        </div>`;
+        });
+
+
+        // Render price legends
+        document.getElementById("pricee").innerHTML = priceLegends;
+        for (let i = 1; i < obj.RowSeats.length; i++) {
+
+            let seatCodes = [];
+            for (let seat of obj.RowSeats[i].Seats) {
+                if (seat.Compartment === 1) {
+                    seatCodes.push(seat.SeatNo);
+                }
+            }
+
+            let allSeats = ['A', 'B', 'C', 'D', 'E', 'F'];
+
+            for (let seat of allSeats) {
+                // Check if the seat is not included in seatCodes and belongs to compartment 1
+                if (!seatCodes.includes(seat)) {
+                    let insertIndex = allSeats.indexOf(seat);
+                    if (insertIndex === -1) {
+                        obj.RowSeats[i].Seats.push({ Code: 'Blank', Compartment: 1 });
+                    } else {
+                        obj.RowSeats[i].Seats.splice(insertIndex, 0, { Code: 'Blank', Compartment: 1 });
+                    }
+                }
+            }
+
+
+
+
+            console.log(seatCodes);
+
+
+            for (let j = 0; j < obj.RowSeats[i].Seats.length; j++) {
+                let currentSeat = obj.RowSeats[i].Seats[j];
+                let currentSeatType = obj.RowSeats[i].Seats[j].SeatType;
+                let currentSeatAvailabilityType = obj.RowSeats[i].Seats[j].AvailablityType;
+                let previousSeatType = j > 0 ? obj.RowSeats[i].Seats[j - 1].SeatType : null;
+                let currentSeatCode = obj.RowSeats[i].Seats[j].Code;
+                console.log(currentSeatCode);
+                let previousSeatCode = j > 0 ? obj.RowSeats[i].Seats[j - 1].Code : null;
+
+                let borderColor = '';
+
+                if(currentSeat.Compartment === 1) {
+                    let isSelected = selectedSeats.some(seat =>
+                        seat.segmentIndex === index &&
+                        seat.seatNo === obj.RowSeats[i].Seats[j].Code
+                    );
+                    if (currentSeat.Price in priceColorMap) {
+                        borderColor = `${priceColorMap[currentSeat.Price]};`;
+                    }
+
+                    if ((currentSeatType === 2 || currentSeatType === 10 || currentSeatType === 11 || currentSeatType === 12 || currentSeatType === 13 || currentSeatType === 14 || currentSeatType === 15 || currentSeatType === 23 || currentSeatType === 31 || currentSeatType === 32 || currentSeatType === 33 || currentSeatType === 46 || currentSeatType === 47) && (previousSeatType === 2 || previousSeatType === 10 || previousSeatType === 11 || previousSeatType === 12 || previousSeatType === 13 || previousSeatType === 14 || previousSeatType === 15 || previousSeatType === 23 || previousSeatType === 31 || previousSeatType === 32 || previousSeatType === 33 || previousSeatType === 46 || previousSeatType === 47)) {
+                        ans += `<img src="/images/road.jpg" style="width:32px"/>`;
+                    } else if ((currentSeatType === 2 || currentSeatType === 10 || currentSeatType === 11 || currentSeatType === 12 || currentSeatType === 13 || currentSeatType === 14 || currentSeatType === 15 || currentSeatType === 23 || currentSeatType === 31 || currentSeatType === 32 || currentSeatType === 33 || currentSeatType === 46 || currentSeatType === 47) && (previousSeatCode === 'Blank')) {
+                        ans += `<img src="/images/road.jpg" style="width:32px"/>`;
+                    }
+
+                    if (currentSeatCode !== 'Blank' && currentSeatAvailabilityType == 1) {
+                        if (isSelected) {
+                            // Seat is selected
+                            ans += `<div class="seat-container selected" onclick="calculateSeats(${currentSeat.Price},'${currentSeat.Code}','${currentSeat.SeatNo}',${i},${j},${index})" >
+                            <img src="/images/selected.png" style="width:32px" id="${currentSeat.Code}"/>
+                            <span class="seat-code" style="color: ${borderColor}; font-size: medium">${currentSeat.Code}</span>
+                        </div>`;
+                        }
+                        else {
+                            ans += `<div class="seat-container" onclick="calculateSeats(${obj.RowSeats[i].Seats[j].Price},'${obj.RowSeats[i].Seats[j].Code}','${obj.RowSeats[i].Seats[j].SeatNo}',${i},${j},${index})" >
+                        <img src="/images/seat.png" style="width:32px" id="${obj.RowSeats[i].Seats[j].Code}"/>
+                        <span class="seat-code" style="color: ${borderColor}; font-size: medium">${obj.RowSeats[i].Seats[j].Code}</span>
+                    </div>`;
+                        }
+                    } else if (currentSeatCode !== 'Blank' && currentSeatAvailabilityType == 3) {
+                        ans += `<div class="seat-container" >
+                        <img src="/images/booked.png" style="width:32px" />
+                        <span class="seat-code">${obj.RowSeats[i].Seats[j].Code}</span>
+                    </div>`;
+                    } else if (currentSeatCode !== 'Blank' && currentSeatAvailabilityType == 4) {
+                        ans += `<div class="seat-container">
+                        <img src="/images/booked.png"style="width:32px" />
+                        <span class="seat-code">${obj.RowSeats[i].Seats[j].Code}</span>
+                    </div>`;
+                    } else {
+                        ans += `<div class="seat-container">
+                      <div style="width: 32px"></div>
+                    </div>`;
+                    }
+
+                }
+            }
+            ans += `<br><br>`;
+        }
+
+        document.getElementById("popans").innerHTML = ans;
+
+        // When the table click is clicked,
+        //   set the focus to the text box.
+        $("#myTable").on("click",function(e){
+
+
+            $("#tableEventShifter").focus();
+        });
+
+        // When clicked, select a row.
+        $("#myTable tbody tr").on("click",function(e){
+            // Deselect other selected rows.
+            $(this).siblings().removeClass("table-info");
+
+            $(this).addClass("table-info");
+        });
+
+        $("#tableEventShifter").on("keydown", function(e) {
+            switch (e.keyCode) {
+                case 38: // up
+                    $('#myTable tbody tr:not(:first).table-info')
+                        .removeClass('table-info')
+                        .prev().addClass('table-info')
+                    break;
+
+                case 40: // down
+                    $('#myTable tbody tr:not(:last).table-info')
+                        .removeClass('table-info')
+                        .next().addClass('table-info')
+                    break;
+            }
+            // Disable scroll
+            e.preventDefault();
+        });
+    }
+
+    function generateRandomColor() {
+        let color;
+        do {
+            color = '#' + Math.floor(Math.random() * 0xFFFFFF).toString(16);
+        } while (color === '#FFFFFF'); // Avoid white color
+        return color;
+    }
+
+    var selectedSeats = [];
+
+    function calculateSeats(price,seatCode,seatNo,RowIndex,SeatIndex,index) {
+        var img = document.getElementById(seatCode);
+        var selectedRow = $("#myTable tbody tr.table-info"); // Selected row
+        if (selectedRow.length > 0) {
+            // Row is selected
+            var selectedRowId = selectedRow.attr("id"); // ID of the selected row
+            var paxType = selectedRow.find("td:nth-child(1)").attr("id");
+            var particularTdId = selectedRow.find("td:nth-child(2)").attr("id");
+            var seatprice = selectedRow.find("td:nth-child(3)").attr("id");
+
+
+
+
+            let existingPaxIndex = selectedSeats.findIndex(p => p.pax === selectedRowId+index);
+
+
+            if (existingPaxIndex === -1) {
+                // Passenger not found, add the seat for the passenger
+                let existingPaxSeat = selectedSeats.findIndex(p => p.seatCode === seatCode+index);
+                if(existingPaxSeat !== -1)
+                {
+                    Swal.fire({
+                        icon:'error',
+                        title:'Seat is Already Alloted To Other Person'
+                    })
+
+                }
+                else
+                {
+                    selectedSeats.push({
+                        paxType : paxType,
+                        pax: selectedRowId+index,
+                        seatCode : seatCode+index,
+                        seatNo: seatCode,
+                        seatPrice : price,
+                        "segmentIndex" : index,
+                        myobject:  res2.response.SeatDynamic[0].SegmentSeat[index].RowSeats[RowIndex].Seats[SeatIndex]
+                    });
+                    // Change the image to selected
+                    img.src = '/images/selected.png';
+                    document.getElementById(particularTdId).innerHTML = seatCode;
+                    document.getElementById(seatprice).innerHTML = `INR ${price}`;
+                }
+            } else {
+                let existingPax = selectedSeats[existingPaxIndex];
+                let existingSeatCode = existingPax.seatNo;
+
+
+                if (existingSeatCode === seatCode) {
+                    // Seat already selected for this passenger, deselect it
+                    selectedSeats.splice(existingPaxIndex, 1);
+                    // Change the image to deselected
+                    img.src = '/images/seat.png';
+                    document.getElementById(particularTdId).innerHTML = "--";
+                    document.getElementById(seatprice).innerHTML = `INR 0`;
+                } else {
+                    let existingPaxSeat = selectedSeats.findIndex(p => p.seatCode === seatCode+index);
+                    if(existingPaxSeat !== -1)
+                    {
+                        Swal.fire({
+                            icon:'error',
+                            title:'Seat is Already Alloted To Other Person'
+                        })
+
+                    }
+                    else {
+                        document.getElementById(existingSeatCode).src = '/images/seat.png';
+                        // Deselect the previous seat of the passenger
+                        existingPax.seatNo = seatCode;
+                        existingPax.seatCode = seatCode+index;
+                        existingPax.seatPrice = price;
+                        existingPax.myobject = res2.response.SeatDynamic[0].SegmentSeat[index].RowSeats[RowIndex].Seats[SeatIndex];
+                        // Change the image to selected
+                        img.src = '/images/selected.png';
+                        document.getElementById(particularTdId).innerHTML = seatCode;
+                        document.getElementById(seatprice).innerHTML = `INR ${price}`;
+                    }
+                }
+            }
+
+            // Log the selected seats array
+            console.log(selectedSeats);
+            let seatPrice = calculateTotalSeatPriceSegment(index);
+            document.getElementById("totalseatprice").innerHTML = `Total Price INR ${seatPrice}`;
+            showAdCharges();
+            total = total1 + totalmealprice + totalmealpricereturn + totalbagprice + totalbagpricereturn + seatPrice;
+            document.getElementById(`total`).innerHTML = total;
+        } else {
+            Swal.fire({
+                icon:'error',
+                title:'Please Select the Person From Given Person details Table!'
+            })
+        }
+
+
+    }
+
+
+</script>
+
+</body>
+</html>

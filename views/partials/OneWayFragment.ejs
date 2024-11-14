@@ -1,0 +1,469 @@
+
+    <a href="#" id="back-to-home-btn" class="back-to-top" onclick="history.back()"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back to Search</a>
+
+    <div id="timer-container" style="display: none">
+        <div id="timer"></div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-xl-12">
+
+
+                <div class="mb-2 shadow-soft bg-white rounded-sm">
+
+                    <div class="row">
+                        <div class="col-9">
+                            <div class="row" id="detailsf">
+
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="shadow-soft bg-white rounded-sm">
+
+                                        <div id="basicsAccordion">
+                                            <!-- Card -->
+                                            <div class="card rounded-0 border-top-0 border-left-0 border-right-0">
+                                                    <h5 style="text-align: center">Fare Breakup</h5>
+                                                <div id="basicsCollapseOne" class="collapse show"
+                                                     aria-labelledby="basicsHeadingOne"
+                                                     data-parent="#basicsAccordion">
+                                                    <div class="card-body px-4 pt-0">
+                                                        <!-- Fact List -->
+                                                        <ul class="list-unstyled font-size-1 mb-0 font-size-16" id="baseFare">
+
+                                                        </ul>
+                                                        <!-- End Fact List -->
+                                                        <div class="card-body px-4 pt-0">
+                                                            <!-- Fact List -->
+                                                            <ul class="list-unstyled font-size-1 mb-0 font-size-16" id="adCharges">
+
+                                                            </ul>
+                                                            <!-- End Fact List -->
+                                                        </div>
+
+                                                        <div class="card-body pt-0">
+                                                            <ul class="list-unstyled font-size-1 mb-0 font-size-16">
+                                                                <li class="d-flex justify-content-between py-2 font-size-17 font-weight-bold">
+                                                                    <span class="font-weight-bold" style="font-size: 12px !important;">Amount To Pay</span>
+                                                                    <span class="" id="total" style="font-size: 12px !important;"></span>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="row text-center" style="padding: 10px">
+                                                            <p style="color: red; padding: 2px" id="pt"></p>
+                                                            <div class="col-md-6" id="hold">
+
+                                                            </div>
+                                                            <div class="col-md-6" id="ticket">
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- End Card -->
+                                        </div>
+                                <!-- End Basics Accordion -->
+                            </div>
+
+                            <div class="button-container d-flex justify-content-between">
+                                <div class=" mt-2" data-bs-toggle="modal" data-bs-target="#mealpop" id="mealbt" style="display: none"><button class="btn-sm btn-primary" id="dbt"><i class='fas fa-pizza-slice'></i> Meals</button></div>
+                                <div class=" mt-2" data-bs-toggle="modal" data-bs-target="#mealpopreturn" id="mealbtreturn" style="display: none"><button class="btn-sm btn-primary" id="rbt"><i class='fas fa-pizza-slice'></i> Meals</button></div>
+                                <div class="mt-2" data-bs-toggle="modal" data-bs-target="#baggagepop" id="bagbt" style="display: none"><button class="btn-sm btn-primary" id="bdbt"><i class='fas fa-shopping-bag'></i> Baggage</button></div>
+                                <div class=" mt-2" data-bs-toggle="modal" data-bs-target="#baggagepopreturn" id="bagbtreturn" style="display: none"><button class="btn-sm btn-primary" id="brbt"><i class='fas fa-shopping-bag'></i> Baggage</button></div>
+                                <div class="mt-2" data-bs-toggle="modal" data-bs-target="#seatpop" id="seatbt" style="display: none"><button class="btn-sm btn-primary" ><i class='fas fa-chair'></i>Seats Selection</button></div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <form id="myForm">
+                        <div style="background-color: rgba(211,211,211,0.21)">
+                            <div id="contact" class="mb-2" style="margin: 15px;">
+                                <h3 class="font-weight-normal"><i class="fa fa-phone"  style="font-size:24px;color:red"></i> Contact Information</h3>
+                                <hr>
+                                <div class="row mb-4">
+
+
+                                    <div class="col-sm-3 col-6 col-mb-3 mb-4">
+                                        <label for="mobile" style="display: block">
+                                            Phone
+                                        </label>
+                                        <input type="text" class="form-control" id="mobile" name="mobile"  maxlength="10" minlength="10"   placeholder="Phone Number" required data-rule-number="true">
+
+                                    </div>
+
+
+
+                                    <div class="col-sm-3 col-6 col-mb-3 mb-4">
+
+                                        <label for="email">
+                                            Email
+                                        </label>
+                                        <input type="email" class="form-control" id="email" name="email"  placeholder="test@gmail.com" aria-label="test@gmail.com" required data-rule-required="true"
+                                        >
+                                    </div>
+
+                                    <div class="col-sm-3 col-6 col-mb-3 mb-4">
+                                        <label for="address">
+                                            Address
+                                        </label>
+                                        <input type="text" class="form-control" id="address" name="address" "address"  placeholder="test@gmail.com" aria-label="test@gmail.com" required data-rule-required="true"
+                                        >
+                                    </div>
+
+                                    <div class="col-sm-3 col-6 col-mb-3 mb-4">
+                                        <label for="city">
+                                            City
+                                        </label>
+                                        <input type="text" class="form-control" id="city" name="city"  placeholder="city" aria-label="test@gmail.com" required data-rule-required="true"
+                                        >
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class=" pb-5 px-5" id="myAns">
+
+                        </div>
+                    </form>
+                    <div class="pt-4 pb-5 px-5" id="mydetails" style="display: none">
+                        i will show details here
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+<div class="modal fade" id="staticBackdrop1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-body text-center">
+                <!-- <div class="loader">
+                    <div class="wait">Waiting For response from server</div>
+                                     <div class="iata_code departure_city">TD</div>
+                    <div class="plane">
+                        <img src="https://zupimages.net/up/19/34/4820.gif" class="plane-img">
+                    </div>
+                    <div class="earth-wrapper">
+                        <div class="earth"></div>
+                    </div>
+
+                </div> -->
+                <img src="/assets2/loader.gif" class="img-fluid" style="width: 500px!important;"/>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal" id="mealpop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="mealpopLabel">
+    <div class="modal-dialog modal-lg" style="background-color: white;">
+        <div class="modal-content">
+
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-12" id="mealans">
+
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal" id="mealpopreturn" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="mealpopLabel">
+    <div class="modal-dialog modal-lg" style="background-color: white;">
+        <div class="modal-content">
+
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-12" id="mealansreturn">
+
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal" id="baggagepop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="baggagepopLabel">
+    <div class="modal-dialog modal-lg" style="background-color: white;">
+        <div class="modal-content">
+
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-12" id="baggageans">
+
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="modal" id="baggagepopreturn" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="baggagepopLabel">
+    <div class="modal-dialog modal-lg" style="background-color: white;">
+        <div class="modal-content">
+
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-12" id="baggageansreturn">
+
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal" id="seatpop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="seatpopLabel">
+    <div class="modal-dialog modal-lg" style="background-color: white;">
+        <div class="modal-content">
+
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-12" id="seatans">
+
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="modal" id="rulepop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="rulepopLabel">
+    <div class="modal-dialog modal-lg" style="background-color: white;">
+        <div class="modal-content">
+
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="ticket" id="ticket">
+                        <header class="headerr">
+                            <img id="airlineLogo" alt="Airline Logo" class="logor">
+                            <h1 class="h1r">Flight Ticket</h1>
+                        </header>
+                
+                        <section class="passenger-details sectionr">
+                            <h2>Passenger Details</h2>
+                            <p><strong>Name:</strong> <span id="passengerName"></span></p>
+                            <p><strong>Gender:</strong> <span id="passengerGender"></span></p>
+                            <p><strong>Date of Birth:</strong> <span id="passengerDOB"></span></p>
+                            <p><strong>Passport Number:</strong> <span id="passportNumber"></span></p>
+                            <p><strong>Passport Expiry:</strong> <span id="passportExpiry"></span></p>
+                            <p><strong>Baggage Allowance:</strong> <span id="baggageAllowance"></span></p>
+                        </section>
+                
+                        <section class="flight-details sectionr">
+                            <h2 class="h2r">Flight Details</h2>
+                            <p><strong>Carrier:</strong> <span id="carrier"></span></p>
+                            <p><strong>Flight Number:</strong> <span id="flightNumber"></span></p>
+                            <p><strong>Fare Type:</strong> <span id="fareType"></span></p>
+                            <p><strong>Seat Status:</strong> <span id="seatStatus"></span></p>
+                        </section>
+                
+                        <section class="itinerary sectionr">
+                            <h2 class="h2r">Itinerary</h2>
+                            <table class="tabler">
+                                <tr>
+                                    <th class="thr">Departure</th>
+                                    <th class="thr">Arrival</th>
+                                </tr>
+                                <tr>
+                                    <td id="departureInfo" class="tdr"></td>
+                                    <td id="arrivalInfo" class="tdr"></td>
+                                </tr>
+                            </table>
+                        </section>
+                
+                        <section class="pricing sectionr">
+                            <h2 class="h2r">Pricing</h2>
+                            <table class="tabler">
+                                <tr class="thr">
+                                    <th class="thr">Fare Component</th>
+                                    <th class="thr">Amount (AED)</th>
+                                </tr>
+                                <tr>
+                                    <td class="tdr">Basic Fare</td>
+                                    <td id="basicFare" class="tdr"></td>
+                                </tr>
+                                <tr>
+                                    <td class="tdr">Total Tax</td>
+                                    <td id="totalTax" class="tdr"></td>
+                                </tr>
+                                <tr>
+                                    <td class="tdr">Total Fare</td>
+                                    <td id="totalFare" class="tdr"></td>
+                                </tr>
+                                <tr>
+                                    <td class="tdr">Net Amount</td>
+                                    <td id="netAmount" class="tdr"></td>
+                                </tr>
+                                <tr>
+                                    <td class="tdr">Gross Fare</td>
+                                    <td id="grossFare" class="tdr"></td>
+                                </tr>
+                            </table>
+                        </section>
+                
+                        <section class="booking-info sectionr">
+                            <h2 class="h2r">Booking Information</h2>
+                            <p><strong>Airline PNR:</strong> <span id="airlinePNR"></span></p>
+                            <p><strong>Trvlnxt PNR:</strong> <span id="trvlnxtPNR"></span></p>
+                            <p><strong>Order ID:</strong> <span id="orderId"></span></p>
+                            <p><strong>Hold Booking Till:</strong> <span id="holdDate"></span></p>
+                        </section>
+                
+                        <section class="barcode sectionr">
+                            <h2 class="h2r">Bar Code</h2>
+                            <pre id="barcode" class="prer"></pre>
+                        </section>
+                    </div>
+                
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">ok</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="modal" id="allseats" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="allseatsLabel">
+    <div class="modal-dialog modal-xl" style="background-color: white;">
+        <div class="modal-content">
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-3">
+                        <div class="justify-content-center" id="paxDetails"></div>
+                    </div>
+
+                    <div class="col-5 align-items-center justify-content-center" style="text-align: center">
+                        <div id="popans" class="align-items-center justify-content-center" style="overflow-x: auto; overflow-y: auto; height: 100vh">
+
+                        </div>
+                    </div>
+                    <div class="col-4" style="text-align: center">
+                        <img src="/images/airplane.jpg" style="width: 200px"/>
+
+                        <div class="row">
+                            <div class="col-4">
+                                <div id="pricee" class="mb-3" style="justify-content: center;">
+                                    <!-- Price legends will be dynamically added here -->
+                                </div>
+                            </div>
+                            <div class="col-8">
+                                <div class="mb-3">
+                                    <img src="/images/booked.png"/> Booked Seats
+                                </div>
+                                <div class="mb-3">
+                                    <img src="/images/selected.png"/> Selected Seats
+                                </div>
+                                <div class="mb-3">
+                                    <img src="/images/seat.png" /> Available Seats
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    document.getElementById('mobile').addEventListener('input', function () {
+        var phoneInput = document.getElementById('mobile');
+        var sanitizedValue = phoneInput.value.replace(/\D/g, '');  // Remove all non-digit characters
+
+        // Ensure the sanitized value doesn't exceed the max length
+        if (sanitizedValue.length > 10) {
+            sanitizedValue = sanitizedValue.substring(0, 10);
+        }
+
+        phoneInput.value = sanitizedValue;
+    });
+
+
+    document.getElementById('city').addEventListener('input', function () {
+        var cityInput = document.getElementById('city');
+        var cityPattern = /^[a-zA-Z\s]+$/;
+
+        if (!cityPattern.test(cityInput.value)) {
+            cityInput.value = '';
+
+        }
+    });
+
+    document.getElementById('address').addEventListener('input', function () {
+        var addressInput = document.getElementById('address');
+        var addressPattern = /^[a-zA-Z0-9\s]+$/;
+
+        if (!addressPattern.test(addressInput.value)) {
+            addressInput.value = addressInput.value.replace(/[^a-zA-Z0-9\s]/g, '');
+
+        }
+    });
+</script>

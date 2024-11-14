@@ -1,0 +1,220 @@
+<nav class="navbar navbar-expand-lg navbar-light mt-1">
+    <div class="container-fluid">
+        <a href="/agent-dashboard" class="brand-logo mt-1">
+            <img src="/assets/img/TDO_logo1.png" class="ms-2" alt="Logo" width="100px" id="logo" height="60">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse mt-1" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <% if (userType === "Co-Admin" || userType === "Travel agent" || userType === "Sub Admin" || userType === "Limited User") { %>
+                    <li class="nav-item ms-5 custom-font">
+                        <a class="nav-link active" aria-current="page" href="/agent-dashboard">Dashboard</a>
+                    </li>
+                <% } %>
+
+                <% if (userType === "Co-Admin" || userType === "Travel agent" || userType === "Sub Admin" || userType === "Limited User") { %>
+
+                    <li class="nav-item dropdown fs-8 ms-2 custom-font">
+                        <a class="nav-link dropdown-toggle" style="color: #333;" href="#" id="flightsDropdown"
+                           aria-expanded="false">
+                            Flights
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="flightsDropdown">
+                            <li><a href="/flights" class="dropdown-item">Book Flights</a></li>
+                            <li><a href="/flights/viewHoldBookings" class="dropdown-item">View Hold Bookings</a></li>
+                            <li><a href="#" class="dropdown-item">View Released Bookings</a></li>
+                            <li><a href="/flights/viewTicketedBookings" class="dropdown-item">View Ticketed Bookings</a>
+                            </li>
+                            <li><a href="#" class="dropdown-item">View Failed Bookings</a></li>
+                        </ul>
+                    </li>
+                <% } %>
+
+                <% if (userType === "Co-Admin" || userType === "Travel agent" || userType === "Sub Admin" || userType === "Limited User") { %>
+                    <li class="nav-item dropdown fs-8 ms-2 custom-font">
+                        <a class="nav-link dropdown-toggle" style="color: #333;" href="#"
+                           id="fixedDepartureDropdown"
+                           aria-expanded="false">
+                            Fixed Departure
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="fixedDepartureDropdown">
+                            <li><a href="/flights" class="dropdown-item">Book Flights</a></li>
+                            <li><a href="#" class="dropdown-item">Ticketed Bookings</a></li>
+                            <li><a href="#" class="dropdown-item">Search Bookings</a></li>
+                        </ul>
+                    </li>
+                <% } %>
+                <% if (userType === "Co-Admin" || userType === "Travel agent" || userType === "Sub Admin" || userType === "Limited User") { %>
+                    <li class="nav-item dropdown fs-8 ms-2 custom-font">
+                        <a class="nav-link dropdown-toggle" style="color: #333;" href="#" id="hotelDropdown"
+                           aria-expanded="false">
+                            Hotel
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="hotelDropdown">
+                            <li><a href="/flights" class="dropdown-item">Book Hotel</a></li>
+                            <li><a href="#" class="dropdown-item">View Success Bookings</a></li>
+                        </ul>
+                    </li>
+                <% } %>
+
+                <% if (userType === "Travel agent") { %>
+                    <li class="nav-item dropdown fs-8 ms-2 custom-font">
+                        <a class="nav-link dropdown-toggle" style="color: #333;" href="#" id="logsDropdown"
+                           aria-expanded="false">
+                            Logs
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="logsDropdown">
+                            <li><a href="/activityLog" class="dropdown-item">Activity Logs</a></li>
+                            <li><a href="/check-logs" class="dropdown-item">LogIn / LogOut Logs</a></li>
+                            <li><a href="/show_flight_search_log" class="dropdown-item">Search Flight Logs</a></li>
+                            <li><a href="/subUser_log" class="dropdown-item">Sub_User Logs</a></li>
+                        </ul>
+                    </li>
+                <% } %>
+
+                <% if (userType === "Co-Admin" || userType === "Travel agent" || userType === "Sub Admin") { %>
+                    <li class="nav-item dropdown fs-8 ms-2 custom-font">
+                        <a class="nav-link dropdown-toggle" style="color: #333;" href="#" id="walletDropdown"
+                           aria-expanded="false">
+                            Wallet
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="walletDropdown">
+                            <li><a href="/agentWallet" class="dropdown-item">Wallet Top UP</a></li>
+                            <li><a href="/add_walletMID" class="dropdown-item">Deposit Request</a></li>
+                            <li><a href="/walletSummary" class="dropdown-item">View Transactions</a></li>
+                        </ul>
+                    </li>
+                <% } %>
+
+                <% if (userType === "Co-Admin" || userType === "Travel agent") { %>
+                    <li class="nav-item ms-2 custom-font">
+                        <a class="nav-link active" aria-current="page" href="/setting">Control Panel</a>
+                    </li>
+                <% } %>
+
+            </ul>
+        </div>
+        <ul class="navbar-nav header-right">
+
+
+            <div class="header-info mt-3 dropdown">
+                <div class="text-end" style="cursor: pointer;" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fa-solid fa-wallet me-1" style="width: 10px; color: #c02323;"></i>
+                    <span style="color: black;" id="wal_a_m" class="fs-13">0</span>
+                </div>
+                <span class="fs-13 font-w600" style="color: black;"><%= agentEmail %></span>
+                <ul class="dropdown-menu dropdown-menu-end mt-3">
+                    <li>
+                        <a class="dropdown-item d-flex justify-content-between align-items-center" href="#">
+                            <span>
+                                <i class="fa-solid fa-money-check me-1" style="color: #c02323;"></i>Credited Amount:
+                            </span>
+                            <span id="walletCreditBalance" class="me-1">0</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item d-flex justify-content-between align-items-center" href="#">
+                            <span>
+                                <i class="fa-solid fa-money-check me-1" style="color: #c02323;"></i>Debited Amount:
+                            </span>
+                            <span id="walletDebitBalance" class="me-1">0</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item d-flex justify-content-between align-items-center" href="#">
+                            <span>
+                                <i class="fa-solid fa-money-check me-1" style="color: #c02323;"></i>Current Balance:
+                            </span>
+                            <span id="walletBalance" class="me-1">0</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+
+            <div class="header-info dropdown">
+                <a class="nav-link" href="javascript:void(0);" role="button" data-bs-toggle="dropdown">
+                    <img src="" width="70" height="45" alt="" id="demo_avatar" class="mt-1">
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end mt-3">
+                    <li>
+                        <a href="/agent-profile" class="dropdown-item ai-icon">
+                            <span style="text-align: left;">View Profile </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/manage-subUser" class="dropdown-item ai-icon">
+                            <span style="text-align: left;">Manage Sub-User</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/changePassword" class="dropdown-item ai-icon">
+                            <span style="text-align: left">Change Password</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="logout()" class="dropdown-item ai-icon">
+                            <button class="btn w-17 h-8 fs-10"
+                                    style="text-align: left;background: #c02323;color: white;font-weight: bold">Logout
+                            </button>
+
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+        </ul>
+    </div>
+</nav>
+<style>
+    /* Apply a global font style to the navbar */
+    .navbar, .navbar-nav, .navbar-nav a, .dropdown-menu, .header-info, .dropdown-item {
+        font-size: 14px; /* Adjust the font size as needed */
+        color: #333; /* Text color */
+    }
+
+
+    .navbar .header-info .dropdown-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* Dropdown on hover */
+    .nav-item.dropdown:hover .dropdown-menu {
+        display: block;
+        color: #05264e;
+    }
+
+    /* Prevent dropdown from closing on hover */
+    .dropdown-menu:hover {
+        display: block;
+    }
+
+    /* Change color of sub-dropdown items on hover */
+    .dropdown-menu .dropdown-item:hover {
+        background-color: white; /* Change background color to red */
+        color: #c02323; /* Change text color to white for better contrast */
+    }
+
+</style>
+<script>
+    function logout() {
+        Swal.fire({
+            title: "Are you sure?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Logout"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "/logout"
+            }
+        });
+    }
+</script>
+
