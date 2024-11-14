@@ -931,7 +931,17 @@ flightController.getAllFlightsRound = async (req, res) => {
         try{
             const connection = await connectToDatabase();
             const [country] = await flightServices.GetCountry(connection,from,to)
+            console.log("Region", country);
+            console.log(country[0]?.JourneyType);
+
+
+        }catch (e) {
+            console.log(e);
+            return res.json({error: true, message: e.message});
+        } finally {
+            if (connection) connection.release();  // Return the connection to the pool
         }
+
 
 
         let apiUrl = `http://trvlnxtgateway.parikshan.net/api/Availability`;
@@ -948,31 +958,31 @@ flightController.getAllFlightsRound = async (req, res) => {
             flightClass = "BUSINESS"
         }
 
-        const tboRequest = await axios.post(apiUrl, {
-            "Departure": `${from}`,
-            "Arrival": `${to}`,
-            "departureDate": `${travelDate}T00:00:00`,
-            "arrivalDate": `${travelReturnDate}T00:00:00`,
-            "cabin": "Y",
-            "tripType": "R",
-            "preferredAirline": "",
-            "paxType": {
-                "adult": adults,
-                "child": child,
-                "infant": infants
-            },
-            "stop": {
-                "oneStop": false,
-                "twoStop": false,
-                "nonStop": false
-            }
-        }, {
-            headers: {
-                'Accept-Encoding': 'gzip, deflate',
-                'ApiKey': `VFJBVkVMIERFQUwgT25saW5lIC0gQ1VTVDMwMDcyNA==`,
-                'Content-Type': 'application/json'
-            }
-        });
+        // const tboRequest = await axios.post(apiUrl, {
+        //     "Departure": `${from}`,
+        //     "Arrival": `${to}`,
+        //     "departureDate": `${travelDate}T00:00:00`,
+        //     "arrivalDate": `${travelReturnDate}T00:00:00`,
+        //     "cabin": "Y",
+        //     "tripType": "R",
+        //     "preferredAirline": "",
+        //     "paxType": {
+        //         "adult": adults,
+        //         "child": child,
+        //         "infant": infants
+        //     },
+        //     "stop": {
+        //         "oneStop": false,
+        //         "twoStop": false,
+        //         "nonStop": false
+        //     }
+        // }, {
+        //     headers: {
+        //         'Accept-Encoding': 'gzip, deflate',
+        //         'ApiKey': `VFJBVkVMIERFQUwgT25saW5lIC0gQ1VTVDMwMDcyNA==`,
+        //         'Content-Type': 'application/json'
+        //     }
+        // });
 
 
         // Execute both requests concurrently and handle individual errors

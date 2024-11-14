@@ -203,8 +203,9 @@ Values(${agentId},'${from}','${to}',${total_no_of_pax},${adult},${child},${infan
 flightsServices.GetCountry = async (connection,from,to) =>{
     return connection.execute(`SELECT 
     CASE 
-        WHEN (SELECT TOP 1 CountryCode FROM Flight.Airport WHERE CityCode = '${from}' ORDER BY CountryCode) = 
-             (SELECT TOP 1 CountryCode FROM Flight.Airport WHERE CityCode = '${to}' ORDER BY CountryCode)
-        THEN 'D' ELSE 'I' END AS JourneyType`)
+        WHEN (SELECT CountryCode FROM Airport WHERE CityCode = '${from}' ORDER BY CountryCode LIMIT 1) = 
+             (SELECT CountryCode FROM Airport WHERE CityCode = '${to}' ORDER BY CountryCode LIMIT 1)
+        THEN 'D' ELSE 'I' 
+    END AS JourneyType;`)
 }
 module.exports = flightsServices;
