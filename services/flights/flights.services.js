@@ -198,4 +198,13 @@ flightsServices.addFlightSearchData = async (connection,agentId,from,to,total_no
     return connection.execute(`insert into flight_search_log(agent_id, \`from\`, \`to\`, total_no_of_pax, no_of_adults, no_of_childs, no_of_infants, departure_date, return_date, journey_type, class, search_date_time, client_ip)
 Values(${agentId},'${from}','${to}',${total_no_of_pax},${adult},${child},${infant},'${travel_date}','${return_date}','${journey_type}','${fare_type}','${time}','${clientIp}')`);
 };
+
+
+flightsServices.GetCountry = async (connection,from,to) =>{
+    return connection.execute(`SELECT 
+    CASE 
+        WHEN (SELECT TOP 1 CountryCode FROM Flight.Airport WHERE CityCode = '${from}' ORDER BY CountryCode) = 
+             (SELECT TOP 1 CountryCode FROM Flight.Airport WHERE CityCode = '${to}' ORDER BY CountryCode)
+        THEN 'D' ELSE 'I' END AS JourneyType`)
+}
 module.exports = flightsServices;

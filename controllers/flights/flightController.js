@@ -926,6 +926,13 @@ flightController.getAllFlightsRound = async (req, res) => {
         console.log(req.body)
         let {from, to, travelDate, travelReturnDate, fare_type, adults, child, infants, ResultFareType} = req.body;
 
+        let connection ;
+
+        try{
+            const connection = await connectToDatabase();
+            const [country] = await flightServices.GetCountry(connection,from,to)
+        }
+
 
         let apiUrl = `http://trvlnxtgateway.parikshan.net/api/Availability`;
 
