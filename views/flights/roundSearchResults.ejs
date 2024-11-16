@@ -533,12 +533,10 @@
 
         res = await flightData.json();
 
-        //console.log(res)
+        console.log(res)
         // flightData = res?.data || res?.COMBO || [];
         // type = res?.data ? 'CUSTOM' : res?.COMBO ? 'FIXED' : '';
         //console.log(flightData);
-
-
 
 
         document.getElementById("renderFixed").innerHTML = '';
@@ -610,7 +608,28 @@
             `;
         //console.log(res.response.data.onwardFlights.length)
         //console.log(res)
-        if (res.response.data?.onwardFlights?.length > 0 && res.response.data?.returnFlights?.length > 0) {
+
+        if (res.Custom === 'YES') {
+            console.log("CUSTOM");
+
+            // Extract onward and return flights from the response
+            const onwardFlights = res.onwardFlights;
+            const returnFlights = res.returnFlights;
+
+            // Combine both flights data into a single object
+            let flight = { onwardFlights, returnFlights };
+
+            // Push the combined flight object into the flightArray
+            flightArray.push({
+                flight: flight,
+            });
+
+            // Pass the combined flight data to FlightRoundCards for rendering
+            let flightCards = new FlightRoundCards(flight, index);
+            flightHTML += flightCards.render();
+        }
+
+        else if (res.response.data?.onwardFlights?.length > 0 && res.response.data?.returnFlights?.length > 0) {
             const onwardFlights = res.response.data.onwardFlights;
             const returnFlights = res.response.data.returnFlights;
 

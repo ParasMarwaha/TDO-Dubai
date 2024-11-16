@@ -926,717 +926,1473 @@ flightController.getAllFlightsRound = async (req, res) => {
         console.log(req.body)
         let {from, to, travelDate, travelReturnDate, fare_type, adults, child, infants, ResultFareType} = req.body;
 
-        let connection ;
+        let connection;
 
-        try{
+        try {
             const connection = await connectToDatabase();
-            const [country] = await flightServices.GetCountry(connection,from,to)
+            const [country] = await flightServices.GetCountry(connection, from, to)
             console.log("Region", country);
             console.log(country[0]?.JourneyType);
 
+            if (country[0]?.JourneyType === 'I') {
 
-        }catch (e) {
+
+                let apiUrl = `http://trvlnxtgateway.parikshan.net/api/Availability`;
+
+                let flightClass = ""
+
+                if (parseInt(fare_type) === 2) {
+                    flightClass = "ECONOMY"
+                } else if (parseInt(fare_type) === 6) {
+                    flightClass = "FIRST CLASS"
+                } else if (parseInt(fare_type) === 6) {
+                    flightClass = "PREMIUM ECONOMY"
+                } else {
+                    flightClass = "BUSINESS"
+                }
+
+                const tboRequest = await axios.post(apiUrl, {
+                    "Departure": `${from}`,
+                    "Arrival": `${to}`,
+                    "departureDate": `${travelDate}T00:00:00`,
+                    "arrivalDate": `${travelReturnDate}T00:00:00`,
+                    "cabin": "Y",
+                    "tripType": "R",
+                    "preferredAirline": "",
+                    "paxType": {
+                        "adult": adults,
+                        "child": child,
+                        "infant": infants
+                    },
+                    "stop": {
+                        "oneStop": false,
+                        "twoStop": false,
+                        "nonStop": false
+                    }
+                }, {
+                    headers: {
+                        'Accept-Encoding': 'gzip, deflate',
+                        'ApiKey': `VFJBVkVMIERFQUwgT25saW5lIC0gQ1VTVDMwMDcyNA==`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+
+                // Execute both requests concurrently and handle individual errors
+                const [tboResponse] = await Promise.allSettled([tboRequest]);
+
+                let parsedTBOData = [];
+
+
+                // Check if Travelopedia API request was successful
+                if (tboResponse.status === "fulfilled") {
+
+                    if (tboResponse.value.data.ResponseStatusType.Success === true) {
+                        // Assuming tboResponse.value.data.Response.Results[0] is your flights array
+
+// Group flights by AirlineCode and FlightNumber
+                        let groupedFlights = tboResponse.value.data.Journeys[0].Flights.reduce((acc, flight) => {
+
+                            let mySegments = flight.Segments;
+
+                            let airlineCode = flight.ValidatingCarrier;
+                            let airlineName = flight.SupplierName;
+                            let flightNumber = mySegments[0].FlightNumber;
+                            let stops = `${mySegments.length - 1} Stops`;
+                            let key = `${airlineCode}_${flightNumber}`;
+                            // Add segments to the grouped object
+                            let deptTime = flight.OriginDestination.DepartureDateTime;
+                            let ArrTime = flight.OriginDestination.ArrivalDateTime;
+
+                            let formattedDuration = calculateDuration(deptTime, ArrTime);
+
+                            let Origin = {
+                                CityCode: mySegments[0].OriginDestination.Departure,
+                                CityName: mySegments[0].OriginDestination.Departure,
+                                AirportCode: mySegments[0].OriginDestination.Departure,
+                                AirportName: mySegments[0].OriginDestination.Departure,
+                                airlineCode: mySegments[0].Carrier,
+                                airlineName: mySegments[0].Carrier,
+                                Terminal: mySegments[0].DepartureTerminal,
+                                FlightNumber: mySegments[0].FlightNumber,
+                                DepDateTime: deptTime,
+                                DepTime: convertToTime(deptTime),
+                                DepDate: convertToDesiredFormat(deptTime),
+                                Time: getTimeOfDay(deptTime)
+                            }
+                            let Destination = {
+                                CityCode: mySegments[mySegments.length - 1].OriginDestination.Arrival,
+                                CityName: mySegments[mySegments.length - 1].OriginDestination.Arrival,
+                                AirportCode: mySegments[mySegments.length - 1].OriginDestination.Arrival,
+                                AirportName: mySegments[mySegments.length - 1].OriginDestination.Arrival,
+                                Terminal: mySegments[mySegments.length - 1].ArrivalTerminal,
+                                airlineCode: mySegments[mySegments.length - 1].Carrier,
+                                airlineName: mySegments[mySegments.length - 1].Carrier,
+                                FlightNumber: mySegments[mySegments.length - 1].FlightNumber,
+                                ArrDateTime: ArrTime,
+                                ArrTime: convertToTime(ArrTime),
+                                ArrDate: convertToDesiredFormat(ArrTime),
+                                Time: getTimeOfDay(ArrTime)
+                            }
+
+                            if (!acc[key]) {
+                                acc[key] = {
+                                    Supplier: "RIYA",
+                                    adults: adults,
+                                    childs: child,
+                                    infants: infants,
+                                    formattedDuration: formattedDuration,
+                                    Origin: Origin,
+                                    Stops: stops,
+                                    Destination: Destination,
+                                    AirlineCode: airlineCode,
+                                    AirlineName: airlineName,
+                                    FlightNumber: flightNumber,
+                                    Details: []
+                                };
+                            }
+
+
+                            let flightDetails = [];
+                            // Fix: Wrap the object in parentheses
+                            let previousArrivalTime = null;
+
+                            // Add segments
+                            let segments = mySegments.map(segment => {
+                                let layoverTime = 0;
+                                // Calculate layover time only for segments after the first one
+                                if (previousArrivalTime) {
+                                    layoverTime = calculateDuration(previousArrivalTime, segment.OriginDestination.DepartureDateTime); // Add 1 to the calculated duration
+                                }
+
+                                // Update previous arrival time for the next iteration
+                                previousArrivalTime = segment.OriginDestination.ArrivalDateTime;
+
+                                flightClass = segment?.OriginDestination?.Cabin || 'Not Mentioned'
+
+
+                                let obj = {
+                                    ArrivalCityCode: segment.OriginDestination.Arrival,
+                                    ArrivalCityName: segment.OriginDestination.Arrival,
+                                    DepartureCityCode: segment.OriginDestination.Departure,
+                                    DepartureCityName: segment.OriginDestination.Departure,
+                                    flightClass: flightClass,
+                                    Baggage: segment.Baggages,
+                                    FlightNumber: segment.FlightNumber,
+                                    CabinBaggage: segment.CabinBaggage,
+                                    AirlineCode: segment.Carrier,
+                                    AirlineName: segment.Carrier,
+                                    DepartureAirportCode: segment.OriginDestination.Departure,
+                                    ArrivalAirportCode: segment.OriginDestination.Arrival,
+                                    DepartureAirportName: segment.OriginDestination.Departure,
+                                    ArrivalAirportName: segment.OriginDestination.Arrival,
+                                    DepDateTime: segment.OriginDestination.DepartureDateTime,
+                                    ArrDateTime: segment.OriginDestination.ArrivalDateTime,
+                                    DepTime: convertToTime(segment.OriginDestination.DepartureDateTime),
+                                    ArrTime: convertToTime(segment.OriginDestination.ArrivalDateTime),
+                                    DepDate: convertToDesiredFormat(segment.OriginDestination.DepartureDateTime),
+                                    ArrDate: convertToDesiredFormat(segment.OriginDestination.ArrivalDateTime),
+                                    Duration: calculateDuration(segment.OriginDestination.DepartureDateTime, segment.OriginDestination.ArrivalDateTime),
+                                    LayoverTime: layoverTime || 0,
+                                    DepartureTerminal: segment.DepartureTerminal,
+                                    ArrivalTerminal: segment.ArrivalTerminal
+                                }
+                                flightDetails.push(obj);
+                            });
+
+
+                            let fare = flight.FareName;
+
+
+                            let ResultIndex = flight.FlightKey
+
+                            let k3Tax = 0, yqTax = 0, yrTax = 0, otherTaxesSum = 0;
+
+// Loop through the TaxBreakup array
+                            flight?.FlightPricingInfo?.FlightTaxDetails?.forEach(tax => {
+                                if (tax?.TaxCode === 'K3') {
+                                    k3Tax = tax?.TaxAmount;
+                                } else if (tax?.TaxCode === 'YQ') {
+                                    yqTax = tax?.TaxAmount;
+                                } else if (tax?.TaxCode === 'YR') {
+                                    yrTax = tax?.TaxAmount;
+                                } else if (tax?.TaxAmount !== 'TotalTax') {
+                                    // Sum other taxes excluding K3, YQ, YR, and TotalTax
+                                    otherTaxesSum += tax?.TaxAmount;
+                                }
+                            });
+
+
+                            let adultFare = 0;
+                            let childFare = 0;
+                            let infantFare = 0;
+                            let adultBaseFare = 0;
+                            let childBasefare = 0;
+                            let infantBaseFare = 0;
+                            let adultTotaltax = 0;
+                            let childTotalTax = 0;
+                            let infantTotalTax = 0;
+                            let adultk3Tax = 0, adultyqTax = 0, adultyrTax = 0, adultTaxesSum = 0;
+                            let childk3Tax = 0, childyqTax = 0, childyrTax = 0, childTaxesSum = 0;
+                            let infantk3Tax = 0, infantyqTax = 0, infantyrTax = 0, infantTaxesSum = 0;
+
+                            for (let i = 0; i < flight.FlightPricingInfo.PaxFareDetails.length; i++) {
+
+                                let paxFare = flight.FlightPricingInfo.PaxFareDetails[i]
+
+                                if (paxFare.PaxType === 'ADT') {
+
+                                    adultFare = parseFloat(paxFare.BasicFare) + parseFloat(paxFare.TotalTax)
+
+                                    adultBaseFare = parseFloat(paxFare.BasicFare);
+
+                                    adultTotaltax = parseFloat(paxFare.TotalTax)
+
+                                    paxFare?.PaxTaxDetails?.forEach(tax => {
+                                        if (tax?.TaxCode === 'K3') {
+                                            adultk3Tax = tax?.TaxAmount;
+                                        } else if (tax?.TaxCode === 'YQ') {
+                                            adultyqTax = tax?.TaxAmount;
+                                        } else if (tax?.TaxCode === 'YR') {
+                                            adultyrTax = tax?.TaxAmount;
+                                        } else if (tax?.TaxAmount !== 'TotalTax') {
+                                            // Sum other taxes excluding K3, YQ, YR, and TotalTax
+                                            adultTaxesSum += tax?.TaxAmount;
+                                        }
+                                    });
+
+                                }
+
+                                if (paxFare.PaxType === 'CHD') {
+
+                                    childFare = parseFloat(paxFare.BasicFare) + parseFloat(paxFare.TotalTax)
+
+                                    childBasefare = parseFloat(paxFare.BasicFare);
+
+                                    childTotalTax = parseFloat(paxFare.TotalTax)
+
+                                    paxFare?.PaxTaxDetails?.forEach(tax => {
+                                        if (tax?.TaxCode === 'K3') {
+                                            childk3Tax = tax?.TaxAmount;
+                                        } else if (tax?.TaxCode === 'YQ') {
+                                            childyqTax = tax?.TaxAmount;
+                                        } else if (tax?.TaxCode === 'YR') {
+                                            childyrTax = tax?.TaxAmount;
+                                        } else if (tax?.TaxAmount !== 'TotalTax') {
+                                            // Sum other taxes excluding K3, YQ, YR, and TotalTax
+                                            childTaxesSum += tax?.TaxAmount;
+                                        }
+                                    });
+
+                                }
+                                if (paxFare.PaxType === 'INF') {
+
+                                    infantFare = parseFloat(paxFare.BasicFare) + parseFloat(paxFare.TotalTax)
+
+                                    infantBaseFare = parseFloat(paxFare.BasicFare);
+
+                                    infantTotalTax = parseFloat(paxFare.TotalTax)
+
+                                    paxFare?.PaxTaxDetails?.forEach(tax => {
+                                        if (tax?.TaxCode === 'K3') {
+                                            infantk3Tax = tax?.TaxAmount;
+                                        } else if (tax?.TaxCode === 'YQ') {
+                                            infantyqTax = tax?.TaxAmount;
+                                        } else if (tax?.TaxCode === 'YR') {
+                                            infantyrTax = tax?.TaxAmount;
+                                        } else if (tax?.TaxAmount !== 'TotalTax') {
+                                            // Sum other taxes excluding K3, YQ, YR, and TotalTax
+                                            infantTaxesSum += tax?.TaxAmount;
+                                        }
+                                    });
+
+                                }
+                            }
+
+                            // let fareDifference = parseFloat(flight.Fare.PublishedFare) - parseFloat(flight.Fare.OfferedFare);
+
+                            // let markup_type = (fareDifference > 0) ? 'PLB' : 'Non PLB';
+
+                            // let markup_value = 0, markup_percentage = 0;
+
+                            // let journey_type = (markup?.[0]?.CountryCode === 'IN') ? 'Domestic' : 'International';
+
+
+                            let commission = parseFloat(flight.GrossFare) - parseFloat(flight.NetAmount)
+
+                            let tds = (parseInt(commission) === 0) ? 0 : (commission * 5 / 100).toFixed(2);
+
+                            let fareBreakup = {
+                                BaseFare: flight.BasicFare,
+                                totalTax: flight.TotalTax,
+                                k3Tax: k3Tax,
+                                yqTax: yqTax,
+                                yrTax: yrTax,
+                                otherTaxesSum: otherTaxesSum,
+                                PublishedFare: parseFloat(flight.TotalFare),
+                                CommissionEarned: commission,
+                                TdsOnCommission: tds,
+                                IncentiveEarned: 0,
+                                OfferedFare: flight.NetAmount,
+                                Discount: 0,
+                                ServiceFee: 0,
+                                OtherCharges: 0,
+                                Adult: {
+                                    adultBaseFare: adultBaseFare,
+                                    adultTotaltax: adultTotaltax,
+                                    adultyqTax: adultyqTax,
+                                    adultk3Tax: adultk3Tax,
+                                    adultyrTax: adultyrTax,
+                                    adultTaxesSum: adultTaxesSum
+                                },
+                                child: {
+                                    childBaseFare: childBasefare,
+                                    childTotalTax: childTotalTax,
+                                    childyqTax: childyqTax,
+                                    childk3Tax: childk3Tax,
+                                    childyrTax: childyrTax,
+                                    childTaxesSum: childTaxesSum
+                                },
+                                infant: {
+                                    infantBaseFare: infantBaseFare,
+                                    infantTotalTax: infantTotalTax,
+                                    infantyqTax: infantyqTax,
+                                    infantk3Tax: infantk3Tax,
+                                    infantyrTax: infantyrTax,
+                                    infantTaxesSum: infantTaxesSum
+                                }
+                            }
+
+                            let Baggage = {
+                                Baggage: `${mySegments[0].Baggage.Weight}-${mySegments[0].Baggage.Unit}`,
+                                CabinBaggage: mySegments[0].CabinBaggage
+                            }
+
+
+                            acc[key].Details.push({
+                                flightDetails,
+                                fare: fare,
+                                FareBreakup: fareBreakup,
+                                Baggage: Baggage,
+                                ResultIndex: ResultIndex
+                            });
+
+
+                            return acc;
+                        }, {});
+
+                        let groupedReturnFlights = tboResponse.value.data.Journeys[1].Flights.reduce((acc, flight) => {
+
+                            let mySegments = flight.Segments;
+
+                            let airlineCode = flight.ValidatingCarrier;
+                            let airlineName = flight.SupplierName;
+                            let flightNumber = mySegments[0].FlightNumber;
+                            let stops = `${mySegments.length - 1} Stops`;
+                            let key = `${airlineCode}_${flightNumber}`;
+                            // Add segments to the grouped object
+                            let deptTime = flight.OriginDestination.DepartureDateTime;
+                            let ArrTime = flight.OriginDestination.ArrivalDateTime;
+
+                            let formattedDuration = calculateDuration(deptTime, ArrTime);
+
+                            let Origin = {
+                                CityCode: mySegments[0].OriginDestination.Departure,
+                                CityName: mySegments[0].OriginDestination.Departure,
+                                AirportCode: mySegments[0].OriginDestination.Departure,
+                                AirportName: mySegments[0].OriginDestination.Departure,
+                                airlineCode: mySegments[0].Carrier,
+                                airlineName: mySegments[0].Carrier,
+                                Terminal: mySegments[0].DepartureTerminal,
+                                FlightNumber: mySegments[0].FlightNumber,
+                                DepDateTime: deptTime,
+                                DepTime: convertToTime(deptTime),
+                                DepDate: convertToDesiredFormat(deptTime),
+                                Time: getTimeOfDay(deptTime)
+                            }
+                            let Destination = {
+                                CityCode: mySegments[mySegments.length - 1].OriginDestination.Arrival,
+                                CityName: mySegments[mySegments.length - 1].OriginDestination.Arrival,
+                                AirportCode: mySegments[mySegments.length - 1].OriginDestination.Arrival,
+                                AirportName: mySegments[mySegments.length - 1].OriginDestination.Arrival,
+                                Terminal: mySegments[mySegments.length - 1].ArrivalTerminal,
+                                airlineCode: mySegments[mySegments.length - 1].Carrier,
+                                airlineName: mySegments[mySegments.length - 1].Carrier,
+                                FlightNumber: mySegments[mySegments.length - 1].FlightNumber,
+                                ArrDateTime: ArrTime,
+                                ArrTime: convertToTime(ArrTime),
+                                ArrDate: convertToDesiredFormat(ArrTime),
+                                Time: getTimeOfDay(ArrTime)
+                            }
+
+                            if (!acc[key]) {
+                                acc[key] = {
+                                    Supplier: "RIYA",
+                                    adults: adults,
+                                    childs: child,
+                                    infants: infants,
+                                    formattedDuration: formattedDuration,
+                                    Origin: Origin,
+                                    Stops: stops,
+                                    Destination: Destination,
+                                    AirlineCode: airlineCode,
+                                    AirlineName: airlineName,
+                                    FlightNumber: flightNumber,
+                                    Details: []
+                                };
+                            }
+
+
+                            let flightDetails = [];
+                            // Fix: Wrap the object in parentheses
+                            let previousArrivalTime = null;
+
+                            // Add segments
+                            let segments = mySegments.map(segment => {
+                                let layoverTime = 0;
+                                // Calculate layover time only for segments after the first one
+                                if (previousArrivalTime) {
+                                    layoverTime = calculateDuration(previousArrivalTime, segment.OriginDestination.DepartureDateTime); // Add 1 to the calculated duration
+                                }
+
+                                // Update previous arrival time for the next iteration
+                                previousArrivalTime = segment.OriginDestination.ArrivalDateTime;
+
+                                flightClass = segment?.OriginDestination?.Cabin || 'Not Mentioned'
+
+
+                                let obj = {
+                                    ArrivalCityCode: segment.OriginDestination.Arrival,
+                                    ArrivalCityName: segment.OriginDestination.Arrival,
+                                    DepartureCityCode: segment.OriginDestination.Departure,
+                                    DepartureCityName: segment.OriginDestination.Departure,
+                                    flightClass: flightClass,
+                                    Baggage: segment.Baggages,
+                                    FlightNumber: segment.FlightNumber,
+                                    CabinBaggage: segment.CabinBaggage,
+                                    AirlineCode: segment.Carrier,
+                                    AirlineName: segment.Carrier,
+                                    DepartureAirportCode: segment.OriginDestination.Departure,
+                                    ArrivalAirportCode: segment.OriginDestination.Arrival,
+                                    DepartureAirportName: segment.OriginDestination.Departure,
+                                    ArrivalAirportName: segment.OriginDestination.Arrival,
+                                    DepDateTime: segment.OriginDestination.DepartureDateTime,
+                                    ArrDateTime: segment.OriginDestination.ArrivalDateTime,
+                                    DepTime: convertToTime(segment.OriginDestination.DepartureDateTime),
+                                    ArrTime: convertToTime(segment.OriginDestination.ArrivalDateTime),
+                                    DepDate: convertToDesiredFormat(segment.OriginDestination.DepartureDateTime),
+                                    ArrDate: convertToDesiredFormat(segment.OriginDestination.ArrivalDateTime),
+                                    Duration: calculateDuration(segment.OriginDestination.DepartureDateTime, segment.OriginDestination.ArrivalDateTime),
+                                    LayoverTime: layoverTime || 0,
+                                    DepartureTerminal: segment.DepartureTerminal,
+                                    ArrivalTerminal: segment.ArrivalTerminal
+                                }
+                                flightDetails.push(obj);
+                            });
+
+
+                            let fare = flight.FareName;
+
+
+                            let ResultIndex = flight.FlightKey
+
+                            let k3Tax = 0, yqTax = 0, yrTax = 0, otherTaxesSum = 0;
+
+// Loop through the TaxBreakup array
+                            flight?.FlightPricingInfo?.FlightTaxDetails?.forEach(tax => {
+                                if (tax?.TaxCode === 'K3') {
+                                    k3Tax = tax?.TaxAmount;
+                                } else if (tax?.TaxCode === 'YQ') {
+                                    yqTax = tax?.TaxAmount;
+                                } else if (tax?.TaxCode === 'YR') {
+                                    yrTax = tax?.TaxAmount;
+                                } else if (tax?.TaxAmount !== 'TotalTax') {
+                                    // Sum other taxes excluding K3, YQ, YR, and TotalTax
+                                    otherTaxesSum += tax?.TaxAmount;
+                                }
+                            });
+
+
+                            let adultFare = 0;
+                            let childFare = 0;
+                            let infantFare = 0;
+                            let adultBaseFare = 0;
+                            let childBasefare = 0;
+                            let infantBaseFare = 0;
+                            let adultTotaltax = 0;
+                            let childTotalTax = 0;
+                            let infantTotalTax = 0;
+                            let adultk3Tax = 0, adultyqTax = 0, adultyrTax = 0, adultTaxesSum = 0;
+                            let childk3Tax = 0, childyqTax = 0, childyrTax = 0, childTaxesSum = 0;
+                            let infantk3Tax = 0, infantyqTax = 0, infantyrTax = 0, infantTaxesSum = 0;
+
+                            for (let i = 0; i < flight.FlightPricingInfo.PaxFareDetails.length; i++) {
+
+                                let paxFare = flight.FlightPricingInfo.PaxFareDetails[i]
+
+                                if (paxFare.PaxType === 'ADT') {
+
+                                    adultFare = parseFloat(paxFare.BasicFare) + parseFloat(paxFare.TotalTax)
+
+                                    adultBaseFare = parseFloat(paxFare.BasicFare);
+
+                                    adultTotaltax = parseFloat(paxFare.TotalTax)
+
+                                    paxFare?.PaxTaxDetails?.forEach(tax => {
+                                        if (tax?.TaxCode === 'K3') {
+                                            adultk3Tax = tax?.TaxAmount;
+                                        } else if (tax?.TaxCode === 'YQ') {
+                                            adultyqTax = tax?.TaxAmount;
+                                        } else if (tax?.TaxCode === 'YR') {
+                                            adultyrTax = tax?.TaxAmount;
+                                        } else if (tax?.TaxAmount !== 'TotalTax') {
+                                            // Sum other taxes excluding K3, YQ, YR, and TotalTax
+                                            adultTaxesSum += tax?.TaxAmount;
+                                        }
+                                    });
+
+                                }
+
+                                if (paxFare.PaxType === 'CHD') {
+
+                                    childFare = parseFloat(paxFare.BasicFare) + parseFloat(paxFare.TotalTax)
+
+                                    childBasefare = parseFloat(paxFare.BasicFare);
+
+                                    childTotalTax = parseFloat(paxFare.TotalTax)
+
+                                    paxFare?.PaxTaxDetails?.forEach(tax => {
+                                        if (tax?.TaxCode === 'K3') {
+                                            childk3Tax = tax?.TaxAmount;
+                                        } else if (tax?.TaxCode === 'YQ') {
+                                            childyqTax = tax?.TaxAmount;
+                                        } else if (tax?.TaxCode === 'YR') {
+                                            childyrTax = tax?.TaxAmount;
+                                        } else if (tax?.TaxAmount !== 'TotalTax') {
+                                            // Sum other taxes excluding K3, YQ, YR, and TotalTax
+                                            childTaxesSum += tax?.TaxAmount;
+                                        }
+                                    });
+
+                                }
+                                if (paxFare.PaxType === 'INF') {
+
+                                    infantFare = parseFloat(paxFare.BasicFare) + parseFloat(paxFare.TotalTax)
+
+                                    infantBaseFare = parseFloat(paxFare.BasicFare);
+
+                                    infantTotalTax = parseFloat(paxFare.TotalTax)
+
+                                    paxFare?.PaxTaxDetails?.forEach(tax => {
+                                        if (tax?.TaxCode === 'K3') {
+                                            infantk3Tax = tax?.TaxAmount;
+                                        } else if (tax?.TaxCode === 'YQ') {
+                                            infantyqTax = tax?.TaxAmount;
+                                        } else if (tax?.TaxCode === 'YR') {
+                                            infantyrTax = tax?.TaxAmount;
+                                        } else if (tax?.TaxAmount !== 'TotalTax') {
+                                            // Sum other taxes excluding K3, YQ, YR, and TotalTax
+                                            infantTaxesSum += tax?.TaxAmount;
+                                        }
+                                    });
+
+                                }
+                            }
+
+                            // let fareDifference = parseFloat(flight.Fare.PublishedFare) - parseFloat(flight.Fare.OfferedFare);
+
+                            // let markup_type = (fareDifference > 0) ? 'PLB' : 'Non PLB';
+
+                            // let markup_value = 0, markup_percentage = 0;
+
+                            // let journey_type = (markup?.[0]?.CountryCode === 'IN') ? 'Domestic' : 'International';
+
+
+                            let commission = parseFloat(flight.GrossFare) - parseFloat(flight.NetAmount)
+
+                            let tds = (parseInt(commission) === 0) ? 0 : (commission * 5 / 100).toFixed(2);
+
+                            let fareBreakup = {
+                                BaseFare: flight.BasicFare,
+                                totalTax: flight.TotalTax,
+                                k3Tax: k3Tax,
+                                yqTax: yqTax,
+                                yrTax: yrTax,
+                                otherTaxesSum: otherTaxesSum,
+                                PublishedFare: parseFloat(flight.TotalFare),
+                                CommissionEarned: commission,
+                                TdsOnCommission: tds,
+                                IncentiveEarned: 0,
+                                OfferedFare: flight.NetAmount,
+                                Discount: 0,
+                                ServiceFee: 0,
+                                OtherCharges: 0,
+                                Adult: {
+                                    adultBaseFare: adultBaseFare,
+                                    adultTotaltax: adultTotaltax,
+                                    adultyqTax: adultyqTax,
+                                    adultk3Tax: adultk3Tax,
+                                    adultyrTax: adultyrTax,
+                                    adultTaxesSum: adultTaxesSum
+                                },
+                                child: {
+                                    childBaseFare: childBasefare,
+                                    childTotalTax: childTotalTax,
+                                    childyqTax: childyqTax,
+                                    childk3Tax: childk3Tax,
+                                    childyrTax: childyrTax,
+                                    childTaxesSum: childTaxesSum
+                                },
+                                infant: {
+                                    infantBaseFare: infantBaseFare,
+                                    infantTotalTax: infantTotalTax,
+                                    infantyqTax: infantyqTax,
+                                    infantk3Tax: infantk3Tax,
+                                    infantyrTax: infantyrTax,
+                                    infantTaxesSum: infantTaxesSum
+                                }
+                            }
+
+                            let Baggage = {
+                                Baggage: `${mySegments[0].Baggage.Weight}-${mySegments[0].Baggage.Unit}`,
+                                CabinBaggage: mySegments[0].CabinBaggage
+                            }
+
+
+                            acc[key].Details.push({
+                                flightDetails,
+                                fare: fare,
+                                FareBreakup: fareBreakup,
+                                Baggage: Baggage,
+                                ResultIndex: ResultIndex
+                            });
+
+
+                            return acc;
+                        }, {});
+
+
+// Convert grouped flights object to array
+                        let onwardFlights = Object.values(groupedFlights).map(group => {
+                            return {
+                                Supplier: group.Supplier,
+                                adults: group.adults,
+                                childs: group.childs,
+                                infants: group.infants,
+                                Stops: group.Stops,
+                                TraceId: tboResponse.value.data.TrackID,
+                                totalDuration: group.formattedDuration,
+                                Origin: group.Origin,
+                                Destination: group.Destination,
+                                AirlineCode: group.AirlineCode,
+                                AirlineName: group.AirlineName,
+                                FlightNumber: group.FlightNumber,
+                                Segments: group.Details
+                            };
+                        });
+
+                        let returnFlights = Object.values(groupedReturnFlights).map(group => {
+                            return {
+                                Supplier: group.Supplier,
+                                adults: group.adults,
+                                childs: group.childs,
+                                infants: group.infants,
+                                Stops: group.Stops,
+                                TraceId: tboResponse.value.data.TrackID,
+                                totalDuration: group.formattedDuration,
+                                Origin: group.Origin,
+                                Destination: group.Destination,
+                                AirlineCode: group.AirlineCode,
+                                AirlineName: group.AirlineName,
+                                FlightNumber: group.FlightNumber,
+                                Segments: group.Details
+                            };
+                        });
+
+                        parsedTBOData = {
+                            onwardFlights,
+                            returnFlights
+                        }
+
+                    }
+
+
+                }
+
+
+                // Combine parsed data
+                const combinedResponse = {
+                    ResponseStatus: 1,
+                    response: {data: parsedTBOData},
+                    data: parsedTBOData
+                };
+
+                req.session.tdate = travelDate;
+
+                res.json(combinedResponse);
+            }
+
+            else {
+                console.log("Its Domestic")
+                let apiUrl = `http://trvlnxtgateway.parikshan.net/api/Availability`;
+
+                let flightClass = ""
+
+                if (parseInt(fare_type) === 2) {
+                    flightClass = "ECONOMY"
+                } else if (parseInt(fare_type) === 6) {
+                    flightClass = "FIRST CLASS"
+                } else if (parseInt(fare_type) === 6) {
+                    flightClass = "PREMIUM ECONOMY"
+                } else {
+                    flightClass = "BUSINESS"
+                }
+
+
+                ///  FOR ONE WAY  ----->>
+                const tboRequest = await axios.post(apiUrl, {
+                    "Departure": `${from}`,
+                    "Arrival": `${to}`,
+                    "departureDate": `${travelDate}T00:00:00`,
+                    "cabin": "Y",
+                    "tripType": "O",
+                    "preferredAirline": "",
+                    "paxType": {
+                        "adult": adults,
+                        "child": child,
+                        "infant": infants
+                    },
+                    "stop": {
+                        "oneStop": false,
+                        "twoStop": false,
+                        "nonStop": false
+                    }
+                }, {
+                    headers: {
+                        'Accept-Encoding': 'gzip, deflate',
+                        'ApiKey': `VFJBVkVMIERFQUwgT25saW5lIC0gQ1VTVDMwMDcyNA==`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+
+                // Execute both requests concurrently and handle individual errors
+                const [tboResponse] = await Promise.allSettled([tboRequest]);
+
+                let parsedTBOData = [];
+
+
+                // Check if Travelopedia API request was successful
+                if (tboResponse.status === "fulfilled") {
+
+                    if (tboResponse.value.data.ResponseStatusType.Success === true) {
+                        // Assuming tboResponse.value.data.Response.Results[0] is your flights array
+
+// Group flights by AirlineCode and FlightNumber
+                        let groupedFlights = tboResponse.value.data.Journeys[0].Flights.reduce((acc, flight) => {
+
+                            let mySegments = flight.Segments;
+
+                            let airlineCode = flight.ValidatingCarrier;
+                            let airlineName = flight.SupplierName;
+                            let flightNumber = mySegments[0].FlightNumber;
+                            let stops = `${mySegments.length - 1} Stops`;
+                            let key = `${airlineCode}_${flightNumber}`;
+                            // Add segments to the grouped object
+                            let deptTime = flight.OriginDestination.DepartureDateTime;
+                            let ArrTime = flight.OriginDestination.ArrivalDateTime;
+
+                            let formattedDuration = calculateDuration(deptTime, ArrTime);
+
+                            let Origin = {
+                                CityCode: mySegments[0].OriginDestination.Departure,
+                                CityName: mySegments[0].OriginDestination.Departure,
+                                AirportCode: mySegments[0].OriginDestination.Departure,
+                                AirportName: mySegments[0].OriginDestination.Departure,
+                                airlineCode: mySegments[0].Carrier,
+                                airlineName: mySegments[0].Carrier,
+                                Terminal: mySegments[0].DepartureTerminal,
+                                FlightNumber: mySegments[0].FlightNumber,
+                                DepDateTime: deptTime,
+                                DepTime: convertToTime(deptTime),
+                                DepDate: convertToDesiredFormat(deptTime),
+                                Time: getTimeOfDay(deptTime)
+                            }
+                            let Destination = {
+                                CityCode: mySegments[mySegments.length - 1].OriginDestination.Arrival,
+                                CityName: mySegments[mySegments.length - 1].OriginDestination.Arrival,
+                                AirportCode: mySegments[mySegments.length - 1].OriginDestination.Arrival,
+                                AirportName: mySegments[mySegments.length - 1].OriginDestination.Arrival,
+                                Terminal: mySegments[mySegments.length - 1].ArrivalTerminal,
+                                airlineCode: mySegments[mySegments.length - 1].Carrier,
+                                airlineName: mySegments[mySegments.length - 1].Carrier,
+                                FlightNumber: mySegments[mySegments.length - 1].FlightNumber,
+                                ArrDateTime: ArrTime,
+                                ArrTime: convertToTime(ArrTime),
+                                ArrDate: convertToDesiredFormat(ArrTime),
+                                Time: getTimeOfDay(ArrTime)
+                            }
+
+                            if (!acc[key]) {
+                                acc[key] = {
+                                    Supplier: "RIYA",
+                                    adults: adults,
+                                    childs: child,
+                                    infants: infants,
+                                    formattedDuration: formattedDuration,
+                                    Origin: Origin,
+                                    Stops: stops,
+                                    Destination: Destination,
+                                    AirlineCode: airlineCode,
+                                    AirlineName: airlineName,
+                                    FlightNumber: flightNumber,
+                                    Details: []
+                                };
+                            }
+
+
+                            let flightDetails = [];
+                            // Fix: Wrap the object in parentheses
+                            let previousArrivalTime = null;
+
+                            // Add segments
+                            let segments = mySegments.map(segment => {
+                                let layoverTime = 0;
+                                // Calculate layover time only for segments after the first one
+                                if (previousArrivalTime) {
+                                    layoverTime = calculateDuration(previousArrivalTime, segment.OriginDestination.DepartureDateTime); // Add 1 to the calculated duration
+                                }
+
+                                // Update previous arrival time for the next iteration
+                                previousArrivalTime = segment.OriginDestination.ArrivalDateTime;
+
+                                flightClass = segment?.OriginDestination?.Cabin || 'Not Mentioned'
+
+
+                                let obj = {
+                                    ArrivalCityCode: segment.OriginDestination.Arrival,
+                                    ArrivalCityName: segment.OriginDestination.Arrival,
+                                    DepartureCityCode: segment.OriginDestination.Departure,
+                                    DepartureCityName: segment.OriginDestination.Departure,
+                                    flightClass: flightClass,
+                                    Baggage: segment.Baggages,
+                                    FlightNumber: segment.FlightNumber,
+                                    CabinBaggage: segment.CabinBaggage,
+                                    AirlineCode: segment.Carrier,
+                                    AirlineName: segment.Carrier,
+                                    DepartureAirportCode: segment.OriginDestination.Departure,
+                                    ArrivalAirportCode: segment.OriginDestination.Arrival,
+                                    DepartureAirportName: segment.OriginDestination.Departure,
+                                    ArrivalAirportName: segment.OriginDestination.Arrival,
+                                    DepDateTime: segment.OriginDestination.DepartureDateTime,
+                                    ArrDateTime: segment.OriginDestination.ArrivalDateTime,
+                                    DepTime: convertToTime(segment.OriginDestination.DepartureDateTime),
+                                    ArrTime: convertToTime(segment.OriginDestination.ArrivalDateTime),
+                                    DepDate: convertToDesiredFormat(segment.OriginDestination.DepartureDateTime),
+                                    ArrDate: convertToDesiredFormat(segment.OriginDestination.ArrivalDateTime),
+                                    Duration: calculateDuration(segment.OriginDestination.DepartureDateTime, segment.OriginDestination.ArrivalDateTime),
+                                    LayoverTime: layoverTime || 0,
+                                    DepartureTerminal: segment.DepartureTerminal,
+                                    ArrivalTerminal: segment.ArrivalTerminal
+                                }
+                                flightDetails.push(obj);
+                            });
+
+
+                            let fare = flight.FareName;
+
+
+                            let ResultIndex = flight.FlightKey
+
+                            let k3Tax = 0, yqTax = 0, yrTax = 0, otherTaxesSum = 0;
+
+// Loop through the TaxBreakup array
+                            flight?.FlightPricingInfo?.FlightTaxDetails?.forEach(tax => {
+                                if (tax?.TaxCode === 'K3') {
+                                    k3Tax = tax?.TaxAmount;
+                                } else if (tax?.TaxCode === 'YQ') {
+                                    yqTax = tax?.TaxAmount;
+                                } else if (tax?.TaxCode === 'YR') {
+                                    yrTax = tax?.TaxAmount;
+                                } else if (tax?.TaxAmount !== 'TotalTax') {
+                                    // Sum other taxes excluding K3, YQ, YR, and TotalTax
+                                    otherTaxesSum += tax?.TaxAmount;
+                                }
+                            });
+
+
+                            let adultFare = 0;
+                            let childFare = 0;
+                            let infantFare = 0;
+                            let adultBaseFare = 0;
+                            let childBasefare = 0;
+                            let infantBaseFare = 0;
+                            let adultTotaltax = 0;
+                            let childTotalTax = 0;
+                            let infantTotalTax = 0;
+                            let adultk3Tax = 0, adultyqTax = 0, adultyrTax = 0, adultTaxesSum = 0;
+                            let childk3Tax = 0, childyqTax = 0, childyrTax = 0, childTaxesSum = 0;
+                            let infantk3Tax = 0, infantyqTax = 0, infantyrTax = 0, infantTaxesSum = 0;
+
+                            for (let i = 0; i < flight.FlightPricingInfo.PaxFareDetails.length; i++) {
+
+                                let paxFare = flight.FlightPricingInfo.PaxFareDetails[i]
+
+                                if (paxFare.PaxType === 'ADT') {
+
+                                    adultFare = parseFloat(paxFare.BasicFare) + parseFloat(paxFare.TotalTax)
+
+                                    adultBaseFare = parseFloat(paxFare.BasicFare);
+
+                                    adultTotaltax = parseFloat(paxFare.TotalTax)
+
+                                    paxFare?.PaxTaxDetails?.forEach(tax => {
+                                        if (tax?.TaxCode === 'K3') {
+                                            adultk3Tax = tax?.TaxAmount;
+                                        } else if (tax?.TaxCode === 'YQ') {
+                                            adultyqTax = tax?.TaxAmount;
+                                        } else if (tax?.TaxCode === 'YR') {
+                                            adultyrTax = tax?.TaxAmount;
+                                        } else if (tax?.TaxAmount !== 'TotalTax') {
+                                            // Sum other taxes excluding K3, YQ, YR, and TotalTax
+                                            adultTaxesSum += tax?.TaxAmount;
+                                        }
+                                    });
+
+                                }
+
+                                if (paxFare.PaxType === 'CHD') {
+
+                                    childFare = parseFloat(paxFare.BasicFare) + parseFloat(paxFare.TotalTax)
+
+                                    childBasefare = parseFloat(paxFare.BasicFare);
+
+                                    childTotalTax = parseFloat(paxFare.TotalTax)
+
+                                    paxFare?.PaxTaxDetails?.forEach(tax => {
+                                        if (tax?.TaxCode === 'K3') {
+                                            childk3Tax = tax?.TaxAmount;
+                                        } else if (tax?.TaxCode === 'YQ') {
+                                            childyqTax = tax?.TaxAmount;
+                                        } else if (tax?.TaxCode === 'YR') {
+                                            childyrTax = tax?.TaxAmount;
+                                        } else if (tax?.TaxAmount !== 'TotalTax') {
+                                            // Sum other taxes excluding K3, YQ, YR, and TotalTax
+                                            childTaxesSum += tax?.TaxAmount;
+                                        }
+                                    });
+
+                                }
+                                if (paxFare.PaxType === 'INF') {
+
+                                    infantFare = parseFloat(paxFare.BasicFare) + parseFloat(paxFare.TotalTax)
+
+                                    infantBaseFare = parseFloat(paxFare.BasicFare);
+
+                                    infantTotalTax = parseFloat(paxFare.TotalTax)
+
+                                    paxFare?.PaxTaxDetails?.forEach(tax => {
+                                        if (tax?.TaxCode === 'K3') {
+                                            infantk3Tax = tax?.TaxAmount;
+                                        } else if (tax?.TaxCode === 'YQ') {
+                                            infantyqTax = tax?.TaxAmount;
+                                        } else if (tax?.TaxCode === 'YR') {
+                                            infantyrTax = tax?.TaxAmount;
+                                        } else if (tax?.TaxAmount !== 'TotalTax') {
+                                            // Sum other taxes excluding K3, YQ, YR, and TotalTax
+                                            infantTaxesSum += tax?.TaxAmount;
+                                        }
+                                    });
+
+                                }
+                            }
+
+                            // let fareDifference = parseFloat(flight.Fare.PublishedFare) - parseFloat(flight.Fare.OfferedFare);
+
+                            // let markup_type = (fareDifference > 0) ? 'PLB' : 'Non PLB';
+
+                            // let markup_value = 0, markup_percentage = 0;
+
+                            // let journey_type = (markup?.[0]?.CountryCode === 'IN') ? 'Domestic' : 'International';
+
+
+                            let commission = parseFloat(flight.GrossFare) - parseFloat(flight.NetAmount)
+
+                            let tds = (parseInt(commission) === 0) ? 0 : (commission * 5 / 100).toFixed(2);
+
+                            let fareBreakup = {
+                                BaseFare: flight.BasicFare,
+                                totalTax: flight.TotalTax,
+                                k3Tax: k3Tax,
+                                yqTax: yqTax,
+                                yrTax: yrTax,
+                                otherTaxesSum: otherTaxesSum,
+                                PublishedFare: parseFloat(flight.TotalFare),
+                                CommissionEarned: commission,
+                                TdsOnCommission: tds,
+                                IncentiveEarned: 0,
+                                OfferedFare: flight.NetAmount,
+                                Discount: 0,
+                                ServiceFee: 0,
+                                OtherCharges: 0,
+                                Adult: {
+                                    adultBaseFare: adultBaseFare,
+                                    adultTotaltax: adultTotaltax,
+                                    adultyqTax: adultyqTax,
+                                    adultk3Tax: adultk3Tax,
+                                    adultyrTax: adultyrTax,
+                                    adultTaxesSum: adultTaxesSum
+                                },
+                                child: {
+                                    childBaseFare: childBasefare,
+                                    childTotalTax: childTotalTax,
+                                    childyqTax: childyqTax,
+                                    childk3Tax: childk3Tax,
+                                    childyrTax: childyrTax,
+                                    childTaxesSum: childTaxesSum
+                                },
+                                infant: {
+                                    infantBaseFare: infantBaseFare,
+                                    infantTotalTax: infantTotalTax,
+                                    infantyqTax: infantyqTax,
+                                    infantk3Tax: infantk3Tax,
+                                    infantyrTax: infantyrTax,
+                                    infantTaxesSum: infantTaxesSum
+                                }
+                            }
+
+                            let Baggage = {
+                                Baggage: `${mySegments[0].Baggage.Weight}-${mySegments[0].Baggage.Unit}`,
+                                CabinBaggage: mySegments[0].CabinBaggage
+                            }
+
+
+                            acc[key].Details.push({
+                                flightDetails,
+                                fare: fare,
+                                FareBreakup: fareBreakup,
+                                Baggage: Baggage,
+                                ResultIndex: ResultIndex
+                            });
+
+
+                            return acc;
+                        }, {});
+
+
+// Convert grouped flights object to array
+                        parsedTBOData = Object.values(groupedFlights).map(group => {
+                            return {
+                                Supplier: group.Supplier,
+                                adults: group.adults,
+                                childs: group.childs,
+                                infants: group.infants,
+                                Stops: group.Stops,
+                                TraceId: tboResponse.value.data.TrackID,
+                                totalDuration: group.formattedDuration,
+                                Origin: group.Origin,
+                                Destination: group.Destination,
+                                AirlineCode: group.AirlineCode,
+                                AirlineName: group.AirlineName,
+                                FlightNumber: group.FlightNumber,
+                                Segments: group.Details
+                            };
+                        });
+
+
+                    }
+
+
+                }
+
+                const combinedResponse = {
+                    ResponseStatus: 1,
+                    data: [...parsedTBOData]
+                };
+
+
+                ///  FOR RETURN WAY  ----->>
+
+                const tboRequest1 = await axios.post(apiUrl, {
+                    "Departure": `${to}`,
+                    "Arrival": `${from}`,
+                    "departureDate": `${travelReturnDate}T00:00:00`,
+                    "cabin": "Y",
+                    "tripType": "O",
+                    "preferredAirline": "",
+                    "paxType": {
+                        "adult": adults,
+                        "child": child,
+                        "infant": infants
+                    },
+                    "stop": {
+                        "oneStop": false,
+                        "twoStop": false,
+                        "nonStop": false
+                    }
+                }, {
+                    headers: {
+                        'Accept-Encoding': 'gzip, deflate',
+                        'ApiKey': `VFJBVkVMIERFQUwgT25saW5lIC0gQ1VTVDMwMDcyNA==`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+
+                // Execute both requests concurrently and handle individual errors
+                const [tboResponse1] = await Promise.allSettled([tboRequest1]);
+
+                let parsedTBOData1 = [];
+
+
+                // Check if Travelopedia API request was successful
+                if (tboResponse1.status === "fulfilled") {
+
+                    if (tboResponse1.value.data.ResponseStatusType.Success === true) {
+                        // Assuming tboResponse.value.data.Response.Results[0] is your flights array
+
+// Group flights by AirlineCode and FlightNumber
+                        let groupedFlights = tboResponse1.value.data.Journeys[0].Flights.reduce((acc, flight) => {
+
+                            let mySegments = flight.Segments;
+
+                            let airlineCode = flight.ValidatingCarrier;
+                            let airlineName = flight.SupplierName;
+                            let flightNumber = mySegments[0].FlightNumber;
+                            let stops = `${mySegments.length - 1} Stops`;
+                            let key = `${airlineCode}_${flightNumber}`;
+                            // Add segments to the grouped object
+                            let deptTime = flight.OriginDestination.DepartureDateTime;
+                            let ArrTime = flight.OriginDestination.ArrivalDateTime;
+
+                            let formattedDuration = calculateDuration(deptTime, ArrTime);
+
+                            let Origin = {
+                                CityCode: mySegments[0].OriginDestination.Departure,
+                                CityName: mySegments[0].OriginDestination.Departure,
+                                AirportCode: mySegments[0].OriginDestination.Departure,
+                                AirportName: mySegments[0].OriginDestination.Departure,
+                                airlineCode: mySegments[0].Carrier,
+                                airlineName: mySegments[0].Carrier,
+                                Terminal: mySegments[0].DepartureTerminal,
+                                FlightNumber: mySegments[0].FlightNumber,
+                                DepDateTime: deptTime,
+                                DepTime: convertToTime(deptTime),
+                                DepDate: convertToDesiredFormat(deptTime),
+                                Time: getTimeOfDay(deptTime)
+                            }
+                            let Destination = {
+                                CityCode: mySegments[mySegments.length - 1].OriginDestination.Arrival,
+                                CityName: mySegments[mySegments.length - 1].OriginDestination.Arrival,
+                                AirportCode: mySegments[mySegments.length - 1].OriginDestination.Arrival,
+                                AirportName: mySegments[mySegments.length - 1].OriginDestination.Arrival,
+                                Terminal: mySegments[mySegments.length - 1].ArrivalTerminal,
+                                airlineCode: mySegments[mySegments.length - 1].Carrier,
+                                airlineName: mySegments[mySegments.length - 1].Carrier,
+                                FlightNumber: mySegments[mySegments.length - 1].FlightNumber,
+                                ArrDateTime: ArrTime,
+                                ArrTime: convertToTime(ArrTime),
+                                ArrDate: convertToDesiredFormat(ArrTime),
+                                Time: getTimeOfDay(ArrTime)
+                            }
+
+                            if (!acc[key]) {
+                                acc[key] = {
+                                    Supplier: "RIYA",
+                                    adults: adults,
+                                    childs: child,
+                                    infants: infants,
+                                    formattedDuration: formattedDuration,
+                                    Origin: Origin,
+                                    Stops: stops,
+                                    Destination: Destination,
+                                    AirlineCode: airlineCode,
+                                    AirlineName: airlineName,
+                                    FlightNumber: flightNumber,
+                                    Details: []
+                                };
+                            }
+
+
+                            let flightDetails = [];
+                            // Fix: Wrap the object in parentheses
+                            let previousArrivalTime = null;
+
+                            // Add segments
+                            let segments = mySegments.map(segment => {
+                                let layoverTime = 0;
+                                // Calculate layover time only for segments after the first one
+                                if (previousArrivalTime) {
+                                    layoverTime = calculateDuration(previousArrivalTime, segment.OriginDestination.DepartureDateTime); // Add 1 to the calculated duration
+                                }
+
+                                // Update previous arrival time for the next iteration
+                                previousArrivalTime = segment.OriginDestination.ArrivalDateTime;
+
+                                flightClass = segment?.OriginDestination?.Cabin || 'Not Mentioned'
+
+
+                                let obj = {
+                                    ArrivalCityCode: segment.OriginDestination.Arrival,
+                                    ArrivalCityName: segment.OriginDestination.Arrival,
+                                    DepartureCityCode: segment.OriginDestination.Departure,
+                                    DepartureCityName: segment.OriginDestination.Departure,
+                                    flightClass: flightClass,
+                                    Baggage: segment.Baggages,
+                                    FlightNumber: segment.FlightNumber,
+                                    CabinBaggage: segment.CabinBaggage,
+                                    AirlineCode: segment.Carrier,
+                                    AirlineName: segment.Carrier,
+                                    DepartureAirportCode: segment.OriginDestination.Departure,
+                                    ArrivalAirportCode: segment.OriginDestination.Arrival,
+                                    DepartureAirportName: segment.OriginDestination.Departure,
+                                    ArrivalAirportName: segment.OriginDestination.Arrival,
+                                    DepDateTime: segment.OriginDestination.DepartureDateTime,
+                                    ArrDateTime: segment.OriginDestination.ArrivalDateTime,
+                                    DepTime: convertToTime(segment.OriginDestination.DepartureDateTime),
+                                    ArrTime: convertToTime(segment.OriginDestination.ArrivalDateTime),
+                                    DepDate: convertToDesiredFormat(segment.OriginDestination.DepartureDateTime),
+                                    ArrDate: convertToDesiredFormat(segment.OriginDestination.ArrivalDateTime),
+                                    Duration: calculateDuration(segment.OriginDestination.DepartureDateTime, segment.OriginDestination.ArrivalDateTime),
+                                    LayoverTime: layoverTime || 0,
+                                    DepartureTerminal: segment.DepartureTerminal,
+                                    ArrivalTerminal: segment.ArrivalTerminal
+                                }
+                                flightDetails.push(obj);
+                            });
+
+
+                            let fare = flight.FareName;
+
+
+                            let ResultIndex = flight.FlightKey
+
+                            let k3Tax = 0, yqTax = 0, yrTax = 0, otherTaxesSum = 0;
+
+// Loop through the TaxBreakup array
+                            flight?.FlightPricingInfo?.FlightTaxDetails?.forEach(tax => {
+                                if (tax?.TaxCode === 'K3') {
+                                    k3Tax = tax?.TaxAmount;
+                                } else if (tax?.TaxCode === 'YQ') {
+                                    yqTax = tax?.TaxAmount;
+                                } else if (tax?.TaxCode === 'YR') {
+                                    yrTax = tax?.TaxAmount;
+                                } else if (tax?.TaxAmount !== 'TotalTax') {
+                                    // Sum other taxes excluding K3, YQ, YR, and TotalTax
+                                    otherTaxesSum += tax?.TaxAmount;
+                                }
+                            });
+
+
+                            let adultFare = 0;
+                            let childFare = 0;
+                            let infantFare = 0;
+                            let adultBaseFare = 0;
+                            let childBasefare = 0;
+                            let infantBaseFare = 0;
+                            let adultTotaltax = 0;
+                            let childTotalTax = 0;
+                            let infantTotalTax = 0;
+                            let adultk3Tax = 0, adultyqTax = 0, adultyrTax = 0, adultTaxesSum = 0;
+                            let childk3Tax = 0, childyqTax = 0, childyrTax = 0, childTaxesSum = 0;
+                            let infantk3Tax = 0, infantyqTax = 0, infantyrTax = 0, infantTaxesSum = 0;
+
+                            for (let i = 0; i < flight.FlightPricingInfo.PaxFareDetails.length; i++) {
+
+                                let paxFare = flight.FlightPricingInfo.PaxFareDetails[i]
+
+                                if (paxFare.PaxType === 'ADT') {
+
+                                    adultFare = parseFloat(paxFare.BasicFare) + parseFloat(paxFare.TotalTax)
+
+                                    adultBaseFare = parseFloat(paxFare.BasicFare);
+
+                                    adultTotaltax = parseFloat(paxFare.TotalTax)
+
+                                    paxFare?.PaxTaxDetails?.forEach(tax => {
+                                        if (tax?.TaxCode === 'K3') {
+                                            adultk3Tax = tax?.TaxAmount;
+                                        } else if (tax?.TaxCode === 'YQ') {
+                                            adultyqTax = tax?.TaxAmount;
+                                        } else if (tax?.TaxCode === 'YR') {
+                                            adultyrTax = tax?.TaxAmount;
+                                        } else if (tax?.TaxAmount !== 'TotalTax') {
+                                            // Sum other taxes excluding K3, YQ, YR, and TotalTax
+                                            adultTaxesSum += tax?.TaxAmount;
+                                        }
+                                    });
+
+                                }
+
+                                if (paxFare.PaxType === 'CHD') {
+
+                                    childFare = parseFloat(paxFare.BasicFare) + parseFloat(paxFare.TotalTax)
+
+                                    childBasefare = parseFloat(paxFare.BasicFare);
+
+                                    childTotalTax = parseFloat(paxFare.TotalTax)
+
+                                    paxFare?.PaxTaxDetails?.forEach(tax => {
+                                        if (tax?.TaxCode === 'K3') {
+                                            childk3Tax = tax?.TaxAmount;
+                                        } else if (tax?.TaxCode === 'YQ') {
+                                            childyqTax = tax?.TaxAmount;
+                                        } else if (tax?.TaxCode === 'YR') {
+                                            childyrTax = tax?.TaxAmount;
+                                        } else if (tax?.TaxAmount !== 'TotalTax') {
+                                            // Sum other taxes excluding K3, YQ, YR, and TotalTax
+                                            childTaxesSum += tax?.TaxAmount;
+                                        }
+                                    });
+
+                                }
+                                if (paxFare.PaxType === 'INF') {
+
+                                    infantFare = parseFloat(paxFare.BasicFare) + parseFloat(paxFare.TotalTax)
+
+                                    infantBaseFare = parseFloat(paxFare.BasicFare);
+
+                                    infantTotalTax = parseFloat(paxFare.TotalTax)
+
+                                    paxFare?.PaxTaxDetails?.forEach(tax => {
+                                        if (tax?.TaxCode === 'K3') {
+                                            infantk3Tax = tax?.TaxAmount;
+                                        } else if (tax?.TaxCode === 'YQ') {
+                                            infantyqTax = tax?.TaxAmount;
+                                        } else if (tax?.TaxCode === 'YR') {
+                                            infantyrTax = tax?.TaxAmount;
+                                        } else if (tax?.TaxAmount !== 'TotalTax') {
+                                            // Sum other taxes excluding K3, YQ, YR, and TotalTax
+                                            infantTaxesSum += tax?.TaxAmount;
+                                        }
+                                    });
+
+                                }
+                            }
+
+                            // let fareDifference = parseFloat(flight.Fare.PublishedFare) - parseFloat(flight.Fare.OfferedFare);
+
+                            // let markup_type = (fareDifference > 0) ? 'PLB' : 'Non PLB';
+
+                            // let markup_value = 0, markup_percentage = 0;
+
+                            // let journey_type = (markup?.[0]?.CountryCode === 'IN') ? 'Domestic' : 'International';
+
+
+                            let commission = parseFloat(flight.GrossFare) - parseFloat(flight.NetAmount)
+
+                            let tds = (parseInt(commission) === 0) ? 0 : (commission * 5 / 100).toFixed(2);
+
+                            let fareBreakup = {
+                                BaseFare: flight.BasicFare,
+                                totalTax: flight.TotalTax,
+                                k3Tax: k3Tax,
+                                yqTax: yqTax,
+                                yrTax: yrTax,
+                                otherTaxesSum: otherTaxesSum,
+                                PublishedFare: parseFloat(flight.TotalFare),
+                                CommissionEarned: commission,
+                                TdsOnCommission: tds,
+                                IncentiveEarned: 0,
+                                OfferedFare: flight.NetAmount,
+                                Discount: 0,
+                                ServiceFee: 0,
+                                OtherCharges: 0,
+                                Adult: {
+                                    adultBaseFare: adultBaseFare,
+                                    adultTotaltax: adultTotaltax,
+                                    adultyqTax: adultyqTax,
+                                    adultk3Tax: adultk3Tax,
+                                    adultyrTax: adultyrTax,
+                                    adultTaxesSum: adultTaxesSum
+                                },
+                                child: {
+                                    childBaseFare: childBasefare,
+                                    childTotalTax: childTotalTax,
+                                    childyqTax: childyqTax,
+                                    childk3Tax: childk3Tax,
+                                    childyrTax: childyrTax,
+                                    childTaxesSum: childTaxesSum
+                                },
+                                infant: {
+                                    infantBaseFare: infantBaseFare,
+                                    infantTotalTax: infantTotalTax,
+                                    infantyqTax: infantyqTax,
+                                    infantk3Tax: infantk3Tax,
+                                    infantyrTax: infantyrTax,
+                                    infantTaxesSum: infantTaxesSum
+                                }
+                            }
+
+                            let Baggage = {
+                                Baggage: `${mySegments[0].Baggage.Weight}-${mySegments[0].Baggage.Unit}`,
+                                CabinBaggage: mySegments[0].CabinBaggage
+                            }
+
+
+                            acc[key].Details.push({
+                                flightDetails,
+                                fare: fare,
+                                FareBreakup: fareBreakup,
+                                Baggage: Baggage,
+                                ResultIndex: ResultIndex
+                            });
+
+
+                            return acc;
+                        }, {});
+
+
+// Convert grouped flights object to array
+                        parsedTBOData1 = Object.values(groupedFlights).map(group => {
+                            return {
+                                Supplier: group.Supplier,
+                                adults: group.adults,
+                                childs: group.childs,
+                                infants: group.infants,
+                                Stops: group.Stops,
+                                TraceId: tboResponse.value.data.TrackID,
+                                totalDuration: group.formattedDuration,
+                                Origin: group.Origin,
+                                Destination: group.Destination,
+                                AirlineCode: group.AirlineCode,
+                                AirlineName: group.AirlineName,
+                                FlightNumber: group.FlightNumber,
+                                Segments: group.Details
+                            };
+                        });
+
+
+                    }
+
+
+                }
+
+                const combinedResponse2 = {
+                    ResponseStatus: 1,
+                    data: [...parsedTBOData1]
+                };
+
+
+                req.session.tdate = travelDate;
+
+                const finalResponse = {
+                    ResponseStatus: 1,
+                    Custom : 'YES',
+                    onwardFlights: combinedResponse.data,
+                    returnFlights: combinedResponse2.data,
+                };
+
+              // Send the combined response
+                res.json(finalResponse);
+            }
+
+        } catch (e) {
             console.log(e);
             return res.json({error: true, message: e.message});
         } finally {
             if (connection) connection.release();  // Return the connection to the pool
         }
-
-
-
-        let apiUrl = `http://trvlnxtgateway.parikshan.net/api/Availability`;
-
-        let flightClass = ""
-
-        if (parseInt(fare_type) === 2) {
-            flightClass = "ECONOMY"
-        } else if (parseInt(fare_type) === 6) {
-            flightClass = "FIRST CLASS"
-        } else if (parseInt(fare_type) === 6) {
-            flightClass = "PREMIUM ECONOMY"
-        } else {
-            flightClass = "BUSINESS"
-        }
-
-        // const tboRequest = await axios.post(apiUrl, {
-        //     "Departure": `${from}`,
-        //     "Arrival": `${to}`,
-        //     "departureDate": `${travelDate}T00:00:00`,
-        //     "arrivalDate": `${travelReturnDate}T00:00:00`,
-        //     "cabin": "Y",
-        //     "tripType": "R",
-        //     "preferredAirline": "",
-        //     "paxType": {
-        //         "adult": adults,
-        //         "child": child,
-        //         "infant": infants
-        //     },
-        //     "stop": {
-        //         "oneStop": false,
-        //         "twoStop": false,
-        //         "nonStop": false
-        //     }
-        // }, {
-        //     headers: {
-        //         'Accept-Encoding': 'gzip, deflate',
-        //         'ApiKey': `VFJBVkVMIERFQUwgT25saW5lIC0gQ1VTVDMwMDcyNA==`,
-        //         'Content-Type': 'application/json'
-        //     }
-        // });
-
-
-        // Execute both requests concurrently and handle individual errors
-        const [tboResponse] = await Promise.allSettled([tboRequest]);
-
-        let parsedTBOData = [];
-
-
-        // Check if Travelopedia API request was successful
-        if (tboResponse.status === "fulfilled") {
-
-            if (tboResponse.value.data.ResponseStatusType.Success === true) {
-                // Assuming tboResponse.value.data.Response.Results[0] is your flights array
-
-// Group flights by AirlineCode and FlightNumber
-                let groupedFlights = tboResponse.value.data.Journeys[0].Flights.reduce((acc, flight) => {
-
-                    let mySegments = flight.Segments;
-
-                    let airlineCode = flight.ValidatingCarrier;
-                    let airlineName = flight.SupplierName;
-                    let flightNumber = mySegments[0].FlightNumber;
-                    let stops = `${mySegments.length - 1} Stops`;
-                    let key = `${airlineCode}_${flightNumber}`;
-                    // Add segments to the grouped object
-                    let deptTime = flight.OriginDestination.DepartureDateTime;
-                    let ArrTime = flight.OriginDestination.ArrivalDateTime;
-
-                    let formattedDuration = calculateDuration(deptTime, ArrTime);
-
-                    let Origin = {
-                        CityCode: mySegments[0].OriginDestination.Departure,
-                        CityName: mySegments[0].OriginDestination.Departure,
-                        AirportCode: mySegments[0].OriginDestination.Departure,
-                        AirportName: mySegments[0].OriginDestination.Departure,
-                        airlineCode: mySegments[0].Carrier,
-                        airlineName: mySegments[0].Carrier,
-                        Terminal: mySegments[0].DepartureTerminal,
-                        FlightNumber: mySegments[0].FlightNumber,
-                        DepDateTime: deptTime,
-                        DepTime: convertToTime(deptTime),
-                        DepDate: convertToDesiredFormat(deptTime),
-                        Time: getTimeOfDay(deptTime)
-                    }
-                    let Destination = {
-                        CityCode: mySegments[mySegments.length - 1].OriginDestination.Arrival,
-                        CityName: mySegments[mySegments.length - 1].OriginDestination.Arrival,
-                        AirportCode: mySegments[mySegments.length - 1].OriginDestination.Arrival,
-                        AirportName: mySegments[mySegments.length - 1].OriginDestination.Arrival,
-                        Terminal: mySegments[mySegments.length - 1].ArrivalTerminal,
-                        airlineCode: mySegments[mySegments.length - 1].Carrier,
-                        airlineName: mySegments[mySegments.length - 1].Carrier,
-                        FlightNumber: mySegments[mySegments.length - 1].FlightNumber,
-                        ArrDateTime: ArrTime,
-                        ArrTime: convertToTime(ArrTime),
-                        ArrDate: convertToDesiredFormat(ArrTime),
-                        Time: getTimeOfDay(ArrTime)
-                    }
-
-                    if (!acc[key]) {
-                        acc[key] = {
-                            Supplier: "RIYA",
-                            adults: adults,
-                            childs: child,
-                            infants: infants,
-                            formattedDuration: formattedDuration,
-                            Origin: Origin,
-                            Stops: stops,
-                            Destination: Destination,
-                            AirlineCode: airlineCode,
-                            AirlineName: airlineName,
-                            FlightNumber: flightNumber,
-                            Details: []
-                        };
-                    }
-
-
-                    let flightDetails = [];
-                    // Fix: Wrap the object in parentheses
-                    let previousArrivalTime = null;
-
-                    // Add segments
-                    let segments = mySegments.map(segment => {
-                        let layoverTime = 0;
-                        // Calculate layover time only for segments after the first one
-                        if (previousArrivalTime) {
-                            layoverTime = calculateDuration(previousArrivalTime, segment.OriginDestination.DepartureDateTime); // Add 1 to the calculated duration
-                        }
-
-                        // Update previous arrival time for the next iteration
-                        previousArrivalTime = segment.OriginDestination.ArrivalDateTime;
-
-                        flightClass = segment?.OriginDestination?.Cabin || 'Not Mentioned'
-
-
-                        let obj = {
-                            ArrivalCityCode: segment.OriginDestination.Arrival,
-                            ArrivalCityName: segment.OriginDestination.Arrival,
-                            DepartureCityCode: segment.OriginDestination.Departure,
-                            DepartureCityName: segment.OriginDestination.Departure,
-                            flightClass: flightClass,
-                            Baggage: segment.Baggages,
-                            FlightNumber: segment.FlightNumber,
-                            CabinBaggage: segment.CabinBaggage,
-                            AirlineCode: segment.Carrier,
-                            AirlineName: segment.Carrier,
-                            DepartureAirportCode: segment.OriginDestination.Departure,
-                            ArrivalAirportCode: segment.OriginDestination.Arrival,
-                            DepartureAirportName: segment.OriginDestination.Departure,
-                            ArrivalAirportName: segment.OriginDestination.Arrival,
-                            DepDateTime: segment.OriginDestination.DepartureDateTime,
-                            ArrDateTime: segment.OriginDestination.ArrivalDateTime,
-                            DepTime: convertToTime(segment.OriginDestination.DepartureDateTime),
-                            ArrTime: convertToTime(segment.OriginDestination.ArrivalDateTime),
-                            DepDate: convertToDesiredFormat(segment.OriginDestination.DepartureDateTime),
-                            ArrDate: convertToDesiredFormat(segment.OriginDestination.ArrivalDateTime),
-                            Duration: calculateDuration(segment.OriginDestination.DepartureDateTime, segment.OriginDestination.ArrivalDateTime),
-                            LayoverTime: layoverTime || 0,
-                            DepartureTerminal: segment.DepartureTerminal,
-                            ArrivalTerminal: segment.ArrivalTerminal
-                        }
-                        flightDetails.push(obj);
-                    });
-
-
-                    let fare = flight.FareName;
-
-
-                    let ResultIndex = flight.FlightKey
-
-                    let k3Tax = 0, yqTax = 0, yrTax = 0, otherTaxesSum = 0;
-
-// Loop through the TaxBreakup array
-                    flight?.FlightPricingInfo?.FlightTaxDetails?.forEach(tax => {
-                        if (tax?.TaxCode === 'K3') {
-                            k3Tax = tax?.TaxAmount;
-                        } else if (tax?.TaxCode === 'YQ') {
-                            yqTax = tax?.TaxAmount;
-                        } else if (tax?.TaxCode === 'YR') {
-                            yrTax = tax?.TaxAmount;
-                        } else if (tax?.TaxAmount !== 'TotalTax') {
-                            // Sum other taxes excluding K3, YQ, YR, and TotalTax
-                            otherTaxesSum += tax?.TaxAmount;
-                        }
-                    });
-
-
-                    let adultFare = 0;
-                    let childFare = 0;
-                    let infantFare = 0;
-                    let adultBaseFare = 0;
-                    let childBasefare = 0;
-                    let infantBaseFare = 0;
-                    let adultTotaltax = 0;
-                    let childTotalTax = 0;
-                    let infantTotalTax = 0;
-                    let adultk3Tax = 0, adultyqTax = 0, adultyrTax = 0, adultTaxesSum = 0;
-                    let childk3Tax = 0, childyqTax = 0, childyrTax = 0, childTaxesSum = 0;
-                    let infantk3Tax = 0, infantyqTax = 0, infantyrTax = 0, infantTaxesSum = 0;
-
-                    for (let i = 0; i < flight.FlightPricingInfo.PaxFareDetails.length; i++) {
-
-                        let paxFare = flight.FlightPricingInfo.PaxFareDetails[i]
-
-                        if (paxFare.PaxType === 'ADT') {
-
-                            adultFare = parseFloat(paxFare.BasicFare) + parseFloat(paxFare.TotalTax)
-
-                            adultBaseFare = parseFloat(paxFare.BasicFare);
-
-                            adultTotaltax = parseFloat(paxFare.TotalTax)
-
-                            paxFare?.PaxTaxDetails?.forEach(tax => {
-                                if (tax?.TaxCode === 'K3') {
-                                    adultk3Tax = tax?.TaxAmount;
-                                } else if (tax?.TaxCode === 'YQ') {
-                                    adultyqTax = tax?.TaxAmount;
-                                } else if (tax?.TaxCode === 'YR') {
-                                    adultyrTax = tax?.TaxAmount;
-                                } else if (tax?.TaxAmount !== 'TotalTax') {
-                                    // Sum other taxes excluding K3, YQ, YR, and TotalTax
-                                    adultTaxesSum += tax?.TaxAmount;
-                                }
-                            });
-
-                        }
-
-                        if (paxFare.PaxType === 'CHD') {
-
-                            childFare = parseFloat(paxFare.BasicFare) + parseFloat(paxFare.TotalTax)
-
-                            childBasefare = parseFloat(paxFare.BasicFare);
-
-                            childTotalTax = parseFloat(paxFare.TotalTax)
-
-                            paxFare?.PaxTaxDetails?.forEach(tax => {
-                                if (tax?.TaxCode === 'K3') {
-                                    childk3Tax = tax?.TaxAmount;
-                                } else if (tax?.TaxCode === 'YQ') {
-                                    childyqTax = tax?.TaxAmount;
-                                } else if (tax?.TaxCode === 'YR') {
-                                    childyrTax = tax?.TaxAmount;
-                                } else if (tax?.TaxAmount !== 'TotalTax') {
-                                    // Sum other taxes excluding K3, YQ, YR, and TotalTax
-                                    childTaxesSum += tax?.TaxAmount;
-                                }
-                            });
-
-                        }
-                        if (paxFare.PaxType === 'INF') {
-
-                            infantFare = parseFloat(paxFare.BasicFare) + parseFloat(paxFare.TotalTax)
-
-                            infantBaseFare = parseFloat(paxFare.BasicFare);
-
-                            infantTotalTax = parseFloat(paxFare.TotalTax)
-
-                            paxFare?.PaxTaxDetails?.forEach(tax => {
-                                if (tax?.TaxCode === 'K3') {
-                                    infantk3Tax = tax?.TaxAmount;
-                                } else if (tax?.TaxCode === 'YQ') {
-                                    infantyqTax = tax?.TaxAmount;
-                                } else if (tax?.TaxCode === 'YR') {
-                                    infantyrTax = tax?.TaxAmount;
-                                } else if (tax?.TaxAmount !== 'TotalTax') {
-                                    // Sum other taxes excluding K3, YQ, YR, and TotalTax
-                                    infantTaxesSum += tax?.TaxAmount;
-                                }
-                            });
-
-                        }
-                    }
-
-                    // let fareDifference = parseFloat(flight.Fare.PublishedFare) - parseFloat(flight.Fare.OfferedFare);
-
-                    // let markup_type = (fareDifference > 0) ? 'PLB' : 'Non PLB';
-
-                    // let markup_value = 0, markup_percentage = 0;
-
-                    // let journey_type = (markup?.[0]?.CountryCode === 'IN') ? 'Domestic' : 'International';
-
-
-                    let commission = parseFloat(flight.GrossFare) - parseFloat(flight.NetAmount)
-
-                    let tds = (parseInt(commission) === 0) ? 0 : (commission * 5 / 100).toFixed(2);
-
-                    let fareBreakup = {
-                        BaseFare: flight.BasicFare,
-                        totalTax: flight.TotalTax,
-                        k3Tax: k3Tax,
-                        yqTax: yqTax,
-                        yrTax: yrTax,
-                        otherTaxesSum: otherTaxesSum,
-                        PublishedFare: parseFloat(flight.TotalFare),
-                        CommissionEarned: commission,
-                        TdsOnCommission: tds,
-                        IncentiveEarned: 0,
-                        OfferedFare: flight.NetAmount,
-                        Discount: 0,
-                        ServiceFee: 0,
-                        OtherCharges: 0,
-                        Adult: {
-                            adultBaseFare: adultBaseFare,
-                            adultTotaltax: adultTotaltax,
-                            adultyqTax: adultyqTax,
-                            adultk3Tax: adultk3Tax,
-                            adultyrTax: adultyrTax,
-                            adultTaxesSum: adultTaxesSum
-                        },
-                        child: {
-                            childBaseFare: childBasefare,
-                            childTotalTax: childTotalTax,
-                            childyqTax: childyqTax,
-                            childk3Tax: childk3Tax,
-                            childyrTax: childyrTax,
-                            childTaxesSum: childTaxesSum
-                        },
-                        infant: {
-                            infantBaseFare: infantBaseFare,
-                            infantTotalTax: infantTotalTax,
-                            infantyqTax: infantyqTax,
-                            infantk3Tax: infantk3Tax,
-                            infantyrTax: infantyrTax,
-                            infantTaxesSum: infantTaxesSum
-                        }
-                    }
-
-                    let Baggage = {
-                        Baggage: `${mySegments[0].Baggage.Weight}-${mySegments[0].Baggage.Unit}`,
-                        CabinBaggage: mySegments[0].CabinBaggage
-                    }
-
-
-                    acc[key].Details.push({
-                        flightDetails,
-                        fare: fare,
-                        FareBreakup: fareBreakup,
-                        Baggage: Baggage,
-                        ResultIndex: ResultIndex
-                    });
-
-
-                    return acc;
-                }, {});
-
-                let groupedReturnFlights = tboResponse.value.data.Journeys[1].Flights.reduce((acc, flight) => {
-
-                    let mySegments = flight.Segments;
-
-                    let airlineCode = flight.ValidatingCarrier;
-                    let airlineName = flight.SupplierName;
-                    let flightNumber = mySegments[0].FlightNumber;
-                    let stops = `${mySegments.length - 1} Stops`;
-                    let key = `${airlineCode}_${flightNumber}`;
-                    // Add segments to the grouped object
-                    let deptTime = flight.OriginDestination.DepartureDateTime;
-                    let ArrTime = flight.OriginDestination.ArrivalDateTime;
-
-                    let formattedDuration = calculateDuration(deptTime, ArrTime);
-
-                    let Origin = {
-                        CityCode: mySegments[0].OriginDestination.Departure,
-                        CityName: mySegments[0].OriginDestination.Departure,
-                        AirportCode: mySegments[0].OriginDestination.Departure,
-                        AirportName: mySegments[0].OriginDestination.Departure,
-                        airlineCode: mySegments[0].Carrier,
-                        airlineName: mySegments[0].Carrier,
-                        Terminal: mySegments[0].DepartureTerminal,
-                        FlightNumber: mySegments[0].FlightNumber,
-                        DepDateTime: deptTime,
-                        DepTime: convertToTime(deptTime),
-                        DepDate: convertToDesiredFormat(deptTime),
-                        Time: getTimeOfDay(deptTime)
-                    }
-                    let Destination = {
-                        CityCode: mySegments[mySegments.length - 1].OriginDestination.Arrival,
-                        CityName: mySegments[mySegments.length - 1].OriginDestination.Arrival,
-                        AirportCode: mySegments[mySegments.length - 1].OriginDestination.Arrival,
-                        AirportName: mySegments[mySegments.length - 1].OriginDestination.Arrival,
-                        Terminal: mySegments[mySegments.length - 1].ArrivalTerminal,
-                        airlineCode: mySegments[mySegments.length - 1].Carrier,
-                        airlineName: mySegments[mySegments.length - 1].Carrier,
-                        FlightNumber: mySegments[mySegments.length - 1].FlightNumber,
-                        ArrDateTime: ArrTime,
-                        ArrTime: convertToTime(ArrTime),
-                        ArrDate: convertToDesiredFormat(ArrTime),
-                        Time: getTimeOfDay(ArrTime)
-                    }
-
-                    if (!acc[key]) {
-                        acc[key] = {
-                            Supplier: "RIYA",
-                            adults: adults,
-                            childs: child,
-                            infants: infants,
-                            formattedDuration: formattedDuration,
-                            Origin: Origin,
-                            Stops: stops,
-                            Destination: Destination,
-                            AirlineCode: airlineCode,
-                            AirlineName: airlineName,
-                            FlightNumber: flightNumber,
-                            Details: []
-                        };
-                    }
-
-
-                    let flightDetails = [];
-                    // Fix: Wrap the object in parentheses
-                    let previousArrivalTime = null;
-
-                    // Add segments
-                    let segments = mySegments.map(segment => {
-                        let layoverTime = 0;
-                        // Calculate layover time only for segments after the first one
-                        if (previousArrivalTime) {
-                            layoverTime = calculateDuration(previousArrivalTime, segment.OriginDestination.DepartureDateTime); // Add 1 to the calculated duration
-                        }
-
-                        // Update previous arrival time for the next iteration
-                        previousArrivalTime = segment.OriginDestination.ArrivalDateTime;
-
-                        flightClass = segment?.OriginDestination?.Cabin || 'Not Mentioned'
-
-
-                        let obj = {
-                            ArrivalCityCode: segment.OriginDestination.Arrival,
-                            ArrivalCityName: segment.OriginDestination.Arrival,
-                            DepartureCityCode: segment.OriginDestination.Departure,
-                            DepartureCityName: segment.OriginDestination.Departure,
-                            flightClass: flightClass,
-                            Baggage: segment.Baggages,
-                            FlightNumber: segment.FlightNumber,
-                            CabinBaggage: segment.CabinBaggage,
-                            AirlineCode: segment.Carrier,
-                            AirlineName: segment.Carrier,
-                            DepartureAirportCode: segment.OriginDestination.Departure,
-                            ArrivalAirportCode: segment.OriginDestination.Arrival,
-                            DepartureAirportName: segment.OriginDestination.Departure,
-                            ArrivalAirportName: segment.OriginDestination.Arrival,
-                            DepDateTime: segment.OriginDestination.DepartureDateTime,
-                            ArrDateTime: segment.OriginDestination.ArrivalDateTime,
-                            DepTime: convertToTime(segment.OriginDestination.DepartureDateTime),
-                            ArrTime: convertToTime(segment.OriginDestination.ArrivalDateTime),
-                            DepDate: convertToDesiredFormat(segment.OriginDestination.DepartureDateTime),
-                            ArrDate: convertToDesiredFormat(segment.OriginDestination.ArrivalDateTime),
-                            Duration: calculateDuration(segment.OriginDestination.DepartureDateTime, segment.OriginDestination.ArrivalDateTime),
-                            LayoverTime: layoverTime || 0,
-                            DepartureTerminal: segment.DepartureTerminal,
-                            ArrivalTerminal: segment.ArrivalTerminal
-                        }
-                        flightDetails.push(obj);
-                    });
-
-
-                    let fare = flight.FareName;
-
-
-                    let ResultIndex = flight.FlightKey
-
-                    let k3Tax = 0, yqTax = 0, yrTax = 0, otherTaxesSum = 0;
-
-// Loop through the TaxBreakup array
-                    flight?.FlightPricingInfo?.FlightTaxDetails?.forEach(tax => {
-                        if (tax?.TaxCode === 'K3') {
-                            k3Tax = tax?.TaxAmount;
-                        } else if (tax?.TaxCode === 'YQ') {
-                            yqTax = tax?.TaxAmount;
-                        } else if (tax?.TaxCode === 'YR') {
-                            yrTax = tax?.TaxAmount;
-                        } else if (tax?.TaxAmount !== 'TotalTax') {
-                            // Sum other taxes excluding K3, YQ, YR, and TotalTax
-                            otherTaxesSum += tax?.TaxAmount;
-                        }
-                    });
-
-
-                    let adultFare = 0;
-                    let childFare = 0;
-                    let infantFare = 0;
-                    let adultBaseFare = 0;
-                    let childBasefare = 0;
-                    let infantBaseFare = 0;
-                    let adultTotaltax = 0;
-                    let childTotalTax = 0;
-                    let infantTotalTax = 0;
-                    let adultk3Tax = 0, adultyqTax = 0, adultyrTax = 0, adultTaxesSum = 0;
-                    let childk3Tax = 0, childyqTax = 0, childyrTax = 0, childTaxesSum = 0;
-                    let infantk3Tax = 0, infantyqTax = 0, infantyrTax = 0, infantTaxesSum = 0;
-
-                    for (let i = 0; i < flight.FlightPricingInfo.PaxFareDetails.length; i++) {
-
-                        let paxFare = flight.FlightPricingInfo.PaxFareDetails[i]
-
-                        if (paxFare.PaxType === 'ADT') {
-
-                            adultFare = parseFloat(paxFare.BasicFare) + parseFloat(paxFare.TotalTax)
-
-                            adultBaseFare = parseFloat(paxFare.BasicFare);
-
-                            adultTotaltax = parseFloat(paxFare.TotalTax)
-
-                            paxFare?.PaxTaxDetails?.forEach(tax => {
-                                if (tax?.TaxCode === 'K3') {
-                                    adultk3Tax = tax?.TaxAmount;
-                                } else if (tax?.TaxCode === 'YQ') {
-                                    adultyqTax = tax?.TaxAmount;
-                                } else if (tax?.TaxCode === 'YR') {
-                                    adultyrTax = tax?.TaxAmount;
-                                } else if (tax?.TaxAmount !== 'TotalTax') {
-                                    // Sum other taxes excluding K3, YQ, YR, and TotalTax
-                                    adultTaxesSum += tax?.TaxAmount;
-                                }
-                            });
-
-                        }
-
-                        if (paxFare.PaxType === 'CHD') {
-
-                            childFare = parseFloat(paxFare.BasicFare) + parseFloat(paxFare.TotalTax)
-
-                            childBasefare = parseFloat(paxFare.BasicFare);
-
-                            childTotalTax = parseFloat(paxFare.TotalTax)
-
-                            paxFare?.PaxTaxDetails?.forEach(tax => {
-                                if (tax?.TaxCode === 'K3') {
-                                    childk3Tax = tax?.TaxAmount;
-                                } else if (tax?.TaxCode === 'YQ') {
-                                    childyqTax = tax?.TaxAmount;
-                                } else if (tax?.TaxCode === 'YR') {
-                                    childyrTax = tax?.TaxAmount;
-                                } else if (tax?.TaxAmount !== 'TotalTax') {
-                                    // Sum other taxes excluding K3, YQ, YR, and TotalTax
-                                    childTaxesSum += tax?.TaxAmount;
-                                }
-                            });
-
-                        }
-                        if (paxFare.PaxType === 'INF') {
-
-                            infantFare = parseFloat(paxFare.BasicFare) + parseFloat(paxFare.TotalTax)
-
-                            infantBaseFare = parseFloat(paxFare.BasicFare);
-
-                            infantTotalTax = parseFloat(paxFare.TotalTax)
-
-                            paxFare?.PaxTaxDetails?.forEach(tax => {
-                                if (tax?.TaxCode === 'K3') {
-                                    infantk3Tax = tax?.TaxAmount;
-                                } else if (tax?.TaxCode === 'YQ') {
-                                    infantyqTax = tax?.TaxAmount;
-                                } else if (tax?.TaxCode === 'YR') {
-                                    infantyrTax = tax?.TaxAmount;
-                                } else if (tax?.TaxAmount !== 'TotalTax') {
-                                    // Sum other taxes excluding K3, YQ, YR, and TotalTax
-                                    infantTaxesSum += tax?.TaxAmount;
-                                }
-                            });
-
-                        }
-                    }
-
-                    // let fareDifference = parseFloat(flight.Fare.PublishedFare) - parseFloat(flight.Fare.OfferedFare);
-
-                    // let markup_type = (fareDifference > 0) ? 'PLB' : 'Non PLB';
-
-                    // let markup_value = 0, markup_percentage = 0;
-
-                    // let journey_type = (markup?.[0]?.CountryCode === 'IN') ? 'Domestic' : 'International';
-
-
-                    let commission = parseFloat(flight.GrossFare) - parseFloat(flight.NetAmount)
-
-                    let tds = (parseInt(commission) === 0) ? 0 : (commission * 5 / 100).toFixed(2);
-
-                    let fareBreakup = {
-                        BaseFare: flight.BasicFare,
-                        totalTax: flight.TotalTax,
-                        k3Tax: k3Tax,
-                        yqTax: yqTax,
-                        yrTax: yrTax,
-                        otherTaxesSum: otherTaxesSum,
-                        PublishedFare: parseFloat(flight.TotalFare),
-                        CommissionEarned: commission,
-                        TdsOnCommission: tds,
-                        IncentiveEarned: 0,
-                        OfferedFare: flight.NetAmount,
-                        Discount: 0,
-                        ServiceFee: 0,
-                        OtherCharges: 0,
-                        Adult: {
-                            adultBaseFare: adultBaseFare,
-                            adultTotaltax: adultTotaltax,
-                            adultyqTax: adultyqTax,
-                            adultk3Tax: adultk3Tax,
-                            adultyrTax: adultyrTax,
-                            adultTaxesSum: adultTaxesSum
-                        },
-                        child: {
-                            childBaseFare: childBasefare,
-                            childTotalTax: childTotalTax,
-                            childyqTax: childyqTax,
-                            childk3Tax: childk3Tax,
-                            childyrTax: childyrTax,
-                            childTaxesSum: childTaxesSum
-                        },
-                        infant: {
-                            infantBaseFare: infantBaseFare,
-                            infantTotalTax: infantTotalTax,
-                            infantyqTax: infantyqTax,
-                            infantk3Tax: infantk3Tax,
-                            infantyrTax: infantyrTax,
-                            infantTaxesSum: infantTaxesSum
-                        }
-                    }
-
-                    let Baggage = {
-                        Baggage: `${mySegments[0].Baggage.Weight}-${mySegments[0].Baggage.Unit}`,
-                        CabinBaggage: mySegments[0].CabinBaggage
-                    }
-
-
-                    acc[key].Details.push({
-                        flightDetails,
-                        fare: fare,
-                        FareBreakup: fareBreakup,
-                        Baggage: Baggage,
-                        ResultIndex: ResultIndex
-                    });
-
-
-                    return acc;
-                }, {});
-
-
-// Convert grouped flights object to array
-                let onwardFlights = Object.values(groupedFlights).map(group => {
-                    return {
-                        Supplier: group.Supplier,
-                        adults: group.adults,
-                        childs: group.childs,
-                        infants: group.infants,
-                        Stops: group.Stops,
-                        TraceId: tboResponse.value.data.TrackID,
-                        totalDuration: group.formattedDuration,
-                        Origin: group.Origin,
-                        Destination: group.Destination,
-                        AirlineCode: group.AirlineCode,
-                        AirlineName: group.AirlineName,
-                        FlightNumber: group.FlightNumber,
-                        Segments: group.Details
-                    };
-                });
-
-                let returnFlights = Object.values(groupedReturnFlights).map(group => {
-                    return {
-                        Supplier: group.Supplier,
-                        adults: group.adults,
-                        childs: group.childs,
-                        infants: group.infants,
-                        Stops: group.Stops,
-                        TraceId: tboResponse.value.data.TrackID,
-                        totalDuration: group.formattedDuration,
-                        Origin: group.Origin,
-                        Destination: group.Destination,
-                        AirlineCode: group.AirlineCode,
-                        AirlineName: group.AirlineName,
-                        FlightNumber: group.FlightNumber,
-                        Segments: group.Details
-                    };
-                });
-
-                parsedTBOData = {
-                    onwardFlights,
-                    returnFlights
-                }
-
-            }
-
-
-        }
-
-
-        // Combine parsed data
-        const combinedResponse = {
-            ResponseStatus: 1,
-            response: {data: parsedTBOData},
-            data: parsedTBOData
-        };
-
-        req.session.tdate = travelDate;
-
-        res.json(combinedResponse);
 
     } catch (e) {
         console.log(e);
@@ -1890,11 +2646,11 @@ flightController.makeSearchingSession = async (req, res) => {
 //     res.render("flights/searchResults", {agentEmail: req.agent.agentEmail})
 // }
 flightController.ViewTicketedBookings = (req, res) => {
-    res.render("flights/ticketedBookings", {agentEmail: req.agent.agentEmail,userType: req.agent.userType})
+    res.render("flights/ticketedBookings", {agentEmail: req.agent.agentEmail, userType: req.agent.userType})
 }
 
 flightController.ViewHoldBookings = (req, res) => {
-    res.render("flights/holdBookings", {agentEmail: req.agent.agentEmail,userType: req.agent.userType})
+    res.render("flights/holdBookings", {agentEmail: req.agent.agentEmail, userType: req.agent.userType})
 }
 
 
@@ -3048,7 +3804,7 @@ flightController.Success = async (req, res) => {
     let connection;
     try {
         let {insId, tx, payType, gCharge} = req.params;
-        let {agentEmail,userType} = req.agent
+        let {agentEmail, userType} = req.agent
         const connection = await connectToDatabase();
 
         let [recordset] = await flightServices.success(connection, insId);
@@ -3240,20 +3996,20 @@ flightController.GetTicketedBookingsDetails = async (req, res) => {
 flightController.GetHoldBookings = async (req, res) => {
     let connection;
     try {
-        const { agentId } = req.agent;
+        const {agentId} = req.agent;
         connection = await connectToDatabase();
 
         const [recordset] = await flightServices.getHoldBookings(connection, agentId);
         console.log("Data here", recordset);
 
         if (recordset.length === 0) {
-            return res.send({ responseCode: 1, error: false, warning: true, recordset: [] });
+            return res.send({responseCode: 1, error: false, warning: true, recordset: []});
         } else {
-            return res.send({ responseCode: 1, error: false, warning: false, recordset: recordset });
+            return res.send({responseCode: 1, error: false, warning: false, recordset: recordset});
         }
     } catch (err) {
         console.log(err);
-        return res.send({ responseCode: 1, error: true, warning: false, message: err.message });
+        return res.send({responseCode: 1, error: true, warning: false, message: err.message});
     } finally {
         if (connection) connection.release();
     }
@@ -3417,7 +4173,7 @@ flightController.goToCheckout = async (req, res) => {
 
 flightController.RoundFlightResults = (req, res) => {
 
-    res.render("flights/roundSearchResults", {agentEmail: req.agent.agentEmail,userType: req.agent.userType})
+    res.render("flights/roundSearchResults", {agentEmail: req.agent.agentEmail, userType: req.agent.userType})
 }
 
 flightController.returnFixedBook = async (req, res) => {
