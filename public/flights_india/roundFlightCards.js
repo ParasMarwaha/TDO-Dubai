@@ -255,6 +255,7 @@ class FareCards {
         this.flight = flight;
         this.index = index;
         this.type = type;
+        //console.log(index)
     }
 
     render(index) {
@@ -307,8 +308,8 @@ class FareCards {
                             <div data-watermark="FW76315FW76315 FW76315FW76315 FW76315FW76315"
                                  class="p-2 d-flex justify-content-center align-items-end one-way-watermarked col-lg-6 col-md-6 col-sm-6 col-6">
                                 <div class=" position-relative d-flex flex-column"><span
-                                    class="fs-16 fw-600">AED ${(this.flight.FareBreakup.PublishedFare).toFixed(2)}</span><span
-                                    class="netFare fs-12 fw-500 hidden">AED ${(this.flight.FareBreakup.OfferedFare).toFixed(2)}</span>
+                                    class="fs-16 fw-600">AED ${this.flight.FareBreakup.PublishedFare}</span><span
+                                    class="netFare fs-12 fw-500 hidden">AED ${this.flight.FareBreakup.OfferedFare}</span>
                                 </div>
                             </div>
                         </div>
@@ -360,8 +361,8 @@ class FareCards {
                             <div data-watermark="FW76315FW76315 FW76315FW76315 FW76315FW76315"
                                  class="p-2 d-flex justify-content-center align-items-end one-way-watermarked col-lg-6 col-md-6 col-sm-6 col-6">
                                 <div class=" position-relative d-flex flex-column"><span
-                                    class="fs-16 fw-600">AED ${(this.flight.FareBreakup.PublishedFare).toFixed(2)}</span><span
-                                    class="netFare fs-12 fw-500 hidden">AED ${(this.flight.FareBreakup.OfferedFare).toFixed(2)}</span>
+                                    class="fs-16 fw-600">AED ${this.flight.FareBreakup.PublishedFare}</span><span
+                                    class="netFare fs-12 fw-500 hidden">AED ${this.flight.FareBreakup.OfferedFare}</span>
                                 </div>
                             </div>
                         </div>
@@ -955,14 +956,14 @@ async function PriceFilterDiv() {
     const div = `
         <div class="d-flex text-lh-1">
             <span>AED </span>
-            <span id="rangeSliderExample3MinResult" class=""></span>
+            <span id="rangeSliderExample3MAEDesult" class=""></span>
             <span class="mx-0dot5"> — </span>
             <span>AED </span>
             <span id="rangeSliderExample3MaxResult" class=""></span>
         </div>
         <input class="js-range-slider" type="text"
             data-extra-classes="u-range-slider height-35"
-            data-result-min="#rangeSliderExample3MinResult"
+            data-result-min="#rangeSliderExample3MAEDesult"
             data-result-max="#rangeSliderExample3MaxResult">
     `;
 
@@ -970,7 +971,7 @@ async function PriceFilterDiv() {
 
     // Initialize ionRangeSlider for price filter
     $(document).ready(function () {
-        $("#rangeSliderExample3MinResult").text(minPublishedFare.toFixed(2));
+        $("#rangeSliderExample3MAEDesult").text(minPublishedFare.toFixed(2));
         $("#rangeSliderExample3MaxResult").text(maxPublishedFare.toFixed(2));
         $(".js-range-slider").ionRangeSlider({
             skin: "round",
@@ -984,11 +985,12 @@ async function PriceFilterDiv() {
             to: maxPublishedFare.toFixed(2),
             prefix: "AED ",
             onChange: function (data) {
-                $("#rangeSliderExample3MinResult").text((data.from).toFixed(2));
+                $("#rangeSliderExample3MAEDesult").text((data.from).toFixed(2));
                 $("#rangeSliderExample3MaxResult").text((data.to).toFixed(2));
 
                 // Call the applyFilters function with the range slider value
                 applyFilters();
+                applyFiltersReturn()
             }
         });
     });
@@ -3502,42 +3504,6 @@ document.querySelectorAll('.a-app-chip-return').forEach(function (chip) {
     });
 });
 
-
-function sortAirReturn() {
-    sortArrival.isAscending = false;
-    sortDeparture.isAscending = false;
-    sortPrice.isAscending = false;
-
-    let myArr =  (filteredFlightsReturn.length > 0) ? filteredFlightsReturn : flightData[0].returnFlights;
-
-    // Toggle between ascending and descending sorting orders
-    if (!sortAir.isAscending) {
-        myArr.sort((a, b) => a.AirlineName.localeCompare(b.AirlineName)); // Ascending order
-    } else {
-        myArr.sort((a, b) => b.AirlineName.localeCompare(a.AirlineName)); // Descending order
-    }
-
-    // Invert the sorting order flag
-    sortAir.isAscending = !sortAir.isAscending;
-
-    // Cache the renderResults element
-    const renderResults = document.getElementById("myReturn");
-    renderResults.innerHTML = ''; // Clear previous results
-
-    // Efficient DOM manipulation using Document Fragment
-    const fragment = document.createDocumentFragment();
-    myArr.forEach((flight, index) => {
-        const flightCard = new FlightRoundCards(flight, index);
-        const cardElement = document.createElement('div');
-        cardElement.innerHTML = flightCard.render();
-        fragment.appendChild(cardElement); // Append each card to the fragment
-    });
-
-    renderResults.appendChild(fragment); // Append the entire fragment to the DOM in one go
-
-}
-
-
 function sortAir() {
     // Reset other sorting flags
     sortArrival.isAscending = false;
@@ -3594,6 +3560,74 @@ function sortAir() {
     });
 
     renderResults.appendChild(fragment); // Append the entire fragment to the DOM in one go
+}
+
+function sortAirReturn() {
+    sortArrival.isAscending = false;
+    sortDeparture.isAscending = false;
+    sortPrice.isAscending = false;
+
+    let myArr =  (filteredFlightsReturn.length > 0) ? filteredFlightsReturn : flightData.returnFlights;
+
+    // Toggle between ascending and descending sorting orders
+    if (!sortAir.isAscending) {
+        myArr.sort((a, b) => a.AirlineName.localeCompare(b.AirlineName)); // Ascending order
+    } else {
+        myArr.sort((a, b) => b.AirlineName.localeCompare(a.AirlineName)); // Descending order
+    }
+
+    // Invert the sorting order flag
+    sortAir.isAscending = !sortAir.isAscending;
+
+    // Cache the renderResults element
+    const renderResults = document.getElementById("myReturn");
+    renderResults.innerHTML = ''; // Clear previous results
+
+    // Efficient DOM manipulation using Document Fragment
+    const fragment = document.createDocumentFragment();
+    myArr.forEach((flight, index) => {
+        const flightCard = new FlightRoundCards(flight, index);
+        const cardElement = document.createElement('div');
+        cardElement.innerHTML = flightCard.renderReturn();
+        fragment.appendChild(cardElement); // Append each card to the fragment
+    });
+
+    renderResults.appendChild(fragment); // Append the entire fragment to the DOM in one go
+
+}
+
+function sortAirOnward() {
+    sortArrival.isAscending = false;
+    sortDeparture.isAscending = false;
+    sortPrice.isAscending = false;
+
+    let myArr =  (filteredFlights.length > 0) ? filteredFlights : flightData.onwardFlights;
+
+    // Toggle between ascending and descending sorting orders
+    if (!sortAir.isAscending) {
+        myArr.sort((a, b) => a.AirlineName.localeCompare(b.AirlineName)); // Ascending order
+    } else {
+        myArr.sort((a, b) => b.AirlineName.localeCompare(a.AirlineName)); // Descending order
+    }
+
+    // Invert the sorting order flag
+    sortAir.isAscending = !sortAir.isAscending;
+
+    // Cache the renderResults element
+    const renderResults = document.getElementById("myOnward");
+    renderResults.innerHTML = ''; // Clear previous results
+
+    // Efficient DOM manipulation using Document Fragment
+    const fragment = document.createDocumentFragment();
+    myArr.forEach((flight, index) => {
+        const flightCard = new FlightRoundCards(flight, index);
+        const cardElement = document.createElement('div');
+        cardElement.innerHTML = flightCard.render();
+        fragment.appendChild(cardElement); // Append each card to the fragment
+    });
+
+    renderResults.appendChild(fragment); // Append the entire fragment to the DOM in one go
+
 }
 
 // Set initial sorting order flag
@@ -3666,42 +3700,6 @@ function setDateRestrictions(input,paxType) {
     }
 }
 
-function sortPriceReturn() {
-    sortDeparture.isAscending = false;
-    sortAir.isAscending = false;
-    sortArrival.isAscending = false;
-
-
-    let myArr =  (filteredFlightsReturn.length > 0) ? filteredFlightsReturn : flightData[0].returnFlights;
-    // Toggle between ascending and descending sorting orders
-    if (!sortPrice.isAscending) {
-        myArr.sort((a, b) => a.Segments[0].FareBreakup.PublishedFare - b.Segments[0].FareBreakup.PublishedFare); // Ascending order
-    } else {
-        myArr.sort((a, b) => b.Segments[0].FareBreakup.PublishedFare - a.Segments[0].FareBreakup.PublishedFare); // Descending order
-    }
-
-    // Invert the sorting order flag
-    sortPrice.isAscending = !sortPrice.isAscending;
-
-    // Render the sorted items
-    // Cache the renderResults element
-    const renderResults = document.getElementById("myReturn");
-    renderResults.innerHTML = ''; // Clear previous results
-
-
-    // Efficient DOM manipulation using Document Fragment
-    const fragment = document.createDocumentFragment();
-    myArr.forEach((flight, index) => {
-        const flightCard = new FlightRoundCards(flight, index);
-        const cardElement = document.createElement('div');
-        cardElement.innerHTML = flightCard.render();
-        fragment.appendChild(cardElement); // Append each card to the fragment
-    });
-
-    renderResults.appendChild(fragment); // Append the entire fragment to the DOM in one go
-
-}
-
 function sortPrice() {
     // Reset other sorting flags
     sortDeparture.isAscending = false;
@@ -3749,6 +3747,79 @@ function sortPrice() {
 
     renderResults.appendChild(fragment); // Append the entire fragment to the DOM in one go
 }
+
+function sortPriceReturn() {
+    sortDeparture.isAscending = false;
+    sortAir.isAscending = false;
+    sortArrival.isAscending = false;
+
+
+    let myArr =  (filteredFlightsReturn.length > 0) ? filteredFlightsReturn : flightData.returnFlights;
+    // Toggle between ascending and descending sorting orders
+    if (!sortPrice.isAscending) {
+        myArr.sort((a, b) => a.Segments[0].FareBreakup.PublishedFare - b.Segments[0].FareBreakup.PublishedFare); // Ascending order
+    } else {
+        myArr.sort((a, b) => b.Segments[0].FareBreakup.PublishedFare - a.Segments[0].FareBreakup.PublishedFare); // Descending order
+    }
+
+    // Invert the sorting order flag
+    sortPrice.isAscending = !sortPrice.isAscending;
+
+    // Render the sorted items
+    // Cache the renderResults element
+    const renderResults = document.getElementById("myReturn");
+    renderResults.innerHTML = ''; // Clear previous results
+
+
+    // Efficient DOM manipulation using Document Fragment
+    const fragment = document.createDocumentFragment();
+    myArr.forEach((flight, index) => {
+        const flightCard = new FlightRoundCards(flight, index);
+        const cardElement = document.createElement('div');
+        cardElement.innerHTML = flightCard.renderReturn();
+        fragment.appendChild(cardElement); // Append each card to the fragment
+    });
+
+    renderResults.appendChild(fragment); // Append the entire fragment to the DOM in one go
+
+}
+
+function sortPriceOnward() {
+    sortDeparture.isAscending = false;
+    sortAir.isAscending = false;
+    sortArrival.isAscending = false;
+
+
+    let myArr =  (filteredFlights.length > 0) ? filteredFlights : flightData.onwardFlights;
+    // Toggle between ascending and descending sorting orders
+    if (!sortPrice.isAscending) {
+        myArr.sort((a, b) => a.Segments[0].FareBreakup.PublishedFare - b.Segments[0].FareBreakup.PublishedFare); // Ascending order
+    } else {
+        myArr.sort((a, b) => b.Segments[0].FareBreakup.PublishedFare - a.Segments[0].FareBreakup.PublishedFare); // Descending order
+    }
+
+    // Invert the sorting order flag
+    sortPrice.isAscending = !sortPrice.isAscending;
+
+    // Render the sorted items
+    // Cache the renderResults element
+    const renderResults = document.getElementById("myOnward");
+    renderResults.innerHTML = ''; // Clear previous results
+
+
+    // Efficient DOM manipulation using Document Fragment
+    const fragment = document.createDocumentFragment();
+    myArr.forEach((flight, index) => {
+        const flightCard = new FlightRoundCards(flight, index);
+        const cardElement = document.createElement('div');
+        cardElement.innerHTML = flightCard.render();
+        fragment.appendChild(cardElement); // Append each card to the fragment
+    });
+
+    renderResults.appendChild(fragment); // Append the entire fragment to the DOM in one go
+
+}
+
 
 // Set initial sorting order flag
 sortPrice.isAscending = true;
@@ -3806,7 +3877,7 @@ function sortDepartureReturn() {
     sortAir.isAscending = false;
     sortArrival.isAscending = false;
 
-    let myArr =  (filteredFlightsReturn.length > 0) ? filteredFlightsReturn : flightData[0].returnFlights;
+    let myArr =  (filteredFlightsReturn.length > 0) ? filteredFlightsReturn : flightData.returnFlights;
 
     // Toggle between ascending and descending sorting orders
     if (!sortDeparture.isAscending) {
@@ -3829,6 +3900,42 @@ function sortDepartureReturn() {
     myArr.forEach((flight, index) => {
         const flightCard = new FlightRoundCards(flight, index);
         const cardElement = document.createElement('div');
+        cardElement.innerHTML = flightCard.renderReturn();
+        fragment.appendChild(cardElement); // Append each card to the fragment
+    });
+
+    renderResults.appendChild(fragment); // Append the entire fragment to the DOM in one go
+
+}
+
+function sortDepartureOnward() {
+    sortPrice.isAscending = false;
+    sortAir.isAscending = false;
+    sortArrival.isAscending = false;
+
+    let myArr =  (filteredFlights.length > 0) ? filteredFlights : flightData.onwardFlights;
+
+    // Toggle between ascending and descending sorting orders
+    if (!sortDeparture.isAscending) {
+        myArr.sort((a, b) => a.Origin.DepTime.localeCompare(b.Origin.DepTime)); // Ascending order
+    } else {
+        myArr.sort((a, b) => b.Origin.DepTime.localeCompare(a.Origin.DepTime)); // Descending order
+    }
+
+    // Invert the sorting order flag
+    sortDeparture.isAscending = !sortDeparture.isAscending;
+
+    // Render the sorted items
+    // Cache the renderResults element
+    const renderResults = document.getElementById("myOnward");
+    renderResults.innerHTML = ''; // Clear previous results
+
+
+    // Efficient DOM manipulation using Document Fragment
+    const fragment = document.createDocumentFragment();
+    myArr.forEach((flight, index) => {
+        const flightCard = new FlightRoundCards(flight, index);
+        const cardElement = document.createElement('div');
         cardElement.innerHTML = flightCard.render();
         fragment.appendChild(cardElement); // Append each card to the fragment
     });
@@ -3836,6 +3943,7 @@ function sortDepartureReturn() {
     renderResults.appendChild(fragment); // Append the entire fragment to the DOM in one go
 
 }
+
 
 // Set initial sorting order flag
 sortDeparture.isAscending = true;
@@ -3893,7 +4001,7 @@ function sortArrivalReturn() {
     sortAir.isAscending = false;
     sortDeparture.isAscending = false;
 
-    let myArr =  (filteredFlightsReturn.length > 0) ? filteredFlightsReturn : flightData[0].returnFlights;
+    let myArr =  (filteredFlightsReturn.length > 0) ? filteredFlightsReturn : flightData.returnFlights;
     // Toggle between ascending and descending sorting orders
     if (!sortArrival.isAscending) {
         myArr.sort((a, b) => a.Destination.ArrTime.localeCompare(b.Destination.ArrTime)); // Ascending order
@@ -3906,6 +4014,39 @@ function sortArrivalReturn() {
 
     // Cache the renderResults element
     const renderResults = document.getElementById("myReturn");
+    renderResults.innerHTML = ''; // Clear previous results
+
+    // Efficient DOM manipulation using Document Fragment
+    const fragment = document.createDocumentFragment();
+    myArr.forEach((flight, index) => {
+        const flightCard = new FlightRoundCards(flight, index);
+        const cardElement = document.createElement('div');
+        cardElement.innerHTML = flightCard.renderReturn();
+        fragment.appendChild(cardElement); // Append each card to the fragment
+    });
+
+    renderResults.appendChild(fragment); // Append the entire fragment to the DOM in one go
+
+}
+
+function sortArrivalOnward() {
+    sortPrice.isAscending = false;
+    sortAir.isAscending = false;
+    sortDeparture.isAscending = false;
+
+    let myArr =  (filteredFlights.length > 0) ? filteredFlights : flightData.onwardFlights;
+    // Toggle between ascending and descending sorting orders
+    if (!sortArrival.isAscending) {
+        myArr.sort((a, b) => a.Destination.ArrTime.localeCompare(b.Destination.ArrTime)); // Ascending order
+    } else {
+        myArr.sort((a, b) => b.Destination.ArrTime.localeCompare(a.Destination.ArrTime)); // Descending order
+    }
+
+    // Invert the sorting order flag
+    sortArrival.isAscending = !sortArrival.isAscending;
+
+    // Cache the renderResults element
+    const renderResults = document.getElementById("myOnward");
     renderResults.innerHTML = ''; // Clear previous results
 
     // Efficient DOM manipulation using Document Fragment

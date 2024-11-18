@@ -434,27 +434,8 @@
         if (storedFormData) {
 
             var formDataArray = JSON.parse(storedFormData);
-            console.log(formDataArray[0][1])
-            console.log(formDataArray[1][1])
-            let length = formDataArray.length;
-            // Accessing "data" property by iterating over the array
-            // for (let i = 0; i < length; i++) {
-            //     if (formDataArray[i][0] === "data") {
-            //         markupData = JSON.parse(formDataArray[i][1]);
-            //         console.log(markupData);
-            //         break; // Stop iteration once "data" property is found
-            //     }
-            // }
 
-            // for (let i = 0; i < length; i++) {
-            //     if (formDataArray[i][0] === "platform") {
-            //         platformData = JSON.parse(formDataArray[i][1]);
-            //         console.log(platformData);
-            //         platformFee = platformData.recordset[0].fee;
-            //         platformFeeTax = platformData.recordset[0].tax;
-            //         break; // Stop iteration once "data" property is found
-            //     }
-            // }
+            let length = formDataArray.length;
 
             for (let i = 0; i < length; i++) {
                 if (formDataArray[i][0] === "adults") {
@@ -533,14 +514,10 @@
 
         res = await flightData.json();
 
-        console.log(res)
-        // flightData = res?.data || res?.COMBO || [];
-        // type = res?.data ? 'CUSTOM' : res?.COMBO ? 'FIXED' : '';
-        //console.log(flightData);
 
         if(res.Custom === 'YES') {
             flightData = res.data
-            console.log(flightData)
+            //console.log(flightData)
             document.getElementById("renderFlight").innerHTML = '';
             let flightHTML = `
     <div class="flex-1 pe-1 ps-2 rt-info">
@@ -586,23 +563,23 @@
                     Sort
                 </div>
                 <div class="d-flex justify-content-center align-items-center">
-                    <a class="ps-1 sort-option app-link-grey" onclick="sortAir()">Airline</a>
+                    <a class="ps-1 sort-option app-link-grey" onclick="sortAirOnward()">Airline</a>
                 </div>
                 <div class="d-flex justify-content-center align-items-center">
-                    <a class="ps-1 sort-option app-link-grey" onclick="sortDeparture()">Departure</a>
+                    <a class="ps-1 sort-option app-link-grey" onclick="sortDepartureOnward()">Departure</a>
                 </div>
                 <div class="d-flex justify-content-center align-items-center">
                     <a class="ps-1 sort-option app-link-grey" >Duration</a>
                 </div>
                 <div class="d-flex justify-content-center align-items-center">
-                    <a class="ps-1 sort-option app-link-grey" onclick="sortArrival()">Arrival</a>
+                    <a class="ps-1 sort-option app-link-grey" onclick="sortArrivalOnward()">Arrival</a>
                 </div>
                 <div class="d-flex justify-content-center align-items-center">
                     <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
                         <path fill="none" d="M0 0h24v24H0z"></path>
                         <path d="M19 15l-1.41-1.41L13 18.17V2h-2v16.17l-4.59-4.59L5 15l7 7 7-7z"></path>
                     </svg>
-                    <a class="ps-1 sort-option app-link-primary" onclick="sortPrice()">Price</a>
+                    <a class="ps-1 sort-option app-link-primary" onclick="sortPriceOnward()">Price</a>
                 </div>
             </div>
         </div>

@@ -2001,14 +2001,14 @@ async function PriceFilterDivFixed() {
     const div = `
         <div class="d-flex text-lh-1">
             <span>AED </span>
-            <span id="rangeSliderExample3MinResult" class=""> </span>
+            <span id="rangeSliderExample3MAEDesult" class=""> </span>
             <span class="mx-0dot5"> — </span>
             <span>AED </span>
             <span id="rangeSliderExample3MaxResult" class=""> </span>
         </div>
         <input class="js-range-slider" type="text"
             data-extra-classes="u-range-slider height-35"
-            data-result-min="#rangeSliderExample3MinResult"
+            data-result-min="#rangeSliderExample3MAEDesult"
             data-result-max="#rangeSliderExample3MaxResult">
     `;
 
@@ -2016,7 +2016,7 @@ async function PriceFilterDivFixed() {
 
     // Initialize ionRangeSlider for price filter
     $(document).ready(function () {
-        $("#rangeSliderExample3MinResult").text(minPublishedFare);
+        $("#rangeSliderExample3MAEDesult").text(minPublishedFare);
         $("#rangeSliderExample3MaxResult").text(maxPublishedFare);
         $(".js-range-slider").ionRangeSlider({
             skin: "round",
@@ -2030,7 +2030,7 @@ async function PriceFilterDivFixed() {
             to: maxPublishedFare.toFixed(2),
             prefix: "AED ",
             onChange: function (data) {
-                $("#rangeSliderExample3MinResult").text(data.from);
+                $("#rangeSliderExample3MAEDesult").text(data.from);
                 $("#rangeSliderExample3MaxResult").text(data.to);
 
                 // Call the applyFilters function with the range slider value
