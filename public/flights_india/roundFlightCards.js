@@ -14,7 +14,7 @@ class FlightRoundCards {
     constructor(flight, index) {
         this.flight = flight;
         this.index = index;
-        console.log(this.flight)
+       // console.log(this.flight)
     }
 
     render()
@@ -382,6 +382,7 @@ class SegmentInformation
         this.flight = flight;
         this.index = index;
         this.fare = fare;
+        console.log(this.flight)
     }
 
     render()
@@ -427,7 +428,7 @@ class SegmentInformation
                                             class="dark-grey-color fs-14 fw-600">${segment.ArrTime} (${segment.ArrDate}) - ${segment.ArrivalCityName} - ${segment.ArrivalTerminal}</span><span
                                             class="fs-10">${segment.ArrivalAirportName}</span></div>
                                 </div>
-                                <div class="selected-flight-details__flight-leg_amenities"><span>Check In: ${segment.Baggage}</span>
+                                <div class="selected-flight-details__flight-leg_amenities"><span>Check In: ${segment.Baggage[0].Weight}  ${segment.Baggage[0].Unit}</span>
                                 </div>
                             </div>
                         
@@ -440,7 +441,7 @@ class SegmentInformation
 
 function renderSideBar(index) {
     // Get the selected flight's segments
-    const selectedFlight = (filteredFlights.length > 0) ? filteredFlights[index] :  flightData[0].onwardFlights[index];
+    const selectedFlight = (filteredFlights.length > 0) ? filteredFlights[index] :  flightData.onwardFlights[index];
   //  console.log(selectedFlight)
 
     let selectedValue;
@@ -611,7 +612,7 @@ function renderSideBar(index) {
 
 function renderSideBarReturn(index) {
     // Get the selected flight's segments
-    const selectedFlight = (filteredFlightsReturn.length > 0) ? filteredFlightsReturn[index] :  flightData[0].returnFlights[index];
+    const selectedFlight = (filteredFlightsReturn.length > 0) ? filteredFlightsReturn[index] :  flightData.returnFlights[index];
    // console.log(selectedFlight)
 
     let selectedValue;
@@ -798,7 +799,7 @@ function AirlineFIlter()
     const airlineCounts = new Map();
 
     // Calculate counts for each airline
-    flightData[0].onwardFlights.forEach((flight) => {
+    flightData.onwardFlights.forEach((flight) => {
         const airlineName = flight.AirlineName;
         airlineCounts.set(airlineName, (airlineCounts.get(airlineName) || 0) + 1);
     });
@@ -820,10 +821,10 @@ function AirlineFIlter()
         `;
 
 
-        document.getElementById("airlineSector").innerHTML = `${flightData[0].onwardFlights[0].Origin.CityCode} -> ${flightData[0].onwardFlights[0].Destination.CityCode}`
-        document.getElementById("dTime").innerHTML = `${flightData[0].onwardFlights[0].Origin.CityCode} -> ${flightData[0].onwardFlights[0].Destination.CityCode}`
-        document.getElementById("aTime").innerHTML = `${flightData[0].onwardFlights[0].Origin.CityCode} -> ${flightData[0].onwardFlights[0].Destination.CityCode}`
-        document.getElementById("dFN").innerHTML = `Filter By Flight Number ${flightData[0].onwardFlights[0].Origin.CityCode} -> ${flightData[0].onwardFlights[0].Destination.CityCode}`
+        document.getElementById("airlineSector").innerHTML = `${flightData.onwardFlights[0].Origin.CityCode} -> ${flightData.onwardFlights[0].Destination.CityCode}`
+        document.getElementById("dTime").innerHTML = `${flightData.onwardFlights[0].Origin.CityCode} -> ${flightData.onwardFlights[0].Destination.CityCode}`
+        document.getElementById("aTime").innerHTML = `${flightData.onwardFlights[0].Origin.CityCode} -> ${flightData.onwardFlights[0].Destination.CityCode}`
+        document.getElementById("dFN").innerHTML = `Filter By Flight Number ${flightData.onwardFlights[0].Origin.CityCode} -> ${flightData.onwardFlights[0].Destination.CityCode}`
         document.getElementById('airlineFilter').innerHTML += div
     });
 }
@@ -835,7 +836,7 @@ function AirlineFIlterReturn()
     const airlineCounts = new Map();
 
     // Calculate counts for each airline
-    flightData[0].returnFlights.forEach((flight) => {
+    flightData.returnFlights.forEach((flight) => {
         const airlineName = flight.AirlineName;
         airlineCounts.set(airlineName, (airlineCounts.get(airlineName) || 0) + 1);
     });
@@ -857,10 +858,10 @@ function AirlineFIlterReturn()
         `;
 
 
-        document.getElementById("airlineSectorReturn").innerHTML = `${flightData[0].returnFlights[0].Origin.CityCode} -> ${flightData[0].returnFlights[0].Destination.CityCode}`
-        document.getElementById("dTimeReturn").innerHTML = `${flightData[0].returnFlights[0].Origin.CityCode} -> ${flightData[0].returnFlights[0].Destination.CityCode}`
-        document.getElementById("aTimeReturn").innerHTML = `${flightData[0].returnFlights[0].Origin.CityCode} -> ${flightData[0].returnFlights[0].Destination.CityCode}`
-        document.getElementById("dFNR").innerHTML = `Filter By Flight Number ${flightData[0].returnFlights[0].Origin.CityCode} -> ${flightData[0].returnFlights[0].Destination.CityCode}`
+        document.getElementById("airlineSectorReturn").innerHTML = `${flightData.returnFlights[0].Origin.CityCode} -> ${flightData.returnFlights[0].Destination.CityCode}`
+        document.getElementById("dTimeReturn").innerHTML = `${flightData.returnFlights[0].Origin.CityCode} -> ${flightData.returnFlights[0].Destination.CityCode}`
+        document.getElementById("aTimeReturn").innerHTML = `${flightData.returnFlights[0].Origin.CityCode} -> ${flightData.returnFlights[0].Destination.CityCode}`
+        document.getElementById("dFNR").innerHTML = `Filter By Flight Number ${flightData.returnFlights[0].Origin.CityCode} -> ${flightData.returnFlights[0].Destination.CityCode}`
         document.getElementById('airlineFilterReturn').innerHTML += div
     });
 }
@@ -873,7 +874,7 @@ function fareFIlter()
     const fareCounts = new Map();
 
     // Calculate counts for each airline
-    flightData[0].onwardFlights.forEach((flight) => {
+    flightData.onwardFlights.forEach((flight) => {
         flight.Segments.forEach((segment, index) => {
             const airlineName = segment.fare;
             fareCounts.set(airlineName, (fareCounts.get(airlineName) || 0) + 1);
@@ -894,7 +895,7 @@ function fareFIlter()
         const div = `
            ${checkbox}
         `;
-        document.getElementById("fareSector").innerHTML = `${flightData[0].onwardFlights[0].Origin.CityCode} -> ${flightData[0].onwardFlights[0].Destination.CityCode}`
+        document.getElementById("fareSector").innerHTML = `${flightData.onwardFlights[0].Origin.CityCode} -> ${flightData.onwardFlights[0].Destination.CityCode}`
         document.getElementById('fareFilter').innerHTML += div
     });
 }
@@ -907,7 +908,7 @@ function fareFIlterReturn()
     const fareCounts = new Map();
 
     // Calculate counts for each airline
-    flightData[0].returnFlights.forEach((flight) => {
+    flightData.returnFlights.forEach((flight) => {
         flight.Segments.forEach((segment, index) => {
             const airlineName = segment.fare;
             fareCounts.set(airlineName, (fareCounts.get(airlineName) || 0) + 1);
@@ -928,7 +929,7 @@ function fareFIlterReturn()
         const div = `
            ${checkbox}
         `;
-        document.getElementById("fareSectorReturn").innerHTML = `${flightData[0].returnFlights[0].Origin.CityCode} -> ${flightData[0].returnFlights[0].Destination.CityCode}`
+        document.getElementById("fareSectorReturn").innerHTML = `${flightData.returnFlights[0].Origin.CityCode} -> ${flightData.returnFlights[0].Destination.CityCode}`
         document.getElementById('fareFilterReturn').innerHTML += div
     });
 }
@@ -939,7 +940,7 @@ async function PriceFilterDiv() {
     const publishedFares = [];
 
     // Collect PublishedFares
-    flightData[0].onwardFlights.forEach(flight => {
+    flightData.onwardFlights.forEach(flight => {
         // Iterate through each detail in the flight
         flight.Segments.forEach(detail => {
             // Push the PublishedFare to the publishedFares array
@@ -1000,7 +1001,7 @@ async function stopsFilter() {
     const stopsCounts = new Map();
 
     // Calculate counts for each stops option
-    flightData[0].onwardFlights.forEach((flight) => {
+    flightData.onwardFlights.forEach((flight) => {
         const stops = `${flight.Stops}`;  // Use 'stops' property, default to 'Non Stop' if undefined
         stopsCounts.set(stops, (stopsCounts.get(stops) || 0) + 1);
     });
@@ -1026,7 +1027,7 @@ async function stopsFilter() {
 
       //  console.log(div);
 
-        document.getElementById("stopSector").innerHTML = `${flightData[0].onwardFlights[0].Origin.CityCode} -> ${flightData[0].onwardFlights[0].Destination.CityCode}`
+        document.getElementById("stopSector").innerHTML = `${flightData.onwardFlights[0].Origin.CityCode} -> ${flightData.onwardFlights[0].Destination.CityCode}`
         document.getElementById('stopFilter').innerHTML += div;
     });
 }
@@ -1037,7 +1038,7 @@ async function stopsFilterReturn() {
     const stopsCounts = new Map();
 
     // Calculate counts for each stops option
-    flightData[0].returnFlights.forEach((flight) => {
+    flightData.returnFlights.forEach((flight) => {
         const stops = `${flight.Stops}`;  // Use 'stops' property, default to 'Non Stop' if undefined
         stopsCounts.set(stops, (stopsCounts.get(stops) || 0) + 1);
     });
@@ -1063,7 +1064,7 @@ async function stopsFilterReturn() {
 
        // console.log(div);
 
-        document.getElementById("stopSectorReturn").innerHTML = `${flightData[0].returnFlights[0].Origin.CityCode} -> ${flightData[0].returnFlights[0].Destination.CityCode}`
+        document.getElementById("stopSectorReturn").innerHTML = `${flightData.returnFlights[0].Origin.CityCode} -> ${flightData.returnFlights[0].Destination.CityCode}`
         document.getElementById('stopFilterReturn').innerHTML += div;
     });
 }
@@ -1078,17 +1079,12 @@ function applyFilters() {
     renderResults = document.getElementById("renderResults");
     flightKey = 'FlightNumber'
 
-    // if(type === 'FIXED') {
-    //     arr = flightData;
-    //     renderResults = document.getElementById("renderResults");
-    //     flightKey = 'FlightNumber'
-    // }
-    // else
-    // {
-    //     arr = flightData[0].onwardFlights;
-    //     renderResults = document.getElementById("myOnward");
-    //     flightKey = 'FlightNumber'
-    // }
+    if(res.Custom === 'YES') {
+            arr = flightData.onwardFlights;
+            renderResults = document.getElementById("myOnward");
+            flightKey = 'FlightNumber'
+    }
+
 
     const flightNumberValue = document.getElementById("fSearch").value.trim();
    // console.log(flightNumberValue)
@@ -1118,24 +1114,46 @@ function applyFilters() {
     const sliderInstance = $(".js-range-slider").data("ionRangeSlider");
     const minPrice = sliderInstance.result.from;
     const maxPrice = sliderInstance.result.to;
-
+    console.log(arr)
     // Filter flights based on airlines, fares, price, and selected time ID
-    filteredFlights = arr.filter(flight => {
-        const flightNumberMatch = flightNumberValue ? flight.flight.onwardFlight[flightKey].includes(flightNumberValue) : true; // Match flight number using "like"
-        const airlineMatch = checkedAirlines.length === 0 || checkedAirlines.includes(flight.flight.onwardFlight.AirlineName);
-        const airlineStops = checkedStops.length === 0 || checkedStops.includes(flight.flight.onwardFlight.Stops);
-        const fareMatch = checkedFares.length === 0 || flight.flight.onwardFlight.Segments.some(segment => checkedFares.includes(segment.fare));
-        const priceMatch = flight.flight.onwardFlight.Segments.some(segment => {
-            const publishedFare = segment.FareBreakup.PublishedFare;
-            return publishedFare >= minPrice && publishedFare <= maxPrice;
+
+
+    if(res.Custom === 'YES') {
+        filteredFlights = arr.filter(flight => {
+            const flightNumberMatch = flightNumberValue ? flight[flightKey].includes(flightNumberValue) : true; // Match flight number using "like"
+            const airlineMatch = checkedAirlines.length === 0 || checkedAirlines.includes(flight.AirlineName);
+            const airlineStops = checkedStops.length === 0 || checkedStops.includes(flight.Stops);
+            const fareMatch = checkedFares.length === 0 || flight.Segments.some(segment => checkedFares.includes(segment.fare));
+            const priceMatch = flight.Segments.some(segment => {
+                const publishedFare = segment.FareBreakup.PublishedFare;
+                return publishedFare >= minPrice && publishedFare <= maxPrice;
+            });
+
+            // Check if flight's time ID matches the selected chip ID
+            const timeMatch = selectedId ? flight.Origin.Time === selectedId : true;
+            const atimeMatch = aselectedId ? flight.Destination.Time === aselectedId : true;
+
+            return airlineMatch && fareMatch && priceMatch && timeMatch && atimeMatch && airlineStops && flightNumberMatch ;
         });
 
-        // Check if flight's time ID matches the selected chip ID
-        const timeMatch = selectedId ? flight.flight.onwardFlight.Origin.Time === selectedId : true;
-        const atimeMatch = aselectedId ? flight.flight.onwardFlight.Destination.Time === aselectedId : true;
+    } else {
+        filteredFlights = arr.filter(flight => {
+            const flightNumberMatch = flightNumberValue ? flight.flight.onwardFlight[flightKey].includes(flightNumberValue) : true; // Match flight number using "like"
+            const airlineMatch = checkedAirlines.length === 0 || checkedAirlines.includes(flight.flight.onwardFlight.AirlineName);
+            const airlineStops = checkedStops.length === 0 || checkedStops.includes(flight.flight.onwardFlight.Stops);
+            const fareMatch = checkedFares.length === 0 || flight.flight.onwardFlight.Segments.some(segment => checkedFares.includes(segment.fare));
+            const priceMatch = flight.flight.onwardFlight.Segments.some(segment => {
+                const publishedFare = segment.FareBreakup.PublishedFare;
+                return publishedFare >= minPrice && publishedFare <= maxPrice;
+            });
 
-        return airlineMatch && fareMatch && priceMatch && timeMatch && atimeMatch && airlineStops && flightNumberMatch;
-    });
+            // Check if flight's time ID matches the selected chip ID
+            const timeMatch = selectedId ? flight.flight.onwardFlight.Origin.Time === selectedId : true;
+            const atimeMatch = aselectedId ? flight.flight.onwardFlight.Destination.Time === aselectedId : true;
+
+            return airlineMatch && fareMatch && priceMatch && timeMatch && atimeMatch && airlineStops && flightNumberMatch;
+        });
+    }
 
    // console.log("ff",filteredFlights)
     renderResults.innerHTML = ''; // Clear previous results
@@ -1145,26 +1163,23 @@ function applyFilters() {
         // Efficient DOM manipulation using Document Fragment
         const fragment = document.createDocumentFragment();
         filteredFlights.forEach((flight, index) => {
-            flight=flight.flight
-           // console.log("fff",flight)
-            const flightCard = new FlightFixedCards(flight, index);
-            const cardElement = document.createElement('div');
-            cardElement.innerHTML = flightCard.render();
-            fragment.appendChild(cardElement); // Append each card to the fragment
-            // if(type === 'FIXED')
-            // {
-            //     const flightCard = new FlightFixedCards(flight, index);
-            //     const cardElement = document.createElement('div');
-            //     cardElement.innerHTML = flightCard.render();
-            //     fragment.appendChild(cardElement); // Append each card to the fragment
-            // }
-            // else
-            // {
-            //     const flightCard = new FlightRoundCards(flight, index);
-            //     const cardElement = document.createElement('div');
-            //     cardElement.innerHTML = flightCard.render();
-            //     fragment.appendChild(cardElement); // Append each card to the fragment
-            // }
+             // Append each card to the fragment
+            if(res.Custom === 'YES')
+            {
+                const flightCard = new FlightRoundCards(flight, index);
+                const cardElement = document.createElement('div');
+                cardElement.innerHTML = flightCard.render();
+                fragment.appendChild(cardElement); // Append each card to the fragment
+            }
+            else
+            {
+                flight=flight.flight
+                // console.log("fff",flight)
+                const flightCard = new FlightFixedCards(flight, index);
+                const cardElement = document.createElement('div');
+                cardElement.innerHTML = flightCard.render();
+                fragment.appendChild(cardElement);
+            }
         });
 
         renderResults.appendChild(fragment); // Append the entire fragment to the DOM in one go
@@ -1179,23 +1194,16 @@ function applyFiltersReturn() {
     let flightKey = '';
     let renderResults = '';
 
-   // console.log("ROY")
 
     arr = flightArray;
     renderResults = document.getElementById("renderResults");
     flightKey = 'FlightNumber'
-    // Cache the renderResults element
-    // if(type === 'FIXED') {
-    //     arr = flightData;
-    //     renderResults = document.getElementById("renderResults");
-    //     flightKey = 'returnFlightNUmber'
-    // }
-    // else
-    // {
-    //     arr = flightData[0].returnFlights;
-    //     renderResults = document.getElementById("myReturn");
-    //     flightKey = 'FlightNumber'
-    // }
+
+    if(res.Custom === 'YES') {
+        arr = flightData.returnFlights;
+        renderResults = document.getElementById("myReturn");
+        flightKey = 'FlightNumber'
+    }
 
 
     const flightNumberValue = document.getElementById("fSearchReturn").value.trim();
@@ -1229,198 +1237,115 @@ function applyFiltersReturn() {
     const maxPrice = sliderInstance.result.to;
 
     // Filter flights based on airlines, fares, price, and selected time ID
-    const filtered = arr.filter(flight => {
-        const flightNumberMatch = flightNumberValue ? flight.flight.returnFlight[flightKey]?.includes(flightNumberValue) : true;
-       // console.log("flightNumberMatch:", flightNumberMatch);
 
-        const airlineMatch = checkedAirlines.length === 0 || checkedAirlines.includes(flight.flight.returnFlight.AirlineName);
-       // console.log("airlineMatch:", airlineMatch, "Airline:", flight.flight.returnFlight.AirlineName);
+    if(res.Custom === 'YES'){
 
-        const airlineStops = checkedStops.length === 0 || checkedStops.includes(flight.flight.returnFlight.Stops);
-       // console.log("airlineStops:", airlineStops, "Stops:", flight.flight.returnFlight.Stops);
+        const filtered = arr.filter(flight => {
+            const flightNumberMatch = flightNumberValue ? flight[flightKey].includes(flightNumberValue) : true; // Match flight number using "like"
+            const airlineMatch = checkedAirlines.length === 0 || checkedAirlines.includes(flight.AirlineName);
+            const airlineStops = checkedStops.length === 0 || checkedStops.includes(flight.Stops);
+            const fareMatch = checkedFares.length === 0 || flight.Segments.some(segment => checkedFares.includes(segment.fare));
+            const priceMatch = flight.Segments.some(segment => {
+                const publishedFare = segment.FareBreakup.PublishedFare;
+                return publishedFare >= minPrice && publishedFare <= maxPrice;
+            });
 
-        const fareMatch = checkedFares.length === 0 || flight.flight.returnFlight.Segments?.some(segment => {
-            const isFareMatch = checkedFares.includes(segment.fare);
-           // console.log("fareMatch:", isFareMatch, "Fare:", segment.fare);
-            return isFareMatch;
+            // Check if flight's time ID matches the selected chip ID
+            const timeMatch = selectedId ? flight.Origin.Time === selectedId : true;
+            const atimeMatch = aselectedId ? flight.Destination.Time === aselectedId : true;
+
+            return airlineMatch && fareMatch && priceMatch && timeMatch && atimeMatch && airlineStops && flightNumberMatch ;
+
         });
-       // console.log("fareMatch Result:", fareMatch);
+        filteredFlightsReturn = filtered;
 
-        const priceMatch = flight.flight.returnFlight.Segments.some(segment => {
-            const publishedFare = segment.FareBreakup?.PublishedFare;
-            return (publishedFare === 0 || (publishedFare >= minPrice && publishedFare <= maxPrice));
+    } else {
+        const filtered = arr.filter(flight => {
+            const flightNumberMatch = flightNumberValue ? flight.flight.returnFlight[flightKey]?.includes(flightNumberValue) : true;
+            // console.log("flightNumberMatch:", flightNumberMatch);
+
+            const airlineMatch = checkedAirlines.length === 0 || checkedAirlines.includes(flight.flight.returnFlight.AirlineName);
+            // console.log("airlineMatch:", airlineMatch, "Airline:", flight.flight.returnFlight.AirlineName);
+
+            const airlineStops = checkedStops.length === 0 || checkedStops.includes(flight.flight.returnFlight.Stops);
+            // console.log("airlineStops:", airlineStops, "Stops:", flight.flight.returnFlight.Stops);
+
+            const fareMatch = checkedFares.length === 0 || flight.flight.returnFlight.Segments?.some(segment => {
+                const isFareMatch = checkedFares.includes(segment.fare);
+                // console.log("fareMatch:", isFareMatch, "Fare:", segment.fare);
+                return isFareMatch;
+            });
+            // console.log("fareMatch Result:", fareMatch);
+
+            const priceMatch = flight.flight.returnFlight.Segments.some(segment => {
+                const publishedFare = segment.FareBreakup?.PublishedFare;
+                return (publishedFare === 0 || (publishedFare >= minPrice && publishedFare <= maxPrice));
+            });
+
+            // console.log("priceMatch Result:", priceMatch);
+
+            const timeMatch = selectedId ? flight.flight.returnFlight.Origin.Time === selectedId : true;
+            // console.log("timeMatch:", timeMatch, "Origin Time:", flight.flight.returnFlight.Origin.Time, "Selected ID:", selectedId);
+
+            const atimeMatch = aselectedId ? flight.flight.returnFlight.Destination.Time === aselectedId : true;
+            // console.log("atimeMatch:", atimeMatch, "Destination Time:", flight.flight.returnFlight.Destination.Time, "Selected ID:", aselectedId);
+
+            const shouldInclude = airlineMatch && fareMatch && priceMatch && timeMatch && atimeMatch && airlineStops && flightNumberMatch;
+            // console.log("Should Include Flight:", shouldInclude, "Flight:", flight);
+
+            return shouldInclude;
         });
+        filteredFlights = filtered
+    }
 
-       // console.log("priceMatch Result:", priceMatch);
-
-        const timeMatch = selectedId ? flight.flight.returnFlight.Origin.Time === selectedId : true;
-       // console.log("timeMatch:", timeMatch, "Origin Time:", flight.flight.returnFlight.Origin.Time, "Selected ID:", selectedId);
-
-        const atimeMatch = aselectedId ? flight.flight.returnFlight.Destination.Time === aselectedId : true;
-       // console.log("atimeMatch:", atimeMatch, "Destination Time:", flight.flight.returnFlight.Destination.Time, "Selected ID:", aselectedId);
-
-        const shouldInclude = airlineMatch && fareMatch && priceMatch && timeMatch && atimeMatch && airlineStops && flightNumberMatch;
-       // console.log("Should Include Flight:", shouldInclude, "Flight:", flight);
-
-        return shouldInclude;
-    });
-
-   // console.log("Filtered Flights Array:", filtered);
-
-    filteredFlights = filtered
-    // Update global variables based on the type
-    // if (type === 'FIXED') {
-    //     filteredFlights = filtered;  // Assign filtered flights to global filteredData
-    // } else {
-    //     filteredFlightsReturn = filtered;  // Assign filtered flights to global filteredDataReturn
-    // }
 
     renderResults.innerHTML = ''; // Clear previous results
 
-    // const flightsToRender = type === 'FIXED' ? filteredFlights : filteredFlightsReturn;
-    const flightsToRender = filteredFlights
-    // Check if there are filtered flights and render appropriately
-    if (filteredFlights.length > 0) {
-        // Efficient DOM manipulation using Document Fragment
-        const fragment = document.createDocumentFragment();
-        filteredFlights.forEach((flight, index) => {
-            flight=flight.flight
-            //console.log("fff",flight)
-            const flightCard = new FlightFixedCards(flight, index);
-            const cardElement = document.createElement('div');
-            cardElement.innerHTML = flightCard.render();
-            fragment.appendChild(cardElement); // Append each card to the fragment
-            // if(type === 'FIXED')
-            // {
-            //     const flightCard = new FlightFixedCards(flight, index);
-            //     const cardElement = document.createElement('div');
-            //     cardElement.innerHTML = flightCard.render();
-            //     fragment.appendChild(cardElement); // Append each card to the fragment
-            // }
-            // else
-            // {
-            //     const flightCard = new FlightRoundCards(flight, index);
-            //     const cardElement = document.createElement('div');
-            //     cardElement.innerHTML = flightCard.render();
-            //     fragment.appendChild(cardElement); // Append each card to the fragment
-            // }
-        });
 
-        renderResults.appendChild(fragment); // Append the entire fragment to the DOM in one go
-    } else {
-        // If no matches found, render a message
-        renderResults.innerHTML = '<div class="no-results">No flights found matching your criteria.</div>';
+    if(res.Custom === 'YES'){
+        if (filteredFlightsReturn.length > 0) {
+            // Efficient DOM manipulation using Document Fragment
+            const fragment = document.createDocumentFragment();
+            filteredFlightsReturn.forEach((flight, index) => {
+                const flightCard = new FlightRoundCards(flight, index);
+                const cardElement = document.createElement('div');
+                cardElement.innerHTML = flightCard.renderReturn();
+                fragment.appendChild(cardElement); // Append each card to the fragment
+            });
+
+            renderResults.appendChild(fragment); // Append the entire fragment to the DOM in one go
+        } else {
+            // If no matches found, render a message
+            renderResults.innerHTML = '<div class="no-results">No flights found matching your criteria.</div>';
+        }
+    }else {
+        if (filteredFlights.length > 0) {
+            // Efficient DOM manipulation using Document Fragment
+            const fragment = document.createDocumentFragment();
+            filteredFlights.forEach((flight, index) => {
+                flight=flight.flight
+                //console.log("fff",flight)
+                const flightCard = new FlightFixedCards(flight, index);
+                const cardElement = document.createElement('div');
+                cardElement.innerHTML = flightCard.render();
+                fragment.appendChild(cardElement); // Append each card to the fragment
+            });
+
+            renderResults.appendChild(fragment); // Append the entire fragment to the DOM in one go
+        } else {
+            // If no matches found, render a message
+            renderResults.innerHTML = '<div class="no-results">No flights found matching your criteria.</div>';
+        }
     }
-}
 
-// function applyFiltersReturn() {
-//     let arr = [];
-//     let flightKey = '';
-//     let renderResults = '';
-//     // Cache the renderResults element
-//     if(type === 'FIXED') {
-//          arr = flightData;
-//          renderResults = document.getElementById("renderResults");
-//         flightKey = 'returnFlightNUmber'
-//     }
-//     else
-//     {
-//          arr = flightData[0].returnFlights;
-//          renderResults = document.getElementById("myReturn");
-//         flightKey = 'FlightNumber'
-//     }
-//
-//
-//     const flightNumberValue = document.getElementById("fSearchReturn").value.trim();
-//
-//     // Get checked airlines and fares
-//     const checkedAirlines = Array.from(document.querySelectorAll('input[name="carrierReturn"]:checked'))
-//         .map(checkbox => checkbox.value);
-//     const checkedFares = Array.from(document.querySelectorAll('input[name="allfaresReturn"]:checked'))
-//         .map(checkbox => checkbox.value);
-//     const checkedStops = Array.from(document.querySelectorAll('input[name="stopsReturn"]:checked'))
-//         .map(checkbox => checkbox.value);
-//
-//     const selectedChip = document.querySelector('.app-chip-selected-return');
-//     const aselectedChip = document.querySelector('.a-app-chip-selected-return');
-//
-//     let selectedId = null;
-//     if (selectedChip) {
-//         selectedId = selectedChip.getAttribute('id');
-//         console.log("Selected ID:", selectedId);
-//     }
-//
-//     let aselectedId = null;
-//     if (aselectedChip) {
-//         aselectedId = aselectedChip.getAttribute('id');
-//         console.log("Selected ID:", aselectedId);
-//     }
-//     // Get the range slider instance and its current values
-//     const sliderInstance = $(".js-range-slider").data("ionRangeSlider");
-//     const minPrice = sliderInstance.result.from;
-//     const maxPrice = sliderInstance.result.to;
-//
-//     // Filter flights based on airlines, fares, price, and selected time ID
-//     const filtered = arr.filter(flight => {
-//         const flightNumberMatch = flightNumberValue ? flight[flightKey].includes(flightNumberValue) : true; // Match flight number using "like"
-//         const airlineMatch = checkedAirlines.length === 0 || checkedAirlines.includes(flight.AirlineName);
-//         const airlineStops = checkedStops.length === 0 || checkedStops.includes(flight.Stops);
-//         const fareMatch = checkedFares.length === 0 || flight.Segments.some(segment => checkedFares.includes(segment.fare));
-//         const priceMatch = flight.Segments.some(segment => {
-//             const publishedFare = segment.FareBreakup.PublishedFare;
-//             return publishedFare >= minPrice && publishedFare <= maxPrice;
-//         });
-//
-//         // Check if flight's time ID matches the selected chip ID
-//         const timeMatch = selectedId ? flight.Origin.Time === selectedId : true;
-//         const atimeMatch = aselectedId ? flight.Destination.Time === aselectedId : true;
-//
-//         return airlineMatch && fareMatch && priceMatch && timeMatch && atimeMatch && airlineStops && flightNumberMatch;
-//     });
-//
-//
-//     // Update global variables based on the `type`
-//     if (type === 'FIXED') {
-//         filteredFlights = filtered;  // Assign filtered flights to global `filteredData`
-//     } else {
-//         filteredFlightsReturn = filtered;  // Assign filtered flights to global `filteredDataReturn`
-//     }
-//
-//     renderResults.innerHTML = ''; // Clear previous results
-//
-//     const flightsToRender = type === 'FIXED' ? filteredFlights : filteredFlightsReturn;
-//     // Check if there are filtered flights and render appropriately
-//     if (flightsToRender.length > 0) {
-//         // Efficient DOM manipulation using Document Fragment
-//         const fragment = document.createDocumentFragment();
-//         flightsToRender.forEach((flight, index) => {
-//             if(type === 'FIXED')
-//             {
-//                 const flightCard = new FlightFixedCards(flight, index);
-//                 const cardElement = document.createElement('div');
-//                 cardElement.innerHTML = flightCard.render();
-//                 fragment.appendChild(cardElement); // Append each card to the fragment
-//             }
-//             else
-//             {
-//                 const flightCard = new FlightRoundCards(flight, index);
-//                 const cardElement = document.createElement('div');
-//                 cardElement.innerHTML = flightCard.renderReturn();
-//                 fragment.appendChild(cardElement); // Append each card to the fragment
-//             }
-//
-//         });
-//
-//         renderResults.appendChild(fragment); // Append the entire fragment to the DOM in one go
-//     } else {
-//         // If no matches found, render a message
-//         renderResults.innerHTML = '<div class="no-results">No flights found matching your criteria.</div>';
-//     }
-// }
+}
 
 
 async function Book() {
+    console.log("LOG LOG")
     // Check if both departure and return flights are selected
+
+
     if (flightSelection.departureFlight && flightSelection.returnFlight) {
         Swal.fire({
             html: `
@@ -3577,6 +3502,42 @@ document.querySelectorAll('.a-app-chip-return').forEach(function (chip) {
     });
 });
 
+
+function sortAirReturn() {
+    sortArrival.isAscending = false;
+    sortDeparture.isAscending = false;
+    sortPrice.isAscending = false;
+
+    let myArr =  (filteredFlightsReturn.length > 0) ? filteredFlightsReturn : flightData[0].returnFlights;
+
+    // Toggle between ascending and descending sorting orders
+    if (!sortAir.isAscending) {
+        myArr.sort((a, b) => a.AirlineName.localeCompare(b.AirlineName)); // Ascending order
+    } else {
+        myArr.sort((a, b) => b.AirlineName.localeCompare(a.AirlineName)); // Descending order
+    }
+
+    // Invert the sorting order flag
+    sortAir.isAscending = !sortAir.isAscending;
+
+    // Cache the renderResults element
+    const renderResults = document.getElementById("myReturn");
+    renderResults.innerHTML = ''; // Clear previous results
+
+    // Efficient DOM manipulation using Document Fragment
+    const fragment = document.createDocumentFragment();
+    myArr.forEach((flight, index) => {
+        const flightCard = new FlightRoundCards(flight, index);
+        const cardElement = document.createElement('div');
+        cardElement.innerHTML = flightCard.render();
+        fragment.appendChild(cardElement); // Append each card to the fragment
+    });
+
+    renderResults.appendChild(fragment); // Append the entire fragment to the DOM in one go
+
+}
+
+
 function sortAir() {
     // Reset other sorting flags
     sortArrival.isAscending = false;
@@ -3705,6 +3666,41 @@ function setDateRestrictions(input,paxType) {
     }
 }
 
+function sortPriceReturn() {
+    sortDeparture.isAscending = false;
+    sortAir.isAscending = false;
+    sortArrival.isAscending = false;
+
+
+    let myArr =  (filteredFlightsReturn.length > 0) ? filteredFlightsReturn : flightData[0].returnFlights;
+    // Toggle between ascending and descending sorting orders
+    if (!sortPrice.isAscending) {
+        myArr.sort((a, b) => a.Segments[0].FareBreakup.PublishedFare - b.Segments[0].FareBreakup.PublishedFare); // Ascending order
+    } else {
+        myArr.sort((a, b) => b.Segments[0].FareBreakup.PublishedFare - a.Segments[0].FareBreakup.PublishedFare); // Descending order
+    }
+
+    // Invert the sorting order flag
+    sortPrice.isAscending = !sortPrice.isAscending;
+
+    // Render the sorted items
+    // Cache the renderResults element
+    const renderResults = document.getElementById("myReturn");
+    renderResults.innerHTML = ''; // Clear previous results
+
+
+    // Efficient DOM manipulation using Document Fragment
+    const fragment = document.createDocumentFragment();
+    myArr.forEach((flight, index) => {
+        const flightCard = new FlightRoundCards(flight, index);
+        const cardElement = document.createElement('div');
+        cardElement.innerHTML = flightCard.render();
+        fragment.appendChild(cardElement); // Append each card to the fragment
+    });
+
+    renderResults.appendChild(fragment); // Append the entire fragment to the DOM in one go
+
+}
 
 function sortPrice() {
     // Reset other sorting flags
@@ -3805,6 +3801,42 @@ function sortDeparture() {
     renderResults.appendChild(fragment); // Append the entire fragment to the DOM in one go
 }
 
+function sortDepartureReturn() {
+    sortPrice.isAscending = false;
+    sortAir.isAscending = false;
+    sortArrival.isAscending = false;
+
+    let myArr =  (filteredFlightsReturn.length > 0) ? filteredFlightsReturn : flightData[0].returnFlights;
+
+    // Toggle between ascending and descending sorting orders
+    if (!sortDeparture.isAscending) {
+        myArr.sort((a, b) => a.Origin.DepTime.localeCompare(b.Origin.DepTime)); // Ascending order
+    } else {
+        myArr.sort((a, b) => b.Origin.DepTime.localeCompare(a.Origin.DepTime)); // Descending order
+    }
+
+    // Invert the sorting order flag
+    sortDeparture.isAscending = !sortDeparture.isAscending;
+
+    // Render the sorted items
+    // Cache the renderResults element
+    const renderResults = document.getElementById("myReturn");
+    renderResults.innerHTML = ''; // Clear previous results
+
+
+    // Efficient DOM manipulation using Document Fragment
+    const fragment = document.createDocumentFragment();
+    myArr.forEach((flight, index) => {
+        const flightCard = new FlightRoundCards(flight, index);
+        const cardElement = document.createElement('div');
+        cardElement.innerHTML = flightCard.render();
+        fragment.appendChild(cardElement); // Append each card to the fragment
+    });
+
+    renderResults.appendChild(fragment); // Append the entire fragment to the DOM in one go
+
+}
+
 // Set initial sorting order flag
 sortDeparture.isAscending = true;
 
@@ -3855,5 +3887,39 @@ function sortArrival() {
 
     renderResults.appendChild(fragment); // Append the entire fragment to the DOM in one go
 }
+
+function sortArrivalReturn() {
+    sortPrice.isAscending = false;
+    sortAir.isAscending = false;
+    sortDeparture.isAscending = false;
+
+    let myArr =  (filteredFlightsReturn.length > 0) ? filteredFlightsReturn : flightData[0].returnFlights;
+    // Toggle between ascending and descending sorting orders
+    if (!sortArrival.isAscending) {
+        myArr.sort((a, b) => a.Destination.ArrTime.localeCompare(b.Destination.ArrTime)); // Ascending order
+    } else {
+        myArr.sort((a, b) => b.Destination.ArrTime.localeCompare(a.Destination.ArrTime)); // Descending order
+    }
+
+    // Invert the sorting order flag
+    sortArrival.isAscending = !sortArrival.isAscending;
+
+    // Cache the renderResults element
+    const renderResults = document.getElementById("myReturn");
+    renderResults.innerHTML = ''; // Clear previous results
+
+    // Efficient DOM manipulation using Document Fragment
+    const fragment = document.createDocumentFragment();
+    myArr.forEach((flight, index) => {
+        const flightCard = new FlightRoundCards(flight, index);
+        const cardElement = document.createElement('div');
+        cardElement.innerHTML = flightCard.render();
+        fragment.appendChild(cardElement); // Append each card to the fragment
+    });
+
+    renderResults.appendChild(fragment); // Append the entire fragment to the DOM in one go
+
+}
+
 // Set initial sorting order flag
 sortArrival.isAscending = true;

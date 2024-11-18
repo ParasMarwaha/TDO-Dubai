@@ -2379,8 +2379,10 @@ flightController.getAllFlightsRound = async (req, res) => {
                 const finalResponse = {
                     ResponseStatus: 1,
                     Custom : 'YES',
-                    onwardFlights: combinedResponse.data,
-                    returnFlights: combinedResponse2.data,
+                    data : {
+                        onwardFlights: combinedResponse.data,
+                        returnFlights: combinedResponse2.data
+                    }
                 };
 
               // Send the combined response

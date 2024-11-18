@@ -538,10 +538,177 @@
         // type = res?.data ? 'CUSTOM' : res?.COMBO ? 'FIXED' : '';
         //console.log(flightData);
 
+        if(res.Custom === 'YES') {
+            flightData = res.data
+            console.log(flightData)
+            document.getElementById("renderFlight").innerHTML = '';
+            let flightHTML = `
+    <div class="flex-1 pe-1 ps-2 rt-info">
+        <div class="d-flex fs-14 fw-500 justify-content-between px-1 py-1 prev-next-day-container">
+            <button type="button" class="app-btn app-btn-outlined app-btn-medium"
+                onclick="getFlightsByDate('${backDate(`${newDateMinus}`)}')"
+                style="padding: 0.5rem; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px; font-weight: 600;">
+                <div class="d-flex gap-2">
+                    <div class="d-flex align-items-center">
+                        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                            <path fill="none" d="M0 0h24v24H0z"></path>
+                            <path d="M9 19l1.41-1.41L5.83 13H22v-2H5.83l4.59-4.59L9 5l-7 7 7 7z"></path>
+                        </svg>
+                    </div>
+                    <span class="fs-12">${newDateMinus}</span>
+                </div>
+            </button>
+            <div class="d-flex align-items-center text-black fw-600">
+                ${flightData.onwardFlights[0].Origin.CityName}
+                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                    <path d="M15 5l-1.41 1.41L18.17 11H2v2h16.17l-4.59 4.59L15 19l7-7-7-7z"></path>
+                </svg>
+                ${flightData.onwardFlights[0].Destination.CityName}
+            </div>
+            <button type="button" class="app-btn app-btn-outlined app-btn-medium"
+                onclick="getFlightsByDate('${backDate(`${newDatePlus}`)}')"
+                style="padding: 0.5rem; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px; font-weight: 600;">
+                <div class="d-flex gap-2">
+                    <span class="fs-12">${newDatePlus}</span>
+                    <div class="d-flex align-items-center">
+                        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                            <path fill="none" d="M0 0h24v24H0z"></path>
+                            <path d="M15 5l-1.41 1.41L18.17 11H2v2h16.17l-4.59 4.59L15 19l7-7-7-7z"></path>
+                        </svg>
+                    </div>
+                </div>
+            </button>
+        </div>
+        <div>
+            <div class="fs-14 d-flex gap-3 align-content-center pt-2">
+                <div class="sort-heading d-flex justify-content-center align-items-center">
+                    Sort
+                </div>
+                <div class="d-flex justify-content-center align-items-center">
+                    <a class="ps-1 sort-option app-link-grey" onclick="sortAir()">Airline</a>
+                </div>
+                <div class="d-flex justify-content-center align-items-center">
+                    <a class="ps-1 sort-option app-link-grey" onclick="sortDeparture()">Departure</a>
+                </div>
+                <div class="d-flex justify-content-center align-items-center">
+                    <a class="ps-1 sort-option app-link-grey" >Duration</a>
+                </div>
+                <div class="d-flex justify-content-center align-items-center">
+                    <a class="ps-1 sort-option app-link-grey" onclick="sortArrival()">Arrival</a>
+                </div>
+                <div class="d-flex justify-content-center align-items-center">
+                    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                        <path fill="none" d="M0 0h24v24H0z"></path>
+                        <path d="M19 15l-1.41-1.41L13 18.17V2h-2v16.17l-4.59-4.59L5 15l7 7 7-7z"></path>
+                    </svg>
+                    <a class="ps-1 sort-option app-link-primary" onclick="sortPrice()">Price</a>
+                </div>
+            </div>
+        </div>
+<div id="myOnward">
+`;
+            if(flightData.onwardFlights.length > 0) {
+                flightData.onwardFlights.forEach((flight, index) => {
+                    let flightCards = new FlightRoundCards(flight, index)
+                    flightHTML += flightCards.render()
+                })
+            }
+            else
+            {
+                flightHTML += `
+            <section class="no-search-results app-container mt-3 p-3 d-flex flex-column justify-content-center align-items-center"><div class="no-search-results__plane"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M10.5 7.67V3.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5V9l8.5 5v2l-4.49-1.32-7.01-7.01zm9.28 14.94l1.41-1.41-7.69-7.7-3.94-3.94-6.75-6.75-1.42 1.41 6.38 6.38L2 14v2l8.5-2.5V19L8 20.5V22l4-1 4 1v-1.5L13.5 19v-2.67l6.28 6.28z"></path><path fill="none" d="M0 0h24v24H0V0z"></path></svg></div><div class="search-info--item_value mb-3">No Onward Flights Found</div><div class="secondary-text">Please change your filter criteria and try again</div></section>
+            `;
+            }
 
-        document.getElementById("renderFixed").innerHTML = '';
+            flightHTML += `</div></div>
 
-        let flightHTML = `
+<div class="flex-1 pe-2 ps-1 rt-info">
+                                    <div class="d-flex fs-14 fw-500 justify-content-between px-1 py-1 prev-next-day-container">
+                                        <button type="button" class="app-btn app-btn-outlined app-btn-medium"
+                onclick="getFlightsByDate('${backDate(`${newDateMinusReturn}`)}')"
+                style="padding: 0.5rem; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px; font-weight: 600;">
+                <div class="d-flex gap-2">
+                    <div class="d-flex align-items-center">
+                        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                            <path fill="none" d="M0 0h24v24H0z"></path>
+                            <path d="M9 19l1.41-1.41L5.83 13H22v-2H5.83l4.59-4.59L9 5l-7 7 7 7z"></path>
+                        </svg>
+                    </div>
+                    <span class="fs-12">${newDateMinusReturn}</span>
+                </div>
+            </button>
+                                        <div class="d-flex align-items-center text-black fw-600">${flightData.returnFlights[0].Origin.CityName}
+                                            <svg stroke="currentColor" fill="currentColor" stroke-width="0"
+                                                 viewBox="0 0 24 24" height="1em" width="1em"
+                                                 xmlns="http://www.w3.org/2000/svg">
+                                                <path fill="none" d="M0 0h24v24H0z"></path>
+                                                <path d="M15 5l-1.41 1.41L18.17 11H2v2h16.17l-4.59 4.59L15 19l7-7-7-7z"></path>
+                                            </svg>
+                                            ${flightData.returnFlights[0].Destination.CityName}
+                                        </div>
+                                           <button type="button" class="app-btn app-btn-outlined app-btn-medium"
+                onclick="getFlightsByDate('${backDate(`${newDatePlusReturn}`)}')"
+                style="padding: 0.5rem; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px; font-weight: 600;">
+                <div class="d-flex gap-2">
+                    <span class="fs-12">${newDatePlusReturn}</span>
+                    <div class="d-flex align-items-center">
+                        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                            <path fill="none" d="M0 0h24v24H0z"></path>
+                            <path d="M15 5l-1.41 1.41L18.17 11H2v2h16.17l-4.59 4.59L15 19l7-7-7-7z"></path>
+                        </svg>
+                    </div>
+                </div>
+            </button>
+                                    </div>
+                                    <div>
+                                          <div class="fs-14 d-flex gap-3 align-content-center pt-2">
+                                            <div class="sort-heading d-flex justify-content-center align-items-center">
+                                                Sort
+                                            </div>
+                                            <div class="d-flex justify-content-center align-items-center"><a
+                                                        class="ps-1 sort-option app-link-grey" onclick="sortAirReturn()">Airline</a></div>
+                                            <div class="d-flex justify-content-center align-items-center"><a
+                                                        class="ps-1 sort-option app-link-grey" onclick="sortDepartureReturn()">Departure</a></div>
+                                            <div class="d-flex justify-content-center align-items-center"><a
+                                                        class="ps-1 sort-option app-link-grey">Duration</a></div>
+                                            <div class="d-flex justify-content-center align-items-center"><a
+                                                        class="ps-1 sort-option app-link-grey" onclick="sortArrivalReturn()">Arrival</a></div>
+                                            <div class="d-flex justify-content-center align-items-center">
+                                                <svg stroke="currentColor" fill="currentColor" stroke-width="0"
+                                                     viewBox="0 0 24 24" height="1em" width="1em"
+                                                     xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill="none" d="M0 0h24v24H0z"></path>
+                                                    <path d="M19 15l-1.41-1.41L13 18.17V2h-2v16.17l-4.59-4.59L5 15l7 7 7-7z"></path>
+                                                </svg>
+                                                <a class="ps-1 sort-option app-link-primary" onclick="sortPriceReturn()">Price</a></div>
+                                        </div>
+                                    </div>
+<div id="myReturn">
+`;
+
+            flightData.returnFlights.forEach((flight, index) => {
+                let flightCards = new FlightRoundCards(flight, index)
+                flightHTML += flightCards.renderReturn()
+            })
+
+            flightHTML+=`</div></div>
+`;
+
+            document.getElementById("renderFlight").innerHTML = flightHTML;
+
+            AirlineFIlter();
+            PriceFilterDiv();
+            stopsFilter();
+            fareFIlter()
+            AirlineFIlterReturn();
+            stopsFilterReturn();
+            fareFIlterReturn()
+        }
+        else {
+            document.getElementById("renderFixed").innerHTML = '';
+
+            let flightHTML = `
                     <div class="row">
                                 <div class="d-flex align-items-center col-lg-7 col-md-7 col-sm-12 col-12">
                                     <div class="fs-14 d-flex gap-3 align-content-center pt-2">
@@ -606,66 +773,45 @@
                             </div>
                             <div id="renderResults">
             `;
-        //console.log(res.response.data.onwardFlights.length)
-        //console.log(res)
 
-        if (res.Custom === 'YES') {
-            console.log("CUSTOM");
+            if (res.response.data?.onwardFlights?.length > 0 && res.response.data?.returnFlights?.length > 0) {
+                const onwardFlights = res.response.data.onwardFlights;
+                const returnFlights = res.response.data.returnFlights;
 
-            // Extract onward and return flights from the response
-            const onwardFlights = res.onwardFlights;
-            const returnFlights = res.returnFlights;
+                onwardFlights.forEach((onwardFlight, index) => {
+                    // Make sure there is a return flight at the same index
+                    if (index < returnFlights.length) {
+                        const returnFlight = returnFlights[index];
+                        let flight = { onwardFlight, returnFlight }; // Combine both flights data
+                        flightArray.push({
+                            "flight":flight
+                        });
 
-            // Combine both flights data into a single object
-            let flight = { onwardFlights, returnFlights };
+                        flightData[index] = flight
+                        let flightCards = new FlightFixedCards(flight, index);
+                        flightHTML += flightCards.render();
+                    }
+                });
+                // console.log("fa",flightArray)
+                // console.log(flightData)
+                flightHTML += `</div>`;
+                document.getElementById("renderFixed").innerHTML = flightHTML;
 
-            // Push the combined flight object into the flightArray
-            flightArray.push({
-                flight: flight,
-            });
-
-            // Pass the combined flight data to FlightRoundCards for rendering
-            let flightCards = new FlightRoundCards(flight, index);
-            flightHTML += flightCards.render();
-        }
-
-        else if (res.response.data?.onwardFlights?.length > 0 && res.response.data?.returnFlights?.length > 0) {
-            const onwardFlights = res.response.data.onwardFlights;
-            const returnFlights = res.response.data.returnFlights;
-
-            onwardFlights.forEach((onwardFlight, index) => {
-                // Make sure there is a return flight at the same index
-                if (index < returnFlights.length) {
-                    const returnFlight = returnFlights[index];
-                    let flight = { onwardFlight, returnFlight }; // Combine both flights data
-                    flightArray.push({
-                        "flight":flight
-                    });
-
-                    flightData[index] = flight
-                    let flightCards = new FlightFixedCards(flight, index);
-                    flightHTML += flightCards.render();
-                }
-            });
-            // console.log("fa",flightArray)
-            // console.log(flightData)
-            flightHTML += `</div>`;
-            document.getElementById("renderFixed").innerHTML = flightHTML;
-
-            AirlineFIlterFixed();
-            PriceFilterDivFixed();
-            stopsFilterFixed();
-            fareFIlterFixed();
-            AirlineFIlterReturnFixed();
-            stopsFilterReturnFixed();
-            fareFIlterReturnFixed();
-        }
-        else {
-            document.getElementById("renderFixed").innerHTML = `
+                AirlineFIlterFixed();
+                PriceFilterDivFixed();
+                stopsFilterFixed();
+                fareFIlterFixed();
+                AirlineFIlterReturnFixed();
+                stopsFilterReturnFixed();
+                fareFIlterReturnFixed();
+            }
+            else {
+                document.getElementById("renderFixed").innerHTML = `
              <section class="no-search-results app-container mt-3 p-3 d-flex flex-column justify-content-center align-items-center"><div class="no-search-results__plane"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M10.5 7.67V3.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5V9l8.5 5v2l-4.49-1.32-7.01-7.01zm9.28 14.94l1.41-1.41-7.69-7.7-3.94-3.94-6.75-6.75-1.42 1.41 6.38 6.38L2 14v2l8.5-2.5V19L8 20.5V22l4-1 4 1v-1.5L13.5 19v-2.67l6.28 6.28z"></path><path fill="none" d="M0 0h24v24H0V0z"></path></svg></div><div class="search-info--item_value mb-3">NO READYMADE ROUNDTRIP FOUND</div><div class="secondary-text">Please change your filter criteria and try again</div></section>
             `
-        }
+            }
 
+        }
     }
 
 
@@ -780,7 +926,7 @@
 
     function departFlightDetails(index) {
         // Get the selected flight's segments
-        const myArr = (filteredFlightsReturn.length > 0) ? filteredFlights : flightData[0].onwardFlights;
+        const myArr = (filteredFlightsReturn.length > 0) ? filteredFlights : flightData.onwardFlights;
 
         let selectedFlight = JSON.parse(JSON.stringify(myArr[index]));
 
@@ -795,7 +941,7 @@
 
         const selectedValue = selectedRadio.value;
 
-        alert(selectedValue);
+       // alert(selectedValue);
 
         // Replace Segments with the selected value
         selectedFlight.Segments = [myArr[index].Segments[selectedValue]];  // Ensure it's in array format
@@ -829,7 +975,7 @@
 
     function returnFlightDetails(index) {
         // Get the selected flight's segments
-        let myArr = (filteredFlightsReturn.length > 0) ? filteredFlightsReturn : flightData[0].returnFlights;
+        let myArr = (filteredFlightsReturn.length > 0) ? filteredFlightsReturn : flightData.returnFlights;
 
         let selectedFlight = JSON.parse(JSON.stringify(myArr[index]));
 
