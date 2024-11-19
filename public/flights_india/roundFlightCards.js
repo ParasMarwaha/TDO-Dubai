@@ -20,7 +20,7 @@ class FlightRoundCards {
     render()
     {
 
-        let card = ` <div class="p-3 d-flex my-2 one-way-new-result-card round-trip-width flex-column">
+        let card = ` <div class="p-3 d-flex my-2 one-way-new-result-card round-trip-width flex-column ">
                                         <div class="d-flex flight-info ">
                                             <div class="spacing-0 flex-1 flight-info_flight-details row">
                                                 <div class="col-lg-3 col-md-3 col-sm-3 col-3">
@@ -135,7 +135,7 @@ class FlightRoundCards {
     renderReturn()
     {
 
-        let card = ` <div class="p-3 d-flex my-2 one-way-new-result-card round-trip-width flex-column">
+        let card = ` <div class="p-3 d-flex my-2 one-way-new-result-card round-trip-width flex-column ">
                                         <div class="d-flex flight-info ">
                                             <div class="spacing-0 flex-1 flight-info_flight-details row">
                                                 <div class="col-lg-3 col-md-3 col-sm-3 col-3">
@@ -196,7 +196,7 @@ class FlightRoundCards {
 <div class="d-flex flex-column fare-info_details hide" id="rotherFares${this.index}">
 `;
 
-        for (let i = 2; i < this.flight.Segments.length; i++) {
+        for (let i = 2; i < Math.min(2, this.flight.Segments.length); i++) {
             let flightCards = new FareCards(this.flight.Segments[i], i, "r")
             card += flightCards.render(this.index)
         }
@@ -308,8 +308,8 @@ class FareCards {
                             <div data-watermark="FW76315FW76315 FW76315FW76315 FW76315FW76315"
                                  class="p-2 d-flex justify-content-center align-items-end one-way-watermarked col-lg-6 col-md-6 col-sm-6 col-6">
                                 <div class=" position-relative d-flex flex-column"><span
-                                    class="fs-16 fw-600">AED ${this.flight.FareBreakup.PublishedFare}</span><span
-                                    class="netFare fs-12 fw-500 hidden">AED ${this.flight.FareBreakup.OfferedFare}</span>
+                                    class="fs-16 fw-600">AED ${(this.flight.FareBreakup.PublishedFare).toFixed(2)}</span><span
+                                    class="netFare fs-12 fw-500 hidden">AED ${(this.flight.FareBreakup.OfferedFare.toFixed(2)}</span>
                                 </div>
                             </div>
                         </div>
