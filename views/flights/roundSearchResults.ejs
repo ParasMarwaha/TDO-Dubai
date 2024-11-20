@@ -55,26 +55,26 @@
         }
 
         #myOnward {
-            max-height: 50%; /* Set the height of the scrollable area */
+            max-height: 10%; /* Set the height of the scrollable area */
             overflow-y: auto; /* Enable vertical scrolling for the div */
             overflow-x: hidden; /* Prevent horizontal scrolling */
             scrollbar-width: none; /* For Firefox: hide the scrollbar */
 
         }
-        #myOnward::-webkit-scrollbar {
-            display: none; /* Hides the scrollbar */
-        }
+        /*#myOnward::-webkit-scrollbar {*/
+        /*    display: none; !* Hides the scrollbar *!*/
+        /*}*/
 
         #myReturn {
-            max-height: 50%; /* Set the height of the scrollable area */
+            max-height: 10%; /* Set the height of the scrollable area */
             overflow-y: auto; /* Enable vertical scrolling for the div */
             overflow-x: hidden; /* Prevent horizontal scrolling */
             scrollbar-width: none; /* For Firefox: hide the scrollbar */
 
         }
-        #myReturn::-webkit-scrollbar {
-            display: none; /* Hides the scrollbar */
-        }
+        /*#myReturn::-webkit-scrollbar {*/
+        /*    display: none; !* Hides the scrollbar *!*/
+        /*}*/
 
     </style>
     <style data-emotion="css" data-s=""></style>
@@ -1257,7 +1257,7 @@
         let date = parseDate(dateStr);
         let today = new Date();
 
-        console.log(days)
+        //console.log(days)
         // Adjust the date
         date.setDate(date.getDate() + days);
 
@@ -1285,6 +1285,7 @@
     }
 
     function toggleVisibility(type,index) {
+        console.log(type,index)
 
         var div = document.getElementById(`${type}otherFares${index}`);
         if (div.classList.contains('hide')) {

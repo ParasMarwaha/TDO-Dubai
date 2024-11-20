@@ -185,7 +185,7 @@ class FlightRoundCards {
                                             <div class="flex-1 spacing-0 row">
                                                 <div class="col-lg-12 col-md-12 col-sm-12 col-12">
                                                     <div class="d-flex flex-column fare-info_details" id="twoFares">`;
-        <!-- fare Component -->
+
         for (let i = 0; i < Math.min(2, this.flight.Segments.length); i++) {
             let flightCards = new FareCards(this.flight.Segments[i], i, "r")
             card += flightCards.render(this.index)
@@ -195,8 +195,7 @@ class FlightRoundCards {
 </div>
 <div class="d-flex flex-column fare-info_details hide" id="rotherFares${this.index}">
 `;
-
-        for (let i = 2; i < Math.min(2, this.flight.Segments.length); i++) {
+        for (let i = 2; i < this.flight.Segments.length; i++) {
             let flightCards = new FareCards(this.flight.Segments[i], i, "r")
             card += flightCards.render(this.index)
         }
@@ -309,7 +308,7 @@ class FareCards {
                                  class="p-2 d-flex justify-content-center align-items-end one-way-watermarked col-lg-6 col-md-6 col-sm-6 col-6">
                                 <div class=" position-relative d-flex flex-column"><span
                                     class="fs-16 fw-600">AED ${(this.flight.FareBreakup.PublishedFare).toFixed(2)}</span><span
-                                    class="netFare fs-12 fw-500 hidden">AED ${(this.flight.FareBreakup.OfferedFare.toFixed(2)}</span>
+                                    class="netFare fs-12 fw-500 hidden">AED ${(this.flight.FareBreakup.OfferedFare).toFixed(2)}</span>
                                 </div>
                             </div>
                         </div>
@@ -361,8 +360,8 @@ class FareCards {
                             <div data-watermark="FW76315FW76315 FW76315FW76315 FW76315FW76315"
                                  class="p-2 d-flex justify-content-center align-items-end one-way-watermarked col-lg-6 col-md-6 col-sm-6 col-6">
                                 <div class=" position-relative d-flex flex-column"><span
-                                    class="fs-16 fw-600">AED ${this.flight.FareBreakup.PublishedFare}</span><span
-                                    class="netFare fs-12 fw-500 hidden">AED ${this.flight.FareBreakup.OfferedFare}</span>
+                                    class="fs-16 fw-600">AED ${(this.flight.FareBreakup.PublishedFare).toFixed(2)}</span><span
+                                    class="netFare fs-12 fw-500 hidden">AED ${(this.flight.FareBreakup.OfferedFare).toFixed(2)}</span>
                                 </div>
                             </div>
                         </div>
