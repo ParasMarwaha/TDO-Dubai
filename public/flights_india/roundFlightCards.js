@@ -150,7 +150,7 @@ class FlightRoundCards {
                                                     <div class="d-flex flex-column flight-name"><span
                                                                 class="flight-company">${this.flight.AirlineName}</span><span
                                                                 class="flight-company-secondary text-capitalize"
-                                                                title="Coupon">Coupon</span><span
+                                                                title="Coupon">RIYA</span><span
                                                                 class="fs-10 flight-number">${this.flight.AirlineCode}-${this.flight.FlightNumber}</span></div>
                                                 </div>
                                                 <div class="col-lg-9 col-md-9 col-sm-9 col-9">
@@ -1345,8 +1345,6 @@ function applyFiltersReturn() {
 async function Book() {
     console.log("LOG LOG")
     // Check if both departure and return flights are selected
-
-
     if (flightSelection.departureFlight && flightSelection.returnFlight) {
         Swal.fire({
             html: `
@@ -1365,7 +1363,8 @@ async function Book() {
 
 
         const obj = {
-            departureFlight: flightSelection.departureFlight,
+            Custom:'Yes',
+            onwardFlight: flightSelection.departureFlight,
             returnFlight: flightSelection.returnFlight
         };
        // console.log("Both flights selected", obj);
@@ -1374,7 +1373,7 @@ async function Book() {
 
         let fd = new FormData();
         fd.append("agentEmail", localStorage.getItem("agentEmail"));
-        fd.append("traceId", (flightSelection.departureFlight.Supplier === "TBO") ? flightSelection.departureFlight.TraceId : flightSelection.departureFlight.Segments[0].ResultIndex);
+        // fd.append("traceId", flightSelection.onwardFlight.TraceId );
         fd.append("returnId", null);
         fd.append("book", JSON.stringify(obj));
         fd.append("returnBook", null);
@@ -1382,19 +1381,22 @@ async function Book() {
         fd.append("platformFee", 0);
         fd.append("platformTax", 0);
 
-        let response = await fetch("/flights/makeSearchingSession", {
-            method: 'POST',
-            body: fd
-        });
+        sessionStorage.setItem("selectedFlight", JSON.stringify(obj));
 
-        if (response.ok) {
-            Swal.close();
-
-            window.location.href = '/flights/returnBook';
-        } else {
-            Swal.close();
-            alert("problem")
-        }
+        window.location.href = '/flights/returnFixedBook';
+        // let response = await fetch("/flights/makeSearchingSession", {
+        //     method: 'POST',
+        //     body: fd
+        // });
+        //
+        // if (response.ok) {
+        //     Swal.close();
+        //
+        //     window.location.href = '/flights/returnBook';
+        // } else {
+        //     Swal.close();
+        //     alert("problem")
+        // }
 
         // Further processing can be done here with `obj`
     }

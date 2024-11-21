@@ -133,8 +133,8 @@ async function loadFlightDetails() {
     // Handle the case for the "TBO" supplier
     if (arr.onwardFlight.Supplier === Suppliers.RIYA) {
         try {
-            console.log("RIYA")
-            console.log("RIYA",arr)
+            //console.log("RIYA")
+            //console.log("RIYA",arr)
 
             let fd = new FormData();
             fd.append("traceId", arr.onwardFlight.TraceId);
@@ -146,16 +146,21 @@ async function loadFlightDetails() {
             fd.append("flights", JSON.stringify(flight));
             //console.log(fd)
 
-            // Fetch fare rule asynchronously
-            fareResponse = await fetch("/flights/AirSell-2Way", {
-                method: "POST",
-                body: fd
-            });
+            if(arr.Custom === 'Yes'){
+                console.log("YES")
+            }else{
+                // Fetch fare rule asynchronously
+                fareResponse = await fetch("/flights/AirSell-2Way", {
+                    method: "POST",
+                    body: fd
+                });
 
-            // Parse JSON response
-            fareResponse = await fareResponse.json();
+                // Parse JSON response
+                fareResponse = await fareResponse.json();
 
-            console.log(fareResponse);
+                console.log(fareResponse);
+            }
+
 
             if(fareResponse.ResponseStatus === 1)
             {
@@ -257,20 +262,6 @@ async function loadFlightDetails() {
                     });
 
 
-                    // Handle the case for adding the first and last segment in the segment group
-                    //     let seg = fareResponse.response.response.Flights.Segments[0].length;
-                    //     let ExistingSegment = segmentArray.find(item =>
-                    //         item.Origin === fareResponse.response.response.Flights.Segments[0][0].Origin.Airport.AirportCode &&
-                    //         item.Destination === fareResponse.response.response.Flights.Segments[0][seg - 1].Destination.Airport.AirportCode
-                    //     );
-                    //
-                    //     if (!ExistingSegment) {
-                    //         segmentArray.push({
-                    //             "Origin": fareResponse.response.response.Flights.Segments[0][0].Origin.Airport.AirportCode,
-                    //             "Destination": fareResponse.response.response.Flights.Segments[0][seg - 1].Destination.Airport.AirportCode,
-                    //         });
-                    //     }
-
                     fareResponse.response.response.Flights.forEach(flight => {
                         // Get the segments array for each flight
                         const segments = flight.Segments;
@@ -298,15 +289,6 @@ async function loadFlightDetails() {
                     console.log(segmentArray);
 
 
-
-                    // ssrResponse = await fetch("/flights/fetchSSR", {
-                    //     method :  "POST",
-                    //     body : fd
-                    // });
-                    //
-                    // ssrResponse = await ssrResponse.json();
-                    //
-                    // console.log(ssrResponse);
 
                     if (ssrResponse.ResponseStatus === 1) {
 
@@ -440,7 +422,6 @@ async function loadFlightDetails() {
                             }
                         });
                     }
-
 
                 }
 
@@ -831,278 +812,6 @@ window.onload = async function () {
         }
     }, 1000);
 };
-
-// async function ConfirmBooking() {
-
-//     // var currentDate = new Date();
-//     // // Get the current date and time
-//     // var currentYear = currentDate.getFullYear();
-//     // var currentMonth = currentDate.getMonth() + 1; // Months are zero-based, so add 1
-//     // var currentDay = currentDate.getDate();
-//     // var currentHour = currentDate.getHours();
-//     // var currentMinute = currentDate.getMinutes();
-//     // var currentSecond = currentDate.getSeconds();
-//     // let am_pm = '';
-//     // if (currentHour > 12)
-//     //     am_pm = "PM"
-//     // else
-//     //     am_pm = "AM"
-//     //
-//     // let bookDT = `${currentYear + "/" + currentMonth + "/" + currentDay} ${currentHour + ':' + currentMinute + ":" + currentSecond}`
-//     // console.log(bookDT);
-//     // let AdultBaseFare = 0;
-//     // let ChildBaseFare = 0;
-//     // let InfantBaseFare = 0;
-//     // let AdultTax = 0;
-//     // let ChildTax = 0;
-//     // let InfantTax = 0;
-//     // let gst = "NOT NEEDED";
-
-//     // Check if GST checkbox is checked
-//     // if ($('#gst-checkbox').is(':checked')) {
-//     //     // Validate GST Form if the checkbox is checked
-//     //     const gstIsValid = await validateGSTForm();
-//     //
-//     //     if (!gstIsValid) {
-//     //         // If GST validation fails, return early and stop further execution
-//     //         console.log("GST validation failed.");
-//     //         return;
-//     //     }
-//     //     else
-//     //     {
-//     //         const gstNumber = document.getElementsByName("gstnumber")[0].value;
-//     //         const companyName = document.getElementsByName("gstcompany")[0].value;
-//     //         const companyEmail = document.getElementsByName("gstemail")[0].value;
-//     //         const gstPhone = document.getElementsByName("gstphone")[0].value;
-//     //         const gstAddress = document.getElementsByName("gstaddress")[0].value;
-//     //
-//     //         gst = {
-//     //             gstNumber : gstNumber,
-//     //             companyName : companyName,
-//     //             companyEmail : companyEmail,
-//     //             gstPhone : gstPhone,
-//     //             gstAddress : gstAddress
-//     //         }
-//     //     }
-//     // }
-
-
-//     if ($("#details").valid()) {
-//         console.log(bookDT);
-//         console.log("valid")
-
-//         if(arr.onwardFlight.Supplier === Suppliers.RIYA)
-//         {
-//             console.log(bookDT);
-
-//             Array(parseInt(arr.onwardFlight.adults)).fill().forEach((_, index) => {
-//                 let passportAtBook = fareResponse.response.response?.Flights[0]?.IspassportNumberblanktopass || false;
-//                 let passportAtTicket = fareResponse.response.response?.Flights[0]?.Ispassportdetailsblank || false;
-//                 let adultObject = new makePassengerArray("Adult",fareResponse.response.response.Flights, index+1, 1, arr.onwardFlight.AirlineCode, arr.onwardFlight.FlightNumber, passportAtBook, passportAtTicket, "TICKET",gst, 0);
-//                 paxArray.push(adultObject.renderTBO());
-//                 AdultBaseFare = adultObject.renderTBO().Fare.BaseFare;
-//                 AdultTax = adultObject.renderTBO().Fare.Tax;
-//             });
-
-//             Array(parseInt(arr.onwardFlight.childs)).fill().forEach((_, index) => {
-//                 let passportAtBook = fareResponse.response.response?.Flights[0]?.IspassportNumberblanktopass || false;
-//                 let passportAtTicket = fareResponse.response.response?.Flights[0]?.Ispassportdetailsblank || false;
-//                 let childObject = new makePassengerArray("Child",fareResponse.response.response.Flights, index+1, 2, arr.onwardFlight.AirlineCode, arr.onwardFlight.FlightNumber, passportAtBook, passportAtTicket, "TICKET", gst, 0);
-//                 paxArray.push(childObject.renderTBO());
-//                 ChildBaseFare = childObject.renderTBO().Fare.BaseFare;
-//                 ChildTax = childObject.renderTBO().Fare.Tax;
-//             });
-
-//             Array(parseInt(arr.onwardFlight.infants)).fill().forEach((_, index) => {
-//                 let passportAtBook = fareResponse.response.response?.Flights[0]?.IspassportNumberblanktopass || false;
-//                 let passportAtTicket = fareResponse.response.response?.Flights[0]?.Ispassportdetailsblank || false;
-//                 let infantObject = new makePassengerArray("Infant",fareBreakupResponse.response.Flights, index+1, 3, arr.onwardFlight.AirlineCode, arr.onwardFlight.FlightNumber, passportAtBook, passportAtTicket, "TICKET", gst, 0);
-//                 paxArray.push(infantObject.renderTBO());
-//                 InfantBaseFare = infantObject.renderTBO().Fare.BaseFare;
-//                 InfantTax = infantObject.renderTBO().Fare.Tax;
-//             });
-
-//             console.log(paxArray);
-
-
-
-
-//             if(paxArray.length > 0)
-//             {
-//                 let otherData = {
-//                     "origin" : arr.onwardFlight.Origin.CityCode,
-//                     "destination" : arr.onwardFlight.Destination.CityCode,
-//                     "fareType" : arr.onwardFlight.Segments[0].fare,
-//                     "adultBaseFare" : AdultBaseFare,
-//                     "childBaseFare" : ChildBaseFare,
-//                     "infantBaseFare" : InfantBaseFare,
-//                     "adultTax" : AdultTax,
-//                     "childTax" : ChildTax,
-//                     "infantTax" : InfantTax,
-//                     "otherCharges" : fareResponse.response.response.Flights[0].Fare.OtherCharges,
-//                     "serviceFee" : fareResponse.response.response.Flights[0].Fare.ServiceFee,
-//                     "publishedFare" : fareResponse.response.response.Flights[0].Fare.PublishedFare,
-//                     "offeredFare" : fareResponse.response.response.Flights[0].Fare.OfferedFare
-//                 }
-
-
-
-//                 if(fareResponse.response.response[0].Flights.IsLCC)
-//                 {
-//                     let fd = new FormData();
-
-//                     fd.append("traceId", arr.onwardFlight.TraceId);
-//                     fd.append("ResultIndex", arr.Segments[0].ResultIndex);
-//                     fd.append("Passengers", JSON.stringify(paxArray));
-//                     fd.append("otherData", JSON.stringify(otherData))
-//                     fd.append("totalPax", parseInt(arr.adults) + parseInt(arr.childs) + parseInt(arr.infants));
-//                     fd.append("totalAdult", arr.onwardFlight.adults);
-//                     fd.append("totalChild", arr.onwardFlight.childs);
-//                     fd.append("totalInfant", arr.onwardFlight.infants);
-//                     fd.append("stops", arr.onwardFlight.Segments[0].flightDetails.length-1);
-//                     fd.append("price", fareResponse.response[0].IsPriceChanged);
-//                     fd.append("passport", []);
-//                     fd.append("flightType", 'lccWithPass');
-//                     fd.append("total",totalAmount);
-//                     fd.append("agentEmail", localStorage.getItem("agentEmail"));
-//                     fd.append("bookDT", bookDT);
-//                     fd.append("lastTicketDate", "");
-//                     fd.append("isRefundable", fareBreakupResponse.response[0].Results.IsRefundable);
-//                     fd.append("tripType", "ROUND_TRIP_CUSTOM");
-//                     fd.append("trip", "departure");
-//                     fd.append("ssrAmount", 0);
-//                     fd.append("markup",0);
-//                     fd.append("platformFee", 0);
-//                     fd.append("platformTax", 0);
-
-//                     let res = await fetch("/goToCheckout", {
-//                         method: "POST",
-//                         body: fd
-//                     });
-
-
-//                     if(res.ok)
-//                     {
-//                         await ticketReturn()
-//                     }
-//                     else
-//                     {
-//                         alert("problem")
-//                     }
-//                 }
-//                 else
-//                 {
-//                     let fd = new FormData();
-
-//                     fd.append("traceId", arr.TraceId);
-//                     fd.append("ResultIndex", arr.Segments[0].ResultIndex);
-//                     fd.append("Passengers", JSON.stringify(paxArray));
-//                     fd.append("otherData", JSON.stringify(otherData))
-//                     fd.append("totalPax", parseInt(arr.adults) + parseInt(arr.childs) + parseInt(arr.infants));
-//                     fd.append("totalAdult", arr.adults);
-//                     fd.append("totalChild", arr.childs);
-//                     fd.append("totalInfant", arr.infants);
-//                     fd.append("stops", arr.Segments[0].flightDetails.length-1);
-//                     fd.append("price", fareBreakupResponse.response[0].IsPriceChanged);
-//                     fd.append("passport", []);
-//                     fd.append("flightType", 'lccWithPass');
-//                     fd.append("total",totalAmount);
-//                     fd.append("agentEmail", localStorage.getItem("agentEmail"));
-//                     fd.append("bookDT", bookDT);
-//                     fd.append("lastTicketDate", "");
-//                     fd.append("isRefundable", fareBreakupResponse.response[0].Results.IsRefundable);
-//                     fd.append("tripType", "ROUND_FLIGHT_CUSTOM");
-//                     fd.append("trip", "departure");
-//                     fd.append("ssrAmount", 0);
-//                     fd.append("markup",0);
-//                     fd.append("platformFee", 0);
-//                     fd.append("platformTax", 0);
-
-
-
-//                     let res1 = await fetch("/goToCheckout", {
-//                         method: "POST",
-//                         body: fd
-//                     });
-
-
-//                     if(res1.ok)
-//                     {
-//                         await ticketReturn();
-//                     }
-//                     else
-//                     {
-//                         alert("problem")
-//                     }
-
-
-
-//                 }
-
-//             }
-//         }
-//         else if(arr.Supplier === Suppliers.TRIPJACK)
-//         {
-//             Array(parseInt(arr.adults)).fill().forEach((_, index) => {
-//                 let pmValue = fareBreakupResponse.response?.conditions?.pcs?.pm || false; // Fallback value if pm is missing
-//                 let adultObject = new makePassengerArray("Adult",fareBreakupResponse.response.tripInfos, index+1, 1, arr.AirlineCode, arr.FlightNumber, pmValue, pmValue, "TICKET", gst, 0);
-//                 paxArray.push(adultObject.renderTRIPJACK());
-//             });
-
-//             Array(parseInt(arr.childs)).fill().forEach((_, index) => {
-//                 let pmValue = fareBreakupResponse.response?.conditions?.pcs?.pm || false; // Fallback value if pm is missing
-//                 let childObject = new makePassengerArray("Child",fareBreakupResponse.response.tripInfos, index+1, 2, arr.AirlineCode, arr.FlightNumber, pmValue, pmValue, "TICKET", gst, 0);
-//                 paxArray.push(childObject.renderTRIPJACK());
-//             });
-
-//             Array(parseInt(arr.infants)).fill().forEach((_, index) => {
-//                 let pmValue = fareBreakupResponse.response?.conditions?.pcs?.pm || false; // Fallback value if pm is missing
-//                 let infantObject = new makePassengerArray("Infant",fareBreakupResponse.response.tripInfos, index+1, 3, arr.AirlineCode, arr.FlightNumber, pmValue, pmValue, "TICKET", gst, 0);
-//                 paxArray.push(infantObject.renderTRIPJACK());
-//             });
-
-//             if(paxArray.length > 0){
-//                 let fd = new FormData();
-//                 fd.append("supplier", 'TRIPJACK');
-//                 fd.append("bookingId", fareBreakupResponse.response.bookingId);
-//                 fd.append("TF", parseFloat(totalAmount));
-//                 fd.append("email", document.getElementById(`leademail`).value);
-//                 fd.append("contact", document.getElementById(`mobile`).value);
-//                 fd.append("traceId", arr.Segments[0].ResultIndex);
-//                 fd.append("Passengers", JSON.stringify(paxArray));
-//                 fd.append("totalPax", parseInt(arr.adults) + parseInt(arr.childs) + parseInt(arr.infants));
-//                 fd.append("totalAdult", arr.adults);
-//                 fd.append("totalChild", arr.childs);
-//                 fd.append("totalInfant", arr.infants);
-//                 fd.append("stops", arr.Segments[0].flightDetails.length -1);
-//                 fd.append("gst",JSON.stringify(gst));
-//                 fd.append("total", totalAmount);
-//                 fd.append("returnMarkup", 0);
-//                 fd.append("agentEmail", localStorage.getItem("agentEmail"));
-//                 fd.append("bookDT", bookDT);
-//                 fd.append("tripType", "ROUND_TRIP_CUSTOM");
-//                 fd.append("ssrAmount", 0);
-//                 fd.append("markup", 0);
-//                 fd.append("platformFee", 0);
-//                 fd.append("platformTax", 0);
-//                 fd.append("isDomestic", fareBreakupResponse.response.searchQuery.isDomestic);
-//                 fd.append("fareType", arr.Segments[0].fare);
-
-//                 let res = await fetch("/goToCheckout", {
-//                     method: "POST",
-//                     body: fd
-//                 });
-
-//                 if (res.ok) {
-//                     window.location.href = '/flightCheckout';
-//                 } else {
-//                     alert("problem");
-//                 }
-//             }
-//         }
-//     }
-// }
-
 
 async function ConfirmBooking() {
     paxArray =  [];

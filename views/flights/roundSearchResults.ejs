@@ -76,6 +76,7 @@
         /*    display: none; !* Hides the scrollbar *!*/
         /*}*/
 
+
     </style>
     <style data-emotion="css" data-s=""></style>
 </head>
@@ -617,9 +618,13 @@
                     <a class="ps-1 sort-option app-link-primary" onclick="sortPriceOnward()">Price</a>
                 </div>
             </div>
-        </div>
-<div id="myOnward">
-`;
+        </div>`;
+
+            if (filteredFlights.length || flightData.onwardFlights.length < 10) {
+                flightHTML +=  `<div style="max-height: 100%" id="myOnward">`
+            }else{
+                flightHTML +=  `<div style="max-height: 10%" id="myOnward">`
+            }
             if(flightData.onwardFlights.length > 0) {
                 flightData.onwardFlights.forEach((flight, index) => {
                     let flightCards = new FlightRoundCards(flight, index)
@@ -695,9 +700,13 @@
                                                 </svg>
                                                 <a class="ps-1 sort-option app-link-primary" onclick="sortPriceReturn()">Price</a></div>
                                         </div>
-                                    </div>
-<div id="myReturn">
-`;
+                                    </div>`;
+
+            if (filteredFlightsReturn.length || flightData.returnFlights.length < 10) {
+                flightHTML +=  `<div style="max-height: 100%" id="myReturn">`
+            }else{
+                flightHTML +=  `<div style="max-height: 10%" id="myReturn">`
+            }
 
             flightData.returnFlights.forEach((flight, index) => {
                 let flightCards = new FlightRoundCards(flight, index)
@@ -984,9 +993,13 @@
                     <a class="ps-1 sort-option app-link-primary" onclick="sortPriceOnward()">Price</a>
                 </div>
             </div>
-        </div>
-<div id="myOnward">
-`;
+        </div>`;
+
+            if (filteredFlights.length || flightData.onwardFlights.length < 10) {
+                flightHTML +=  `<div style="max-height: 100%" id="myOnward">`
+            }else{
+                flightHTML +=  `<div style="max-height: 10%" id="myOnward">`
+            }
             if(flightData.onwardFlights.length > 0) {
                 flightData.onwardFlights.forEach((flight, index) => {
                     let flightCards = new FlightRoundCards(flight, index)
@@ -1062,9 +1075,13 @@
                                                 </svg>
                                                 <a class="ps-1 sort-option app-link-primary" onclick="sortPriceReturn()">Price</a></div>
                                         </div>
-                                    </div>
-<div id="myReturn">
-`;
+                                    </div>`;
+
+            if (filteredFlightsReturn.length || flightData.returnFlights.length < 10) {
+                flightHTML +=  `<div style="max-height: 100%" id="myReturn">`
+            }else{
+                flightHTML +=  `<div style="max-height: 10%" id="myReturn">`
+            }
 
             flightData.returnFlights.forEach((flight, index) => {
                 let flightCards = new FlightRoundCards(flight, index)
@@ -1285,7 +1302,7 @@
     }
 
     function toggleVisibility(type,index) {
-        console.log(type,index)
+        //console.log(type,index)
 
         var div = document.getElementById(`${type}otherFares${index}`);
         if (div.classList.contains('hide')) {
