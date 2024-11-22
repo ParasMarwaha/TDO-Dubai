@@ -1343,14 +1343,12 @@ function applyFiltersReturn() {
 
 
 async function Book() {
-    console.log("LOG LOG")
     // Check if both departure and return flights are selected
     if (flightSelection.departureFlight && flightSelection.returnFlight) {
         Swal.fire({
             html: `
         <div class="loading-container">
             <img src="/images/new.gif" class="img-fluid" style="height: 400px;width:400px"/>
-
         </div>
     `,
             allowOutsideClick: false,
@@ -1361,51 +1359,46 @@ async function Book() {
             }
         });
 
+        try {
+            const obj = {
+                Custom: 'Yes',
+                onwardFlight: flightSelection.departureFlight,
+                returnFlight: flightSelection.returnFlight
+            };
 
-        const obj = {
-            Custom:'Yes',
-            onwardFlight: flightSelection.departureFlight,
-            returnFlight: flightSelection.returnFlight
-        };
-       // console.log("Both flights selected", obj);
+            let fd = new FormData();
+            fd.append("agentEmail", localStorage.getItem("agentEmail"));
+            fd.append("returnId", null);
+            fd.append("book", JSON.stringify(obj));
+            fd.append("returnBook", null);
+            fd.append("markup", 0);
+            fd.append("platformFee", 0);
+            fd.append("platformTax", 0);
 
+            sessionStorage.setItem("selectedFlight", JSON.stringify(obj));
 
+            // Simulating any async tasks (like server API calls)
+            await new Promise((resolve) => setTimeout(resolve, 2000));
 
-        let fd = new FormData();
-        fd.append("agentEmail", localStorage.getItem("agentEmail"));
-        // fd.append("traceId", flightSelection.onwardFlight.TraceId );
-        fd.append("returnId", null);
-        fd.append("book", JSON.stringify(obj));
-        fd.append("returnBook", null);
-        fd.append("markup", 0);
-        fd.append("platformFee", 0);
-        fd.append("platformTax", 0);
+            // Stop the loader after the task is complete
+            Swal.close();
 
-        sessionStorage.setItem("selectedFlight", JSON.stringify(obj));
-
-        window.location.href = '/flights/returnFixedBook';
-        // let response = await fetch("/flights/makeSearchingSession", {
-        //     method: 'POST',
-        //     body: fd
-        // });
-        //
-        // if (response.ok) {
-        //     Swal.close();
-        //
-        //     window.location.href = '/flights/returnBook';
-        // } else {
-        //     Swal.close();
-        //     alert("problem")
-        // }
-
-        // Further processing can be done here with `obj`
-    }
-    else
-    {
+            // Redirect to the booking page
+            window.location.href = '/flights/returnFixedBook';
+        } catch (error) {
+            console.error("Error during booking:", error);
+            Swal.close(); // Ensure the loader is stopped in case of errors
+            toastMixin.fire({
+                animation: true,
+                icon: 'error',
+                title: 'An error occurred. Please try again.'
+            });
+        }
+    } else {
         toastMixin.fire({
-            animation: true,  // Enables animation for the toast
-            icon: 'warning',  // This sets the warning icon
-            title: 'Please Select Both Journeys Flights.'  // Warning message to display
+            animation: true,
+            icon: 'warning',
+            title: 'Please Select Both Journeys Flights.'
         });
     }
 }

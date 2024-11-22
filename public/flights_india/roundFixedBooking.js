@@ -25,15 +25,17 @@ Swal.fire({
     }
 });
 
-let flight = '' ;
-let segmentOn = [] ;
-let segmentRe = [] ;
+let flight = '';
+let flightOnward = '';
+let flightReturn = '';
+let segmentOn = [];
+let segmentRe = [];
 
 async function loadFlightDetails() {
-    let selectedFlight=sessionStorage.getItem("selectedFlight");
-    arr=JSON.parse(selectedFlight);
+    let selectedFlight = sessionStorage.getItem("selectedFlight");
+    arr = JSON.parse(selectedFlight);
     // console.log(selectedFlight)
-    console.log("arr",arr);
+    console.log("arr", arr);
     // console.log("gihj",arr);
 
     let flights = ``;
@@ -84,9 +86,8 @@ async function loadFlightDetails() {
 
     document.getElementById("flightInfo").innerHTML = flights;
 
-    for(let i=0; i<arr.onwardFlight.Segments[0].flightDetails.length; i++)
-    {
-        let mySegment=arr.onwardFlight.Segments[0].flightDetails[i]
+    for (let i = 0; i < arr.onwardFlight.Segments[0].flightDetails.length; i++) {
+        let mySegment = arr.onwardFlight.Segments[0].flightDetails[i]
         let obj = {
             "departure": `${mySegment.DepartureCityCode}`,
             "arrival": `${mySegment.ArrivalCityCode}`,
@@ -97,9 +98,8 @@ async function loadFlightDetails() {
         segmentOn.push(obj);
     }
 
-    for(let i=0; i<arr.returnFlight.Segments[0].flightDetails.length; i++)
-    {
-        let mySegment=arr.returnFlight.Segments[0].flightDetails[i]
+    for (let i = 0; i < arr.returnFlight.Segments[0].flightDetails.length; i++) {
+        let mySegment = arr.returnFlight.Segments[0].flightDetails[i]
         let obj = {
             "departure": `${mySegment.DepartureCityCode}`,
             "arrival": `${mySegment.ArrivalCityCode}`,
@@ -129,26 +129,84 @@ async function loadFlightDetails() {
         }
     ]
 
+    flightOnward = [
+        {
+            "departure": `${arr.onwardFlight.Origin.CityCode}`,
+            "arrival": `${arr.onwardFlight.Destination.CityCode}`,
+            "departureDateTime": `${arr.onwardFlight.Origin.DepDateTime.replace(/\s+/g, '')}`,
+            "BasicFare": arr.onwardFlight.Segments[0].FareBreakup.BaseFare,
+            "GrossFare": arr.onwardFlight.Segments[0].FareBreakup.PublishedFare,
+            "segments": segmentOn
+        }
+    ]
+
+    flightReturn = [
+        {
+            "departure": `${arr.returnFlight.Origin.CityCode}`,
+            "arrival": `${arr.returnFlight.Destination.CityCode}`,
+            "departureDateTime": `${arr.returnFlight.Origin.DepDateTime.replace(/\s+/g, '')}`,
+            "BasicFare": arr.returnFlight.Segments[0].FareBreakup.BaseFare,
+            "GrossFare": arr.returnFlight.Segments[0].FareBreakup.PublishedFare,
+            "segments": segmentRe
+        }
+    ]
     //console.log("IF ELSE")
     // Handle the case for the "TBO" supplier
     if (arr.onwardFlight.Supplier === Suppliers.RIYA) {
         try {
-            //console.log("RIYA")
-            //console.log("RIYA",arr)
 
-            let fd = new FormData();
-            fd.append("traceId", arr.onwardFlight.TraceId);
-            fd.append("flightKeyOnward", arr.onwardFlight.Segments[0].ResultIndex);
-            fd.append("flightKeyReturn", arr.returnFlight.Segments[0].ResultIndex);
-            fd.append("adult", arr.onwardFlight.adults);
-            fd.append("child", arr.onwardFlight.childs);
-            fd.append("infant", arr.onwardFlight.infants);
-            fd.append("flights", JSON.stringify(flight));
-            //console.log(fd)
+            if (arr.Custom === 'Yes') {
 
-            if(arr.Custom === 'Yes'){
-                console.log("YES")
-            }else{
+                //console.log(arr)
+                let fd = new FormData();
+
+                fd.append("traceId", arr.onwardFlight.TraceId);
+                fd.append("flightKey", arr.onwardFlight.Segments[0].ResultIndex);
+                fd.append("adult", arr.onwardFlight.adults);
+                fd.append("child", arr.onwardFlight.childs);
+                fd.append("infant", arr.onwardFlight.infants);
+                fd.append("flight", JSON.stringify(flightOnward));
+
+                fareResponse = await fetch('/flights/AirSell', {
+                    method: 'POST',
+                    body : fd
+                });
+
+                fareResponse = await fareResponse.json();
+
+                console.log("ONWARD",fareResponse)
+
+                let fd1 = new FormData();
+
+                fd1.append("traceId", arr.returnFlight.TraceId);
+                fd1.append("flightKey", arr.returnFlight.Segments[0].ResultIndex);
+                fd1.append("adult", arr.returnFlight.adults);
+                fd1.append("child", arr.returnFlight.childs);
+                fd1.append("infant", arr.returnFlight.infants);
+                fd1.append("flight", JSON.stringify(flightReturn));
+                console.log(arr.returnFlight.Segments[0].ResultIndex)
+                console.log(arr.onwardFlight.Segments[0].ResultIndex)
+
+                fareResponse1 = await fetch('/flights/AirSell', {
+                    method: 'POST',
+                    body : fd1
+                });
+
+                fareResponse1 = await fareResponse1.json();
+
+                console.log("RETURN",fareResponse1)
+
+            }
+            ///Fixed Fare Breakup
+            else {
+                let fd = new FormData();
+                fd.append("traceId", arr.onwardFlight.TraceId);
+                fd.append("flightKeyOnward", arr.onwardFlight.Segments[0].ResultIndex);
+                fd.append("flightKeyReturn", arr.returnFlight.Segments[0].ResultIndex);
+                fd.append("adult", arr.onwardFlight.adults);
+                fd.append("child", arr.onwardFlight.childs);
+                fd.append("infant", arr.onwardFlight.infants);
+                fd.append("flights", JSON.stringify(flight));
                 // Fetch fare rule asynchronously
                 fareResponse = await fetch("/flights/AirSell-2Way", {
                     method: "POST",
@@ -162,8 +220,7 @@ async function loadFlightDetails() {
             }
 
 
-            if(fareResponse.ResponseStatus === 1)
-            {
+            if (fareResponse.ResponseStatus === 1) {
                 // fareBreakupResponse = await fetch("/flights/fetchQuote", {
                 //     method : "POST",
                 //     body : fd
@@ -173,8 +230,7 @@ async function loadFlightDetails() {
                 //
                 // console.log(fareBreakupResponse);
 
-                if(fareResponse.ResponseStatus === 1)
-                {
+                if (fareResponse.ResponseStatus === 1) {
 
                     // Render TBO fare card
                     let TBOFareCard = new TBOFareBreakupCardFixed(fareResponse.response.response, 0);
@@ -183,43 +239,43 @@ async function loadFlightDetails() {
                     Array(parseInt(arr.onwardFlight.adults)).fill().forEach((_, index) => {
                         let passportAtBook = fareResponse.response.response?.Flights[0]?.IspassportNumberblanktopass || true;
                         let passportAtTicket = fareResponse.response.response?.Flights[0]?.Ispassportdetailsblank || true;
-                        let adultForm = new PassengerForm("Adult", index+1, passportAtBook, passportAtTicket);
-                        document.getElementById("AdultForm").innerHTML+= adultForm.render()
+                        let adultForm = new PassengerForm("Adult", index + 1, passportAtBook, passportAtTicket);
+                        document.getElementById("AdultForm").innerHTML += adultForm.render()
                         // You can apply any logic here for each adult
                     });
 
                     Array(parseInt(arr.onwardFlight.childs)).fill().forEach((_, index) => {
                         let passportAtBook = fareResponse.response.response?.Flights[0]?.IspassportNumberblanktopass || true;
                         let passportAtTicket = fareResponse.response.response?.Flights[0]?.Ispassportdetailsblank || true;
-                        let adultForm = new PassengerForm("Child", index+1, passportAtBook, passportAtTicket);
-                        document.getElementById("childForm").innerHTML+= adultForm.render()
+                        let adultForm = new PassengerForm("Child", index + 1, passportAtBook, passportAtTicket);
+                        document.getElementById("childForm").innerHTML += adultForm.render()
                         // You can apply any logic here for each adult
                     });
 
                     Array(parseInt(arr.onwardFlight.infants)).fill().forEach((_, index) => {
                         let passportAtBook = fareResponse.response.response?.Flights[0]?.IspassportNumberblanktopass || true;
                         let passportAtTicket = fareResponse.response.response?.Flights[0]?.Ispassportdetailsblank || true;
-                        let adultForm = new PassengerForm("Infant", index+1, passportAtBook, passportAtTicket);
-                        document.getElementById("infantForm").innerHTML+= adultForm.render()
+                        let adultForm = new PassengerForm("Infant", index + 1, passportAtBook, passportAtTicket);
+                        document.getElementById("infantForm").innerHTML += adultForm.render()
                         // You can apply any logic here for each adult
                     });
 
-                        // Loop through the segments for each fareBreakup result
-                        // fareResponse.response.response.Flights.Segments.forEach(segmentGroup => {
-                        //     console.log(segmentGroup);
-                        //
-                        //     // Loop through individual segments within the segment group
-                        //     segmentGroup.forEach(segment => {
-                        //             let existingSegment = segmentArray.find(item => item.Origin === segment.Origin.Airport.AirportCode && item.Destination === segment.Destination.Airport.AirportCode);
-                        //             if (!existingSegment) {
-                        //                 segmentArray.push({
-                        //                     "Origin": segment.Origin.Airport.AirportCode,
-                        //                     "Destination": segment.Destination.Airport.AirportCode,
-                        //                 });
-                        //             }
-                        //
-                        //     });
-                        // });
+                    // Loop through the segments for each fareBreakup result
+                    // fareResponse.response.response.Flights.Segments.forEach(segmentGroup => {
+                    //     console.log(segmentGroup);
+                    //
+                    //     // Loop through individual segments within the segment group
+                    //     segmentGroup.forEach(segment => {
+                    //             let existingSegment = segmentArray.find(item => item.Origin === segment.Origin.Airport.AirportCode && item.Destination === segment.Destination.Airport.AirportCode);
+                    //             if (!existingSegment) {
+                    //                 segmentArray.push({
+                    //                     "Origin": segment.Origin.Airport.AirportCode,
+                    //                     "Destination": segment.Destination.Airport.AirportCode,
+                    //                 });
+                    //             }
+                    //
+                    //     });
+                    // });
 
                     fareResponse.response.response.Flights.forEach(flight => {
                         // Access the main Origin-Destination data from the top-level OriginDestination object
@@ -289,28 +345,25 @@ async function loadFlightDetails() {
                     console.log(segmentArray);
 
 
-
                     if (ssrResponse.ResponseStatus === 1) {
 
                         let MealDynamic = ssrResponse.response?.MealDynamic?.[0] || "NO MEAL";
                         let Meal = ssrResponse.response?.Meal || "NO MEAL";
 
-                        if(MealDynamic !== "NO MEAL")
-                        {
+                        if (MealDynamic !== "NO MEAL") {
 
 
                             let flag = false;
-                            segmentArray.forEach((sector, index)=>{
-                                MealDynamic.forEach((meal,index) => {
+                            segmentArray.forEach((sector, index) => {
+                                MealDynamic.forEach((meal, index) => {
                                     console.log(meal.Origin);
                                     console.log(sector.Origin);
-                                    if(sector.Origin === meal.Origin && sector.Destination === meal.Destination)
-                                    {
+                                    if (sector.Origin === meal.Origin && sector.Destination === meal.Destination) {
                                         flag = true;
 
                                     }
                                 })
-                                if(flag) {
+                                if (flag) {
                                     let mealSector = {
                                         Origin: sector.Origin,
                                         Destination: sector.Destination
@@ -322,9 +375,7 @@ async function loadFlightDetails() {
                                 }
                             })
 
-                        }
-                        else if(Meal !== "NO MEAL")
-                        {
+                        } else if (Meal !== "NO MEAL") {
                             let mealSector = {
                                 Origin: arr.Origin.CityCode,
                                 Destination: arr.Destination.CityCode
@@ -334,9 +385,7 @@ async function loadFlightDetails() {
                             console.log(mealSec.renderMealSectors())
                             document.getElementById("mealSectors").innerHTML += mealSec.renderMealSectors();
 
-                        }
-                        else
-                        {
+                        } else {
                             toastMixin.fire({
                                 animation: true,  // Enables animation for the toast
                                 icon: 'error',  // This sets the warning icon
@@ -346,20 +395,18 @@ async function loadFlightDetails() {
 
                         let BaggageDynamic = ssrResponse.response?.Baggage || "NO BAGGAGE";
 
-                        if(BaggageDynamic !== "NO BAGGAGE")
-                        {
+                        if (BaggageDynamic !== "NO BAGGAGE") {
                             let baggageflag = false;
-                            segmentArray.forEach((sector, index)=>{
-                                BaggageDynamic[0].forEach((meal,index) => {
+                            segmentArray.forEach((sector, index) => {
+                                BaggageDynamic[0].forEach((meal, index) => {
                                     console.log(meal.Origin);
                                     console.log(sector.Origin);
-                                    if(sector.Origin === meal.Origin && sector.Destination === meal.Destination)
-                                    {
+                                    if (sector.Origin === meal.Origin && sector.Destination === meal.Destination) {
                                         baggageflag = true;
 
                                     }
                                 })
-                                if(baggageflag) {
+                                if (baggageflag) {
                                     let mealSector = {
                                         Origin: sector.Origin,
                                         Destination: sector.Destination
@@ -371,9 +418,7 @@ async function loadFlightDetails() {
                                 }
                             })
 
-                        }
-                        else
-                        {
+                        } else {
                             toastMixin.fire({
                                 animation: true,  // Enables animation for the toast
                                 icon: 'error',  // This sets the warning icon
@@ -423,10 +468,7 @@ async function loadFlightDetails() {
                         });
                     }
 
-                }
-
-                else
-                {
+                } else {
                     toastMixin.fire({
                         animation: true,  // Enables animation for the toast
                         icon: 'error',  // This sets the warning icon
@@ -434,9 +476,7 @@ async function loadFlightDetails() {
                     });
                 }
 
-            }
-            else
-            {
+            } else {
                 toastMixin.fire({
                     animation: true,  // Enables animation for the toast
                     icon: 'error',  // This sets the warning icon
@@ -444,13 +484,10 @@ async function loadFlightDetails() {
                 });
             }
 
-        }
-        catch (e) {
+        } catch (e) {
             console.log(e);
         }
-    }
-    else if(arr.Supplier === Suppliers.TRIPJACK)
-    {
+    } else if (arr.Supplier === Suppliers.TRIPJACK) {
         try {
             let fd = new FormData();
             fd.append("traceId", arr.Segments[0].ResultIndex);
@@ -465,8 +502,7 @@ async function loadFlightDetails() {
 
             console.log(fareBreakupResponse);
 
-            if(fareBreakupResponse.ResponseStatus === 1)
-            {
+            if (fareBreakupResponse.ResponseStatus === 1) {
 
                 // Render TRIPJACK fare card
                 let TRIPJACKFareCard = new TRIPJACKFareBreakupCardFixed(fareBreakupResponse.response, arr.adults, arr.childs, arr.infants);
@@ -475,22 +511,22 @@ async function loadFlightDetails() {
 
                 Array(parseInt(arr.adults)).fill().forEach((_, index) => {
                     let pmValue = fareBreakupResponse.response?.conditions?.pcs?.pm || false; // Fallback value if pm is missing
-                    let adultForm = new PassengerForm1("Adult", index+1,pmValue,pmValue);
-                    document.getElementById("AdultForm").innerHTML+= adultForm.render()
+                    let adultForm = new PassengerForm1("Adult", index + 1, pmValue, pmValue);
+                    document.getElementById("AdultForm").innerHTML += adultForm.render()
                     // You can apply any logic here for each adult
                 });
 
                 Array(parseInt(arr.childs)).fill().forEach((_, index) => {
                     let pmValue = fareBreakupResponse.response?.conditions?.pcs?.pm || false; // Fallback value if pm is missing
-                    let adultForm = new PassengerForm1("Child", index+1,pmValue,pmValue);
-                    document.getElementById("childForm").innerHTML+= adultForm.render()
+                    let adultForm = new PassengerForm1("Child", index + 1, pmValue, pmValue);
+                    document.getElementById("childForm").innerHTML += adultForm.render()
                     // You can apply any logic here for each adult
                 });
 
                 Array(parseInt(arr.infants)).fill().forEach((_, index) => {
                     let pmValue = fareBreakupResponse.response?.conditions?.pcs?.pm || false; // Fallback value if pm is missing
-                    let adultForm = new PassengerForm1("Infant", index+1,pmValue,pmValue);
-                    document.getElementById("infantForm").innerHTML+= adultForm.render()
+                    let adultForm = new PassengerForm1("Infant", index + 1, pmValue, pmValue);
+                    document.getElementById("infantForm").innerHTML += adultForm.render()
                     // You can apply any logic here for each adult
                 });
 
@@ -511,18 +547,18 @@ async function loadFlightDetails() {
                 let returnSeg = fareBreakupResponse?.response?.tripInfos?.[1]?.sI?.length || 0;
 
 
-                let ExistingSegment = segmentArray.find(item => item.Origin === fareBreakupResponse.response.tripInfos[0].sI[0].da.cityCode && item.Destination === fareBreakupResponse.response.tripInfos[0].sI[seg-1].aa.cityCode);
-                let returnExistingSegment = segmentArray.find(item => item.Origin === fareBreakupResponse.response.tripInfos[0].sI[0].da.cityCode && item.Destination === fareBreakupResponse.response.tripInfos[0].sI[seg-1].aa.cityCode);
+                let ExistingSegment = segmentArray.find(item => item.Origin === fareBreakupResponse.response.tripInfos[0].sI[0].da.cityCode && item.Destination === fareBreakupResponse.response.tripInfos[0].sI[seg - 1].aa.cityCode);
+                let returnExistingSegment = segmentArray.find(item => item.Origin === fareBreakupResponse.response.tripInfos[0].sI[0].da.cityCode && item.Destination === fareBreakupResponse.response.tripInfos[0].sI[seg - 1].aa.cityCode);
                 if (!ExistingSegment) {
                     segmentArray.push({
                         "Origin": fareBreakupResponse.response.tripInfos[0].sI[0].da.cityCode,
-                        "Destination": fareBreakupResponse.response.tripInfos[0].sI[seg-1].aa.cityCode,
+                        "Destination": fareBreakupResponse.response.tripInfos[0].sI[seg - 1].aa.cityCode,
                     });
                 }
                 if (!returnExistingSegment) {
                     segmentArray.push({
                         "Origin": fareBreakupResponse.response.tripInfos[1].sI[0].da.cityCode,
-                        "Destination": fareBreakupResponse.response.tripInfos[1].sI[returnSeg-1].aa.cityCode,
+                        "Destination": fareBreakupResponse.response.tripInfos[1].sI[returnSeg - 1].aa.cityCode,
                     });
                 }
                 console.log(segmentArray);
@@ -613,12 +649,10 @@ async function loadFlightDetails() {
                     });
                 });
 
-            }
-            else
-            {
+            } else {
                 let timerInterval;
                 Swal.fire({
-                    icon : "warning",
+                    icon: "warning",
                     title: "Flight Not Available!",
                     html: "The Requested Flight no longer Available. <b></b>Please search different Flight.",
                     timer: 10000,
@@ -636,13 +670,12 @@ async function loadFlightDetails() {
                 }).then((result) => {
                     /* Read more about handling dismissals below */
                     if (result.dismiss === Swal.DismissReason.timer) {
-                        window.location.href= "/tdoFlight";
+                        window.location.href = "/tdoFlight";
                     }
                 });
             }
 
-        }
-        catch (e) {
+        } catch (e) {
             console.log(e);
         }
     }
@@ -672,7 +705,7 @@ $(document).ready(function () {
     setValidationForCountry(initialCountryCode);
 
     // Listen for country change
-    $('#mobile').on('countrychange', function() {
+    $('#mobile').on('countrychange', function () {
         var countryData = phoneInput.intlTelInput("getSelectedCountryData");
         var selectedCountryCode = countryData.iso2;
         setValidationForCountry(selectedCountryCode);
@@ -733,7 +766,7 @@ function ActiveButton() {
 // Start a countdown timer
 function startTimer(duration, display) {
     let timer = duration, minutes, seconds;
-    const interval= setInterval(function () {
+    const interval = setInterval(function () {
         minutes = parseInt(timer / 60, 10);
         seconds = parseInt(timer % 60, 10);
 
@@ -754,7 +787,7 @@ function startTimer(duration, display) {
                 // confirmButtonText: 'Go Back'
             }).then(() => {
                 // Redirect to the previous page
-                window.location.href="/flights"
+                window.location.href = "/flights"
             });
         }
     }, 1000);
@@ -814,7 +847,7 @@ window.onload = async function () {
 };
 
 async function ConfirmBooking() {
-    paxArray =  [];
+    paxArray = [];
     if ($("#details").valid()) {
         // let totalPrice=document.getElementById("tp").innerText
         // console.log(totalPrice)
@@ -837,7 +870,7 @@ async function ConfirmBooking() {
         Array(parseInt(arr.onwardFlight.adults)).fill().forEach((_, index) => {
             let passportAtBook = fareResponse?.response?.response?.Flights?.[0]?.IspassportNumberblanktopass || true;
             let passportAtTicket = fareResponse?.response?.response?.Flights?.[0]?.Ispassportdetailsblank || true;
-            let adultObject = new makePassengerArray("Adult",fareResponse.response.response.Flights, index+1, "ADULT", arr.AirlineCode, arr.FlightNumber, passportAtBook, passportAtTicket, "TICKET");
+            let adultObject = new makePassengerArray("Adult", fareResponse.response.response.Flights, index + 1, "ADULT", arr.AirlineCode, arr.FlightNumber, passportAtBook, passportAtTicket, "TICKET");
             paxArray.push(adultObject.renderTBO());
 
         });
@@ -845,7 +878,7 @@ async function ConfirmBooking() {
         Array(parseInt(arr.onwardFlight.childs)).fill().forEach((_, index) => {
             let passportAtBook = fareResponse?.response?.response?.Flights?.[0]?.IspassportNumberblanktopass || true;
             let passportAtTicket = fareResponse?.response?.response?.Flights?.[0]?.Ispassportdetailsblank || true;
-            let childObject = new makePassengerArray("Child",fareResponse.response.response.Flights, index+1, "CHILD", arr.AirlineCode, arr.FlightNumber, passportAtBook, passportAtTicket, "TICKET");
+            let childObject = new makePassengerArray("Child", fareResponse.response.response.Flights, index + 1, "CHILD", arr.AirlineCode, arr.FlightNumber, passportAtBook, passportAtTicket, "TICKET");
             paxArray.push(childObject.renderTBO());
 
         });
@@ -853,22 +886,22 @@ async function ConfirmBooking() {
         Array(parseInt(arr.onwardFlight.infants)).fill().forEach((_, index) => {
             let passportAtBook = fareResponse?.response?.response?.Flights?.[0]?.IspassportNumberblanktopass || true;
             let passportAtTicket = fareResponse?.response?.response?.Flights?.[0]?.Ispassportdetailsblank || true;
-            let infantObject = new makePassengerArray("Infant",fareResponse.response.response.Flights, index+1, "INFANT", arr.AirlineCode, arr.FlightNumber, passportAtBook, passportAtTicket, "TICKET");
+            let infantObject = new makePassengerArray("Infant", fareResponse.response.response.Flights, index + 1, "INFANT", arr.AirlineCode, arr.FlightNumber, passportAtBook, passportAtTicket, "TICKET");
             paxArray.push(infantObject.renderTBO());
 
         });
 
         console.log(paxArray);
 
-        if(paxArray.length > 0){
+        if (paxArray.length > 0) {
             let fd = new FormData();
 
             fd.append("traceId", arr.onwardFlight.TraceId);
             fd.append("flight", JSON.stringify(flight))
             fd.append("sellKey", fareResponse.response.response.SellKey);
             fd.append("passengers", JSON.stringify(paxArray));
-            fd.append("email",document.getElementById(`leademail`).value);
-            fd.append("mobile",document.getElementById(`mobile`).value);
+            fd.append("email", document.getElementById(`leademail`).value);
+            fd.append("mobile", document.getElementById(`mobile`).value);
             fd.append('total', totalAmount);
             fd.append("hold", fareResponse.response.response.HoldAvailable);
             fd.append("revised", fareResponse.response.response.Isfarerevised);
@@ -878,9 +911,9 @@ async function ConfirmBooking() {
             fd.append("trip", "RoundTrip");
             fd.append("riyaTrip", "R")
 
-            let res=await fetch("/flights/goToCheckout",{
-                method:"POST",
-                body:fd,
+            let res = await fetch("/flights/goToCheckout", {
+                method: "POST",
+                body: fd,
             });
 
             if (res.ok) {
@@ -1332,7 +1365,7 @@ async function ticketReturn() {
             Array(parseInt(arr.adults)).fill().forEach((_, index) => {
                 let passportAtBook = fareBreakupResponse.response?.[1]?.Results?.IsPassportRequiredAtBook || false;
                 let passportAtTicket = fareBreakupResponse.response?.[1]?.Results?.IsPassportRequiredAtTicket || false;
-                let adultObject = new makePassengerArray("Adult", fareBreakupResponse.response[1].Results, index + 1, 1, arr.AirlineCode, arr.FlightNumber, passportAtBook, passportAtTicket, "TICKET", gst,1);
+                let adultObject = new makePassengerArray("Adult", fareBreakupResponse.response[1].Results, index + 1, 1, arr.AirlineCode, arr.FlightNumber, passportAtBook, passportAtTicket, "TICKET", gst, 1);
                 paxArray.push(adultObject.renderTBO());
                 AdultBaseFare = adultObject.renderTBO().Fare.BaseFare;
                 AdultTax = adultObject.renderTBO().Fare.Tax;
@@ -1380,7 +1413,7 @@ async function ticketReturn() {
                 if (fareBreakupResponse.response[1].Results.IsLCC) {
                     let fd = new FormData();
 
-                    fd.append("traceId",arr.TraceId);
+                    fd.append("traceId", arr.TraceId);
                     fd.append("ResultIndex", arr.Segments[0].ResultIndex);
                     fd.append("Passengers", JSON.stringify(paxArray));
                     fd.append("otherData", JSON.stringify(otherData))
@@ -1415,8 +1448,7 @@ async function ticketReturn() {
                     } else {
                         alert("problem")
                     }
-                }
-                else {
+                } else {
                     let fd = new FormData();
 
                     fd.append("traceId", arr.TraceId);
@@ -1444,7 +1476,6 @@ async function ticketReturn() {
                     fd.append("platformTax", 0);
 
 
-
                     let res1 = await fetch("/goToCheckoutReturn", {
                         method: "POST",
                         body: fd
@@ -1456,8 +1487,6 @@ async function ticketReturn() {
                     } else {
                         alert("problem")
                     }
-
-
 
 
                 }
@@ -1473,14 +1502,14 @@ function MealModal() {
     if ($("#details").valid()) {
 
         Array(parseInt(arr.adults)).fill().forEach((_, index) => {
-            let adultForm = new mealPassengers("Adult", index+1);
-            document.getElementById("mealTravellers").innerHTML+= adultForm.renderMealPassengers()
+            let adultForm = new mealPassengers("Adult", index + 1);
+            document.getElementById("mealTravellers").innerHTML += adultForm.renderMealPassengers()
             // You can apply any logic here for each adult
         });
 
         Array(parseInt(arr.childs)).fill().forEach((_, index) => {
-            let adultForm = new mealPassengers("Child", index+1);
-            document.getElementById("mealTravellers").innerHTML+= adultForm.renderMealPassengers();
+            let adultForm = new mealPassengers("Child", index + 1);
+            document.getElementById("mealTravellers").innerHTML += adultForm.renderMealPassengers();
             // You can apply any logic here for each adult
         });
 
@@ -1490,9 +1519,7 @@ function MealModal() {
         updateMealOptions();
 
         $("#mealModal").modal("show");
-    }
-    else
-    {
+    } else {
         toastMixin.fire({
             animation: true,  // Enables animation for the toast
             icon: 'warning',  // This sets the warning icon
@@ -1507,14 +1534,14 @@ function BaggageModal() {
     if ($("#details").valid()) {
 
         Array(parseInt(arr.adults)).fill().forEach((_, index) => {
-            let adultForm = new baggagePassengers("Adult", index+1);
-            document.getElementById("baggageTravellers").innerHTML+= adultForm.renderBaggagePassengers()
+            let adultForm = new baggagePassengers("Adult", index + 1);
+            document.getElementById("baggageTravellers").innerHTML += adultForm.renderBaggagePassengers()
             // You can apply any logic here for each adult
         });
 
         Array(parseInt(arr.childs)).fill().forEach((_, index) => {
-            let adultForm = new baggagePassengers("Child", index+1);
-            document.getElementById("baggageTravellers").innerHTML+= adultForm.renderBaggagePassengers();
+            let adultForm = new baggagePassengers("Child", index + 1);
+            document.getElementById("baggageTravellers").innerHTML += adultForm.renderBaggagePassengers();
             // You can apply any logic here for each adult
         });
 
@@ -1524,9 +1551,7 @@ function BaggageModal() {
         updateBaggageOptions();
 
         $("#baggageModal").modal("show");
-    }
-    else
-    {
+    } else {
         toastMixin.fire({
             animation: true,  // Enables animation for the toast
             icon: 'warning',  // This sets the warning icon
@@ -1536,49 +1561,41 @@ function BaggageModal() {
 }
 
 
-function updateMealOptions()
-{
+function updateMealOptions() {
 
     document.getElementById("mealOptions").innerHTML = '';
 
     const msector = document.querySelectorAll('.meal-sector');
     const travellers = document.querySelectorAll('.traveller-name');
 
-    msector.forEach(function(sector) {
+    msector.forEach(function (sector) {
         if (sector.classList.contains('active-meal-sector')) {
             const selectedSectorId = sector.id;
             console.log("Selected Sector ID:", selectedSectorId);
 
             travellers.forEach((traveller, index) => {
-                if(traveller.classList.contains('active-traveller'))
-                {
+                if (traveller.classList.contains('active-traveller')) {
                     const selectedTraveller = traveller.id;
 
                     if (arr.Supplier === Suppliers.TBO) {
                         let MealDynamic = ssrResponse.response?.MealDynamic || "NO MEAL";
                         let Meal = ssrResponse.response?.Meal || "NO MEAL";
-                        if(MealDynamic !== 'NO MEAL')
-                        {
-                            MealDynamic.forEach((meal,index) => {
-                                if(meal.Origin === selectedSectorId.split("-")[0] && meal.Destination === selectedSectorId.split("-")[1]) {
+                        if (MealDynamic !== 'NO MEAL') {
+                            MealDynamic.forEach((meal, index) => {
+                                if (meal.Origin === selectedSectorId.split("-")[0] && meal.Destination === selectedSectorId.split("-")[1]) {
 
-                                    let mealOption = new mealOptions(meal, index, selectedTraveller, selectedSectorId.split("-")[0], selectedSectorId.split("-")[1],0)
+                                    let mealOption = new mealOptions(meal, index, selectedTraveller, selectedSectorId.split("-")[0], selectedSectorId.split("-")[1], 0)
                                     document.getElementById("mealOptions").innerHTML += mealOption.renderMealDynamicOptions()
                                 }
                             })
-                        }
-                        else if(Meal !== 'NO MEAL')
-                        {
-                            Meal.forEach((meal,index) => {
-                                let mealOption = new mealOptions(meal, index, selectedTraveller, selectedSectorId.split("-")[0], selectedSectorId.split("-")[1],0,0)
+                        } else if (Meal !== 'NO MEAL') {
+                            Meal.forEach((meal, index) => {
+                                let mealOption = new mealOptions(meal, index, selectedTraveller, selectedSectorId.split("-")[0], selectedSectorId.split("-")[1], 0, 0)
                                 document.getElementById("mealOptions").innerHTML += mealOption.renderMealOptions()
 
                             })
                         }
-                    }
-
-                    else
-                    {
+                    } else {
                         fareBreakupResponse.response.tripInfos.forEach((tripInfo, tripInfoIndex) => {
                             tripInfo.sI.forEach((segment, segmentIndex) => {
                                 let MealDynamic = tripInfo?.sI[segmentIndex]?.ssrInfo?.MEAL || "NO MEAL";
@@ -1605,54 +1622,49 @@ function updateMealOptions()
     });
 }
 
-function updateBaggageOptions()
-{
+function updateBaggageOptions() {
 
     document.getElementById("baggageOptions").innerHTML = '';
 
     const msector = document.querySelectorAll('.baggage-sector');
     const travellers = document.querySelectorAll('.baggage-traveller-name');
 
-    msector.forEach(function(sector) {
+    msector.forEach(function (sector) {
         if (sector.classList.contains('active-baggage-sector')) {
             const selectedSectorId = sector.id;
             console.log("Selected Sector ID:", selectedSectorId);
 
             travellers.forEach((traveller, index) => {
-                if(traveller.classList.contains('active-traveller'))
-                {
+                if (traveller.classList.contains('active-traveller')) {
                     const selectedTraveller = traveller.id;
 
                     if (arr.Supplier === Suppliers.TBO) {
 
-                            let Baggage = ssrResponse?.response?.Baggage || "NO BAGGAGE";
+                        let Baggage = ssrResponse?.response?.Baggage || "NO BAGGAGE";
 
-                            // Handle Baggage if available
-                            if (Baggage !== "NO BAGGAGE") {
-                                Baggage.forEach((baggage, index) => {
-                                    if (baggage.Origin === selectedSectorId.split("-")[0] && baggage.Destination === selectedSectorId.split("-")[1]) {
-                                        let baggageOption = new baggageOptions(baggage, index, selectedTraveller, selectedSectorId.split("-")[0], selectedSectorId.split("-")[1], 0, 0);
-                                        document.getElementById("baggageOptions").innerHTML += baggageOption.renderBaggageOptions();
-                                    }
-                                });
-                            } else {
-                                toastMixin.fire({
-                                    animation: true,
-                                    icon: 'error',
-                                    title: `No Extra Baggage Facility Available For This Flight.`
-                                });
-                            }
+                        // Handle Baggage if available
+                        if (Baggage !== "NO BAGGAGE") {
+                            Baggage.forEach((baggage, index) => {
+                                if (baggage.Origin === selectedSectorId.split("-")[0] && baggage.Destination === selectedSectorId.split("-")[1]) {
+                                    let baggageOption = new baggageOptions(baggage, index, selectedTraveller, selectedSectorId.split("-")[0], selectedSectorId.split("-")[1], 0, 0);
+                                    document.getElementById("baggageOptions").innerHTML += baggageOption.renderBaggageOptions();
+                                }
+                            });
+                        } else {
+                            toastMixin.fire({
+                                animation: true,
+                                icon: 'error',
+                                title: `No Extra Baggage Facility Available For This Flight.`
+                            });
+                        }
 
-                    }
-
-                    else
-                    {
+                    } else {
                         fareBreakupResponse.response.tripInfos.forEach((tripInfo, tripInfoIndex) => {
                             tripInfo.sI.forEach((segment, segmentIndex) => {
                                 let MealDynamic = tripInfo?.sI[segmentIndex]?.ssrInfo?.BAGGAGE || "NO BAGGAGE";
-                                if(MealDynamic !== 'NO BAGGAGE') {
+                                if (MealDynamic !== 'NO BAGGAGE') {
                                     MealDynamic.forEach((meal, index) => {
-                                        if(segment.da.cityCode === selectedSectorId.split("-")[0] && segment.aa.cityCode === selectedSectorId.split("-")[1]) {
+                                        if (segment.da.cityCode === selectedSectorId.split("-")[0] && segment.aa.cityCode === selectedSectorId.split("-")[1]) {
 
                                             let mealOption = new baggageOptions(meal, index, selectedTraveller, selectedSectorId.split("-")[0], selectedSectorId.split("-")[1], segmentIndex, tripInfoIndex);
                                             document.getElementById("baggageOptions").innerHTML += mealOption.renderBaggageOptions();
@@ -1747,36 +1759,32 @@ async function validateGSTForm() {
 }
 
 // book page scripts here
-function  AddMeal(index, origin, destination, traveller, segmentIndex, price, trip)
-{
+function AddMeal(index, origin, destination, traveller, segmentIndex, price, trip) {
 
     let m = mealArray.findIndex(me => me.id === traveller && me.origin === origin && me.destination === destination);
 
-    if(m !== -1)
-    {
+    if (m !== -1) {
         toastMixin.fire({
             animation: true,  // Enables animation for the toast
             icon: 'warning',  // This sets the warning icon
             title: `Multiple Meal per Pax are not allowed.`
         });
-    }
-    else
-    {
+    } else {
         let meal = {
-            index : index,
-            id : traveller,
-            origin : origin,
-            destination  : destination,
-            price : price,
-            trip : trip,
-            mealObject : (arr.Supplier === Suppliers.TBO) ? ssrResponse.response?.[trip]?.MealDynamic?.[0]?.[index] || ssrResponse.response?.[trip]?.Meal[index] || 'NO MEAL' : fareBreakupResponse.response?.tripInfos[trip]?.sI[segmentIndex]?.ssrInfo?.MEAL[index] || 'No Meal',
-            segmentId : fareBreakupResponse?.response?.tripInfos?.[trip]?.sI?.[segmentIndex].id || 0,
-            code : fareBreakupResponse?.response?.tripInfos?.[trip]?.sI?.[segmentIndex]?.ssrInfo?.MEAL?.[index].code
+            index: index,
+            id: traveller,
+            origin: origin,
+            destination: destination,
+            price: price,
+            trip: trip,
+            mealObject: (arr.Supplier === Suppliers.TBO) ? ssrResponse.response?.[trip]?.MealDynamic?.[0]?.[index] || ssrResponse.response?.[trip]?.Meal[index] || 'NO MEAL' : fareBreakupResponse.response?.tripInfos[trip]?.sI[segmentIndex]?.ssrInfo?.MEAL[index] || 'No Meal',
+            segmentId: fareBreakupResponse?.response?.tripInfos?.[trip]?.sI?.[segmentIndex].id || 0,
+            code: fareBreakupResponse?.response?.tripInfos?.[trip]?.sI?.[segmentIndex]?.ssrInfo?.MEAL?.[index].code
         }
 
         mealArray.push(meal);
 
-        totalAmount+= price;
+        totalAmount += price;
 
         document.getElementById("totalAmountSpan").innerHTML = totalAmount;
 
@@ -1793,9 +1801,8 @@ function  AddMeal(index, origin, destination, traveller, segmentIndex, price, tr
     }
 }
 
-function removeMeal(index,mealIndex, segmentIndex, traveller, trip)
-{
-    totalAmount-= mealArray[index].price ;
+function removeMeal(index, mealIndex, segmentIndex, traveller, trip) {
+    totalAmount -= mealArray[index].price;
 
     document.getElementById("totalAmountSpan").innerHTML = totalAmount;
 
@@ -1811,38 +1818,33 @@ function removeMeal(index,mealIndex, segmentIndex, traveller, trip)
     calculateMealPrice(traveller)
 }
 
-function  AddBaggage(index, origin, destination, traveller, segmentIndex, price, trip)
-{
+function AddBaggage(index, origin, destination, traveller, segmentIndex, price, trip) {
     let bag = baggageArray.findIndex(baggage => baggage.id === traveller && baggage.origin === origin && baggage.destination === destination);
 
-    if(bag !== -1)
-    {
+    if (bag !== -1) {
         toastMixin.fire({
             animation: true,  // Enables animation for the toast
             icon: 'warning',  // This sets the warning icon
             title: `Multiple baggage per segment are not allowed.`
         });
-    }
-    else
-    {
+    } else {
         let meal = {
-            index : index,
-            id : traveller,
-            origin : origin,
-            destination  : destination,
-            price : price,
-            trip : trip,
-            baggageObject : (arr.Supplier === Suppliers.TBO) ? ssrResponse.response?.[trip]?.Baggage[0][index] || 'NO BAGGAGE' : fareBreakupResponse.response?.tripInfos[trip]?.sI[segmentIndex]?.ssrInfo?.BAGGAGE[index] || 'NO BAGGAGE',
-            segmentId : fareBreakupResponse?.response?.tripInfos?.[trip]?.sI?.[segmentIndex].id || 0,
-            code : fareBreakupResponse?.response?.tripInfos?.[trip]?.sI?.[segmentIndex]?.ssrInfo?.BAGGAGE?.[index].code
+            index: index,
+            id: traveller,
+            origin: origin,
+            destination: destination,
+            price: price,
+            trip: trip,
+            baggageObject: (arr.Supplier === Suppliers.TBO) ? ssrResponse.response?.[trip]?.Baggage[0][index] || 'NO BAGGAGE' : fareBreakupResponse.response?.tripInfos[trip]?.sI[segmentIndex]?.ssrInfo?.BAGGAGE[index] || 'NO BAGGAGE',
+            segmentId: fareBreakupResponse?.response?.tripInfos?.[trip]?.sI?.[segmentIndex].id || 0,
+            code: fareBreakupResponse?.response?.tripInfos?.[trip]?.sI?.[segmentIndex]?.ssrInfo?.BAGGAGE?.[index].code
         }
 
         baggageArray.push(meal);
 
-        totalAmount+= price;
+        totalAmount += price;
 
         document.getElementById("totalAmountSpan").innerHTML = totalAmount;
-
 
 
         toastMixin.fire({
@@ -1859,10 +1861,9 @@ function  AddBaggage(index, origin, destination, traveller, segmentIndex, price,
 
 }
 
-function removeBaggage(index,mealIndex, segmentIndex, traveller, trip)
-{
+function removeBaggage(index, mealIndex, segmentIndex, traveller, trip) {
 
-    totalAmount-= baggageArray[index].price ;
+    totalAmount -= baggageArray[index].price;
 
     document.getElementById("totalAmountSpan").innerHTML = totalAmount;
 
@@ -1871,15 +1872,14 @@ function removeBaggage(index,mealIndex, segmentIndex, traveller, trip)
     toastMixin.fire({
         animation: true,  // Enables animation for the toast
         icon: 'success',  // This sets the warning icon
-        title: (arr.Supplier === Suppliers.TBO) ? `${ssrResponse.response?.[trip]?.Baggage?.[0]?.[mealIndex]?.Code  || 'No BAGGAGE'} is Removed` : `${fareBreakupResponse.response?.tripInfos[0]?.sI[segmentIndex]?.ssrInfo?.BAGGAGE[mealIndex].desc || 'NO BAGGAGE'} is Removed` // Warning message to display
+        title: (arr.Supplier === Suppliers.TBO) ? `${ssrResponse.response?.[trip]?.Baggage?.[0]?.[mealIndex]?.Code || 'No BAGGAGE'} is Removed` : `${fareBreakupResponse.response?.tripInfos[0]?.sI[segmentIndex]?.ssrInfo?.BAGGAGE[mealIndex].desc || 'NO BAGGAGE'} is Removed` // Warning message to display
     });
 
     updateBaggageOptions();
     calculateBaggagePrice(traveller)
 }
 
-function calculateMealPrice(index)
-{
+function calculateMealPrice(index) {
     let personPrice = 0;
 
     let person = mealArray.filter(p => p.id === index);
@@ -1888,7 +1888,7 @@ function calculateMealPrice(index)
         personPrice += meal.price;
     })
 
-    document.getElementById(`${index}separator`).innerHTML  = `&#x20b9; ${personPrice}`
+    document.getElementById(`${index}separator`).innerHTML = `&#x20b9; ${personPrice}`
 
 }
 
@@ -1918,8 +1918,7 @@ function calculateTotalMealPrice() {
     console.log('Total Meal Price:', totalMealPrice);
 }
 
-function calculateBaggagePrice(index)
-{
+function calculateBaggagePrice(index) {
     let personPrice = 0;
 
     let person = baggageArray.filter(p => p.id === index);
@@ -1928,7 +1927,7 @@ function calculateBaggagePrice(index)
         personPrice += meal.price;
     })
 
-    document.getElementById(`${index}baggage`).innerHTML  = `&#x20b9; ${personPrice}`
+    document.getElementById(`${index}baggage`).innerHTML = `&#x20b9; ${personPrice}`
 
 }
 
@@ -1964,23 +1963,21 @@ function convertToDesiredFormat(dateString) {
     const date = new Date(dateString);
 
     // Format: "16 Sep, 2024"
-    const options = { day: '2-digit', month: 'short', year: 'numeric' };
+    const options = {day: '2-digit', month: 'short', year: 'numeric'};
     const formattedDate = date.toLocaleDateString('en-GB', options);
 
     return formattedDate;
 }
 
 
-class mealSectors
-{
-    constructor(sector, index, trip)
-    {
-        this.sector  = sector;
+class mealSectors {
+    constructor(sector, index, trip) {
+        this.sector = sector;
         this.index = index;
         this.trip = trip;
     }
-    renderMealSectors()
-    {
+
+    renderMealSectors() {
         let active = '';
 
         active = (this.index === 0 && this.trip === 0) ? 'meal-sector active-meal-sector' : 'meal-sector';
@@ -1989,16 +1986,14 @@ class mealSectors
     }
 }
 
-class baggageSectors
-{
-    constructor(sector, index, trip)
-    {
-        this.sector  = sector;
+class baggageSectors {
+    constructor(sector, index, trip) {
+        this.sector = sector;
         this.index = index;
         this.trip = trip;
     }
-    renderBaggageSectors()
-    {
+
+    renderBaggageSectors() {
         let active = '';
 
         active = (this.index === 0 && this.trip === 0) ? 'baggage-sector active-baggage-sector' : 'baggage-sector';
@@ -2007,10 +2002,8 @@ class baggageSectors
     }
 }
 
-class mealOptions
-{
-    constructor(meal, index, traveller, origin, destination, segmentIndex, trip)
-    {
+class mealOptions {
+    constructor(meal, index, traveller, origin, destination, segmentIndex, trip) {
 
         this.meal = meal;
         this.index = index;
@@ -2021,30 +2014,26 @@ class mealOptions
         this.trip = trip;
     }
 
-    renderMealDynamicOptions()
-    {
+    renderMealDynamicOptions() {
 
         let price = this.meal?.Price || this.meal?.amount || 0;
         let button = '';
 
-        let traveller =    mealArray.findIndex(meal => meal.id === this.traveller && meal.index === this.index && meal.origin === this.origin && meal.destination === this.destination);
+        let traveller = mealArray.findIndex(meal => meal.id === this.traveller && meal.index === this.index && meal.origin === this.origin && meal.destination === this.destination);
 
-        if(traveller !== -1) {
+        if (traveller !== -1) {
             button = `<button type="button"
                            class="app-btn app-btn-primary app-btn-medium ssr-card__add-btn" onclick="removeMeal(${traveller}, ${this.index}, ${this.segmentIndex},'${this.traveller}')"
                            style="padding: 0.5rem; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px; font-weight: 600;">
               Remove
           </button>`;
-        }
-        else
-        {
+        } else {
             button = `<button type="button"
                            class="app-btn app-btn-primary app-btn-medium ssr-card__add-btn" onclick="AddMeal(${this.index},'${this.origin}','${this.destination}','${this.traveller}', ${this.segmentIndex},${price}, ${this.trip})"
                            style="padding: 0.5rem; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px; font-weight: 600;">
               Add
           </button>`;
         }
-
 
 
         return `
@@ -2077,30 +2066,26 @@ class mealOptions
         `;
     }
 
-    renderMealOptions()
-    {
+    renderMealOptions() {
 
         let price = this.meal?.Price || 0;
         let button = '';
 
-        let traveller =    mealArray.findIndex(meal => meal.id === this.traveller && meal.index === this.index && meal.origin === this.origin && meal.destination === this.destination);
+        let traveller = mealArray.findIndex(meal => meal.id === this.traveller && meal.index === this.index && meal.origin === this.origin && meal.destination === this.destination);
 
-        if(traveller !== -1) {
+        if (traveller !== -1) {
             button = `<button type="button"
                            class="app-btn app-btn-primary app-btn-medium ssr-card__add-btn" onclick="removeMeal(${traveller}, ${this.index}, ${this.segmentIndex},'${this.traveller}',${this.trip})"
                            style="padding: 0.5rem; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px; font-weight: 600;">
               Remove
           </button>`;
-        }
-        else
-        {
+        } else {
             button = `<button type="button"
                            class="app-btn app-btn-primary app-btn-medium ssr-card__add-btn" onclick="AddMeal(${this.index},'${this.origin}','${this.destination}','${this.traveller}', ${this.segmentIndex},${price},${this.trip})"
                            style="padding: 0.5rem; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px; font-weight: 600;">
               Add
           </button>`;
         }
-
 
 
         return `
@@ -2134,10 +2119,8 @@ class mealOptions
     }
 }
 
-class baggageOptions
-{
-    constructor(baggage, index, traveller, origin, destination, segmentIndex, trip)
-    {
+class baggageOptions {
+    constructor(baggage, index, traveller, origin, destination, segmentIndex, trip) {
 
         this.baggage = baggage;
         this.index = index;
@@ -2148,32 +2131,27 @@ class baggageOptions
         this.trip = trip;
     }
 
-    renderBaggageOptions()
-    {
-        if(this.segmentIndex === 0)
-        {
+    renderBaggageOptions() {
+        if (this.segmentIndex === 0) {
 
             let price = this.baggage?.Price || this.baggage?.amount || 0;
             let button = '';
 
-            let traveller =    baggageArray.findIndex(meal => meal.id === this.traveller && meal.index === this.index && meal.origin === this.origin && meal.destination === this.destination);
+            let traveller = baggageArray.findIndex(meal => meal.id === this.traveller && meal.index === this.index && meal.origin === this.origin && meal.destination === this.destination);
 
-            if(traveller !== -1) {
+            if (traveller !== -1) {
                 button = `<button type="button"
                            class="app-btn app-btn-primary app-btn-medium ssr-card__add-btn" onclick="removeBaggage(${traveller}, ${this.index}, ${this.segmentIndex},'${this.traveller}',${this.trip})"
                            style="padding: 0.5rem; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px; font-weight: 600;">
               Remove
           </button>`;
-            }
-            else
-            {
+            } else {
                 button = `<button type="button"
                            class="app-btn app-btn-primary app-btn-medium ssr-card__add-btn" onclick="AddBaggage(${this.index},'${this.origin}','${this.destination}','${this.traveller}', ${this.segmentIndex},${price},${this.trip})"
                            style="padding: 0.5rem; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px; font-weight: 600;">
               Add
           </button>`;
             }
-
 
 
             return `
@@ -2204,34 +2182,28 @@ class baggageOptions
 </div>
 
         `;
-        }
-        else
-        {
+        } else {
             let amount = this.baggage?.amount || 0
-            if(amount === 0)
-            {
+            if (amount === 0) {
 
                 let price = this.baggage?.Price || this.baggage?.amount || 0;
                 let button = '';
 
-                let traveller =    baggageArray.findIndex(meal => meal.id === this.traveller && meal.index === this.index && meal.origin === this.origin && meal.destination === this.destination);
+                let traveller = baggageArray.findIndex(meal => meal.id === this.traveller && meal.index === this.index && meal.origin === this.origin && meal.destination === this.destination);
 
-                if(traveller !== -1) {
+                if (traveller !== -1) {
                     button = `<button type="button"
                            class="app-btn app-btn-primary app-btn-medium ssr-card__add-btn" onclick="removeBaggage(${traveller}, ${this.index}, ${this.segmentIndex},'${this.traveller}')"
                            style="padding: 0.5rem; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px; font-weight: 600;">
               Remove
           </button>`;
-                }
-                else
-                {
+                } else {
                     button = `<button type="button"
                            class="app-btn app-btn-primary app-btn-medium ssr-card__add-btn" onclick="AddBaggage(${this.index},'${this.origin}','${this.destination}','${this.traveller}', ${this.segmentIndex},${price},${this.trip})"
                            style="padding: 0.5rem; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px; font-weight: 600;">
               Add
           </button>`;
                 }
-
 
 
                 return `
@@ -2242,31 +2214,26 @@ class baggageOptions
 </div>
 
         `;
-            }
-            else
-            {
+            } else {
 
                 let price = this.baggage?.Price || this.baggage?.amount || 0;
                 let button = '';
 
-                let traveller =    baggageArray.findIndex(meal => meal.id === this.traveller && meal.index === this.index && meal.origin === this.origin && meal.destination === this.destination);
+                let traveller = baggageArray.findIndex(meal => meal.id === this.traveller && meal.index === this.index && meal.origin === this.origin && meal.destination === this.destination);
 
-                if(traveller !== -1) {
+                if (traveller !== -1) {
                     button = `<button type="button"
                            class="app-btn app-btn-primary app-btn-medium ssr-card__add-btn" onclick="removeBaggage(${traveller}, ${this.index}, ${this.segmentIndex},'${this.traveller}')"
                            style="padding: 0.5rem; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px; font-weight: 600;">
               Remove
           </button>`;
-                }
-                else
-                {
+                } else {
                     button = `<button type="button"
                            class="app-btn app-btn-primary app-btn-medium ssr-card__add-btn" onclick="AddBaggage(${this.index},'${this.origin}','${this.destination}','${this.traveller}', ${this.segmentIndex},${price},${this.trip})"
                            style="padding: 0.5rem; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px; font-weight: 600;">
               Add
           </button>`;
                 }
-
 
 
                 return `
@@ -2302,16 +2269,13 @@ class baggageOptions
     }
 }
 
-class mealPassengers
-{
-    constructor(pax, index)
-    {
+class mealPassengers {
+    constructor(pax, index) {
         this.pax = pax;
         this.index = index;
     }
 
-    renderMealPassengers()
-    {
+    renderMealPassengers() {
         let active = '';
 
         active = (this.pax === "Adult" && this.index === 1) ? 'traveller-name active-traveller' : 'traveller-name';
@@ -2326,16 +2290,13 @@ class mealPassengers
     }
 }
 
-class baggagePassengers
-{
-    constructor(pax, index)
-    {
+class baggagePassengers {
+    constructor(pax, index) {
         this.pax = pax;
         this.index = index;
     }
 
-    renderBaggagePassengers()
-    {
+    renderBaggagePassengers() {
         let active = '';
 
         active = (this.pax === "Adult" && this.index === 1) ? 'baggage-traveller-name active-traveller' : 'baggage-traveller-name';
@@ -2349,22 +2310,18 @@ class baggagePassengers
     }
 }
 
-class PassengerForm
-{
-    constructor(type, index, passportAtHold, passportAtTicket)
-    {
+class PassengerForm {
+    constructor(type, index, passportAtHold, passportAtTicket) {
         this.type = type;
         this.index = index;
         this.passportAtHold = passportAtHold;
         this.passportAtTicket = passportAtTicket;
     }
 
-    render()
-    {
+    render() {
         let title = '';
 
-        if(this.type === 'Adult')
-        {
+        if (this.type === 'Adult') {
             title = `  <select  class="traveller-input false" name="${this.type}_title${this.index}" id="${this.type}_title${this.index}" required style="height: 42px; border: 0.0625rem solid rgb(221, 221, 221); padding: 12px; border-radius: 6px; width: 100%;">
               <option value="MR">Mr</option>
               <option value="MS">Ms</option>
@@ -2372,15 +2329,13 @@ class PassengerForm
               <option value="MSTR">Master</option>
           </select>`;
         }
-        if(this.type === 'Child')
-        {
+        if (this.type === 'Child') {
             title = `  <select  class="traveller-input false" name="${this.type}_title${this.index}" id="${this.type}_title${this.index}" required style="height: 42px; border: 0.0625rem solid rgb(221, 221, 221); padding: 12px; border-radius: 6px; width: 100%;">
                   <option value="MSTR">Mstr</option>
                   <option value="MS">Ms</option>
               </select>`;
         }
-        if(this.type === 'Infant')
-        {
+        if (this.type === 'Infant') {
             title = `  <select  class="traveller-input false" name="${this.type}_title${this.index}" id="${this.type}_title${this.index}" required style="height: 42px; border: 0.0625rem solid rgb(221, 221, 221); padding: 12px; border-radius: 6px; width: 100%;">
                   <option value="MS">Ms</option>
                       <option value="MSTR">Mstr</option>
@@ -2390,9 +2345,8 @@ class PassengerForm
 
         let passportDetails = ``;
 
-        if(this.passportAtHold === true && this.passportAtTicket === true)
-        {
-            passportDetails+=`<div class="col-lg-3 col-md-3 col-sm-3 col-12">
+        if (this.passportAtHold === true && this.passportAtTicket === true) {
+            passportDetails += `<div class="col-lg-3 col-md-3 col-sm-3 col-12">
                                                     <div class="position-relative app-text-input"><label
                                                                 class="position-absolute text-input-label required">Passport
                                                             Number</label><input name="${this.type}_passport_number${this.index}" placeholder=""
@@ -2428,10 +2382,8 @@ class PassengerForm
                                                                                          style="height: 42px; border: 0.0625rem solid rgb(221, 221, 221); padding: 12px; border-radius: 6px; width: 100%;">
                                                     </div>
                                                 </div>`;
-        }
-        else if(this.passportAtHold === true)
-        {
-            passportDetails+=`<div class="col-lg-3 col-md-3 col-sm-3 col-12">
+        } else if (this.passportAtHold === true) {
+            passportDetails += `<div class="col-lg-3 col-md-3 col-sm-3 col-12">
                                                     <div class="position-relative app-text-input"><label
                                                                 class="position-absolute text-input-label required">Passport
                                                             Number</label><input name="${this.type}_passport_number${this.index}" placeholder=""
@@ -2467,10 +2419,8 @@ class PassengerForm
                                                                                          style="height: 42px; border: 0.0625rem solid rgb(221, 221, 221); padding: 12px; border-radius: 6px; width: 100%;">
                                                     </div>
                                                 </div>`;
-        }
-        else if(this.passportAtTicket === true)
-        {
-            passportDetails+=`<div class="col-lg-3 col-md-3 col-sm-3 col-12">
+        } else if (this.passportAtTicket === true) {
+            passportDetails += `<div class="col-lg-3 col-md-3 col-sm-3 col-12">
                                                     <div class="position-relative app-text-input"><label
                                                                 class="position-absolute text-input-label required">Passport
                                                             Number</label><input name="${this.type}_passport_number${this.index}" placeholder=""
@@ -2611,37 +2561,31 @@ class PassengerForm
     }
 }
 
-class PassengerForm1
-{
-    constructor(type, index, passportAtHold, passportAtTicket)
-    {
+class PassengerForm1 {
+    constructor(type, index, passportAtHold, passportAtTicket) {
         this.type = type;
         this.index = index;
         this.passportAtHold = passportAtHold;
         this.passportAtTicket = passportAtTicket;
     }
 
-    render()
-    {
+    render() {
         let title = '';
 
-        if(this.type === 'Adult')
-        {
+        if (this.type === 'Adult') {
             title = `  <select  class="traveller-input false" name="${this.type}_title${this.index}" id="${this.type}_title${this.index}" required style="height: 42px; border: 0.0625rem solid rgb(221, 221, 221); padding: 12px; border-radius: 6px; width: 100%;">
               <option value="Mr">Mr</option>
               <option value="Ms">Ms</option>
               <option value="MRS">Mrs</option>
           </select>`;
         }
-        if(this.type === 'Child')
-        {
+        if (this.type === 'Child') {
             title = `  <select  class="traveller-input false" name="${this.type}_title${this.index}" id="${this.type}_title${this.index}" required style="height: 42px; border: 0.0625rem solid rgb(221, 221, 221); padding: 12px; border-radius: 6px; width: 100%;">
                   <option value="Master">Master</option>
                   <option value="Ms">Ms</option>
               </select>`;
         }
-        if(this.type === 'Infant')
-        {
+        if (this.type === 'Infant') {
             title = `  <select  class="traveller-input false" name="${this.type}_title${this.index}" id="${this.type}_title${this.index}" required style="height: 42px; border: 0.0625rem solid rgb(221, 221, 221); padding: 12px; border-radius: 6px; width: 100%;">
                   <option value="Ms">Ms</option>
                       <option value="Master">Master</option>
@@ -2651,9 +2595,8 @@ class PassengerForm1
 
         let passportDetails = ``;
 
-        if(this.passportAtHold === true && this.passportAtTicket === true)
-        {
-            passportDetails+=`<div class="col-lg-3 col-md-3 col-sm-3 col-12">
+        if (this.passportAtHold === true && this.passportAtTicket === true) {
+            passportDetails += `<div class="col-lg-3 col-md-3 col-sm-3 col-12">
                                                     <div class="position-relative app-text-input"><label
                                                                 class="position-absolute text-input-label required">Passport
                                                             Number</label><input name="${this.type}_passport_number${this.index}" placeholder=""
@@ -2689,10 +2632,8 @@ class PassengerForm1
                                                                                          style="height: 42px; border: 0.0625rem solid rgb(221, 221, 221); padding: 12px; border-radius: 6px; width: 100%;">
                                                     </div>
                                                 </div>`;
-        }
-        else if(this.passportAtHold === true)
-        {
-            passportDetails+=`<div class="col-lg-3 col-md-3 col-sm-3 col-12">
+        } else if (this.passportAtHold === true) {
+            passportDetails += `<div class="col-lg-3 col-md-3 col-sm-3 col-12">
                                                     <div class="position-relative app-text-input"><label
                                                                 class="position-absolute text-input-label required">Passport
                                                             Number</label><input name="${this.type}_passport_number${this.index}" placeholder=""
@@ -2728,10 +2669,8 @@ class PassengerForm1
                                                                                          style="height: 42px; border: 0.0625rem solid rgb(221, 221, 221); padding: 12px; border-radius: 6px; width: 100%;">
                                                     </div>
                                                 </div>`;
-        }
-        else if(this.passportAtTicket === true)
-        {
-            passportDetails+=`<div class="col-lg-3 col-md-3 col-sm-3 col-12">
+        } else if (this.passportAtTicket === true) {
+            passportDetails += `<div class="col-lg-3 col-md-3 col-sm-3 col-12">
                                                     <div class="position-relative app-text-input"><label
                                                                 class="position-absolute text-input-label required">Passport
                                                             Number</label><input name="${this.type}_passport_number${this.index}" placeholder=""
@@ -2872,25 +2811,22 @@ class PassengerForm1
     }
 }
 
-class makePassengerArray
-{
+class makePassengerArray {
 
-    constructor(passengerType, fareBreakdown, index, paxType, airlineCode, flightNumber, passportAtBook, passportAtTicket, type)
-    {
+    constructor(passengerType, fareBreakdown, index, paxType, airlineCode, flightNumber, passportAtBook, passportAtTicket, type) {
         this.passengerType = passengerType;
         this.fareBreakdown = fareBreakdown;
         this.index = index;
         this.paxType = paxType;
         this.airlineCode = airlineCode;
         this.flightNumber = flightNumber;
-        this.passportAtBook  = passportAtBook;
+        this.passportAtBook = passportAtBook;
         this.passportAtTicket = passportAtTicket;
         this.type = type;
 
     }
 
-    renderTBO()
-    {
+    renderTBO() {
 
         console.log("oye")
 
@@ -2899,19 +2835,19 @@ class makePassengerArray
 
         let obj = {
             "paxType": this.paxType,
-            "profession":"yjgq",
-            "title":document.getElementById(`${this.passengerType}_title${this.index}`).value,
+            "profession": "yjgq",
+            "title": document.getElementById(`${this.passengerType}_title${this.index}`).value,
             "firstName": document.getElementById(`${this.passengerType}_first_name${this.index}`).value,
             "middleName": "",
             "lastName": document.getElementById(`${this.passengerType}_last_name${this.index}`).value,
-            "frequentFlyNo":"",
-            "mcoAmount":0,
-            "markUp":0,
+            "frequentFlyNo": "",
+            "mcoAmount": 0,
+            "markUp": 0,
             "gender": "Male",
             "dateOfBirth": `${document.getElementById(`${this.passengerType}_dob${this.index}`).value}`,
-            "BaggageDetails":[],
-            "MealsDetails":[],
-            "SeatDetails":[]
+            "BaggageDetails": [],
+            "MealsDetails": [],
+            "SeatDetails": []
         }
 
         let passport = {};
@@ -2932,8 +2868,7 @@ class makePassengerArray
         //
         // }
 
-        if(this.passportAtTicket === false  || this.passportAtBook === false)
-        {
+        if (this.passportAtTicket === false || this.passportAtBook === false) {
             passport = {
                 // "CountryCode": document.getElementById(`${this.passengerType}_passport_place${this.index}`).value,
                 // "CellCountryCode": "+91",
@@ -2942,12 +2877,12 @@ class makePassengerArray
                 // "PassportIssueDate": `${document.getElementById(`${this.passengerType}_passport_issue${this.index}`).value}T00:00:00`,
                 "passportIssueCountry": document.getElementById(`${this.passengerType}_passport_place${this.index}`).value,
             }
-            obj = {...obj , ...passport}
+            obj = {...obj, ...passport}
 
         }
 
 
-        return  obj;
+        return obj;
     }
 
 }
@@ -2969,7 +2904,7 @@ function parseCustomDate(dateStr) {
     return parsedDate;
 }
 
-function setDateRestrictions(input,paxType) {
+function setDateRestrictions(input, paxType) {
     // Assuming arr.Origin.DepDate is in "21 Sept 2024" format
     console.log(arr.onwardFlight.Origin.DepDate)
     const depDateStr = arr.onwardFlight.Origin.DepDate;
@@ -2982,7 +2917,7 @@ function setDateRestrictions(input,paxType) {
         return;
     }
 
-    let maxDate,minDate;
+    let maxDate, minDate;
 
     // Modify the max date based on this.type (use the type from your logic)
     const type = paxType; // This should come from your server-side logic or JS logic
@@ -3005,17 +2940,15 @@ function setDateRestrictions(input,paxType) {
         // Set min date (oldest child age, 12 years ago minus 2 days)
         minDate.setFullYear(currentDate.getFullYear() - 12);
         minDate.setDate(minDate.getDate() + 2); // Subtract 2 days from the minimum date
-    }else if(type==='Infant')
-    {
+    } else if (type === 'Infant') {
         maxDate = new Date(currentDate);
         minDate = new Date(currentDate);
         // Set min date (oldest child age, 18 years ago)
         // maxDate.setFullYear(currentDate);
         maxDate.setDate(maxDate.getDate() - 10);
-        minDate.setFullYear(currentDate.getFullYear()-2);
+        minDate.setFullYear(currentDate.getFullYear() - 2);
         minDate.setDate(minDate.getDate() + 2);
-    }
-    else {
+    } else {
         console.error('Unknown type:', type);
         return;
     }
