@@ -184,8 +184,8 @@ async function loadFlightDetails() {
                 fd1.append("child", arr.returnFlight.childs);
                 fd1.append("infant", arr.returnFlight.infants);
                 fd1.append("flight", JSON.stringify(flightReturn));
-                console.log(arr.returnFlight.Segments[0].ResultIndex)
                 console.log(arr.onwardFlight.Segments[0].ResultIndex)
+                console.log(arr.returnFlight.Segments[0].ResultIndex)
 
                 fareResponse1 = await fetch('/flights/AirSell', {
                     method: 'POST',
@@ -487,7 +487,9 @@ async function loadFlightDetails() {
         } catch (e) {
             console.log(e);
         }
-    } else if (arr.Supplier === Suppliers.TRIPJACK) {
+    }
+
+    else if (arr.Supplier === Suppliers.TRIPJACK) {
         try {
             let fd = new FormData();
             fd.append("traceId", arr.Segments[0].ResultIndex);
