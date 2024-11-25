@@ -335,6 +335,172 @@ flightController.ticket = async (req, res) => {
 
 }
 
+flightController.ticket_custom = async (req, res) => {
+    console.log(req.body)
+    let {agentId} = req.agent
+    let {
+        traceId,
+        flight,
+        sellKey,
+        passengers,
+        email,
+        mobile,
+        hold,
+        revised,
+        totalAdult,
+        totalChild,
+        totalInfant,
+        riyaTrip
+    } = req.body
+    let response = '';
+    let flights = JSON.parse(flight);
+    let pax = JSON.parse(passengers);
+    let connection
+    let holdOption = (hold === "true") ? true : false;
+
+    let revisedOption = (revised === "true") ? true : false;
+    try {
+        let apiUrl = `http://trvlnxtgateway.parikshan.net/api/Booking`;
+        response = await axios.post(apiUrl, {
+            "trackID": `${traceId}`,
+            "sellKey": `${sellKey}`,
+            "tripType": `${riyaTrip}`,
+            "paymentMode": "1",
+            "IsHold": false,
+            "Isfarerevised": revisedOption,
+            "paxType": {
+                "adult": totalAdult,
+                "child": totalChild,
+                "infant": totalInfant
+            },
+            "flights": flights,
+            "passengers": pax,
+            "addressDetail": {
+                "contactNumber": `${mobile}`,
+                "emailId": `${email}`
+            },
+            "baggageDetails": [],
+            "mealsDetails": [],
+            "seatDetails": []
+        }, {
+            headers: {
+                'Accept-Encoding': 'gzip, deflate',
+                'ApiKey': `VFJBVkVMIERFQUwgT25saW5lIC0gQ1VTVDMwMDcyNA==`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        console.log(response);
+
+        if (response.data.ResponseStatusType.Success === true) {
+
+            // add to database all information
+
+
+            try {
+                let total_no_of_pax = parseInt(totalAdult) + parseInt(totalChild) + parseInt(totalInfant);
+                let pnr = response.data.Flights[0].AirlinePNR
+                let gdspnr = response.data.GDSPNR
+                const booking_date_time = moment().tz(process.env["TIME_ZONE"]).format("YYYY-MM-DD HH:mm:ss")
+                let response_json = response.data
+                response_json = JSON.stringify(response_json)
+                let total_base_fare = 0;
+                let total_tax = 0;
+                let total_gross_fare = 0;
+                let total_net_fare = 0;
+
+                response.data.Flights.forEach(flight => {
+                    total_base_fare += flight.BasicFare;
+                    total_tax += flight.TotalTax;
+                    total_gross_fare += flight.GrossFare;
+                    total_net_fare += flight.NetAmount;
+                });
+
+                console.log("Total Base Fare:", total_base_fare);
+                console.log("Total Tax:", total_tax);
+                console.log("Total Gross Fare:", total_gross_fare);
+                console.log("Total Net Fare:", total_net_fare);
+                console.log(total_no_of_pax, pnr, total_base_fare, total_tax, total_gross_fare, total_net_fare)
+                console.log(response.data.Passengers[0].FirstName)
+                connection = await connectToDatabase();
+
+                let [addData] = await flightServices.addFlightBookingData(connection, agentId, total_no_of_pax, totalAdult, totalChild, totalInfant, gdspnr, booking_date_time, response_json, total_base_fare, total_tax, total_gross_fare, total_net_fare, pnr);
+                let [getbookingId] = await flightServices.getBookingId(connection)
+                let booking_id = getbookingId[0].booking_id
+
+                for (let trip = 0; trip < response.data.Flights.length; trip++) {
+                    let origin = response.data.Flights[trip].OriginDestination.Departure
+                    let destination = response.data.Flights[trip].OriginDestination.Arrival
+                    let flightNumber = response.data.Flights[trip].Segments[0].FlightNumber
+                    let flightName = response.data.Flights[trip].Segments[0].Carrier
+                    let iataCode = response.data.Flights[trip].Segments[0].Carrier
+                    let departureDate = response.data.Flights[trip].OriginDestination.DepartureDateTime
+                    let arrivalDate = response.data.Flights[trip].OriginDestination.ArrivalDateTime
+                    let duration = response.data.Flights[trip].OriginDestination.TotalTime
+                    let departureTerminal = response.data.Flights[trip].Segments[0].DepartureTerminal
+                    let arrivalTerminal = response.data.Flights[trip].Segments[0].ArrivalTerminal
+                    let fareName = response.data.Flights[trip].FareName
+                    let basicFare = response.data.Flights[trip].BasicFare
+                    let totalTax = response.data.Flights[trip].TotalTax
+                    let totalFare = response.data.Flights[trip].TotalFare
+                    let netAmount = response.data.Flights[trip].NetAmount
+                    let grossFare = response.data.Flights[trip].GrossFare
+                    let airlinePNR = response.data.Flights[trip].AirlinePNR
+                    let flightKey = response.data.Flights[trip].FlightKey
+                    let airlineCode = response.data.Flights[trip].ValidatingCarrier;
+                    let baggage = `${response?.data?.Flights?.[trip]?.Segments[0]?.Baggages?.[0]?.Weight || '15'}${response?.data?.Flights?.[trip]?.Segments?.[0]?.Baggages?.[0]?.Unit || 'KG'}`
+                    let cabinBaggage = response.data.Flights[trip].Segments[0].CabinBaggage
+
+                    for (let i = 0; i < response.data.Passengers.length; i++) {
+                        let passengerInfo = response.data.Passengers[i]
+                        let title = passengerInfo.Title
+                        let firstName = passengerInfo.FirstName
+                        let lastName = passengerInfo.LastName
+                        let paxType = passengerInfo.PaxType
+                        let dateOfBirth = passengerInfo.DateOfBirth
+                        let passportNo = passengerInfo.PassportDetail.PassportNo
+                        let passportExpiry = passengerInfo.PassportDetail.PassportExpiry
+                        let passportIssueCountry = passengerInfo.PassportDetail.PassportIssueCountry
+                        let barcodes = passengerInfo.BarCodes[trip]
+                        barcodes = JSON.stringify(barcodes)
+                        let bookingStatus = "Ticketed"
+                        let ticketStatus = "Ticketed"
+                        let [addBookingDetails] = await flightServices.addFlightBookingDetails(connection, booking_id, title, firstName, lastName, paxType, dateOfBirth, passportNo, passportExpiry, passportIssueCountry, barcodes, origin, destination, flightNumber, flightName, iataCode, departureDate, arrivalDate, duration, departureTerminal, arrivalTerminal, fareName, bookingStatus, ticketStatus)
+                        let [addBookingDetails1] = await flightServices.addFlightBookingDetails(connection, booking_id, title, firstName, lastName, paxType, dateOfBirth, passportNo, passportExpiry, passportIssueCountry, barcodes, destination, origin, flightNumber, flightName, iataCode, departureDate, arrivalDate, duration, departureTerminal, arrivalTerminal, fareName, bookingStatus, ticketStatus)
+                    }
+                    let [addTrip] = await flightServices.addTrip(connection, booking_id, origin, destination, departureDate, arrivalDate, duration, basicFare, totalTax, totalFare, netAmount, grossFare, airlinePNR, baggage, cabinBaggage, departureTerminal, arrivalTerminal, flightKey, fareName, airlineCode)
+                    let [addTrip1] = await flightServices.addTrip(connection, booking_id, destination, origin, departureDate, arrivalDate, duration, basicFare, totalTax, totalFare, netAmount, grossFare, airlinePNR, baggage, cabinBaggage, departureTerminal, arrivalTerminal, flightKey, fareName, airlineCode)
+
+                }
+                res.json({error: false, response: response.data, message: "Ticket Successfully", bookingNo: booking_id})
+            } catch (e) {
+                console.log('-----', e.message)
+                return res.send({
+                    responseCode: 1,
+                    error: true,
+                    warning: false,
+                    message: "Error Occurred - " + e.message
+                });
+            } finally {
+                if (connection) connection.release();  // Return the connection to the pool
+            }
+
+
+            // res.json({error: false, response: response.data.response, message: "Ticket Successfully"})
+        } else {
+            res.json({error: true, response: response.data, message: "Ticket Failed"})
+        }
+    } catch (e) {
+        console.log(e);
+        res.json({error: true, response: response.data, message: e.message})
+    } finally {
+        if (connection) connection.release();  // Return the connection to the pool
+    }
+
+
+}
+
+
 flightController.hold = async (req, res) => {
     console.log(req.body)
     let {agentId} = req.agent
@@ -2351,7 +2517,7 @@ flightController.getAllFlightsRound = async (req, res) => {
                                 childs: group.childs,
                                 infants: group.infants,
                                 Stops: group.Stops,
-                                TraceId: tboResponse.value.data.TrackID,
+                                TraceId: tboResponse1.value.data.TrackID,
                                 totalDuration: group.formattedDuration,
                                 Origin: group.Origin,
                                 Destination: group.Destination,
@@ -4080,9 +4246,10 @@ flightController.AddFlightSearchData = async (req, res) => {
 
 flightController.showRazorPayWindow = async (req, res) => {
     console.log(req.body)
+    console.log("Window")
     const tx = new Date().getTime().toString();
     const {finalAmt, name, email, gCharge, contact, CompanyId, paymentMethod, payType, insId} = req.body;
-    // console.log(data)
+   // console.log(data)
     if (paymentMethod === "wallet") {
         console.log("oye")
         console.log(req.body)
@@ -4146,12 +4313,11 @@ flightController.showRazorPayWindow = async (req, res) => {
     }
 };
 
-
 flightController.flightCheckout = async (req, res) => {
-
     console.log(req.session.test);
+    console.log("Return",req.session.test1);
     res.render("flights/flight_checkout", req.session.test);
-}
+};
 
 flightController.goToCheckout = async (req, res) => {
     console.log(req.body);
@@ -4163,6 +4329,26 @@ flightController.goToCheckout = async (req, res) => {
         let [addData] = await flightServices.makeBookingSession(connection, req.body.traceId, JSON.stringify(req.body), req.body.trip);
 
         req.session.test = req.body;
+        res.status(200).send('Redirecting...');
+    } catch (error) {
+        // Handle error
+        console.error('Error:', error);
+        res.status(500).send('Internal Server Error');
+    } finally {
+        if (connection) connection.release();  // Return the connection to the pool
+    }
+}
+
+flightController.goToCheckoutReturn = async (req, res) => {
+    console.log(req.body);
+    let connection
+    try {
+
+        connection = await connectToDatabase();
+
+        let [addData] = await flightServices.makeBookingSession(connection, req.body.traceIdReturn, JSON.stringify(req.body), req.body.tripReturn);
+
+        req.session.test1 = req.body;
         res.status(200).send('Redirecting...');
     } catch (error) {
         // Handle error

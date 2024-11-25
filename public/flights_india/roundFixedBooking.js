@@ -154,7 +154,7 @@ async function loadFlightDetails() {
     // Handle the case for the "TBO" supplier
     if (arr.onwardFlight.Supplier === Suppliers.RIYA) {
         try {
-
+            let fareArray = []
             if (arr.Custom === 'Yes') {
 
                 //console.log(arr)
@@ -196,6 +196,11 @@ async function loadFlightDetails() {
 
                 console.log("RETURN",fareResponse1)
 
+                fareArray = [
+                    fareResponse.response.response,
+                    fareResponse1.response.response
+                ]
+
             }
             ///Fixed Fare Breakup
             else {
@@ -217,6 +222,10 @@ async function loadFlightDetails() {
                 fareResponse = await fareResponse.json();
 
                 console.log(fareResponse);
+
+                fareArray = [
+                    fareResponse.response.response
+                ]
             }
 
 
@@ -232,8 +241,10 @@ async function loadFlightDetails() {
 
                 if (fareResponse.ResponseStatus === 1) {
 
+
+
                     // Render TBO fare card
-                    let TBOFareCard = new TBOFareBreakupCardFixed(fareResponse.response.response, 0);
+                    let TBOFareCard = new TBOFareBreakupCardFixed(fareArray, 0);
                     document.getElementById("fareSummary").innerHTML = TBOFareCard.render();
 
                     Array(parseInt(arr.onwardFlight.adults)).fill().forEach((_, index) => {
@@ -894,419 +905,109 @@ async function ConfirmBooking() {
         });
 
         console.log(paxArray);
+        console.log(arr)
 
-        if (paxArray.length > 0) {
-            let fd = new FormData();
+        if(arr.Custom === 'Yes'){
+            if (paxArray.length > 0) {
+                let fd = new FormData();
 
-            fd.append("traceId", arr.onwardFlight.TraceId);
-            fd.append("flight", JSON.stringify(flight))
-            fd.append("sellKey", fareResponse.response.response.SellKey);
-            fd.append("passengers", JSON.stringify(paxArray));
-            fd.append("email", document.getElementById(`leademail`).value);
-            fd.append("mobile", document.getElementById(`mobile`).value);
-            fd.append('total', totalAmount);
-            fd.append("hold", fareResponse.response.response.HoldAvailable);
-            fd.append("revised", fareResponse.response.response.Isfarerevised);
-            fd.append("totalAdult", arr.onwardFlight.adults);
-            fd.append("totalChild", arr.onwardFlight.childs);
-            fd.append("totalInfant", arr.onwardFlight.infants);
-            fd.append("trip", "RoundTrip");
-            fd.append("riyaTrip", "R")
+                fd.append("traceId", arr.onwardFlight.TraceId);
+                fd.append("flight", JSON.stringify(flightOnward))
+                fd.append("sellKey", fareResponse.response.response.SellKey);
+                fd.append("passengers", JSON.stringify(paxArray));
+                fd.append("email", document.getElementById(`leademail`).value);
+                fd.append("mobile", document.getElementById(`mobile`).value);
+                fd.append('total', totalAmount);
+                fd.append("hold", fareResponse.response.response.HoldAvailable);
+                fd.append("revised", fareResponse.response.response.Isfarerevised);
+                fd.append("totalAdult", arr.onwardFlight.adults);
+                fd.append("totalChild", arr.onwardFlight.childs);
+                fd.append("totalInfant", arr.onwardFlight.infants);
+                fd.append("trip", "RoundTrip_Custom");
+                fd.append("riyaTrip", "O")
 
-            let res = await fetch("/flights/goToCheckout", {
-                method: "POST",
-                body: fd,
-            });
+                let res = await fetch("/flights/goToCheckout", {
+                    method: "POST",
+                    body: fd,
+                });
 
-            if (res.ok) {
-                Swal.close();
-                window.location.href = '/flights/flightCheckout';
+                if (res.ok) {
+                    let fd1 = new FormData();
 
-            } else {
-                Swal.close();
-                alert("problem");
+                    fd1.append("traceIdReturn", arr.returnFlight.TraceId);
+                    fd1.append("flightReturn", JSON.stringify(flightReturn))
+                    fd1.append("sellKeyReturn", fareResponse1.response.response.SellKey);
+                    fd1.append("passengersReturn", JSON.stringify(paxArray));
+                    fd1.append("emailReturn", document.getElementById(`leademail`).value);
+                    fd1.append("mobileReturn", document.getElementById(`mobile`).value);
+                    fd1.append('totalReturn', totalAmount);
+                    fd1.append("holdReturn", fareResponse1.response.response.HoldAvailable);
+                    fd1.append("revisedReturn", fareResponse1.response.response.Isfarerevised);
+                    fd1.append("totalAdultReturn", arr.returnFlight.adults);
+                    fd1.append("totalChildReturn", arr.returnFlight.childs);
+                    fd1.append("totalInfantReturn", arr.returnFlight.infants);
+                    fd1.append("tripReturn", "RoundTrip");
+                    fd1.append("riyaTripReturn", "O")
+
+                    let res = await fetch("/flights/goToCheckoutReturn", {
+                        method: "POST",
+                        body: fd1,
+                    });
+
+                    if (res.ok) {
+                        //console.log("OK")
+                        Swal.close();
+                        window.location.href = '/flights/flightCheckout';
+                    }
+
+                } else {
+                    Swal.close();
+                    alert("problem");
+                }
+
+                console.log(res)
             }
 
-            console.log(res)
+        } else{
+            if (paxArray.length > 0) {
+                let fd = new FormData();
+
+                fd.append("traceId", arr.onwardFlight.TraceId);
+                fd.append("flight", JSON.stringify(flight))
+                fd.append("sellKey", fareResponse.response.response.SellKey);
+                fd.append("passengers", JSON.stringify(paxArray));
+                fd.append("email", document.getElementById(`leademail`).value);
+                fd.append("mobile", document.getElementById(`mobile`).value);
+                fd.append('total', totalAmount);
+                fd.append("hold", fareResponse.response.response.HoldAvailable);
+                fd.append("revised", fareResponse.response.response.Isfarerevised);
+                fd.append("totalAdult", arr.onwardFlight.adults);
+                fd.append("totalChild", arr.onwardFlight.childs);
+                fd.append("totalInfant", arr.onwardFlight.infants);
+                fd.append("trip", "RoundTrip");
+                fd.append("riyaTrip", "R")
+
+                let res = await fetch("/flights/goToCheckout", {
+                    method: "POST",
+                    body: fd,
+                });
+
+                if (res.ok) {
+                    Swal.close();
+                    window.location.href = '/flights/flightCheckout';
+
+                } else {
+                    Swal.close();
+                    alert("problem");
+                }
+
+                console.log(res)
+            }
+
         }
 
     }
-    //
-    // var currentDate = new Date();
-    // // Get the current date and time
-    // var currentYear = currentDate.getFullYear();
-    // var currentMonth = currentDate.getMonth() + 1; // Months are zero-based, so add 1
-    // var currentDay = currentDate.getDate();
-    // var currentHour = currentDate.getHours();
-    // var currentMinute = currentDate.getMinutes();
-    // var currentSecond = currentDate.getSeconds();
-    // let am_pm = '';
-    // if (currentHour > 12)
-    //     am_pm = "PM"
-    // else
-    //     am_pm = "AM"
-    //
-    // let bookDT = `${currentYear + "/" + currentMonth + "/" + currentDay} ${currentHour + ':' + currentMinute + ":" + currentSecond}`
-    // console.log(bookDT);
-    // let AdultBaseFare = 0;
-    // let ChildBaseFare = 0;
-    // let InfantBaseFare = 0;
-    // let AdultTax = 0;
-    // let ChildTax = 0;
-    // let InfantTax = 0;
-    // let gst = "NOT NEEDED";
-    //
-    //
-    // // Check if GST checkbox is checked
-    // if ($('#gst-checkbox').is(':checked')) {
-    //     // Validate GST Form if the checkbox is checked
-    //     const gstIsValid = await validateGSTForm();
-    //
-    //     if (!gstIsValid) {
-    //         // If GST validation fails, return early and stop further execution
-    //         console.log("GST validation failed.");
-    //         return;
-    //     }
-    //     else
-    //     {
-    //         const gstNumber = document.getElementsByName("gstnumber")[0].value;
-    //         const companyName = document.getElementsByName("gstcompany")[0].value;
-    //         const companyEmail = document.getElementsByName("gstemail")[0].value;
-    //         const gstPhone = document.getElementsByName("gstphone")[0].value;
-    //         const gstAddress = document.getElementsByName("gstaddress")[0].value;
-    //
-    //         gst = {
-    //             gstNumber : gstNumber,
-    //             companyName : companyName,
-    //             companyEmail : companyEmail,
-    //             gstPhone : gstPhone,
-    //             gstAddress : gstAddress
-    //         }
-    //     }
-    // }
-    //
-    //
-    // if ($("#details").valid()) {
-    //
-    //     Swal.fire({
-    //         html: `
-    //         <div class="loading-container">
-    //             <img src="/images/new.gif" class="img-fluid" style="height: 400px;width:400px"/>
-    //
-    //         </div>
-    //     `,
-    //         allowOutsideClick: false,
-    //         showConfirmButton: false,
-    //         background: 'transparent',
-    //         customClass: {
-    //             popup: 'custom-toast'
-    //         }
-    //     });
-    //     if(arr.Supplier === Suppliers.TBO)
-    //     {
-    //         Array(parseInt(arr.adults)).fill().forEach((_, index) => {
-    //             let passportAtBook = fareBreakupResponse.response?.Results?.IsPassportRequiredAtBook || false;
-    //             let passportAtTicket = fareBreakupResponse.response?.Results?.IsPassportRequiredAtTicket || false;
-    //             let adultObject = new makePassengerArray("Adult",fareBreakupResponse.response.Results, index+1, 1, arr.AirlineCode, arr.FlightNumber, passportAtBook, passportAtTicket, "TICKET",gst);
-    //             paxArray.push(adultObject.renderTBO());
-    //             AdultBaseFare = adultObject.renderTBO().Fare.BaseFare;
-    //             AdultTax = adultObject.renderTBO().Fare.Tax;
-    //         });
-    //
-    //         Array(parseInt(arr.childs)).fill().forEach((_, index) => {
-    //             let passportAtBook = fareBreakupResponse.response?.Results?.IsPassportRequiredAtBook || false;
-    //             let passportAtTicket = fareBreakupResponse.response?.Results?.IsPassportRequiredAtTicket || false;
-    //             let childObject = new makePassengerArray("Child",fareBreakupResponse.response.Results, index+1, 2, arr.AirlineCode, arr.FlightNumber, passportAtBook, passportAtTicket, "TICKET", gst);
-    //             paxArray.push(childObject.renderTBO());
-    //             ChildBaseFare = childObject.renderTBO().Fare.BaseFare;
-    //             ChildTax = childObject.renderTBO().Fare.Tax;
-    //         });
-    //
-    //         Array(parseInt(arr.infants)).fill().forEach((_, index) => {
-    //             let passportAtBook = fareBreakupResponse.response?.Results?.IsPassportRequiredAtBook || false;
-    //             let passportAtTicket = fareBreakupResponse.response?.Results?.IsPassportRequiredAtTicket || false;
-    //             let infantObject = new makePassengerArray("Infant",fareBreakupResponse.response.Results, index+1, 3, arr.AirlineCode, arr.FlightNumber, passportAtBook, passportAtTicket, "TICKET", gst);
-    //             paxArray.push(infantObject.renderTBO());
-    //             InfantBaseFare = infantObject.renderTBO().Fare.BaseFare;
-    //             InfantTax = infantObject.renderTBO().Fare.Tax;
-    //         });
-    //
-    //         console.log(paxArray);
-    //
-    //
-    //
-    //
-    //         if(paxArray.length > 0)
-    //         {
-    //             let otherData = {
-    //                 "origin" : arr.Origin.CityCode,
-    //                 "destination" : arr.Destination.CityCode,
-    //                 "fareType" : arr.Segments[0].fare,
-    //                 "adultBaseFare" : AdultBaseFare,
-    //                 "childBaseFare" : ChildBaseFare,
-    //                 "infantBaseFare" : InfantBaseFare,
-    //                 "adultTax" : AdultTax,
-    //                 "childTax" : ChildTax,
-    //                 "infantTax" : InfantTax,
-    //                 "otherCharges" : fareBreakupResponse.response.Results.Fare.OtherCharges,
-    //                 "serviceFee" : fareBreakupResponse.response.Results.Fare.ServiceFee,
-    //                 "publishedFare" : fareBreakupResponse.response.Results.Fare.PublishedFare,
-    //                 "offeredFare" : fareBreakupResponse.response.Results.Fare.OfferedFare
-    //             }
-    //
-    //
-    //
-    //             if(fareBreakupResponse.response.Results.IsLCC)
-    //             {
-    //                 let fd = new FormData();
-    //
-    //                 fd.append("traceId", arr.TraceId);
-    //                 fd.append("ResultIndex", arr.Segments[0].ResultIndex);
-    //                 fd.append("Passengers", JSON.stringify(paxArray));
-    //                 fd.append("otherData", JSON.stringify(otherData))
-    //                 fd.append("totalPax", parseInt(arr.adults) + parseInt(arr.childs) + parseInt(arr.infants));
-    //                 fd.append("totalAdult", arr.adults);
-    //                 fd.append("totalChild", arr.childs);
-    //                 fd.append("totalInfant", arr.infants);
-    //                 fd.append("stops", arr.Segments[0].flightDetails.length-1);
-    //                 fd.append("price", fareBreakupResponse.response.IsPriceChanged);
-    //                 fd.append("passport", []);
-    //                 fd.append("flightType", 'lccWithPass');
-    //                 fd.append("total",totalAmount);
-    //                 fd.append("agentEmail", localStorage.getItem("agentEmail"));
-    //                 fd.append("bookDT", bookDT);
-    //                 fd.append("lastTicketDate", "");
-    //                 fd.append("isRefundable", fareBreakupResponse.response.Results.IsRefundable);
-    //                 fd.append("tripType", "ONE_WAY");
-    //                 fd.append("trip", "departure");
-    //                 fd.append("ssrAmount", 0);
-    //                 fd.append("markup",0);
-    //                 fd.append("platformFee", 0);
-    //                 fd.append("platformTax", 0);
-    //
-    //                 let res = await fetch("/goToCheckout", {
-    //                     method: "POST",
-    //                     body: fd
-    //                 });
-    //
-    //
-    //                 if(res.ok)
-    //                 {
-    //                     window.location.href = '/flightCheckout';
-    //                 }
-    //                 else
-    //                 {
-    //                     alert("problem")
-    //                 }
-    //             }
-    //             else
-    //             {
-    //                 let fd = new FormData();
-    //
-    //                 fd.append("traceId", arr.TraceId);
-    //                 fd.append("ResultIndex", arr.Segments[0].ResultIndex);
-    //                 fd.append("Passengers", JSON.stringify(paxArray));
-    //                 fd.append("otherData", JSON.stringify(otherData))
-    //                 fd.append("totalPax", parseInt(arr.adults) + parseInt(arr.childs) + parseInt(arr.infants));
-    //                 fd.append("totalAdult", arr.adults);
-    //                 fd.append("totalChild", arr.childs);
-    //                 fd.append("totalInfant", arr.infants);
-    //                 fd.append("stops", arr.Segments[0].flightDetails.length-1);
-    //                 fd.append("price", fareBreakupResponse.response.IsPriceChanged);
-    //                 fd.append("passport", []);
-    //                 fd.append("flightType", 'directTicket');
-    //                 fd.append("total",totalAmount);
-    //                 fd.append("agentEmail", localStorage.getItem("agentEmail"));
-    //                 fd.append("bookDT", bookDT);
-    //                 fd.append("lastTicketDate", "");
-    //                 fd.append("isRefundable", fareBreakupResponse.response.Results.IsRefundable);
-    //                 fd.append("tripType", "ONE_WAY");
-    //                 fd.append("trip", "departure");
-    //                 fd.append("ssrAmount", 0);
-    //                 fd.append("markup",0);
-    //                 fd.append("platformFee", 0);
-    //                 fd.append("platformTax", 0);
-    //
-    //                 let res = await fetch("/flights/directBooking", {
-    //                     method: "POST",
-    //                     body: fd
-    //                 });
-    //
-    //
-    //                 res = await res.json();
-    //
-    //                 console.log(res);
-    //
-    //                 let passportDetailsArray = [];
-    //
-    //
-    //                 if (res.ResponseStatus === 1) {
-    //
-    //                     let fd1 = new FormData();
-    //
-    //
-    //                     fd1.append("traceId", arr.TraceId);
-    //                     fd1.append("ResultIndex", arr.Segments[0].ResultIndex);
-    //                     fd1.append("PNR", res.response.Response.PNR);
-    //                     fd1.append("BookingId", res.response.Response.BookingId);
-    //                     fd1.append("Passengers", JSON.stringify(paxArray));
-    //                     fd1.append("otherData", JSON.stringify(otherData))
-    //                     fd1.append("totalPax", parseInt(arr.adults) + parseInt(arr.childs) + parseInt(arr.infants));
-    //                     fd1.append("totalAdult", arr.adults);
-    //                     fd1.append("totalChild", arr.childs);
-    //                     fd1.append("totalInfant", arr.infants);
-    //                     fd1.append("passport", JSON.stringify(passportDetailsArray));
-    //                     fd1.append("bookingNo", res.bid);
-    //                     fd1.append("stops", arr.Segments[0].flightDetails.length-1);
-    //                     fd1.append("price", fareBreakupResponse.response.IsPriceChanged);
-    //                     fd1.append("passport", []);
-    //                     fd1.append("flightType", 'directTicket');
-    //                     fd1.append("total",totalAmount);
-    //                     fd1.append("agentEmail", localStorage.getItem("agentEmail"));
-    //                     fd1.append("bookDT", bookDT);
-    //                     fd1.append("lastTicketDate", "");
-    //                     fd1.append("isRefundable", fareBreakupResponse.response.Results.IsRefundable);
-    //                     fd1.append("tripType", "ONE_WAY");
-    //                     fd1.append("trip", "departure");
-    //                     fd1.append("ssrAmount", 0);
-    //                     fd1.append("markup",0);
-    //                     fd1.append("platformFee", 0);
-    //                     fd1.append("platformTax", 0);
-    //
-    //                     let res1 = await fetch("/goToCheckout", {
-    //                         method: "POST",
-    //                         body: fd1
-    //                     });
-    //
-    //
-    //                     if(res1.ok)
-    //                     {
-    //                         window.location.href = '/flightCheckout';
-    //                     }
-    //                     else
-    //                     {
-    //                         alert("problem")
-    //                     }
-    //
-    //
-    //                 }
-    //                 else if (res.ResponseStatus === 14) {
-    //                     let timerInterval;
-    //                     Swal.fire({
-    //                         title: "Return Flight Failed",
-    //                         icon : "error",
-    //                         html:  `<h2 style="color: red">Error Occurred</h2> <br> <b></b> milliseconds.`,
-    //                         timer: 4000,
-    //                         timerProgressBar: true,
-    //                         allowOutsideClick: false,  // Disable outside click
-    //                         didOpen: () => {
-    //                             Swal.showLoading();
-    //                             const timer = Swal.getPopup().querySelector("b");
-    //                             timerInterval = setInterval(() => {
-    //                                 timer.textContent = `${Swal.getTimerLeft()}`;
-    //                             }, 100);
-    //                         },
-    //                         willClose: () => {
-    //                             clearInterval(timerInterval);
-    //                         }
-    //                     }).then(async (result) => {
-    //                         /* Read more about handling dismissals below */
-    //                         if (result.dismiss === Swal.DismissReason.timer) {
-    //                             window.location.href="/FailedBookings"
-    //                         }
-    //                     });
-    //                 }
-    //                 else {
-    //                     let timerInterval;
-    //                     Swal.fire({
-    //                         title: "Book Flight Failed",
-    //                         icon : "error",
-    //                         html:  `<h2 style="color: red">Error Occurred</h2> <br> <b></b> milliseconds.`,
-    //                         timer: 4000,
-    //                         timerProgressBar: true,
-    //                         allowOutsideClick: false,  // Disable outside click
-    //                         didOpen: () => {
-    //                             Swal.showLoading();
-    //                             const timer = Swal.getPopup().querySelector("b");
-    //                             timerInterval = setInterval(() => {
-    //                                 timer.textContent = `${Swal.getTimerLeft()}`;
-    //                             }, 100);
-    //                         },
-    //                         willClose: () => {
-    //                             clearInterval(timerInterval);
-    //                         }
-    //                     }).then(async (result) => {
-    //                         /* Read more about handling dismissals below */
-    //                         if (result.dismiss === Swal.DismissReason.timer) {
-    //                             window.location.href="/FailedBookings"
-    //                         }
-    //                     });
-    //                 }
-    //             }
-    //
-    //         }
-    //     }
-    //     else if(arr.Supplier === Suppliers.TRIPJACK)
-    //     {
-    //         Array(parseInt(arr.adults)).fill().forEach((_, index) => {
-    //             let pmValue = fareBreakupResponse.response?.conditions?.pcs?.pm || false; // Fallback value if pm is missing
-    //             let adultObject = new makePassengerArray("Adult",fareBreakupResponse.response.tripInfos[0], index+1, 1, arr.AirlineCode, arr.FlightNumber, pmValue, pmValue, "TICKET", gst);
-    //             paxArray.push(adultObject.renderTRIPJACK());
-    //         });
-    //
-    //         Array(parseInt(arr.childs)).fill().forEach((_, index) => {
-    //             let pmValue = fareBreakupResponse.response?.conditions?.pcs?.pm || false; // Fallback value if pm is missing
-    //             let childObject = new makePassengerArray("Child",fareBreakupResponse.response.tripInfos[0], index+1, 2, arr.AirlineCode, arr.FlightNumber, pmValue, pmValue, "TICKET", gst);
-    //             paxArray.push(childObject.renderTRIPJACK());
-    //         });
-    //
-    //         Array(parseInt(arr.infants)).fill().forEach((_, index) => {
-    //             let pmValue = fareBreakupResponse.response?.conditions?.pcs?.pm || false; // Fallback value if pm is missing
-    //             let infantObject = new makePassengerArray("Infant",fareBreakupResponse.response.tripInfos[0], index+1, 3, arr.AirlineCode, arr.FlightNumber, pmValue, pmValue, "TICKET", gst);
-    //             paxArray.push(infantObject.renderTRIPJACK());
-    //         });
-    //
-    //         if(paxArray.length > 0){
-    //             let fd = new FormData();
-    //             fd.append("supplier", 'TRIPJACK');
-    //             fd.append("bookingId", fareBreakupResponse.response.bookingId);
-    //             fd.append("TF", parseFloat(fareBreakupResponse.response.totalPriceInfo.totalFareDetail.fC.TF));
-    //             fd.append("email", document.getElementById(`leademail`).value);
-    //             fd.append("contact", document.getElementById(`mobile`).value);
-    //             fd.append("traceId", arr.Segments[0].ResultIndex);
-    //             fd.append("Passengers", JSON.stringify(paxArray));
-    //             fd.append("totalPax", parseInt(arr.adults) + parseInt(arr.childs) + parseInt(arr.infants));
-    //             fd.append("totalAdult", arr.adults);
-    //             fd.append("totalChild", arr.childs);
-    //             fd.append("totalInfant", arr.infants);
-    //             fd.append("stops", arr.Segments[0].flightDetails.length -1);
-    //             fd.append("gst",JSON.stringify(gst));
-    //             fd.append("total", totalAmount);
-    //             fd.append("returnMarkup", 0);
-    //             fd.append("agentEmail", localStorage.getItem("agentEmail"));
-    //             fd.append("bookDT", bookDT);
-    //             fd.append("tripType", "ONE_WAY");
-    //             fd.append("ssrAmount", 0);
-    //             fd.append("markup", 0);
-    //             fd.append("platformFee", 0);
-    //             fd.append("platformTax", 0);
-    //             fd.append("isDomestic", fareBreakupResponse.response.searchQuery.isDomestic);
-    //             fd.append("fareType", arr.Segments[0].fare);
-    //
-    //             let res = await fetch("/goToCheckout", {
-    //                 method: "POST",
-    //                 body: fd
-    //             });
-    //
-    //             if (res.ok) {
-    //                 window.location.href = '/flightCheckout';
-    //             } else {
-    //                 alert("problem");
-    //             }
-    //         }
-    //     }
-    // }
-}
+ }
 
 async function ticketReturn() {
     paxArray = [];

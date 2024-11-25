@@ -3556,7 +3556,8 @@ function sortAir() {
     renderResults.appendChild(fragment); // Append the entire fragment to the DOM in one go
 }
 
-function sortAirReturn() {
+function sortAirReturn(element) {
+    toggleArrowDirection(element, 'airline-arrow');
     sortArrival.isAscending = false;
     sortDeparture.isAscending = false;
     sortPrice.isAscending = false;
@@ -3590,7 +3591,9 @@ function sortAirReturn() {
 
 }
 
-function sortAirOnward() {
+function sortAirOnward(element) {
+    toggleArrowDirection1(element, 'airline-arrow1');
+
     sortArrival.isAscending = false;
     sortDeparture.isAscending = false;
     sortPrice.isAscending = false;
@@ -3742,7 +3745,9 @@ function sortPrice() {
     renderResults.appendChild(fragment); // Append the entire fragment to the DOM in one go
 }
 
-function sortPriceReturn() {
+function sortPriceReturn(element) {
+    toggleArrowDirection(element, 'price-arrow');
+
     sortDeparture.isAscending = false;
     sortAir.isAscending = false;
     sortArrival.isAscending = false;
@@ -3778,7 +3783,8 @@ function sortPriceReturn() {
 
 }
 
-function sortPriceOnward() {
+function sortPriceOnward(element) {
+    toggleArrowDirection1(element, 'price-arrow1');
     sortDeparture.isAscending = false;
     sortAir.isAscending = false;
     sortArrival.isAscending = false;
@@ -3866,7 +3872,8 @@ function sortDeparture() {
     renderResults.appendChild(fragment); // Append the entire fragment to the DOM in one go
 }
 
-function sortDepartureReturn() {
+function sortDepartureReturn(element) {
+    toggleArrowDirection(element, 'departure-arrow');
     sortPrice.isAscending = false;
     sortAir.isAscending = false;
     sortArrival.isAscending = false;
@@ -3902,7 +3909,9 @@ function sortDepartureReturn() {
 
 }
 
-function sortDepartureOnward() {
+function sortDepartureOnward(element) {
+    toggleArrowDirection1(element, 'departure-arrow1');
+
     sortPrice.isAscending = false;
     sortAir.isAscending = false;
     sortArrival.isAscending = false;
@@ -3937,7 +3946,6 @@ function sortDepartureOnward() {
     renderResults.appendChild(fragment); // Append the entire fragment to the DOM in one go
 
 }
-
 
 // Set initial sorting order flag
 sortDeparture.isAscending = true;
@@ -3990,7 +3998,8 @@ function sortArrival() {
     renderResults.appendChild(fragment); // Append the entire fragment to the DOM in one go
 }
 
-function sortArrivalReturn() {
+function sortArrivalReturn(element) {
+    toggleArrowDirection(element, 'arrival-arrow');
     sortPrice.isAscending = false;
     sortAir.isAscending = false;
     sortDeparture.isAscending = false;
@@ -4023,7 +4032,9 @@ function sortArrivalReturn() {
 
 }
 
-function sortArrivalOnward() {
+function sortArrivalOnward(element) {
+    toggleArrowDirection1(element, 'arrival-arrow1');
+
     sortPrice.isAscending = false;
     sortAir.isAscending = false;
     sortDeparture.isAscending = false;
@@ -4058,3 +4069,148 @@ function sortArrivalOnward() {
 
 // Set initial sorting order flag
 sortArrival.isAscending = true;
+
+function sortDuration() {
+    // Reset other sorting flags
+    sortPrice.isAscending = false;
+    sortAir.isAscending = false;
+    sortDeparture.isAscending = false;
+    sortArrival.isAscending = false;
+
+    // Use `filteredFlights` if available, otherwise fall back to `flightArray`
+    let myArr = (filteredFlights.length > 0) ? filteredFlights : flightArray;
+
+    // Helper function to convert duration (hh:mm) to total minutes
+    const parseDuration = (duration) => {
+        const [hours, minutes] = duration.split(':').map(Number);
+        return hours * 60 + minutes;
+    };
+
+    // Toggle between ascending and descending sorting orders
+    if (!sortDuration.isAscending) {
+        // Sort by Duration in ascending order
+        filteredFlights = myArr.sort((a, b) =>
+            parseDuration(a.flight.onwardFlight.Duration) - parseDuration(b.flight.onwardFlight.Duration)
+        );
+    } else {
+        // Sort by Duration in descending order
+        filteredFlights = myArr.sort((a, b) =>
+            parseDuration(b.flight.onwardFlight.Duration) - parseDuration(a.flight.onwardFlight.Duration)
+        );
+    }
+
+    // Invert the sorting order flag
+    sortDuration.isAscending = !sortDuration.isAscending;
+
+    console.log("Sorted by Duration:", filteredFlights);
+
+    // Cache the renderResults element
+    const renderResults = document.getElementById("renderResults");
+    if (!renderResults) {
+        console.error("Element with ID 'renderResults' not found");
+        return;
+    }
+
+    renderResults.innerHTML = ''; // Clear previous results
+
+    // Efficient DOM manipulation using Document Fragment
+    const fragment = document.createDocumentFragment();
+    filteredFlights.forEach((flight, index) => {
+        const flightCard = new FlightFixedCards(flight.flight, index);
+        const cardElement = document.createElement('div');
+        cardElement.innerHTML = flightCard.render();
+        fragment.appendChild(cardElement); // Append each card to the fragment
+    });
+
+    renderResults.appendChild(fragment); // Append the entire fragment to the DOM in one go
+}
+
+function sortDurationReturn(element) {
+    toggleArrowDirection(element, 'duration-arrow');
+
+    // Reset other sorting flags
+    sortPrice.isAscending = false;
+    sortAir.isAscending = false;
+    sortDeparture.isAscending = false;
+    sortArrival.isAscending = false;
+    console.log(flightData)
+    let myArr = (filteredFlightsReturn.length > 0) ? filteredFlightsReturn : flightData.returnFlights;
+
+    // Helper function to convert duration into total minutes
+   // console.log(myArr)
+    const parseDuration = (duration) => {
+        //console.log("Parsing duration:", duration);
+        return duration.hours * 60 + duration.minutes;
+    };
+
+    // Toggle between ascending and descending sorting orders
+    if (!sortDuration.isAscending) {
+        myArr.sort((a, b) => parseDuration(a.totalDuration) - parseDuration(b.totalDuration)); // Ascending
+    } else {
+        myArr.sort((a, b) => parseDuration(b.totalDuration) - parseDuration(a.totalDuration)); // Descending
+    }
+
+    // Invert the sorting order flag
+    sortDuration.isAscending = !sortDuration.isAscending;
+
+    // Cache the renderResults element
+    const renderResults = document.getElementById("myReturn");
+    renderResults.innerHTML = ''; // Clear previous results
+
+    // Efficient DOM manipulation using Document Fragment
+    const fragment = document.createDocumentFragment();
+    myArr.forEach((flight, index) => {
+        const flightCard = new FlightRoundCards(flight, index);
+        const cardElement = document.createElement('div');
+        cardElement.innerHTML = flightCard.render();
+        fragment.appendChild(cardElement); // Append each card to the fragment
+    });
+
+    renderResults.appendChild(fragment); // Append the entire fragment to the DOM in one go
+}
+
+function sortDurationOnward(element) {
+    toggleArrowDirection1(element, 'duration-arrow1');
+
+    // Reset other sorting flags
+    sortPrice.isAscending = false;
+    sortAir.isAscending = false;
+    sortDeparture.isAscending = false;
+    sortArrival.isAscending = false;
+
+    let myArr = (filteredFlights.length > 0) ? filteredFlights : flightData.onwardFlights;
+
+    //console.log(myArr)
+    const parseDuration = (duration) => {
+        //console.log("Parsing duration:", duration);
+        return duration.hours * 60 + duration.minutes;
+    };
+
+
+    // Toggle between ascending and descending sorting orders
+    if (!sortDuration.isAscending) {
+        myArr.sort((a, b) => parseDuration(a.totalDuration) - parseDuration(b.totalDuration)); // Ascending
+    } else {
+        myArr.sort((a, b) => parseDuration(b.totalDuration) - parseDuration(a.totalDuration)); // Descending
+    }
+
+    // Invert the sorting order flag
+    sortDuration.isAscending = !sortDuration.isAscending;
+
+    // Cache the renderResults element
+    const renderResults = document.getElementById("myOnward");
+    renderResults.innerHTML = ''; // Clear previous results
+
+    // Efficient DOM manipulation using Document Fragment
+    const fragment = document.createDocumentFragment();
+    myArr.forEach((flight, index) => {
+        const flightCard = new FlightRoundCards(flight, index);
+        const cardElement = document.createElement('div');
+        cardElement.innerHTML = flightCard.render();
+        fragment.appendChild(cardElement); // Append each card to the fragment
+    });
+
+    renderResults.appendChild(fragment); // Append the entire fragment to the DOM in one go
+}
+
+sortDuration.isAscending = true;

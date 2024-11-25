@@ -76,6 +76,24 @@
         /*    display: none; !* Hides the scrollbar *!*/
         /*}*/
 
+        .sort-option.app-link-primary {
+            color: red; /* Highlight active link */
+            font-weight: bold;
+        }
+
+        .arrow-icon {
+            margin-left: 5px;
+            transition: transform 0.3s ease;
+        }
+
+        .arrow-icon.rotate-arrow {
+            transform: rotate(180deg);
+        }
+
+        .d-none {
+            display: none;
+        }
+
 
     </style>
     <style data-emotion="css" data-s=""></style>
@@ -452,6 +470,7 @@
     let filteredFlightsReturn = [];
     let type = '';
     let flightArray=[]
+    let currentSort = null;
 
     async function getAllFlights()
     {
@@ -594,31 +613,58 @@
             </button>
         </div>
         <div>
-            <div class="fs-14 d-flex gap-3 align-content-center pt-2">
-                <div class="sort-heading d-flex justify-content-center align-items-center">
-                    Sort
-                </div>
-                <div class="d-flex justify-content-center align-items-center">
-                    <a class="ps-1 sort-option app-link-grey" onclick="sortAirOnward()">Airline</a>
-                </div>
-                <div class="d-flex justify-content-center align-items-center">
-                    <a class="ps-1 sort-option app-link-grey" onclick="sortDepartureOnward()">Departure</a>
-                </div>
-                <div class="d-flex justify-content-center align-items-center">
-                    <a class="ps-1 sort-option app-link-grey" >Duration</a>
-                </div>
-                <div class="d-flex justify-content-center align-items-center">
-                    <a class="ps-1 sort-option app-link-grey" onclick="sortArrivalOnward()">Arrival</a>
-                </div>
-                <div class="d-flex justify-content-center align-items-center">
-                    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
-                        <path fill="none" d="M0 0h24v24H0z"></path>
-                        <path d="M19 15l-1.41-1.41L13 18.17V2h-2v16.17l-4.59-4.59L5 15l7 7 7-7z"></path>
-                    </svg>
-                    <a class="ps-1 sort-option app-link-primary" onclick="sortPriceOnward()">Price</a>
-                </div>
-            </div>
-        </div>`;
+    <div class="fs-14 d-flex gap-3 align-content-center pt-2">
+        <div class="sort-heading d-flex justify-content-center align-items-center">
+            Sort
+        </div>
+        <div class="d-flex justify-content-center align-items-center">
+            <a class="ps-1 sort-option app-link-grey" onclick="sortAirOnward(this)">
+                Airline
+                <svg class="arrow-icon d-none" id="airline-arrow1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                    <path d="M19 15l-1.41-1.41L13 18.17V2h-2v16.17l-4.59-4.59L5 15l7 7 7-7z"></path>
+                </svg>
+            </a>
+        </div>
+        <div class="d-flex justify-content-center align-items-center">
+            <a class="ps-1 sort-option app-link-grey" onclick="sortDepartureOnward(this)">
+                Departure
+                <svg class="arrow-icon d-none" id="departure-arrow1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                    <path d="M19 15l-1.41-1.41L13 18.17V2h-2v16.17l-4.59-4.59L5 15l7 7 7-7z"></path>
+                </svg>
+            </a>
+        </div>
+        <div class="d-flex justify-content-center align-items-center">
+            <a class="ps-1 sort-option app-link-grey" onclick="sortDurationOnward(this)" >
+                Duration
+                <svg class="arrow-icon d-none" id="duration-arrow1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                    <path d="M19 15l-1.41-1.41L13 18.17V2h-2v16.17l-4.59-4.59L5 15l7 7 7-7z"></path>
+                </svg>
+            </a>
+        </div>
+        <div class="d-flex justify-content-center align-items-center">
+            <a class="ps-1 sort-option app-link-grey" onclick="sortArrivalOnward(this)">
+                Arrival
+                <svg class="arrow-icon d-none" id="arrival-arrow1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                    <path d="M19 15l-1.41-1.41L13 18.17V2h-2v16.17l-4.59-4.59L5 15l7 7 7-7z"></path>
+                </svg>
+            </a>
+        </div>
+        <div class="d-flex justify-content-center align-items-center">
+            <a class="ps-1 sort-option app-link-grey" onclick="sortPriceOnward(this)">
+                Price
+                <svg class="arrow-icon d-none" id="price-arrow1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                    <path d="M19 15l-1.41-1.41L13 18.17V2h-2v16.17l-4.59-4.59L5 15l7 7 7-7z"></path>
+                </svg>
+            </a>
+        </div>
+    </div>
+</div>
+`;
 
             if (filteredFlights.length || flightData.onwardFlights.length < 10) {
                 flightHTML +=  `<div style="max-height: 100%" id="myOnward">`
@@ -679,28 +725,61 @@
             </button>
                                     </div>
                                     <div>
-                                          <div class="fs-14 d-flex gap-3 align-content-center pt-2">
-                                            <div class="sort-heading d-flex justify-content-center align-items-center">
-                                                Sort
-                                            </div>
-                                            <div class="d-flex justify-content-center align-items-center"><a
-                                                        class="ps-1 sort-option app-link-grey" onclick="sortAirReturn()">Airline</a></div>
-                                            <div class="d-flex justify-content-center align-items-center"><a
-                                                        class="ps-1 sort-option app-link-grey" onclick="sortDepartureReturn()">Departure</a></div>
-                                            <div class="d-flex justify-content-center align-items-center"><a
-                                                        class="ps-1 sort-option app-link-grey">Duration</a></div>
-                                            <div class="d-flex justify-content-center align-items-center"><a
-                                                        class="ps-1 sort-option app-link-grey" onclick="sortArrivalReturn()">Arrival</a></div>
-                                            <div class="d-flex justify-content-center align-items-center">
-                                                <svg stroke="currentColor" fill="currentColor" stroke-width="0"
-                                                     viewBox="0 0 24 24" height="1em" width="1em"
-                                                     xmlns="http://www.w3.org/2000/svg">
-                                                    <path fill="none" d="M0 0h24v24H0z"></path>
-                                                    <path d="M19 15l-1.41-1.41L13 18.17V2h-2v16.17l-4.59-4.59L5 15l7 7 7-7z"></path>
-                                                </svg>
-                                                <a class="ps-1 sort-option app-link-primary" onclick="sortPriceReturn()">Price</a></div>
-                                        </div>
-                                    </div>`;
+    <div class="fs-14 d-flex gap-3 align-content-center pt-2">
+        <div class="sort-heading d-flex justify-content-center align-items-center">Sort</div>
+
+        <div class="d-flex justify-content-center align-items-center">
+            <a class="ps-1 sort-option app-link-grey" onclick="sortAirReturn(this)">
+                Airline
+                <svg class="arrow-icon d-none" id="airline-arrow" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                    <path d="M19 15l-1.41-1.41L13 18.17V2h-2v16.17l-4.59-4.59L5 15l7 7 7-7z"></path>
+                </svg>
+            </a>
+        </div>
+
+        <div class="d-flex justify-content-center align-items-center">
+            <a class="ps-1 sort-option app-link-grey" onclick="sortDepartureReturn(this)">
+                Departure
+                <svg class="arrow-icon d-none" id="departure-arrow" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                    <path d="M19 15l-1.41-1.41L13 18.17V2h-2v16.17l-4.59-4.59L5 15l7 7 7-7z"></path>
+                </svg>
+            </a>
+        </div>
+
+        <div class="d-flex justify-content-center align-items-center" onclick="sortDurationReturn(this)">
+            <a class="ps-1 sort-option app-link-grey" ">
+                Duration
+                <svg class="arrow-icon d-none" id="duration-arrow" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                    <path d="M19 15l-1.41-1.41L13 18.17V2h-2v16.17l-4.59-4.59L5 15l7 7 7-7z"></path>
+                </svg>
+            </a>
+        </div>
+
+        <div class="d-flex justify-content-center align-items-center">
+            <a class="ps-1 sort-option app-link-grey" onclick="sortArrivalReturn(this)">
+                Arrival
+                <svg class="arrow-icon d-none" id="arrival-arrow" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                    <path d="M19 15l-1.41-1.41L13 18.17V2h-2v16.17l-4.59-4.59L5 15l7 7 7-7z"></path>
+                </svg>
+            </a>
+        </div>
+
+        <div class="d-flex justify-content-center align-items-center">
+            <a class="ps-1 sort-option app-link-grey" onclick="sortPriceReturn(this)">
+                Price
+                <svg class="arrow-icon d-none" id="price-arrow" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                    <path d="M19 15l-1.41-1.41L13 18.17V2h-2v16.17l-4.59-4.59L5 15l7 7 7-7z"></path>
+                </svg>
+            </a>
+        </div>
+    </div>
+</div>
+`;
 
             if (filteredFlightsReturn.length || flightData.returnFlights.length < 10) {
                 flightHTML +=  `<div style="max-height: 100%" id="myReturn">`
@@ -969,31 +1048,57 @@
             </button>
         </div>
         <div>
-            <div class="fs-14 d-flex gap-3 align-content-center pt-2">
-                <div class="sort-heading d-flex justify-content-center align-items-center">
-                    Sort
-                </div>
-                <div class="d-flex justify-content-center align-items-center">
-                    <a class="ps-1 sort-option app-link-grey" onclick="sortAirOnward()">Airline</a>
-                </div>
-                <div class="d-flex justify-content-center align-items-center">
-                    <a class="ps-1 sort-option app-link-grey" onclick="sortDepartureOnward()">Departure</a>
-                </div>
-                <div class="d-flex justify-content-center align-items-center">
-                    <a class="ps-1 sort-option app-link-grey" >Duration</a>
-                </div>
-                <div class="d-flex justify-content-center align-items-center">
-                    <a class="ps-1 sort-option app-link-grey" onclick="sortArrivalOnward()">Arrival</a>
-                </div>
-                <div class="d-flex justify-content-center align-items-center">
-                    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
-                        <path fill="none" d="M0 0h24v24H0z"></path>
-                        <path d="M19 15l-1.41-1.41L13 18.17V2h-2v16.17l-4.59-4.59L5 15l7 7 7-7z"></path>
-                    </svg>
-                    <a class="ps-1 sort-option app-link-primary" onclick="sortPriceOnward()">Price</a>
-                </div>
-            </div>
-        </div>`;
+    <div class="fs-14 d-flex gap-3 align-content-center pt-2">
+        <div class="sort-heading d-flex justify-content-center align-items-center">
+            Sort
+        </div>
+        <div class="d-flex justify-content-center align-items-center">
+            <a class="ps-1 sort-option app-link-grey" onclick="sortAirOnward(this)">
+                Airline
+                <svg class="arrow-icon d-none" id="airline-arrow1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                    <path d="M19 15l-1.41-1.41L13 18.17V2h-2v16.17l-4.59-4.59L5 15l7 7 7-7z"></path>
+                </svg>
+            </a>
+        </div>
+        <div class="d-flex justify-content-center align-items-center">
+            <a class="ps-1 sort-option app-link-grey" onclick="sortDepartureOnward(this)">
+                Departure
+                <svg class="arrow-icon d-none" id="departure-arrow1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                    <path d="M19 15l-1.41-1.41L13 18.17V2h-2v16.17l-4.59-4.59L5 15l7 7 7-7z"></path>
+                </svg>
+            </a>
+        </div>
+        <div class="d-flex justify-content-center align-items-center">
+            <a class="ps-1 sort-option app-link-grey" >
+                Duration
+                <svg class="arrow-icon d-none" id="duration-arrow1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                    <path d="M19 15l-1.41-1.41L13 18.17V2h-2v16.17l-4.59-4.59L5 15l7 7 7-7z"></path>
+                </svg>
+            </a>
+        </div>
+        <div class="d-flex justify-content-center align-items-center">
+            <a class="ps-1 sort-option app-link-grey" onclick="sortArrivalOnward(this)">
+                Arrival
+                <svg class="arrow-icon d-none" id="arrival-arrow1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                    <path d="M19 15l-1.41-1.41L13 18.17V2h-2v16.17l-4.59-4.59L5 15l7 7 7-7z"></path>
+                </svg>
+            </a>
+        </div>
+        <div class="d-flex justify-content-center align-items-center">
+            <a class="ps-1 sort-option app-link-primary" onclick="sortPriceOnward(this)">
+                Price
+                <svg class="arrow-icon d-none" id="price-arrow1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                    <path d="M19 15l-1.41-1.41L13 18.17V2h-2v16.17l-4.59-4.59L5 15l7 7 7-7z"></path>
+                </svg>
+            </a>
+        </div>
+    </div>
+</div>`;
 
             if (filteredFlights.length || flightData.onwardFlights.length < 10) {
                 flightHTML +=  `<div style="max-height: 100%" id="myOnward">`
@@ -1054,28 +1159,61 @@
             </button>
                                     </div>
                                     <div>
-                                          <div class="fs-14 d-flex gap-3 align-content-center pt-2">
-                                            <div class="sort-heading d-flex justify-content-center align-items-center">
-                                                Sort
-                                            </div>
-                                            <div class="d-flex justify-content-center align-items-center"><a
-                                                        class="ps-1 sort-option app-link-grey" onclick="sortAirReturn()">Airline</a></div>
-                                            <div class="d-flex justify-content-center align-items-center"><a
-                                                        class="ps-1 sort-option app-link-grey" onclick="sortDepartureReturn()">Departure</a></div>
-                                            <div class="d-flex justify-content-center align-items-center"><a
-                                                        class="ps-1 sort-option app-link-grey">Duration</a></div>
-                                            <div class="d-flex justify-content-center align-items-center"><a
-                                                        class="ps-1 sort-option app-link-grey" onclick="sortArrivalReturn()">Arrival</a></div>
-                                            <div class="d-flex justify-content-center align-items-center">
-                                                <svg stroke="currentColor" fill="currentColor" stroke-width="0"
-                                                     viewBox="0 0 24 24" height="1em" width="1em"
-                                                     xmlns="http://www.w3.org/2000/svg">
-                                                    <path fill="none" d="M0 0h24v24H0z"></path>
-                                                    <path d="M19 15l-1.41-1.41L13 18.17V2h-2v16.17l-4.59-4.59L5 15l7 7 7-7z"></path>
-                                                </svg>
-                                                <a class="ps-1 sort-option app-link-primary" onclick="sortPriceReturn()">Price</a></div>
-                                        </div>
-                                    </div>`;
+    <div class="fs-14 d-flex gap-3 align-content-center pt-2">
+        <div class="sort-heading d-flex justify-content-center align-items-center">Sort</div>
+
+        <div class="d-flex justify-content-center align-items-center">
+            <a class="ps-1 sort-option app-link-grey" onclick="sortAirReturn(this)">
+                Airline
+                <svg class="arrow-icon d-none" id="airline-arrow" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                    <path d="M19 15l-1.41-1.41L13 18.17V2h-2v16.17l-4.59-4.59L5 15l7 7 7-7z"></path>
+                </svg>
+            </a>
+        </div>
+
+        <div class="d-flex justify-content-center align-items-center">
+            <a class="ps-1 sort-option app-link-grey" onclick="sortDepartureReturn(this)">
+                Departure
+                <svg class="arrow-icon d-none" id="departure-arrow" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                    <path d="M19 15l-1.41-1.41L13 18.17V2h-2v16.17l-4.59-4.59L5 15l7 7 7-7z"></path>
+                </svg>
+            </a>
+        </div>
+
+        <div class="d-flex justify-content-center align-items-center">
+            <a class="ps-1 sort-option app-link-grey" ">
+                Duration
+                <svg class="arrow-icon d-none" id="duration-arrow" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                    <path d="M19 15l-1.41-1.41L13 18.17V2h-2v16.17l-4.59-4.59L5 15l7 7 7-7z"></path>
+                </svg>
+            </a>
+        </div>
+
+        <div class="d-flex justify-content-center align-items-center">
+            <a class="ps-1 sort-option app-link-grey" onclick="sortArrivalReturn(this)">
+                Arrival
+                <svg class="arrow-icon d-none" id="arrival-arrow" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                    <path d="M19 15l-1.41-1.41L13 18.17V2h-2v16.17l-4.59-4.59L5 15l7 7 7-7z"></path>
+                </svg>
+            </a>
+        </div>
+
+        <div class="d-flex justify-content-center align-items-center">
+            <a class="ps-1 sort-option app-link-grey" onclick="sortPriceReturn(this)">
+                Price
+                <svg class="arrow-icon d-none" id="price-arrow" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                    <path d="M19 15l-1.41-1.41L13 18.17V2h-2v16.17l-4.59-4.59L5 15l7 7 7-7z"></path>
+                </svg>
+            </a>
+        </div>
+    </div>
+</div>
+`;
 
             if (filteredFlightsReturn.length || flightData.returnFlights.length < 10) {
                 flightHTML +=  `<div style="max-height: 100%" id="myReturn">`
@@ -1209,6 +1347,49 @@
 
         }
     }
+
+    function toggleArrowDirection(element, arrowId) {
+        const arrow = document.getElementById(arrowId);
+        const allArrows = document.querySelectorAll('.arrow-icon');
+
+        // Reset all arrows and remove active color
+        allArrows.forEach(arrow => arrow.classList.add('d-none'));
+        document.querySelectorAll('.sort-option').forEach(option => option.classList.remove('app-link-primary'));
+
+        // Toggle the current arrow
+        if (currentSort === arrowId) {
+            arrow.classList.toggle('rotate-arrow'); // Add rotation logic here if needed
+        } else {
+            arrow.classList.remove('rotate-arrow'); // Ensure it's in the default position
+            currentSort = arrowId;
+        }
+
+        // Show the arrow and highlight the selected option
+        arrow.classList.remove('d-none');
+        element.classList.add('app-link-primary');
+    }
+
+    function toggleArrowDirection1(element, arrowId) {
+        const arrow = document.getElementById(arrowId);
+        const allArrows = document.querySelectorAll('.arrow-icon');
+
+        // Reset all arrows and remove active color
+        allArrows.forEach(arrow => arrow.classList.add('d-none'));
+        document.querySelectorAll('.sort-option').forEach(option => option.classList.remove('app-link-primary'));
+
+        // Toggle the current arrow
+        if (currentSort === arrowId) {
+            arrow.classList.toggle('rotate-arrow'); // Add rotation logic here if needed
+        } else {
+            arrow.classList.remove('rotate-arrow'); // Ensure it's in the default position
+            currentSort = arrowId;
+        }
+
+        // Show the arrow and highlight the selected option
+        arrow.classList.remove('d-none');
+        element.classList.add('app-link-primary');
+    }
+
 
     function removeDiv() {
         // Find the dynamically added div

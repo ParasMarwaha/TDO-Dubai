@@ -2,7 +2,7 @@ class FlightFixedCards {
     constructor(flight, index) {
         this.flight = flight;
         this.index = index;
-       console.log(flight)
+        console.log(flight)
         //console.log("index",index)
     }
 
@@ -428,7 +428,7 @@ class SegmentInformationFixed {
 
     render() {
         let segment = this.flight;
-      //  console.log(segment)
+        //  console.log(segment)
         let segmentCard = '';
 
         segmentCard += `
@@ -479,11 +479,11 @@ class SegmentInformationFixed {
 }
 
 function renderSideBarFixed(index) {
-   // console.log(index)
+    // console.log(index)
     // Get the selected flight's segments
     // const selectedFlight = (filteredFlights.length > 0) ? filteredFlights[index] : flightData[index];
     const selectedFlight = flightData[index]
-   // console.log(selectedFlight)
+    // console.log(selectedFlight)
 
     let selectedValue;
     // Get all radio buttons with the name "gender"
@@ -1406,7 +1406,7 @@ async function bookFixed(index) {
 
 class TBOFareBreakupCardFixed {
     constructor(fare, index) {
-       // console.log(fare);
+        // console.log(fare);
         this.fare = fare;
         this.index = index;
         this.adults = arr.onwardFlight.adults || 0; // Default to 0 if undefined
@@ -1469,53 +1469,58 @@ class TBOFareBreakupCardFixed {
     }
 
     render() {
-        let flights = this.fare.Flights || [];
+        let myflights = this.fare || [];
         let totalFares = { Adult: 0, Child: 0, Infant: 0 };
         let totalBaseFares = { Adult: 0, Child: 0, Infant: 0 };
         let totalTaxes = { Adult: 0, Child: 0, Infant: 0 };
         let totalCards = { Adult: '', Child: '', Infant: '' };
         let paxCounts = { Adult: this.adults, Child: this.childs, Infant: this.infants };
 
-        flights.forEach(flight => {
-            (flight.FlightPricingInfo.PaxFareDetails || []).forEach(paxFare => {
-                let baseFare = Math.ceil(parseFloat(paxFare.BasicFare) || 0);
-                let totalTax = Math.ceil(parseFloat(paxFare.TotalTax) || 0);
-                let totalFare = baseFare + totalTax;
-                let taxes = this.calculateTaxes(paxFare);
 
-                switch (paxFare.PaxType) {
-                    case 'ADT':
-                        totalFares.Adult += totalFare;
-                        totalBaseFares.Adult += baseFare;
-                        totalTaxes.Adult += totalTax;
-                        totalCards.Adult = this.createFareCard('Adult', totalBaseFares.Adult, totalFares.Adult, totalTaxes.Adult, taxes);
-                        break;
-                    case 'CHD':
-                        totalFares.Child += totalFare;
-                        totalBaseFares.Child += baseFare;
-                        totalTaxes.Child += totalTax;
-                        totalCards.Child = this.createFareCard('Child', totalBaseFares.Child, totalFares.Child, totalTaxes.Child, taxes);
-                        break;
-                    case 'INF':
-                        totalFares.Infant += totalFare;
-                        totalBaseFares.Infant += baseFare;
-                        totalTaxes.Infant += totalTax;
-                        totalCards.Infant = this.createFareCard('Infant', totalBaseFares.Infant, totalFares.Infant, totalTaxes.Infant, taxes);
-                        break;
-                }
+        myflights.forEach(f => {
+            f.Flights.forEach(flight => {
+                (flight.FlightPricingInfo.PaxFareDetails || []).forEach(paxFare => {
+                    let baseFare = Math.ceil(parseFloat(paxFare.BasicFare) || 0);
+                    let totalTax = Math.ceil(parseFloat(paxFare.TotalTax) || 0);
+                    let totalFare = baseFare + totalTax;
+                    let taxes = this.calculateTaxes(paxFare);
+
+                    switch (paxFare.PaxType) {
+                        case 'ADT':
+                            totalFares.Adult += totalFare;
+                            totalBaseFares.Adult += baseFare;
+                            totalTaxes.Adult += totalTax;
+                            totalCards.Adult = this.createFareCard('Adult', totalBaseFares.Adult, totalFares.Adult, totalTaxes.Adult, taxes);
+                            break;
+                        case 'CHD':
+                            totalFares.Child += totalFare;
+                            totalBaseFares.Child += baseFare;
+                            totalTaxes.Child += totalTax;
+                            totalCards.Child = this.createFareCard('Child', totalBaseFares.Child, totalFares.Child, totalTaxes.Child, taxes);
+                            break;
+                        case 'INF':
+                            totalFares.Infant += totalFare;
+                            totalBaseFares.Infant += baseFare;
+                            totalTaxes.Infant += totalTax;
+                            totalCards.Infant = this.createFareCard('Infant', totalBaseFares.Infant, totalFares.Infant, totalTaxes.Infant, taxes);
+                            break;
+                    }
+                });
             });
-        });
 
-         totalAmount = Math.ceil(
+        })
+
+
+        totalAmount = Math.ceil(
             (totalFares.Adult * paxCounts.Adult) +
             (totalFares.Child * paxCounts.Child) +
             (totalFares.Infant * paxCounts.Infant)
         );
 
-       // console.log('Adult Fare:', totalFares.Adult, 'Adult Count:', paxCounts.Adult);
-       // console.log('Total Base Fare Adult:', totalBaseFares.Adult);
-       // console.log('Total Tax Adult:', totalTaxes.Adult);
-       // console.log('Grand Total:', totalAmount);
+        // console.log('Adult Fare:', totalFares.Adult, 'Adult Count:', paxCounts.Adult);
+        // console.log('Total Base Fare Adult:', totalBaseFares.Adult);
+        // console.log('Total Tax Adult:', totalTaxes.Adult);
+        // console.log('Grand Total:', totalAmount);
 
         let adultCount = this.createPassengerCountHtml('Adult', paxCounts.Adult, totalFares.Adult, totalTaxes.Adult);
         let childCount = this.createPassengerCountHtml('Child', paxCounts.Child, totalFares.Child, totalTaxes.Child);
@@ -2051,14 +2056,14 @@ async function stopsFilterFixed() {
         stopsCounts.set(stops, (stopsCounts.get(stops) || 0) + 1);
     });
 
-   // console.log(stopsCounts)
+    // console.log(stopsCounts)
 
     // Create and append elements for each stops option
     stopsCounts.forEach((count, stopsOption) => {
-       // console.log(stopsOption)
+        // console.log(stopsOption)
         const checkboxId = `stops${stopsOption.replace(/\s/g, '')}`;
-       // console.log(checkboxId)
-       // console.log(checkboxId)
+        // console.log(checkboxId)
+        // console.log(checkboxId)
         const checkbox = `  <label
                                             class=" d-flex  fw-500 align-items-center fs-12 cursor-pointer app-check-box"
                                             style="color: rgb(91, 91, 91);" for="${checkboxId}">
@@ -2070,7 +2075,7 @@ async function stopsFilterFixed() {
         `;
 
 
-       // console.log(div);
+        // console.log(div);
 
         document.getElementById("stopSector").innerHTML = `${flightArray[0].flight.onwardFlight.Origin.CityCode} -> ${flightArray[0].flight.onwardFlight.Destination.CityCode}`
         document.getElementById('stopFilter').innerHTML += div;
@@ -2088,14 +2093,14 @@ async function stopsFilterReturnFixed() {
         stopsCounts.set(stops, (stopsCounts.get(stops) || 0) + 1);
     });
 
-   // console.log(stopsCounts)
+    // console.log(stopsCounts)
 
     // Create and append elements for each stops option
     stopsCounts.forEach((count, stopsOption) => {
-       // console.log(stopsOption)
+        // console.log(stopsOption)
         const checkboxId = `stops${stopsOption.replace(/\s/g, '')}`;
-       // console.log(checkboxId)
-       // console.log(checkboxId)
+        // console.log(checkboxId)
+        // console.log(checkboxId)
         const checkbox = `  <label
                                             class=" d-flex  fw-500 align-items-center fs-12 cursor-pointer app-check-box"
                                             style="color: rgb(91, 91, 91);" for="${checkboxId}Return">
@@ -2107,7 +2112,7 @@ async function stopsFilterReturnFixed() {
         `;
 
 
-       // console.log(div);
+        // console.log(div);
 
         document.getElementById("stopSectorReturn").innerHTML = `${flightArray[0].flight.returnFlight.Origin.CityCode} -> ${flightArray[0].flight.returnFlight.Destination.CityCode}`
         document.getElementById('stopFilterReturn').innerHTML += div;

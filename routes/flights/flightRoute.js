@@ -37,6 +37,7 @@ routes.post("/flightResults", flightController.flightResultsApi)
 routes.post("/AirSell", flightController.AirSell);
 routes.post("/AirSell-2Way", flightController.AirSellTwoWay);
 routes.post("/ticket",authorizeAgentHTTP, flightController.ticket)
+routes.post("/ticket-custom",authorizeAgentHTTP, flightController.ticket_custom)
 routes.post("/hold",authorizeAgentHTTP, flightController.hold)
 // routes.post("/getAllFlights",flightController.GetAllFlights)
 // ___________________________________________________________
@@ -56,6 +57,7 @@ routes.post('/fetchTicketDetails', authorizeAgentHTTP, flightController.fetchTic
 routes.get('/viewTicketedBookings',authorizeAgentHTTP,flightController.ViewTicketedBookings)
 routes.get('/viewHoldBookings',authorizeAgentHTTP,flightController.ViewHoldBookings)
 routes.post('/goToCheckout', authorizeAgentHTTP, flightController.goToCheckout)
+routes.post('/goToCheckoutReturn', authorizeAgentHTTP, flightController.goToCheckoutReturn)
 routes.post('/razorpay-options', authorizeAgentHTTP, flightController.showRazorPayWindow);
 routes.post("/flightPaymentSuccess/:insId/:tx/:payType/:gCharge",authorizeAgentHTTP, flightController.Success);
 routes.get("/flightPaymentSuccess/:insId/:tx/:payType/:gCharge",authorizeAgentHTTP, flightController.Success);
