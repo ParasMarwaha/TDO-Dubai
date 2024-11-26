@@ -58,8 +58,7 @@
             max-height: 10%; /* Set the height of the scrollable area */
             overflow-y: auto; /* Enable vertical scrolling for the div */
             overflow-x: hidden; /* Prevent horizontal scrolling */
-            scrollbar-width: none; /* For Firefox: hide the scrollbar */
-
+            /*scrollbar-width: none; !* For Firefox: hide the scrollbar *!*/
         }
         /*#myOnward::-webkit-scrollbar {*/
         /*    display: none; !* Hides the scrollbar *!*/
@@ -69,8 +68,7 @@
             max-height: 10%; /* Set the height of the scrollable area */
             overflow-y: auto; /* Enable vertical scrolling for the div */
             overflow-x: hidden; /* Prevent horizontal scrolling */
-            scrollbar-width: none; /* For Firefox: hide the scrollbar */
-
+            /*scrollbar-width: none; !* For Firefox: hide the scrollbar *!*/
         }
         /*#myReturn::-webkit-scrollbar {*/
         /*    display: none; !* Hides the scrollbar *!*/
@@ -1047,7 +1045,7 @@
                 </div>
             </button>
         </div>
-        <div>
+                <div>
     <div class="fs-14 d-flex gap-3 align-content-center pt-2">
         <div class="sort-heading d-flex justify-content-center align-items-center">
             Sort
@@ -1071,7 +1069,7 @@
             </a>
         </div>
         <div class="d-flex justify-content-center align-items-center">
-            <a class="ps-1 sort-option app-link-grey" >
+            <a class="ps-1 sort-option app-link-grey" onclick="sortDurationOnward(this)" >
                 Duration
                 <svg class="arrow-icon d-none" id="duration-arrow1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
                     <path fill="none" d="M0 0h24v24H0z"></path>
@@ -1089,7 +1087,7 @@
             </a>
         </div>
         <div class="d-flex justify-content-center align-items-center">
-            <a class="ps-1 sort-option app-link-primary" onclick="sortPriceOnward(this)">
+            <a class="ps-1 sort-option app-link-grey" onclick="sortPriceOnward(this)">
                 Price
                 <svg class="arrow-icon d-none" id="price-arrow1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
                     <path fill="none" d="M0 0h24v24H0z"></path>
@@ -1098,7 +1096,8 @@
             </a>
         </div>
     </div>
-</div>`;
+</div>
+`;
 
             if (filteredFlights.length || flightData.onwardFlights.length < 10) {
                 flightHTML +=  `<div style="max-height: 100%" id="myOnward">`
@@ -1182,7 +1181,7 @@
             </a>
         </div>
 
-        <div class="d-flex justify-content-center align-items-center">
+        <div class="d-flex justify-content-center align-items-center" onclick="sortDurationReturn(this)">
             <a class="ps-1 sort-option app-link-grey" ">
                 Duration
                 <svg class="arrow-icon d-none" id="duration-arrow" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
