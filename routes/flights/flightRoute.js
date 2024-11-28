@@ -61,6 +61,8 @@ routes.post('/goToCheckoutReturn', authorizeAgentHTTP, flightController.goToChec
 routes.post('/razorpay-options', authorizeAgentHTTP, flightController.showRazorPayWindow);
 routes.post("/flightPaymentSuccess/:insId/:tx/:payType/:gCharge",authorizeAgentHTTP, flightController.Success);
 routes.get("/flightPaymentSuccess/:insId/:tx/:payType/:gCharge",authorizeAgentHTTP, flightController.Success);
+routes.post("/flightPaymentSuccessCustom/:insId/:insId1/:tx/:payType/:gCharge",authorizeAgentHTTP, flightController.SuccessCustom);
+routes.get("/flightPaymentSuccessCustom/:insId/:insId1/:tx/:payType/:gCharge",authorizeAgentHTTP, flightController.SuccessCustom);
 routes.get("/getTicketedBookings",authorizeAgentHTTP,flightController.GetTicketedBookings)
 routes.get("/getTicketedBookingsDetails/:booking_id",authorizeAgentHTTP,flightController.GetTicketedBookingsDetails)
 

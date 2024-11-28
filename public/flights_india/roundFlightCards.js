@@ -14,7 +14,7 @@ class FlightRoundCards {
     constructor(flight, index) {
         this.flight = flight;
         this.index = index;
-       // console.log(this.flight)
+        // console.log(this.flight)
     }
 
     render()
@@ -70,7 +70,7 @@ class FlightRoundCards {
                                             <div class="flex-1 spacing-0 row">
                                                 <div class="col-lg-12 col-md-12 col-sm-12 col-12">
                                                     <div class="d-flex flex-column fare-info_details" id="twoFares">`;
-                                                       <!-- fare Component -->
+        <!-- fare Component -->
         for (let i = 0; i < Math.min(2, this.flight.Segments.length); i++) {
             let flightCards = new FareCards(this.flight.Segments[i], i, "d")
             card += flightCards.render(this.index)
@@ -112,7 +112,7 @@ class FlightRoundCards {
         }
 
 
-                                                    card+=`
+        card+=`
                                               
                                                           </div>
                                                             <button type="button" onclick="departFlightDetails(${this.index})"
@@ -442,7 +442,7 @@ class SegmentInformation
 function renderSideBar(index) {
     // Get the selected flight's segments
     const selectedFlight = (filteredFlights.length > 0) ? filteredFlights[index] :  flightData.onwardFlights[index];
-  //  console.log(selectedFlight)
+    //  console.log(selectedFlight)
 
     let selectedValue;
     // Get all radio buttons with the name "gender"
@@ -613,7 +613,7 @@ function renderSideBar(index) {
 function renderSideBarReturn(index) {
     // Get the selected flight's segments
     const selectedFlight = (filteredFlightsReturn.length > 0) ? filteredFlightsReturn[index] :  flightData.returnFlights[index];
-   // console.log(selectedFlight)
+    // console.log(selectedFlight)
 
     let selectedValue;
     // Get all radio buttons with the name "gender"
@@ -1007,14 +1007,14 @@ async function stopsFilter() {
         stopsCounts.set(stops, (stopsCounts.get(stops) || 0) + 1);
     });
 
-   // console.log(stopsCounts)
+    // console.log(stopsCounts)
 
     // Create and append elements for each stops option
     stopsCounts.forEach((count, stopsOption) => {
-       // console.log(stopsOption)
+        // console.log(stopsOption)
         const checkboxId = `stops${stopsOption.replace(/\s/g, '')}`;
-       // console.log(checkboxId)
-       // console.log(checkboxId)
+        // console.log(checkboxId)
+        // console.log(checkboxId)
         const checkbox = `  <label
                                             class=" d-flex  fw-500 align-items-center fs-12 cursor-pointer app-check-box"
                                             style="color: rgb(91, 91, 91);" for="${checkboxId}">
@@ -1026,7 +1026,7 @@ async function stopsFilter() {
         `;
 
 
-      //  console.log(div);
+        //  console.log(div);
 
         document.getElementById("stopSector").innerHTML = `${flightData.onwardFlights[0].Origin.CityCode} -> ${flightData.onwardFlights[0].Destination.CityCode}`
         document.getElementById('stopFilter').innerHTML += div;
@@ -1044,14 +1044,14 @@ async function stopsFilterReturn() {
         stopsCounts.set(stops, (stopsCounts.get(stops) || 0) + 1);
     });
 
-   // console.log(stopsCounts)
+    // console.log(stopsCounts)
 
     // Create and append elements for each stops option
     stopsCounts.forEach((count, stopsOption) => {
-       // console.log(stopsOption)
+        // console.log(stopsOption)
         const checkboxId = `stops${stopsOption.replace(/\s/g, '')}`;
-       // console.log(checkboxId)
-       // console.log(checkboxId)
+        // console.log(checkboxId)
+        // console.log(checkboxId)
         const checkbox = `  <label
                                             class=" d-flex  fw-500 align-items-center fs-12 cursor-pointer app-check-box"
                                             style="color: rgb(91, 91, 91);" for="${checkboxId}Return">
@@ -1063,7 +1063,7 @@ async function stopsFilterReturn() {
         `;
 
 
-       // console.log(div);
+        // console.log(div);
 
         document.getElementById("stopSectorReturn").innerHTML = `${flightData.returnFlights[0].Origin.CityCode} -> ${flightData.returnFlights[0].Destination.CityCode}`
         document.getElementById('stopFilterReturn').innerHTML += div;
@@ -1081,14 +1081,14 @@ function applyFilters() {
     flightKey = 'FlightNumber'
 
     if(res.Custom === 'YES') {
-            arr = flightData.onwardFlights;
-            renderResults = document.getElementById("myOnward");
-            flightKey = 'FlightNumber'
+        arr = flightData.onwardFlights;
+        renderResults = document.getElementById("myOnward");
+        flightKey = 'FlightNumber'
     }
 
 
     const flightNumberValue = document.getElementById("fSearch").value.trim();
-   // console.log(flightNumberValue)
+    // console.log(flightNumberValue)
     // Get checked airlines and fares
     const checkedAirlines = Array.from(document.querySelectorAll('input[name="carrier"]:checked'))
         .map(checkbox => checkbox.value);
@@ -1103,13 +1103,13 @@ function applyFilters() {
     let selectedId = null;
     if (selectedChip) {
         selectedId = selectedChip.getAttribute('id');
-       // console.log("Selected ID:", selectedId);
+        // console.log("Selected ID:", selectedId);
     }
 
     let aselectedId = null;
     if (aselectedChip) {
         aselectedId = aselectedChip.getAttribute('id');
-       // console.log("Selected ID:", aselectedId);
+        // console.log("Selected ID:", aselectedId);
     }
     // Get the range slider instance and its current values
     const sliderInstance = $(".js-range-slider").data("ionRangeSlider");
@@ -1156,7 +1156,7 @@ function applyFilters() {
         });
     }
 
-   // console.log("ff",filteredFlights)
+    // console.log("ff",filteredFlights)
     renderResults.innerHTML = ''; // Clear previous results
 
     // Check if there are filtered flights and render appropriately
@@ -1164,7 +1164,7 @@ function applyFilters() {
         // Efficient DOM manipulation using Document Fragment
         const fragment = document.createDocumentFragment();
         filteredFlights.forEach((flight, index) => {
-             // Append each card to the fragment
+            // Append each card to the fragment
             if(res.Custom === 'YES')
             {
                 const flightCard = new FlightRoundCards(flight, index);
@@ -1212,7 +1212,7 @@ function applyFiltersReturn() {
     // Get checked airlines and fares
     const checkedAirlines = Array.from(document.querySelectorAll('input[name="carrierReturn"]:checked'))
         .map(checkbox => checkbox.value);
-   // console.log(checkedAirlines)
+    // console.log(checkedAirlines)
     const checkedFares = Array.from(document.querySelectorAll('input[name="allfaresReturn"]:checked'))
         .map(checkbox => checkbox.value);
     const checkedStops = Array.from(document.querySelectorAll('input[name="stopsReturn"]:checked'))
@@ -1224,13 +1224,13 @@ function applyFiltersReturn() {
     let selectedId = null;
     if (selectedChip) {
         selectedId = selectedChip.getAttribute('id');
-       // console.log("Selected ID:", selectedId);
+        // console.log("Selected ID:", selectedId);
     }
 
     let aselectedId = null;
     if (aselectedChip) {
         aselectedId = aselectedChip.getAttribute('id');
-       // console.log("Selected ID:", aselectedId);
+        // console.log("Selected ID:", aselectedId);
     }
     // Get the range slider instance and its current values
     const sliderInstance = $(".js-range-slider").data("ionRangeSlider");
@@ -1481,7 +1481,7 @@ class TRIPJACKFareBreakupCard {
         }
 
 
-       // console.log(totalPublishedFare1)
+        // console.log(totalPublishedFare1)
         let totalPax = parseInt(arr.departureFlight.adults) + parseInt(arr.departureFlight.childs);
 
 
@@ -1564,13 +1564,13 @@ class TRIPJACKFareBreakupCard {
 
         let markup_value = (parseFloat(markup_by_agent_d) + parseFloat(markup_by_agent_r)).toFixed(2), markup_percentage = (parseFloat(markup_percentage_d) + parseFloat(markup_percentage_r)).toFixed(2)
 
-       // console.log("markup"+markup_percentage)
+        // console.log("markup"+markup_percentage)
 
         let totalMarkup = (parseFloat(totalMarkup_d) + parseFloat(totalMarkup_r)).toFixed(2)
-       // console.log(totalMarkup);
+        // console.log(totalMarkup);
         let totalPublishFare = (parseFloat(totalPublishFare_d) + parseFloat(totalPublishFare_r)).toFixed(2)
 
-       // console.log(totalPublishFare);
+        // console.log(totalPublishFare);
         let totalNetFare = (parseFloat(totalNetFare_d) + parseFloat(totalNetFare_r)).toFixed(2)
 
         let commission = (parseFloat(commission_d) + parseFloat(commission_r)).toFixed(2)
@@ -3034,7 +3034,7 @@ class TBOFareBreakupCard {
 
 
 
-       // console.log(totalPublishedFare1)
+        // console.log(totalPublishedFare1)
         let totalPax = parseInt(arr.departureFlight.adults) + parseInt(arr.departureFlight.childs);
 
 
@@ -3117,7 +3117,7 @@ class TBOFareBreakupCard {
                     (totalTransactionFee1 || 0)) / totalPax
             ).toFixed(2);
 
-       // total
+        // total
         let markup_by_agent  = (parseFloat(markup_by_agent_d) + parseFloat(markup_by_agent_r)).toFixed(2);
 
         const fareDifference = parseFloat((parseFloat(fareDifference_d) + parseFloat(fareDifference_r)).toFixed(2));
@@ -3125,13 +3125,13 @@ class TBOFareBreakupCard {
 
         let markup_value = (parseFloat(markup_by_agent_d) + parseFloat(markup_by_agent_r)).toFixed(2), markup_percentage = (parseFloat(markup_percentage_d) + parseFloat(markup_percentage_r)).toFixed(2)
 
-       // console.log("markup"+markup_percentage)
+        // console.log("markup"+markup_percentage)
 
         let totalMarkup = (parseFloat(totalMarkup_d) + parseFloat(totalMarkup_r)).toFixed(2)
-       // console.log(totalMarkup);
+        // console.log(totalMarkup);
         let totalPublishFare = (parseFloat(totalPublishFare_d) + parseFloat(totalPublishFare_r)).toFixed(2)
 
-       // console.log(totalPublishFare);
+        // console.log(totalPublishFare);
         let totalNetFare = (parseFloat(totalNetFare_d) + parseFloat(totalNetFare_r)).toFixed(2)
 
         let commission = (parseFloat(commission_d) + parseFloat(commission_r)).toFixed(2)
@@ -3647,7 +3647,7 @@ function setDateRestrictions(input,paxType) {
     // Modify the max date based on this.type (use the type from your logic)
     const type = paxType; // This should come from your server-side logic or JS logic
 
-   // console.log("User type: ", type); // Debugging log
+    // console.log("User type: ", type); // Debugging log
 
     if (type === 'Adult') {
         // Subtract 12 years from the current date for Adults
@@ -3682,10 +3682,10 @@ function setDateRestrictions(input,paxType) {
 
     // Check if maxDate is correctly calculated
     if (maxDate) {
-       // console.log("Calculated Max Date: ", maxDate); // Debugging log
+        // console.log("Calculated Max Date: ", maxDate); // Debugging log
         const formattedMaxDate = maxDate.toISOString().split('T')[0];
         input.setAttribute('max', formattedMaxDate);
-       // console.log('Max Date Set:', formattedMaxDate); // Debugging log
+        // console.log('Max Date Set:', formattedMaxDate); // Debugging log
     } else {
         console.error('Failed to calculate maxDate');
     }
@@ -3693,7 +3693,7 @@ function setDateRestrictions(input,paxType) {
     if (minDate) {
         const formattedMinDate = minDate.toISOString().split('T')[0];
         input.setAttribute('min', formattedMinDate);
-       // console.log('Min Date Set:', formattedMinDate); // Debugging log
+        // console.log('Min Date Set:', formattedMinDate); // Debugging log
     }
 }
 
@@ -4137,7 +4137,7 @@ function sortDurationReturn(element) {
     let myArr = (filteredFlightsReturn.length > 0) ? filteredFlightsReturn : flightData.returnFlights;
 
     // Helper function to convert duration into total minutes
-   // console.log(myArr)
+    // console.log(myArr)
     const parseDuration = (duration) => {
         //console.log("Parsing duration:", duration);
         return duration.hours * 60 + duration.minutes;

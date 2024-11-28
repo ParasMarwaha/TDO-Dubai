@@ -1007,7 +1007,7 @@ async function ConfirmBooking() {
         }
 
     }
- }
+}
 
 async function ticketReturn() {
     paxArray = [];

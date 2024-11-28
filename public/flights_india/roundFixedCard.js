@@ -1564,7 +1564,6 @@ class TBOFareBreakupCardFixed {
     }
 }
 
-
 class TRIPJACKFareBreakupCardFixed {
 
     constructor(fare, adults, childs, infants) {

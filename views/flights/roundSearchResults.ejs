@@ -914,7 +914,7 @@
 
 
     async function getFlightsByDate(date,type){
-       // console.log(date,type)
+        // console.log(date,type)
         document.getElementById("renderFlight").innerHTML = `<div class="animation">
   <svg id="master-artboard" class="animation__cloud--back" viewBox="0 0 45 18" version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="45px" height="18px"><path d="M 58.88372802734375 825.155517578125 C 16.61685562133789 826.1433715820312 57.925209045410156 781.6769409179688 58.883731842041016 781.3507080078125 C 106.25779724121094 731.152099609375 169.17739868164062 692.9862670898438 226.64694213867188 694.6730346679688 C 227.2968292236328 557.091552734375 389.74322509765625 563.0558471679688 425.166748046875 635.9559326171875 C 534.7359619140625 431.2034912109375 793.6226196289062 599.6361694335938 715.956298828125 741.27392578125 C 820.5570068359375 803.94287109375 789.773193359375 826.9736328125 767.21728515625 825.1555786132812 C 394.85125732421875 825.5911865234375 359.5561218261719 823.805908203125 58.88372802734375 825.155517578125 Z" transform="matrix(0.0573558509349823, 0, 0, 0.056244850158691406, -1.3596858978271484, -29.666284561157227)"/></svg>
 <svg id="master-artboard" class="animation__cloud--middle" viewBox="0 0 45 18" version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="45px" height="18px"><path d="M 58.88372802734375 825.155517578125 C 16.61685562133789 826.1433715820312 57.925209045410156 781.6769409179688 58.883731842041016 781.3507080078125 C 106.25779724121094 731.152099609375 169.17739868164062 692.9862670898438 226.64694213867188 694.6730346679688 C 227.2968292236328 557.091552734375 389.74322509765625 563.0558471679688 425.166748046875 635.9559326171875 C 534.7359619140625 431.2034912109375 793.6226196289062 599.6361694335938 715.956298828125 741.27392578125 C 820.5570068359375 803.94287109375 789.773193359375 826.9736328125 767.21728515625 825.1555786132812 C 394.85125732421875 825.5911865234375 359.5561218261719 823.805908203125 58.88372802734375 825.155517578125 Z" transform="matrix(0.0573558509349823, 0, 0, 0.056244850158691406, -1.3596858978271484, -29.666284561157227)"/></svg>
@@ -954,12 +954,12 @@
                 formDataArray = formDataArray.filter(entry => entry[0] !== "travelDate");
                 travelDate = date;
                 fd.set('travelDate', travelDate); // Set updated travelDate
-               // console.log('Onward travelDate:', travelDate);
+                // console.log('Onward travelDate:', travelDate);
             } else if (type === 'Return') {
                 formDataArray = formDataArray.filter(entry => entry[0] !== "travelReturnDate");
                 travelReturnDate = date;
                 fd.set('travelReturnDate', travelReturnDate); // Set updated travelReturnDate
-               // console.log('Return travelReturnDate:', travelReturnDate);
+                // console.log('Return travelReturnDate:', travelReturnDate);
             }
 
             // Process infants
@@ -1503,7 +1503,7 @@
 
     function departFlightDetails(index) {
         // Get the selected flight's segments
-        const myArr = (filteredFlightsReturn.length > 0) ? filteredFlights : flightData.onwardFlights;
+        const myArr = (filteredFlights.length > 0) ? filteredFlights : flightData.onwardFlights;
 
         let selectedFlight = JSON.parse(JSON.stringify(myArr[index]));
 
@@ -1518,7 +1518,7 @@
 
         const selectedValue = selectedRadio.value;
 
-       // alert(selectedValue);
+        // alert(selectedValue);
 
         // Replace Segments with the selected value
         selectedFlight.Segments = [myArr[index].Segments[selectedValue]];  // Ensure it's in array format

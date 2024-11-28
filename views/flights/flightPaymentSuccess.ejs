@@ -34,9 +34,9 @@
     <%- include('../partials/navbar2') %>
     <%- include('../partials/sidebar2') %>
     <div class=" content-body default-height">
-     <div id="response">
+        <div id="response">
 
-     </div>
+        </div>
     </div>
     <%- include('../partials/footer2') %>
 </div>
@@ -69,31 +69,54 @@
     }
 
     async function issueTicket() {
+        console.log('<%= Custom %>')
 
         try {
-            let rs;
-            rs = `           <div class="loader">
-<!--<div class="wait" style="color: green">Payment Successful <br><br> Now Issuing Ticket Please Wait <br><br> Don't Close Window Please</div>                     &lt;!&ndash;                    <div class="iata_code departure_city">TD</div>&ndash;&gt;                     <div class="plane">                         <img src="https://zupimages.net/up/19/34/4820.gif" class="plane-img">                     </div>                     <div class="earth-wrapper">                         <div class="earth"></div>                     </div>                  </div>-->`;
-            document.getElementById("response").innerHTML = rs;
-            console.log(JSON.parse(<%- test1 %>));
-            let obj = JSON.parse(<%- test1 %>);
-            let fd = new FormData();
-            fd.append("traceId", obj.traceId);
-            fd.append("flight", obj.flight)
-            fd.append("sellKey", obj.sellKey);
-            fd.append("passengers", obj.passengers);
-            fd.append("email", obj.email);
-            fd.append("mobile", obj.mobile);
-            fd.append('total', obj.total);
-            fd.append("hold", obj.hold);
-            fd.append("revised", obj.revised);
-            fd.append("totalAdult", obj.totalAdult);
-            fd.append("totalChild", obj.totalChild);
-            fd.append("totalInfant", obj.totalInfant);
-            fd.append("trip", obj.trip);
-            fd.append("riyaTrip", obj.riyaTrip)
 
-            if(obj.trip === 'RoundTrip_Custom'){
+            if('<%= Custom %>' === 'YES') {
+
+                let rs;
+                rs = `           <div class="loader">
+    <!--<div class="wait" style="color: green">Payment Successful <br><br> Now Issuing Ticket Please Wait <br><br> Don't Close Window Please</div>-->
+    <div class="plane">
+        <img src="https://zupimages.net/up/19/34/4820.gif" class="plane-img">
+    </div>
+    <div class="earth-wrapper">
+        <div class="earth"></div>
+    </div>
+    </div>`;
+                document.getElementById("response").innerHTML = rs;
+                console.log(JSON.parse(<%- test1 %>));
+                let obj = JSON.parse(<%- test1 %>);
+
+                <% if (typeof test2 !== 'undefined') { %>
+                let obj1 = JSON.parse(<%- test2 %>);
+                <% } %>
+
+                let fd = new FormData();
+                fd.append("traceId", obj.traceId);
+                <% if (typeof test2 !== 'undefined') { %>
+                fd.append("traceIdReturn", obj1.traceIdReturn);
+                fd.append("flightReturn", obj1.flightReturn);
+                fd.append("sellKeyReturn", obj1.sellKeyReturn);
+                fd.append("holdReturn", obj1.holdReturn);
+                fd.append("tripReturn", obj1.tripReturn);
+                fd.append("riyaTripReturn", obj1.riyaTripReturn);
+                <% } %>
+                fd.append("flight", obj.flight);
+                fd.append("sellKey", obj.sellKey);
+                fd.append("passengers", obj.passengers);
+                fd.append("email", obj.email);
+                fd.append("mobile", obj.mobile);
+                fd.append("total", obj.total);
+                fd.append("hold", obj.hold);
+                fd.append("revised", obj.revised);
+                fd.append("totalAdult", obj.totalAdult);
+                fd.append("totalChild", obj.totalChild);
+                fd.append("totalInfant", obj.totalInfant);
+                fd.append("trip", obj.trip);
+                fd.append("riyaTrip", obj.riyaTrip);
+
                 let res1 = await fetch("/flights/ticket-custom", {
                     method: "POST",
                     body: fd
@@ -111,66 +134,36 @@
                         $('#staticBackdrop1').modal('hide');
                         window.location.href = "/flights/viewTicketedBookings";
                     });
-                }
-                else if (res1.ResponseStatus === 14) {
-                    let timerInterval;
-                    Swal.fire({
-                        title: "Booking Failed",
-                        icon: "error",
-                        html: `<h2 style="color: red">Error Occurred</h2> <br> <b></b> milliseconds.`,
-                        timer: 4000,
-                        timerProgressBar: true,
-                        allowOutsideClick: false,  // Disable outside click
-                        didOpen: () => {
-                            Swal.showLoading();
-                            const timer = Swal.getPopup().querySelector("b");
-                            timerInterval = setInterval(() => {
-                                timer.textContent = `${Swal.getTimerLeft()}`;
-                            }, 100);
-                        },
-                        willClose: () => {
-                            clearInterval(timerInterval);
-                        }
-                    }).then(async (result) => {
-                        /* Read more about handling dismissals below */
-                        if (result.dismiss === Swal.DismissReason.timer) {
-                            // window.location.href = "/FailedBookings"
-                        }
-                    });
-
-                    window.location.href = "/flights/viewTicketedBookings";
-                }
-                else {
-                    let timerInterval;
-                    Swal.fire({
-                        title: "Booking Failed",
-                        icon: "error",
-                        html: `<h2 style="color: red">Error Occurred</h2> <br> <b></b> milliseconds.`,
-                        timer: 4000,
-                        timerProgressBar: true,
-                        allowOutsideClick: false,  // Disable outside click
-                        didOpen: () => {
-                            Swal.showLoading();
-                            const timer = Swal.getPopup().querySelector("b");
-                            timerInterval = setInterval(() => {
-                                timer.textContent = `${Swal.getTimerLeft()}`;
-                            }, 100);
-                        },
-                        willClose: () => {
-                            clearInterval(timerInterval);
-                        }
-                    }).then(async (result) => {
-                        /* Read more about handling dismissals below */
-                        if (result.dismiss === Swal.DismissReason.timer) {
-                            // window.location.href="/flights"
-                            // window.location.href = "/FailedBookings"
-                        }
-                    });
-
-                    window.location.href = "/flights/viewTicketedBookings";
+                } else if (res1.ResponseStatus === 14) {
+                    handleBookingFailure();
+                } else {
+                    handleBookingFailure();
                 }
 
-            }else{
+            } else {
+                let rs;
+                rs = `           <div class="loader">
+<!--<div class="wait" style="color: green">Payment Successful <br><br> Now Issuing Ticket Please Wait <br><br> Don't Close Window Please</div>                     &lt;!&ndash;                    <div class="iata_code departure_city">TD</div>&ndash;&gt;                     <div class="plane">                         <img src="https://zupimages.net/up/19/34/4820.gif" class="plane-img">                     </div>                     <div class="earth-wrapper">                         <div class="earth"></div>                     </div>                  </div>-->`;
+                document.getElementById("response").innerHTML = rs;
+                console.log(JSON.parse(<%- test1 %>));
+                let obj = JSON.parse(<%- test1 %>);
+                let fd = new FormData();
+                fd.append("traceId", obj.traceId);
+                fd.append("flight", obj.flight)
+                fd.append("sellKey", obj.sellKey);
+                fd.append("passengers", obj.passengers);
+                fd.append("email", obj.email);
+                fd.append("mobile", obj.mobile);
+                fd.append('total', obj.total);
+                fd.append("hold", obj.hold);
+                fd.append("revised", obj.revised);
+                fd.append("totalAdult", obj.totalAdult);
+                fd.append("totalChild", obj.totalChild);
+                fd.append("totalInfant", obj.totalInfant);
+                fd.append("trip", obj.trip);
+                fd.append("riyaTrip", obj.riyaTrip)
+
+
                 let res1 = await fetch("/flights/ticket", {
                     method: "POST",
                     body: fd
@@ -245,10 +238,8 @@
                     });
 
                 }
+
             }
-
-
-
         } catch (e) {
             let timerInterval;
             Swal.fire({
@@ -271,12 +262,12 @@
             }).then(async (result) => {
                 /* Read more about handling dismissals below */
                 if (result.dismiss === Swal.DismissReason.timer) {
-                   // window.location.href="/flights"
+                    // window.location.href="/flights"
                     // window.location.href = "/FailedBookings"
                 }
             });
             window.location.href = "/flights/viewTicketedBookings";
         }
     }
-      </script>
+</script>
 </html>

@@ -336,27 +336,34 @@ flightController.ticket = async (req, res) => {
 }
 
 flightController.ticket_custom = async (req, res) => {
-    console.log(req.body)
+    console.log("Ticket",req.body)
     let {agentId} = req.agent
     let {
         traceId,
+        traceIdReturn,
         flight,
+        flightReturn,
         sellKey,
+        sellKeyReturn,
         passengers,
         email,
         mobile,
         hold,
+        holdReturn,
         revised,
         totalAdult,
         totalChild,
         totalInfant,
-        riyaTrip
+        riyaTrip,
+        riyaTripReturn
     } = req.body
     let response = '';
     let flights = JSON.parse(flight);
+    let flightsReturn = JSON.parse(flightReturn);
     let pax = JSON.parse(passengers);
     let connection
     let holdOption = (hold === "true") ? true : false;
+    let holdOptionReturn = (holdReturn === "true") ? true : false;
 
     let revisedOption = (revised === "true") ? true : false;
     try {
@@ -390,13 +397,45 @@ flightController.ticket_custom = async (req, res) => {
             }
         });
 
-        console.log(response);
+        console.log("Onward",response);
 
+        let apiUrl1 = `http://trvlnxtgateway.parikshan.net/api/Booking`;
+        responseReturn = await axios.post(apiUrl1, {
+            "trackID": `${traceIdReturn}`,
+            "sellKey": `${sellKeyReturn}`,
+            "tripType": `${riyaTripReturn}`,
+            "paymentMode": "1",
+            "IsHold": false,
+            "Isfarerevised": revisedOption,
+            "paxType": {
+                "adult": totalAdult,
+                "child": totalChild,
+                "infant": totalInfant
+            },
+            "flights": flightsReturn,
+            "passengers": pax,
+            "addressDetail": {
+                "contactNumber": `${mobile}`,
+                "emailId": `${email}`
+            },
+            "baggageDetails": [],
+            "mealsDetails": [],
+            "seatDetails": []
+        }, {
+            headers: {
+                'Accept-Encoding': 'gzip, deflate',
+                'ApiKey': `VFJBVkVMIERFQUwgT25saW5lIC0gQ1VTVDMwMDcyNA==`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        console.log("Return",responseReturn);
+        //
         if (response.data.ResponseStatusType.Success === true) {
-
-            // add to database all information
-
-
+            //
+            //         // add to database all information
+            //
+            //
             try {
                 let total_no_of_pax = parseInt(totalAdult) + parseInt(totalChild) + parseInt(totalInfant);
                 let pnr = response.data.Flights[0].AirlinePNR
@@ -408,13 +447,30 @@ flightController.ticket_custom = async (req, res) => {
                 let total_tax = 0;
                 let total_gross_fare = 0;
                 let total_net_fare = 0;
-
+                let total_base_fareReturn = 0;
+                let total_taxReturn = 0;
+                let total_gross_fareReturn = 0;
+                let total_net_fareReturn = 0;
+                //
                 response.data.Flights.forEach(flight => {
                     total_base_fare += flight.BasicFare;
                     total_tax += flight.TotalTax;
                     total_gross_fare += flight.GrossFare;
                     total_net_fare += flight.NetAmount;
                 });
+
+                responseReturn.data.Flights.forEach(flight => {
+                    total_base_fareReturn += flight.BasicFare;
+                    total_taxReturn += flight.TotalTax;
+                    total_gross_fareReturn += flight.GrossFare;
+                    total_net_fareReturn += flight.NetAmount;
+                });
+                //
+                total_base_fare += total_base_fareReturn
+                total_tax += total_taxReturn
+                total_gross_fare += total_gross_fareReturn
+                total_net_fare += total_net_fareReturn
+
 
                 console.log("Total Base Fare:", total_base_fare);
                 console.log("Total Tax:", total_tax);
@@ -427,7 +483,7 @@ flightController.ticket_custom = async (req, res) => {
                 let [addData] = await flightServices.addFlightBookingData(connection, agentId, total_no_of_pax, totalAdult, totalChild, totalInfant, gdspnr, booking_date_time, response_json, total_base_fare, total_tax, total_gross_fare, total_net_fare, pnr);
                 let [getbookingId] = await flightServices.getBookingId(connection)
                 let booking_id = getbookingId[0].booking_id
-
+                //
                 for (let trip = 0; trip < response.data.Flights.length; trip++) {
                     let origin = response.data.Flights[trip].OriginDestination.Departure
                     let destination = response.data.Flights[trip].OriginDestination.Arrival
@@ -450,7 +506,7 @@ flightController.ticket_custom = async (req, res) => {
                     let airlineCode = response.data.Flights[trip].ValidatingCarrier;
                     let baggage = `${response?.data?.Flights?.[trip]?.Segments[0]?.Baggages?.[0]?.Weight || '15'}${response?.data?.Flights?.[trip]?.Segments?.[0]?.Baggages?.[0]?.Unit || 'KG'}`
                     let cabinBaggage = response.data.Flights[trip].Segments[0].CabinBaggage
-
+                    //
                     for (let i = 0; i < response.data.Passengers.length; i++) {
                         let passengerInfo = response.data.Passengers[i]
                         let title = passengerInfo.Title
@@ -466,12 +522,54 @@ flightController.ticket_custom = async (req, res) => {
                         let bookingStatus = "Ticketed"
                         let ticketStatus = "Ticketed"
                         let [addBookingDetails] = await flightServices.addFlightBookingDetails(connection, booking_id, title, firstName, lastName, paxType, dateOfBirth, passportNo, passportExpiry, passportIssueCountry, barcodes, origin, destination, flightNumber, flightName, iataCode, departureDate, arrivalDate, duration, departureTerminal, arrivalTerminal, fareName, bookingStatus, ticketStatus)
-                        let [addBookingDetails1] = await flightServices.addFlightBookingDetails(connection, booking_id, title, firstName, lastName, paxType, dateOfBirth, passportNo, passportExpiry, passportIssueCountry, barcodes, destination, origin, flightNumber, flightName, iataCode, departureDate, arrivalDate, duration, departureTerminal, arrivalTerminal, fareName, bookingStatus, ticketStatus)
                     }
                     let [addTrip] = await flightServices.addTrip(connection, booking_id, origin, destination, departureDate, arrivalDate, duration, basicFare, totalTax, totalFare, netAmount, grossFare, airlinePNR, baggage, cabinBaggage, departureTerminal, arrivalTerminal, flightKey, fareName, airlineCode)
-                    let [addTrip1] = await flightServices.addTrip(connection, booking_id, destination, origin, departureDate, arrivalDate, duration, basicFare, totalTax, totalFare, netAmount, grossFare, airlinePNR, baggage, cabinBaggage, departureTerminal, arrivalTerminal, flightKey, fareName, airlineCode)
 
                 }
+
+                for (let trip1 = 0; trip1 < responseReturn.data.Flights.length; trip1++) {
+                    let origin = responseReturn.data.Flights[trip1].OriginDestination.Departure
+                    let destination = responseReturn.data.Flights[trip1].OriginDestination.Arrival
+                    let flightNumber = responseReturn.data.Flights[trip1].Segments[0].FlightNumber
+                    let flightName = responseReturn.data.Flights[trip1].Segments[0].Carrier
+                    let iataCode = responseReturn.data.Flights[trip1].Segments[0].Carrier
+                    let departureDate = responseReturn.data.Flights[trip1].OriginDestination.DepartureDateTime
+                    let arrivalDate = responseReturn.data.Flights[trip1].OriginDestination.ArrivalDateTime
+                    let duration = responseReturn.data.Flights[trip1].OriginDestination.TotalTime
+                    let departureTerminal = responseReturn.data.Flights[trip1].Segments[0].DepartureTerminal
+                    let arrivalTerminal = responseReturn.data.Flights[trip1].Segments[0].ArrivalTerminal
+                    let fareName = responseReturn.data.Flights[trip1].FareName
+                    let basicFare = responseReturn.data.Flights[trip1].BasicFare
+                    let totalTax = responseReturn.data.Flights[trip1].TotalTax
+                    let totalFare = responseReturn.data.Flights[trip1].TotalFare
+                    let netAmount = responseReturn.data.Flights[trip1].NetAmount
+                    let grossFare = responseReturn.data.Flights[trip1].GrossFare
+                    let airlinePNR = responseReturn.data.Flights[trip1].AirlinePNR
+                    let flightKey = responseReturn.data.Flights[trip1].FlightKey
+                    let airlineCode = responseReturn.data.Flights[trip1].ValidatingCarrier;
+                    let baggage = `${responseReturn?.data?.Flights?.[trip1]?.Segments[0]?.Baggages?.[0]?.Weight || '15'}${response?.data?.Flights?.[trip1]?.Segments?.[0]?.Baggages?.[0]?.Unit || 'KG'}`
+                    let cabinBaggage = responseReturn.data.Flights[trip1].Segments[0].CabinBaggage
+                    //
+                    for (let i = 0; i < response.data.Passengers.length; i++) {
+                        let passengerInfo = response.data.Passengers[i]
+                        let title = passengerInfo.Title
+                        let firstName = passengerInfo.FirstName
+                        let lastName = passengerInfo.LastName
+                        let paxType = passengerInfo.PaxType
+                        let dateOfBirth = passengerInfo.DateOfBirth
+                        let passportNo = passengerInfo.PassportDetail.PassportNo
+                        let passportExpiry = passengerInfo.PassportDetail.PassportExpiry
+                        let passportIssueCountry = passengerInfo.PassportDetail.PassportIssueCountry
+                        let barcodes = passengerInfo.BarCodes[trip1]
+                        barcodes = JSON.stringify(barcodes)
+                        let bookingStatus = "Ticketed"
+                        let ticketStatus = "Ticketed"
+                        let [addBookingDetails] = await flightServices.addFlightBookingDetails(connection, booking_id, title, firstName, lastName, paxType, dateOfBirth, passportNo, passportExpiry, passportIssueCountry, barcodes, origin, destination, flightNumber, flightName, iataCode, departureDate, arrivalDate, duration, departureTerminal, arrivalTerminal, fareName, bookingStatus, ticketStatus)
+                    }
+                    let [addTrip] = await flightServices.addTrip(connection, booking_id, origin, destination, departureDate, arrivalDate, duration, basicFare, totalTax, totalFare, netAmount, grossFare, airlinePNR, baggage, cabinBaggage, departureTerminal, arrivalTerminal, flightKey, fareName, airlineCode)
+
+                }
+
                 res.json({error: false, response: response.data, message: "Ticket Successfully", bookingNo: booking_id})
             } catch (e) {
                 console.log('-----', e.message)
@@ -496,8 +594,6 @@ flightController.ticket_custom = async (req, res) => {
     } finally {
         if (connection) connection.release();  // Return the connection to the pool
     }
-
-
 }
 
 
@@ -1796,9 +1892,7 @@ flightController.getAllFlightsRound = async (req, res) => {
                 req.session.tdate = travelDate;
 
                 res.json(combinedResponse);
-            }
-
-            else {
+            } else {
                 console.log("Its Domestic")
                 let apiUrl = `http://trvlnxtgateway.parikshan.net/api/Availability`;
 
@@ -2544,14 +2638,14 @@ flightController.getAllFlightsRound = async (req, res) => {
 
                 const finalResponse = {
                     ResponseStatus: 1,
-                    Custom : 'YES',
-                    data : {
+                    Custom: 'YES',
+                    data: {
                         onwardFlights: combinedResponse.data,
                         returnFlights: combinedResponse2.data
                     }
                 };
 
-              // Send the combined response
+                // Send the combined response
                 res.json(finalResponse);
             }
 
@@ -3970,6 +4064,7 @@ flightController.book = async (req, res) => {
 
 flightController.Success = async (req, res) => {
     let connection;
+    console.log("ReadyMade")
     try {
         let {insId, tx, payType, gCharge} = req.params;
         let {agentEmail, userType} = req.agent
@@ -3982,6 +4077,7 @@ flightController.Success = async (req, res) => {
         } else {
             res.render("flights/flightPaymentSuccess", {
                 agentEmail: agentEmail,
+                Custom: 'NO',
                 userType: userType,
                 insId: insId,
                 tx: tx,
@@ -4026,6 +4122,43 @@ flightController.Success = async (req, res) => {
 
     // console.log(req.payType)
 
+}
+
+flightController.SuccessCustom = async (req, res) => {
+    // let connection;
+    try {
+        let {insId, insId1, tx, payType, gCharge} = req.params;
+        let {agentEmail, userType} = req.agent
+        const connection = await connectToDatabase();
+
+        let [recordset] = await flightServices.success(connection, insId);
+        let [recordsetReturn] = await flightServices.success(connection, insId1);
+
+        if (recordset.length === 0) {
+            res.json({error: true, message: "data nhi mila", recordset: []})
+        } else if (recordsetReturn.length === 0) {
+            res.json({error: true, message: "data nhi mila", recordset: []});
+        } else {
+            res.render("flights/flightPaymentSuccess", {
+                agentEmail: agentEmail,
+                Custom: 'YES',
+                userType: userType,
+                insId: insId,
+                insId1: insId1,
+                tx: tx,
+                gCharge: gCharge,
+                payType: payType,
+                test1: JSON.stringify(recordset[0].data),
+                test2: JSON.stringify(recordsetReturn[0].data)
+            })
+
+
+        }
+
+    } catch (err) {
+        res.json({error: true, message: err, recordset: []});
+    }
+    console.log("SuccessCustom")
 }
 
 flightController.viewTicket = async (req, res) => {
@@ -4248,76 +4381,158 @@ flightController.showRazorPayWindow = async (req, res) => {
     console.log(req.body)
     console.log("Window")
     const tx = new Date().getTime().toString();
-    const {finalAmt, name, email, gCharge, contact, CompanyId, paymentMethod, payType, insId} = req.body;
-   // console.log(data)
-    if (paymentMethod === "wallet") {
-        console.log("oye")
-        console.log(req.body)
-        let connection
-        try {
-            let {agentId} = req.agent
-            const time = moment().tz(process.env["TIME_ZONE"]).format("YYYY-MM-DD HH:mm:ss")
-            connection = await connectToDatabase();
-            let [getWalletId] = await agentServices.getWalletId(connection, agentId)
-            let [result] = await agentServices.addWalletDetails(connection, getWalletId[0].id, 'Debit', finalAmt, time, 'Wallet', 'Flight Booked', 'self')
+    const {finalAmt, name, email, gCharge, contact, CompanyId, paymentMethod, payType, insId, insId1} = req.body;
+    // console.log(data)
+    if (!insId1) {
+        console.log("ID")
+        if (paymentMethod === "wallet") {
+            console.log("oye")
+            console.log(req.body)
+            let connection
+            try {
+                let {agentId} = req.agent
+                const time = moment().tz(process.env["TIME_ZONE"]).format("YYYY-MM-DD HH:mm:ss")
+                connection = await connectToDatabase();
+                let [getWalletId] = await agentServices.getWalletId(connection, agentId)
+                let [result] = await agentServices.addWalletDetails(connection, getWalletId[0].id, 'Debit', finalAmt, time, 'Wallet', 'Flight Booked', 'self')
 
-            res.redirect(`/flights/flightPaymentSuccess/${insId}/${tx}/${paymentMethod}/${gCharge}`);
-        } catch (e) {
-            console.log('-----', e.message)
-            res.redirect(`/flights/flightPaymentFail/${insId}/${tx}/${paymentMethod}`)
-        } finally {
-            if (connection) connection.release();  // Return the connection to the pool
-        }
-    } else {
-        console.log("oye1")
-        const options = {
-            key: 'rzp_test_VWMHIe8lj7h1ib', // Use environment variable
-            amount: parseInt(finalAmt) * 100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-            currency: "INR",
-            name: "Travel Deals Online", // your business name
-            description: "Test Transaction",
-            image: "https://www.traveldealsonline.com/Content/images/logo.png",
-            prefill: {
-                "name": `${name}`, //your customer's name
-                "email": `${email}`,
-                "contact": `${contact}` //Provide the customer's phone number for better conversion rates
-            },
-            config: {
-                display: {
-                    blocks: {
-                        banks: {
-                            name: `Pay via ${paymentMethod}`,
-                            instruments: [
-                                {
-                                    method: `${payType}`
-                                }
-                            ],
+                res.redirect(`/flights/flightPaymentSuccess/${insId}/${tx}/${paymentMethod}/${gCharge}`);
+            } catch (e) {
+                console.log('-----', e.message)
+                res.redirect(`/flights/flightPaymentFail/${insId}/${tx}/${paymentMethod}`)
+            } finally {
+                if (connection) connection.release();  // Return the connection to the pool
+            }
+        } else {
+            console.log("oye1")
+            const options = {
+                key: 'rzp_test_VWMHIe8lj7h1ib', // Use environment variable
+                amount: parseInt(finalAmt) * 100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                currency: "INR",
+                name: "Travel Deals Online", // your business name
+                description: "Test Transaction",
+                image: "https://www.traveldealsonline.com/Content/images/logo.png",
+                prefill: {
+                    "name": `${name}`, //your customer's name
+                    "email": `${email}`,
+                    "contact": `${contact}` //Provide the customer's phone number for better conversion rates
+                },
+                config: {
+                    display: {
+                        blocks: {
+                            banks: {
+                                name: `Pay via ${paymentMethod}`,
+                                instruments: [
+                                    {
+                                        method: `${payType}`
+                                    }
+                                ],
+                            },
+                        },
+                        sequence: ['block.banks'],
+                        preferences: {
+                            show_default_blocks: false,
                         },
                     },
-                    sequence: ['block.banks'],
-                    preferences: {
-                        show_default_blocks: false,
+                },
+                callback_url: `${process.env.CALL_BACK_URL}/flights/flightPaymentSuccess/${insId}/${tx}/${paymentMethod}/${gCharge}`,
+
+                notes: {
+                    address: "Razorpay Corporate Office"
+                },
+                theme: {
+                    color: "#ff0000"
+                }
+            };
+            res.json(options);
+        }
+    } else {
+        if (paymentMethod === "wallet") {
+            console.log("oye")
+            console.log(req.body)
+            let connection
+            try {
+                let {agentId} = req.agent
+                const time = moment().tz(process.env["TIME_ZONE"]).format("YYYY-MM-DD HH:mm:ss")
+                connection = await connectToDatabase();
+                let [getWalletId] = await agentServices.getWalletId(connection, agentId)
+                let [result] = await agentServices.addWalletDetails(connection, getWalletId[0].id, 'Debit', finalAmt, time, 'Wallet', 'Flight Booked', 'self')
+
+                res.redirect(`/flights/flightPaymentSuccessCustom/${insId}/${insId1}/${tx}/${paymentMethod}/${gCharge}`);
+            } catch (e) {
+                console.log('-----', e.message)
+                res.redirect(`/flights/flightPaymentFail/${insId}/${insId1}/${tx}/${paymentMethod}`)
+            } finally {
+                if (connection) connection.release();  // Return the connection to the pool
+            }
+        } else {
+            console.log("oye1")
+            const options = {
+                key: 'rzp_test_VWMHIe8lj7h1ib', // Use environment variable
+                amount: parseInt(finalAmt) * 100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                currency: "INR",
+                name: "Travel Deals Online", // your business name
+                description: "Test Transaction",
+                image: "https://www.traveldealsonline.com/Content/images/logo.png",
+                prefill: {
+                    "name": `${name}`, //your customer's name
+                    "email": `${email}`,
+                    "contact": `${contact}` //Provide the customer's phone number for better conversion rates
+                },
+                config: {
+                    display: {
+                        blocks: {
+                            banks: {
+                                name: `Pay via ${paymentMethod}`,
+                                instruments: [
+                                    {
+                                        method: `${payType}`
+                                    }
+                                ],
+                            },
+                        },
+                        sequence: ['block.banks'],
+                        preferences: {
+                            show_default_blocks: false,
+                        },
                     },
                 },
-            },
-            callback_url: `${process.env.CALL_BACK_URL}/flights/flightPaymentSuccess/${insId}/${tx}/${paymentMethod}/${gCharge}`,
+                callback_url: `${process.env.CALL_BACK_URL}/flights/flightPaymentSuccessCustom/${insId}/${insId1}/${tx}/${paymentMethod}/${gCharge}`,
 
-            notes: {
-                address: "Razorpay Corporate Office"
-            },
-            theme: {
-                color: "#ff0000"
-            }
-        };
-        res.json(options);
+                notes: {
+                    address: "Razorpay Corporate Office"
+                },
+                theme: {
+                    color: "#ff0000"
+                }
+            };
+            res.json(options);
+        }
+
     }
+
 };
 
 flightController.flightCheckout = async (req, res) => {
-    console.log(req.session.test);
-    console.log("Return",req.session.test1);
-    res.render("flights/flight_checkout", req.session.test);
+    try {
+        // Clone req.session.test into renderData
+        const renderData = {...req.session.test};
+
+        // Add test1 if it exists
+        if (req.session.test1) {
+            renderData.test1 = req.session.test1;
+        }
+
+        console.log("Render Data:", renderData); // Debugging: log the data being sent to the view
+
+        // Render the flight checkout page with the combined data
+        res.render("flights/flight_checkout", renderData);
+    } catch (error) {
+        console.error("Error in flightCheckout:", error);
+        res.status(500).send("Internal Server Error");
+    }
 };
+
 
 flightController.goToCheckout = async (req, res) => {
     console.log(req.body);
